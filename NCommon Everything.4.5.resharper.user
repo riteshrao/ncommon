@@ -1,0 +1,63 @@
+<Configuration>
+  <SettingsComponent>
+    <string />
+    <integer />
+    <boolean>
+      <setting name="SolutionAnalysisEnabled">True</setting>
+    </boolean>
+  </SettingsComponent>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <RecentFiles>
+    <RecentFiles>
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:LinqToSqlUnitOfWorkFactoryTests.cs" caret="1219" fromTop="34" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/d:Domain/f:TestData.designer.cs" caret="476" fromTop="11" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:app.config" caret="392" fromTop="7" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:LinqToSqlRepositoryTests.cs" caret="16588" fromTop="13" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/d:Domain/f:TestData.cs" caret="216" fromTop="9" />
+    </RecentFiles>
+    <RecentEdits>
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:LinqToSqlRepositoryTests.cs" caret="17644" fromTop="13" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:LinqToSqlRepositoryTests.cs" caret="761" fromTop="20" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/d:Domain/f:TestData.designer.cs" caret="23736" fromTop="25" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:LinqToSqlRepositoryTests.cs" caret="1508" fromTop="11" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:LinqToSqlRepositoryTests.cs" caret="18222" fromTop="22" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:LinqToSqlRepositoryTests.cs" caret="17565" fromTop="2" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:LinqToSqlUnitOfWorkFactoryTests.cs" caret="1460" fromTop="13" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/d:Domain/f:TestData.cs" caret="0" fromTop="2" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/d:Domain/f:TestData.cs" caret="69" fromTop="0" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:LinqToSqlRepositoryTests.cs" caret="18770" fromTop="13" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:LinqToSqlRepositoryTests.cs" caret="10849" fromTop="14" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:app.config" caret="392" fromTop="7" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/d:Domain/f:TestData.cs" caret="245" fromTop="13" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/d:Domain/f:TestData.cs" caret="370" fromTop="21" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/d:Domain/f:TestData.cs" caret="253" fromTop="15" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/d:Domain/f:TestData.cs" caret="216" fromTop="9" />
+    </RecentEdits>
+  </RecentFiles>
+  <UnitTestRunner>
+    <Providers />
+  </UnitTestRunner>
+  <CompletionStatisticsManager>
+    <ItemStatistics item="Default">
+      <Item value="NCommon" priority="0" />
+      <Item value="LinqToSql" priority="0" />
+      <Item value="Tests" priority="0" />
+      <Item value="Domain" priority="0" />
+      <Item value="TestDataDataContext" priority="0" />
+      <Item value="this" priority="2" />
+      <Item value="decimal" priority="1" />
+      <Item value="return" priority="0" />
+      <Item value="total" priority="0" />
+      <Item value="_ShipDate" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:NCommon.LinqToSql.Tests.Domain.Order">
+      <Item value="OrderItems" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:NCommon.LinqToSql.Tests.Domain.OrderItem">
+      <Item value="Price" priority="0" />
+      <Item value="TotalPrice" priority="0" />
+    </ItemStatistics>
+  </CompletionStatisticsManager>
+</Configuration>

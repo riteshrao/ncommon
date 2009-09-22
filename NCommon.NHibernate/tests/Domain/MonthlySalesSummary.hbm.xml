@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="NCommon.NHibernate.Tests"
+                   namespace="NCommon.NHibernate.Tests.Domain">
+  <class name="MonthlySalesSummary" table="MonthlySalesSummary">
+    <composite-id>
+      <key-property name="Year" column="Year"/>
+      <key-property name="Month" column="Month"/>
+      <key-property name="SalesPersonId" column="SalesPersonId"/>
+    </composite-id>
+    <property name="SalesPersonFirstName"/>
+    <property name="SalesPersonLastName"/>
+    <property name="TotalSale" type="NCommon.NHibernate.Tests.Domain.MoneyUserType, NCommon.NHibernate.Tests">
+      <column name="TotalSalesAmountCurrency"/>
+      <column name="TotalSalesAmount"/>
+    </property>
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,9 @@
+*.suo 
+*.user 
+*.resharper 
+_ReSharper* 
+_ReSharper.*
+*obj*
+*bin*
+*.svn
+.svn
