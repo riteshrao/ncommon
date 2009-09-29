@@ -122,7 +122,7 @@ namespace NCommon.Data.NHibernate
                                                      "Cannot begin a new transaction while an existing transaction is still running. " + 
                                                      "Please commit or rollback the existing transaction before starting a new one.");
             _transaction = new NHTransaction(_session.BeginTransaction(isolationLevel));
-            _transaction.TransactonComitted += TransactionCommitted;
+            _transaction.TransactionCommitted += TransactionCommitted;
             _transaction.TransactionRolledback += TransactionRolledback;
             return _transaction;
         }
@@ -181,7 +181,7 @@ namespace NCommon.Data.NHibernate
         }
 
         /// <summary>
-        /// Handles the <see cref="ITransaction.TransactonComitted"/> event.
+        /// Handles the <see cref="ITransaction.TransactionCommitted"/> event.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -199,7 +199,7 @@ namespace NCommon.Data.NHibernate
         {
             if (_transaction != null)
             {
-                _transaction.TransactonComitted -= TransactionCommitted;
+                _transaction.TransactionCommitted -= TransactionCommitted;
                 _transaction.TransactionRolledback -= TransactionRolledback;
                 _transaction.Dispose();
             }

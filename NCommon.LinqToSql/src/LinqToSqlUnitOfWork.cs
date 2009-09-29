@@ -127,7 +127,7 @@ namespace NCommon.Data.LinqToSql
             IDbTransaction transaction = _linqContext.Connection.BeginTransaction(isolationLevel);
             _linqContext.Transaction = transaction;
             _transaction = new LinqToSqlTransaction(transaction);
-            _transaction.TransactonComitted += TransactionCommitted;
+            _transaction.TransactionCommitted += TransactionCommitted;
             _transaction.TransactionRolledback += TransactionRolledback;
             return _transaction;
         }
@@ -186,7 +186,7 @@ namespace NCommon.Data.LinqToSql
         }
 
         /// <summary>
-        /// Handles the <see cref="ITransaction.TransactonComitted"/> event.
+        /// Handles the <see cref="ITransaction.TransactionCommitted"/> event.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -204,7 +204,7 @@ namespace NCommon.Data.LinqToSql
         {
             if (_transaction != null)
             {
-                _transaction.TransactonComitted -= TransactionCommitted;
+                _transaction.TransactionCommitted -= TransactionCommitted;
                 _transaction.TransactionRolledback -= TransactionRolledback;
                 _transaction.Dispose();
             }

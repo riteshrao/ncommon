@@ -72,7 +72,7 @@ namespace NCommon.Data.LinqToSql
         /// <summary>
         /// Event raised when the transaction has been comitted.
         /// </summary>
-        public event EventHandler TransactonComitted;
+        public event EventHandler TransactionCommitted;
 
         /// <summary>
         /// Event raised when the transaction has been rolledback.
@@ -82,15 +82,15 @@ namespace NCommon.Data.LinqToSql
         /// <summary>
         /// Commits the changes made to the data store.
         /// </summary>
-        /// <remarks>Implementors MUST raise the <see cref="ITransaction.TransactonComitted"/> event.</remarks>
+        /// <remarks>Implementors MUST raise the <see cref="ITransaction.TransactionCommitted"/> event.</remarks>
         public void Commit()
         {
             if (_disposed)
                 throw new ObjectDisposedException("LinqToSqlTransaction", "Cannot commit a disposed transaction.");
 
             _internalTransaction.Commit();
-            if (TransactonComitted != null)
-                TransactonComitted(this, EventArgs.Empty);
+            if (TransactionCommitted != null)
+                TransactionCommitted(this, EventArgs.Empty);
         }
 
         /// <summary>

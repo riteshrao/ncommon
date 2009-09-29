@@ -65,7 +65,7 @@ namespace NCommon.Data.NHibernate.Tests
             bool commitCalled = false;
             bool rollbackCalled = false;
             var transaction = new NHTransaction(mockTransaction);
-            transaction.TransactonComitted += delegate { commitCalled = true; };
+            transaction.TransactionCommitted += delegate { commitCalled = true; };
             transaction.TransactionRolledback += delegate { rollbackCalled = true; };
 
             transaction.Commit();
@@ -84,7 +84,7 @@ namespace NCommon.Data.NHibernate.Tests
             bool commitCalled = false;
             bool rollbackCalled = false;
             var transaction = new NHTransaction(mockTransaction);
-            transaction.TransactonComitted += delegate { commitCalled = true; };
+            transaction.TransactionCommitted += delegate { commitCalled = true; };
             transaction.TransactionRolledback += delegate { rollbackCalled = true; };
 
             transaction.Rollback();

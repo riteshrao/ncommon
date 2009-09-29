@@ -63,7 +63,7 @@ namespace NCommon.Data.EntityFramework.Tests
             bool commitCalled = false;
             bool rollbackCalled = false;
             var transaction = new EFTransaction(mockTransaction);
-            transaction.TransactonComitted += delegate { commitCalled = true; };
+            transaction.TransactionCommitted += delegate { commitCalled = true; };
             transaction.TransactionRolledback += delegate { rollbackCalled = true; };
 
             transaction.Commit();
@@ -82,7 +82,7 @@ namespace NCommon.Data.EntityFramework.Tests
             bool commitCalled = false;
             bool rollbackCalled = false;
             var transaction = new EFTransaction(mockTransaction);
-            transaction.TransactonComitted += delegate { commitCalled = true; };
+            transaction.TransactionCommitted += delegate { commitCalled = true; };
             transaction.TransactionRolledback += delegate { rollbackCalled = true; };
 
             transaction.Rollback();

@@ -535,5 +535,67 @@ namespace NCommon.Data.NHibernate.Tests
 			}
 			Assert.Throws<LazyInitializationException>(() => order.CalculateTotal());
 		}
+
+		[Test]
+		public void Verify_delete_works ()
+		{
+			var customerA = new Customer
+			{
+				FirstName = "CustomerA",
+				LastName = "CustomerB",
+				Address = new Address
+				{
+					StreetAddress1 = "Street A",
+					StreetAddress2 = "Street B",
+					City = "City",
+					State = "State"
+				}
+			};
+
+			var customerB = new Customer
+			{
+				FirstName = "CustomerA",
+				LastName = "CustomerB",
+				Address = new Address
+				{
+					StreetAddress1 = "Street A",
+					StreetAddress2 = "Street B",
+					City = "City",
+					State = "State"
+				}
+			};
+
+			var repository = new NHRepository<Customer>();
+			var customerCount = 0;
+			using (var scope = new UnitOfWorkScope())
+			{
+				customerCount = repository.Count();
+			}
+
+			using (var scope = new UnitOfWorkScope(IsolationLevel.ReadCommitted, UnitOfWorkScopeTransactionOptions.CreateNew))
+			{
+				repository.Add(customerA);
+				repository.Add(customerB);
+				scope.Commit();
+			}
+
+			using (var scope = new UnitOfWorkScope())
+			{
+				Assert.That(repository.Count(), Is.EqualTo(customerCount + 2));
+				scope.Commit();
+			}
+			
+			using (var scope = new UnitOfWorkScope())
+			{
+				repository.Delete(customerB);
+				scope.Commit();
+			}
+
+			using (var scope = new UnitOfWorkScope())
+			{
+				Assert.That(repository.Count(), Is.EqualTo(customerCount + 1));
+				scope.Commit();
+			}
+		}
 	}
 }

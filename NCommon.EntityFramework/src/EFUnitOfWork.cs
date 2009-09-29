@@ -126,7 +126,7 @@ namespace NCommon.Data.EntityFramework
 
             IDbTransaction transaction = _session.Connection.BeginTransaction(isolationLevel);
             _transaction = new EFTransaction(transaction);
-            _transaction.TransactonComitted += TransactionCommitted;
+            _transaction.TransactionCommitted += TransactionCommitted;
             _transaction.TransactionRolledback += TransactionRolledback;
             return _transaction;
         }
@@ -185,7 +185,7 @@ namespace NCommon.Data.EntityFramework
         }
 
         /// <summary>
-        /// Handles the <see cref="ITransaction.TransactonComitted"/> event.
+        /// Handles the <see cref="ITransaction.TransactionCommitted"/> event.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -203,7 +203,7 @@ namespace NCommon.Data.EntityFramework
         {
             if (_transaction != null)
             {
-                _transaction.TransactonComitted -= TransactionCommitted;
+                _transaction.TransactionCommitted -= TransactionCommitted;
                 _transaction.TransactionRolledback -= TransactionRolledback;
                 _transaction.Dispose();
             }

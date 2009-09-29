@@ -28,7 +28,7 @@ namespace NCommon.Data
         /// <summary>
         /// Event raised when the transaction has been comitted.
         /// </summary>
-        event EventHandler TransactonComitted;
+        event EventHandler TransactionCommitted;
 
         /// <summary>
         /// Event raised when the transaction has been rolledback.
@@ -38,7 +38,7 @@ namespace NCommon.Data
         /// <summary>
         /// Commits the changes made to the data store.
         /// </summary>
-        /// <remarks>Implementors MUST raise the <see cref="TransactonComitted"/> event.</remarks>
+        /// <remarks>Implementors MUST raise the <see cref="TransactionCommitted"/> event.</remarks>
         void Commit();
 
         /// <summary>

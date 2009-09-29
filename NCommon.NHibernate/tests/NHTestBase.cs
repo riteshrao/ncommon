@@ -12,13 +12,15 @@ namespace NCommon.Data.NHibernate.Tests
 {
 	public class NHTestBase
 	{
+		protected ISessionFactory Factory { get; private set; }
+
 		/// <summary>
 		/// Sets up the NHibernate SessionFactory and NHUnitOfWorkFactory.
 		/// </summary>
-		[SetUp]
-		public void SetUp()
+		[TestFixtureSetUp]
+		public virtual void SetUp()
 		{
-			var factory = Fluently.Configure()
+			Factory = Fluently.Configure()
 				.Database(MsSqlConfiguration
 				          	.MsSql2008
 				          	.ConnectionString(x => x.FromConnectionStringWithKey("testdb")))
@@ -42,7 +44,7 @@ namespace NCommon.Data.NHibernate.Tests
 				})
 				.BuildSessionFactory();
 
-			Store.Local.Set("NHRepositoryTests.SessionFactory", factory);
+			Store.Local.Set("NHRepositoryTests.SessionFactory", Factory);
 			NHUnitOfWorkFactory.SetSessionProvider
 				(
 				() => Store.Local.Get<ISessionFactory>("NHRepositoryTests.SessionFactory").OpenSession()
@@ -51,13 +53,15 @@ namespace NCommon.Data.NHibernate.Tests
 			locator.Stub(x => x.GetInstance<IUnitOfWorkFactory>())
 				.Return(new NHUnitOfWorkFactory()).Repeat.Any();
 			ServiceLocator.SetLocatorProvider(() => locator);
+			HibernatingRhinos.NHibernate.Profiler.Appender.NHibernateProfiler.Initialize();
 		}
 
-		[TearDown]
-		public void TearDown()
+		[TestFixtureTearDown]
+		public virtual void TearDown()
 		{
 			NHUnitOfWorkFactory.SetSessionProvider(null);
 			Store.Local.Clear();
+			HibernatingRhinos.NHibernate.Profiler.Appender.NHibernateProfiler.Stop();
 		}
 	}
 }

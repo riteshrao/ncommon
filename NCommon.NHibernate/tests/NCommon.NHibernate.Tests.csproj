@@ -43,6 +43,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libs\FluentNHibernate.dll</HintPath>
     </Reference>
+    <Reference Include="HibernatingRhinos.NHibernate.Profiler.Appender, Version=1.0.0.0, Culture=neutral, PublicKeyToken=0774796e73ebf640, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libs\HibernatingRhinos.NHibernate.Profiler.Appender.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libs\log4net.dll</HintPath>
@@ -89,6 +93,8 @@
   <ItemGroup>
     <Compile Include="CompositeUserTypeBaseTests.cs" />
     <Compile Include="Domain\Address.cs" />
+    <Compile Include="Domain\CustomOrder.cs" />
+    <Compile Include="Domain\CustomOrderItem.cs" />
     <Compile Include="Domain\Money.cs" />
     <Compile Include="Domain\MoneyUserType.cs" />
     <Compile Include="Domain\MonthlySalesSummary.cs" />
@@ -97,6 +103,8 @@
     <Compile Include="Domain\OrderItem.cs" />
     <Compile Include="Domain\Product.cs" />
     <Compile Include="Mappings\CustomerMap.cs" />
+    <Compile Include="Mappings\CustomOrderItemMap.cs" />
+    <Compile Include="Mappings\CustomOrderMap.cs" />
     <Compile Include="Mappings\MonthlySalesSummaryMap.cs" />
     <Compile Include="Mappings\OrderItemMap.cs" />
     <Compile Include="Mappings\OrderMap.cs" />
@@ -108,6 +116,7 @@
     <Compile Include="NHUnitOfWorkTests.cs" />
     <Compile Include="NHUnitOfWorkTransactionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="when_quering_with_specification.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\src\NCommon.NHibernate.csproj">

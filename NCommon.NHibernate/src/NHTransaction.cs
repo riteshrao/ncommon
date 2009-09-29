@@ -70,7 +70,7 @@ namespace NCommon.Data.NHibernate
         /// <summary>
         /// Event raised when the transaction has been comitted.
         /// </summary>
-        public event EventHandler TransactonComitted;
+        public event EventHandler TransactionCommitted;
 
         /// <summary>
         /// Event raised when the transaction has been rolledback.
@@ -86,8 +86,8 @@ namespace NCommon.Data.NHibernate
                 throw new ObjectDisposedException("NHTransaction", "Cannot commit a disposed transaction.");
 
             _transaction.Commit();
-            if (TransactonComitted != null)
-                TransactonComitted(this, EventArgs.Empty);
+            if (TransactionCommitted != null)
+                TransactionCommitted(this, EventArgs.Empty);
         }
 
         /// <summary>
