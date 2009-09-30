@@ -20,7 +20,7 @@ using System.Linq;
 using System.Transactions;
 using Microsoft.Practices.ServiceLocation;
 using NCommon.Extensions;
-using NCommon.LinqToSql.Tests.Domain;
+using NCommon.LinqToSql.Tests;
 using NCommon.Specifications;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -39,7 +39,7 @@ namespace NCommon.Data.LinqToSql.Tests
         /// <summary>
         /// Sets up the NHibernate SessionFactory and NHUnitOfWorkFactory.
         /// </summary>
-        [SetUp]
+        [TestFixtureSetUp]
         public void SetUp()
         {
             LinqToSqlUnitOfWorkFactory.SetDataContextProvider(() => 
@@ -54,7 +54,7 @@ namespace NCommon.Data.LinqToSql.Tests
             ServiceLocator.SetLocatorProvider(() => locator);
         }
 
-        [TearDown]
+        [TestFixtureTearDown]
         public void TearDown()
         {
             LinqToSqlUnitOfWorkFactory.SetDataContextProvider(null);
@@ -267,10 +267,10 @@ namespace NCommon.Data.LinqToSql.Tests
                              select o).FirstOrDefault();
 
                 Assert.That(order, Is.Not.Null);
-                Assert.That(order.OrderDate.Date, Is.EqualTo(updatedDate.Date));
-				Assert.That(order.OrderDate.Hour, Is.EqualTo(updatedDate.Hour));
-				Assert.That(order.OrderDate.Minute, Is.EqualTo(updatedDate.Minute));
-				Assert.That(order.OrderDate.Second, Is.EqualTo(updatedDate.Second));
+                Assert.That(order.OrderDate.Value.Date, Is.EqualTo(updatedDate.Date));
+				Assert.That(order.OrderDate.Value.Hour, Is.EqualTo(updatedDate.Hour));
+				Assert.That(order.OrderDate.Value.Minute, Is.EqualTo(updatedDate.Minute));
+				Assert.That(order.OrderDate.Value.Second, Is.EqualTo(updatedDate.Second));
             }
         }
 
@@ -420,7 +420,7 @@ namespace NCommon.Data.LinqToSql.Tests
 		public void UnitOfWork_is_rolledback_when_containing_TransactionScope_is_rolledback ()
 		{
 			int orderId;
-			DateTime oldDate;
+			DateTime? oldDate;
 
 			using (var txScope = new TransactionScope(TransactionScopeOption.Required))
 			using (var uowScope = new UnitOfWorkScope(IsolationLevel.Serializable))

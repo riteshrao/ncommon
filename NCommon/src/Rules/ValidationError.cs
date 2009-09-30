@@ -22,20 +22,10 @@ namespace NCommon.Rules
     /// Represents a validation error from a <see cref="IEntityValidator{TEntity}.Validate"/> method
     /// call.
     /// </summary>
-    public struct ValidationError
+    public class ValidationError
     {
-        #region fields
-        /// <summary>
-        /// The validation error message.
-        /// </summary>
-        public readonly string Message;
-        /// <summary>
-        /// The validation error property.
-        /// </summary>
-        public readonly string Property;
-        #endregion
-
-        #region ctor
+		public string Message { get; set; }
+		public string Property { get; set;}
         /// <summary>
         /// Default Constructor.
         /// Creates a new instance of the <see cref="ValidationError"/> data structure.
@@ -51,9 +41,7 @@ namespace NCommon.Rules
             Message = message;
             Property = property;
         }
-        #endregion
 
-        #region methods
         /// <summary>
         /// Overriden. Gets a string that represents the validation error.
         /// </summary>
@@ -121,6 +109,5 @@ namespace NCommon.Rules
         {
             return !left.Equals(right);
         }
-        #endregion
     }
 }

@@ -89,7 +89,7 @@ namespace NCommon.Data.NHibernate.Tests
 				      where cust.FirstName == newCustomer.FirstName && cust.LastName == newCustomer.LastName
 				      select cust).FirstOrDefault()
 				);
-
+            
 			using (var scope = new UnitOfWorkScope())
 			{
 				var customerRepository = new NHRepository<Customer>();
@@ -565,7 +565,7 @@ namespace NCommon.Data.NHibernate.Tests
 				}
 			};
 
-			var repository = new NHRepository<Customer>();
+			var repository = new NHRepository<Customer>(Factory.OpenSession());
 			var customerCount = 0;
 			using (var scope = new UnitOfWorkScope())
 			{

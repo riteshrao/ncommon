@@ -61,14 +61,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain\TestData.cs">
-      <DependentUpon>TestData.dbml</DependentUpon>
-    </Compile>
-    <Compile Include="Domain\TestData.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TestData.dbml</DependentUpon>
-    </Compile>
     <Compile Include="LinqToSqlRepositoryTests.cs" />
     <Compile Include="LinqToSqlTransactionTests.cs" />
     <Compile Include="LinqToSqlUnitOfWorkFactoryTests.cs" />
@@ -79,20 +71,26 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="TestData.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestData.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="TestDataClass.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Domain\TestData.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>TestData.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="TestData.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>TestData.designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -106,7 +104,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Domain\TestData.dbml.layout">
+    <None Include="TestData.dbml.layout">
       <DependentUpon>TestData.dbml</DependentUpon>
     </None>
   </ItemGroup>

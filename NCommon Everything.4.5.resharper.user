@@ -11,11 +11,7 @@
   </NAntValidationSettings>
   <RecentFiles>
     <RecentFiles>
-      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:LinqToSqlUnitOfWorkFactoryTests.cs" caret="1219" fromTop="34" />
-      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/d:Domain/f:TestData.designer.cs" caret="476" fromTop="11" />
       <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:app.config" caret="392" fromTop="7" />
-      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/d:Domain/f:TestData.cs" caret="243" fromTop="12" />
-      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:LinqToSqlRepositoryTests.cs" caret="16588" fromTop="13" />
       <File id="C853736D-3576-468A-A716-ACEC1CD4FAC1/d:Data/f:ITransaction.cs" caret="1046" fromTop="5" />
       <File id="C853736D-3576-468A-A716-ACEC1CD4FAC1/f:Guard.cs" caret="1467" fromTop="6" />
       <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/d:Domain/f:OrderItem.cs" caret="0" fromTop="0" />
@@ -27,42 +23,36 @@
       <File id="C853736D-3576-468A-A716-ACEC1CD4FAC1/d:Rules/f:ValidationRule.cs" caret="714" fromTop="21" />
       <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/d:Mappings/f:CustomOrderItemMap.cs" caret="311" fromTop="12" />
       <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:NHTestBase.cs" caret="556" fromTop="1" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:NHRepositoryTests.cs" caret="0" fromTop="0" />
       <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/d:Domain/f:CustomOrderItem.cs" caret="243" fromTop="9" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:when_quering_with_specification.cs" caret="2772" fromTop="86" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/d:Mappings/f:CustomOrderMap.cs" caret="406" fromTop="16" />
+      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/d:Mappings/f:CustomerMap.cs" caret="634" fromTop="21" />
+      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/d:Mappings/f:CustomOrderMap.cs" caret="184" fromTop="6" />
+      <File id="C853736D-3576-468A-A716-ACEC1CD4FAC1/d:Rules/f:ValidationError.cs" caret="1229" fromTop="7" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:TestData.designer.cs" caret="0" fromTop="0" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:TestDataClass.cs" caret="236" fromTop="12" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:LinqToSqlUnitOfWorkFactoryTests.cs" caret="1109" fromTop="6" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:LinqToSqlRepositoryTests.cs" caret="2145" fromTop="22" />
+      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:NHRepositoryTests.cs" caret="17433" fromTop="5" />
     </RecentFiles>
     <RecentEdits>
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:NHTestBase.cs" caret="557" fromTop="18" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:NHTestBase.cs" caret="1414" fromTop="9" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:when_quering_with_specification.cs" caret="2107" fromTop="25" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:when_quering_with_specification.cs" caret="412" fromTop="15" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:when_quering_with_specification.cs" caret="381" fromTop="9" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:when_quering_with_specification.cs" caret="1806" fromTop="12" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:NHTestBase.cs" caret="1922" fromTop="17" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:NHTestBase.cs" caret="1889" fromTop="24" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:NHTestBase.cs" caret="2114" fromTop="11" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/d:Mappings/f:CustomOrderItemMap.cs" caret="381" fromTop="14" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/d:Domain/f:CustomOrderItem.cs" caret="243" fromTop="9" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:when_quering_with_specification.cs" caret="896" fromTop="13" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:when_quering_with_specification.cs" caret="897" fromTop="13" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:when_quering_with_specification.cs" caret="1386" fromTop="27" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:when_quering_with_specification.cs" caret="503" fromTop="5" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:when_quering_with_specification.cs" caret="2114" fromTop="21" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:when_quering_with_specification.cs" caret="2114" fromTop="16" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:when_quering_with_specification.cs" caret="2114" fromTop="14" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:when_quering_with_specification.cs" caret="2125" fromTop="15" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:when_quering_with_specification.cs" caret="1112" fromTop="21" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:when_quering_with_specification.cs" caret="2114" fromTop="22" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/d:Mappings/f:CustomOrderMap.cs" caret="406" fromTop="16" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:when_quering_with_specification.cs" caret="2277" fromTop="9" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:when_quering_with_specification.cs" caret="2142" fromTop="7" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:when_quering_with_specification.cs" caret="1717" fromTop="14" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:when_quering_with_specification.cs" caret="2517" fromTop="14" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:when_quering_with_specification.cs" caret="2639" fromTop="18" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:when_quering_with_specification.cs" caret="2772" fromTop="25" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:when_quering_with_specification.cs" caret="2772" fromTop="27" />
-      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:when_quering_with_specification.cs" caret="2772" fromTop="7" />
+      <File id="C853736D-3576-468A-A716-ACEC1CD4FAC1/d:Rules/f:ValidationError.cs" caret="1856" fromTop="15" />
+      <File id="C853736D-3576-468A-A716-ACEC1CD4FAC1/d:Rules/f:ValidationError.cs" caret="4154" fromTop="10" />
+      <File id="C853736D-3576-468A-A716-ACEC1CD4FAC1/d:Rules/f:ValidationError.cs" caret="838" fromTop="1" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:LinqToSqlRepositoryTests.cs" caret="18621" fromTop="56" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:LinqToSqlRepositoryTests.cs" caret="820" fromTop="22" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:TestData.designer.cs" caret="0" fromTop="0" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:TestDataClass.cs" caret="68" fromTop="5" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:TestDataClass.cs" caret="358" fromTop="22" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:TestDataClass.cs" caret="236" fromTop="12" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:LinqToSqlRepositoryTests.cs" caret="1523" fromTop="17" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:LinqToSqlRepositoryTests.cs" caret="10895" fromTop="14" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:LinqToSqlRepositoryTests.cs" caret="16807" fromTop="8" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:LinqToSqlUnitOfWorkFactoryTests.cs" caret="666" fromTop="1" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:LinqToSqlUnitOfWorkFactoryTests.cs" caret="1203" fromTop="6" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:LinqToSqlRepositoryTests.cs" caret="1336" fromTop="3" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:LinqToSqlRepositoryTests.cs" caret="2012" fromTop="18" />
+      <File id="E6957BB7-B9C6-414F-A4BD-23E038014A85/f:LinqToSqlRepositoryTests.cs" caret="2918" fromTop="22" />
+      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:NHRepositoryTests.cs" caret="2869" fromTop="27" />
+      <File id="96B9D9DE-3389-4FBF-A552-C09434E27329/f:NHRepositoryTests.cs" caret="17403" fromTop="15" />
     </RecentEdits>
   </RecentFiles>
   <UnitTestRunner>
@@ -70,27 +60,27 @@
   </UnitTestRunner>
   <CompletionStatisticsManager>
     <ItemStatistics item="Default">
-      <Item value="NCommon" priority="0" />
-      <Item value="LinqToSql" priority="0" />
-      <Item value="Tests" priority="0" />
+      <Item value="NCommon" priority="1" />
+      <Item value="LinqToSql" priority="1" />
+      <Item value="Tests" priority="1" />
       <Item value="Domain" priority="0" />
-      <Item value="TestDataDataContext" priority="0" />
+      <Item value="TestDataDataContext" priority="3" />
       <Item value="this" priority="2" />
       <Item value="decimal" priority="1" />
-      <Item value="return" priority="3" />
+      <Item value="return" priority="4" />
       <Item value="total" priority="0" />
       <Item value="_ShipDate" priority="0" />
-      <Item value="public" priority="15" />
-      <Item value="void" priority="8" />
-      <Item value="var" priority="28" />
-      <Item value="Func" priority="0" />
-      <Item value="Customer" priority="5" />
-      <Item value="using" priority="9" />
-      <Item value="new" priority="25" />
-      <Item value="UnitOfWorkScope" priority="6" />
+      <Item value="public" priority="19" />
+      <Item value="void" priority="9" />
+      <Item value="var" priority="43" />
+      <Item value="Func" priority="1" />
+      <Item value="Customer" priority="6" />
+      <Item value="using" priority="10" />
+      <Item value="new" priority="39" />
+      <Item value="UnitOfWorkScope" priority="7" />
       <Item value="getCustomers" priority="0" />
       <Item value="null" priority="0" />
-      <Item value="NHRepository" priority="3" />
+      <Item value="NHRepository" priority="5" />
       <Item value="customerAdded" priority="3" />
       <Item value="FirstName" priority="1" />
       <Item value="LastName" priority="1" />
@@ -100,27 +90,27 @@
       <Item value="City" priority="1" />
       <Item value="State" priority="1" />
       <Item value="ZipCode" priority="0" />
-      <Item value="Assert" priority="9" />
+      <Item value="Assert" priority="15" />
       <Item value="getCustomersCount" priority="1" />
-      <Item value="Is" priority="8" />
+      <Item value="Is" priority="11" />
       <Item value="customersCount" priority="1" />
       <Item value="scope" priority="6" />
       <Item value="IsolationLevel" priority="0" />
       <Item value="UnitOfWorkScopeTransactionOptions" priority="0" />
-      <Item value="repository" priority="7" />
+      <Item value="repository" priority="8" />
       <Item value="customerA" priority="0" />
       <Item value="customerB" priority="1" />
       <Item value="_AppDomain" priority="1" />
       <Item value="sbyte" priority="0" />
       <Item value="customerCount" priority="2" />
       <Item value="TestFixtureSetUp" priority="1" />
-      <Item value="int" priority="1" />
+      <Item value="int" priority="2" />
       <Item value="virtual" priority="4" />
       <Item value="private" priority="0" />
       <Item value="ICollection" priority="0" />
-      <Item value="string" priority="1" />
+      <Item value="string" priority="5" />
       <Item value="CustomOrderMap" priority="0" />
-      <Item value="Id" priority="3" />
+      <Item value="Id" priority="4" />
       <Item value="Map" priority="2" />
       <Item value="HasMany" priority="0" />
       <Item value="Table" priority="0" />
@@ -129,31 +119,31 @@
       <Item value="NHUnitOfWorkFactory" priority="0" />
       <Item value="protected" priority="1" />
       <Item value="ISessionFactory" priority="0" />
-      <Item value="Factory" priority="1" />
-      <Item value="session" priority="9" />
-      <Item value="OrderDate" priority="0" />
+      <Item value="Factory" priority="3" />
+      <Item value="session" priority="10" />
+      <Item value="OrderDate" priority="1" />
       <Item value="Items" priority="0" />
-      <Item value="CustomOrderItem" priority="3" />
-      <Item value="Name" priority="4" />
-      <Item value="Store" priority="3" />
-      <Item value="orderA" priority="0" />
+      <Item value="CustomOrderItem" priority="7" />
+      <Item value="Name" priority="5" />
+      <Item value="Store" priority="4" />
+      <Item value="orderA" priority="1" />
       <Item value="orderB" priority="2" />
       <Item value="tx" priority="1" />
       <Item value="TestFixtureTearDown" priority="2" />
       <Item value="factory" priority="1" />
       <Item value="typeof" priority="0" />
-      <Item value="CustomOrder" priority="2" />
+      <Item value="CustomOrder" priority="4" />
       <Item value="orders" priority="0" />
       <Item value="true" priority="0" />
       <Item value="ISession" priority="0" />
       <Item value="NHRepository&lt;CustomOrder&gt;" priority="0" />
-      <Item value="from" priority="5" />
+      <Item value="from" priority="10" />
       <Item value="SpecificationExtensions" priority="0" />
-      <Item value="order" priority="18" />
-      <Item value="item" priority="3" />
+      <Item value="order" priority="28" />
+      <Item value="item" priority="5" />
       <Item value="internetItemOrders" priority="1" />
-      <Item value="where" priority="4" />
-      <Item value="select" priority="0" />
+      <Item value="where" priority="10" />
+      <Item value="select" priority="1" />
       <Item value="result" priority="0" />
       <Item value="HibernatingRhinos" priority="0" />
       <Item value="NHibernate" priority="0" />
@@ -161,13 +151,25 @@
       <Item value="Appender" priority="0" />
       <Item value="NHibernateProfilerAppender" priority="0" />
       <Item value="NHibernateProfiler" priority="0" />
-      <Item value="orderby" priority="0" />
+      <Item value="orderby" priority="2" />
       <Item value="References" priority="0" />
-      <Item value="Order" priority="2" />
+      <Item value="Order" priority="4" />
       <Item value="Specification" priority="1" />
       <Item value="specification" priority="1" />
-      <Item value="join" priority="1" />
+      <Item value="join" priority="3" />
       <Item value="items" priority="0" />
+      <Item value="on" priority="3" />
+      <Item value="itemsRepo" priority="2" />
+      <Item value="equals" priority="1" />
+      <Item value="Join" priority="1" />
+      <Item value="o" priority="6" />
+      <Item value="context" priority="6" />
+      <Item value="DateTime" priority="0" />
+      <Item value="LinqToSqlRepository" priority="1" />
+      <Item value="Console" priority="0" />
+      <Item value="i" priority="2" />
+      <Item value="spec" priority="0" />
+      <Item value="NHRepository&lt;Customer&gt;" priority="0" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:NCommon.LinqToSql.Tests.Domain.Order">
       <Item value="OrderItems" priority="0" />
@@ -180,13 +182,13 @@
       <Item value="Count" priority="2" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:@NUnit.Framework.Assert">
-      <Item value="That" priority="8" />
+      <Item value="That" priority="13" />
       <Item value="True" priority="1" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:@NUnit.Framework.Is">
       <Item value="Empty" priority="0" />
-      <Item value="EqualTo" priority="7" />
-      <Item value="Not" priority="0" />
+      <Item value="EqualTo" priority="11" />
+      <Item value="Not" priority="1" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:NCommon.Data.UnitOfWorkScope">
       <Item value="Commit" priority="6" />
@@ -200,12 +202,13 @@
     <ItemStatistics item="Qualified:NCommon.Data.NHibernate.NHRepository`1">
       <Item value="Add" priority="1" />
       <Item value="Count" priority="1" />
-      <Item value="Query" priority="2" />
+      <Item value="Query" priority="3" />
+      <Item value="With" priority="0" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:NCommon.NHibernate.Tests.Domain.CustomOrder">
-      <Item value="Id" priority="5" />
+      <Item value="Id" priority="8" />
       <Item value="OrderDate" priority="0" />
-      <Item value="Items" priority="15" />
+      <Item value="Items" priority="20" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:FluentNHibernate.Mapping.IdentityPart">
       <Item value="Access" priority="0" />
@@ -220,18 +223,19 @@
       <Item value="AsSet" priority="0" />
       <Item value="Inverse" priority="0" />
       <Item value="Cascade" priority="0" />
-      <Item value="LazyLoad" priority="0" />
+      <Item value="LazyLoad" priority="1" />
+      <Item value="Fetch" priority="2" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:NCommon.NHibernate.Tests.Domain.CustomOrderItem">
-      <Item value="Id" priority="0" />
+      <Item value="Id" priority="1" />
       <Item value="Name" priority="0" />
-      <Item value="Store" priority="13" />
+      <Item value="Store" priority="17" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:FluentNHibernate.Mapping.CollectionCascadeExpression`1">
       <Item value="AllDeleteOrphan" priority="0" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:NHibernate.ISessionFactory">
-      <Item value="OpenSession" priority="1" />
+      <Item value="OpenSession" priority="3" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:NHibernate.ISession">
       <Item value="BeginTransaction" priority="1" />
@@ -254,30 +258,82 @@
       <Item value="SetUp" priority="0" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:System.Collections.Generic.IEnumerable`1">
-      <Item value="FirstOrDefault" priority="0" />
-      <Item value="Count" priority="1" />
+      <Item value="FirstOrDefault" priority="1" />
+      <Item value="Count" priority="2" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:@HibernatingRhinos.NHibernate.Profiler.Appender.NHibernateProfiler">
       <Item value="Initialize" priority="0" />
       <Item value="Stop" priority="0" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:System.Collections.Generic.ICollection`1">
-      <Item value="Any" priority="3" />
-      <Item value="Where" priority="3" />
+      <Item value="Any" priority="6" />
+      <Item value="Where" priority="4" />
+      <Item value="Contains" priority="0" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:NUnit.Framework.Constraints.ConstraintExpression">
-      <Item value="Null" priority="0" />
+      <Item value="Null" priority="1" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:FluentNHibernate.Mapping.ManyToOnePart`1">
       <Item value="Column" priority="0" />
       <Item value="Access" priority="0" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:System.Linq.IQueryable`1">
-      <Item value="ToList" priority="0" />
-      <Item value="First" priority="0" />
+      <Item value="ToList" priority="1" />
+      <Item value="First" priority="2" />
+      <Item value="Take" priority="0" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:NHibernate.ISQLQuery">
       <Item value="ExecuteUpdate" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:FluentNHibernate.Mapping.FetchTypeExpression`1">
+      <Item value="Join" priority="1" />
+      <Item value="Subselect" priority="1" />
+      <Item value="Select" priority="1" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Nullable`1">
+      <Item value="Value" priority="3" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.DateTime">
+      <Item value="Date" priority="0" />
+      <Item value="Hour" priority="0" />
+      <Item value="Minute" priority="0" />
+      <Item value="Second" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:NCommon.LinqToSql.Tests.CustomOrder">
+      <Item value="CustomOrderItems" priority="9" />
+      <Item value="Id" priority="2" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:NCommon.LinqToSql.Tests.TestDataDataContext">
+      <Item value="CustomOrderItems" priority="1" />
+      <Item value="CustomOrders" priority="3" />
+      <Item value="SubmitChanges" priority="1" />
+      <Item value="Log" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Data.Linq.Table`1">
+      <Item value="InsertAllOnSubmit" priority="0" />
+      <Item value="InsertOnSubmit" priority="0" />
+      <Item value="DeleteOnSubmit" priority="0" />
+      <Item value="DeleteAllOnSubmit" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.DateTime">
+      <Item value="Now" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Data.Linq.EntitySet`1">
+      <Item value="Add" priority="0" />
+      <Item value="AddRange" priority="0" />
+      <Item value="Count" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:NCommon.LinqToSql.Tests.CustomOrderItem">
+      <Item value="Store" priority="4" />
+      <Item value="CustomOrderId" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:NCommon.Data.LinqToSql.LinqToSqlRepository`1">
+      <Item value="Query" priority="0" />
+      <Item value="With" priority="0" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:NCommon.Specifications.Specification`1">
+      <Item value="IsSatisfiedBy" priority="0" />
+      <Item value="Predicate" priority="0" />
     </ItemStatistics>
   </CompletionStatisticsManager>
 </Configuration>

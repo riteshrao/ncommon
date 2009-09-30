@@ -15,7 +15,7 @@
 #endregion
 
 using System;
-using NCommon.LinqToSql.Tests.Domain;
+using NCommon.LinqToSql.Tests;
 using NUnit.Framework;
 
 namespace NCommon.Data.LinqToSql.Tests
