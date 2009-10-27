@@ -7,3 +7,6 @@ _ReSharper.*
 *bin*
 *.svn
 .svn
+
+*.suo
+*.user
