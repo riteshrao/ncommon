@@ -24,8 +24,16 @@ namespace NCommon.Rules
     /// </summary>
     public class ValidationError
     {
+		///<summary>
+		/// The message that describes this validation error.
+		///</summary>
 		public string Message { get; set; }
+
+		///<summary>
+		/// The property that this validation error is associated with.
+		///</summary>
 		public string Property { get; set;}
+
         /// <summary>
         /// Default Constructor.
         /// Creates a new instance of the <see cref="ValidationError"/> data structure.
@@ -34,9 +42,9 @@ namespace NCommon.Rules
         /// <param name="property">string. The property that was validated.</param>
         public ValidationError(string message, string property)
         {
-            Guard.Against<ArgumentNullException>(string.IsNullOrEmpty("message"),
+            Guard.Against<ArgumentNullException>(string.IsNullOrEmpty(message),
                                                  "Please provide a valid non null string as the validation error message");
-            Guard.Against<ArgumentNullException>(string.IsNullOrEmpty("property"),
+            Guard.Against<ArgumentNullException>(string.IsNullOrEmpty(property),
                                                  "Please provide a valid non null string as the validation property name");
             Message = message;
             Property = property;

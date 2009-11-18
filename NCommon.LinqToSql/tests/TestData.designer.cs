@@ -1354,7 +1354,7 @@ namespace NCommon.LinqToSql.Tests
 			}
 		}
 		
-		[Column(Storage="_OrderDate", DbType="DateTime")]
+		[Column(Storage="_OrderDate", DbType="DateTime", UpdateCheck=UpdateCheck.Never)]
 		public System.Nullable<System.DateTime> OrderDate
 		{
 			get
@@ -1374,7 +1374,7 @@ namespace NCommon.LinqToSql.Tests
 			}
 		}
 		
-		[Column(Storage="_ShipDate", DbType="DateTime")]
+		[Column(Storage="_ShipDate", DbType="DateTime", UpdateCheck=UpdateCheck.Never)]
 		public System.Nullable<System.DateTime> ShipDate
 		{
 			get

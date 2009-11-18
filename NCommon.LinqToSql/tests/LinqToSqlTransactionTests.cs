@@ -28,12 +28,6 @@ namespace NCommon.Data.LinqToSql.Tests
     public class LinqToSqlTransactionTests
     {
         [Test]
-        public void Ctor_Throws_ArgumentNullException_When_ITransation_Parameter_Is_Null()
-        {
-            Assert.Throws<ArgumentNullException>(() => new LinqToSqlTransaction(null));
-        }
-
-        [Test]
         public void Commit_Calls_Commit_On_Underlying_ITransaction()
         {
             var mockTransaction = MockRepository.GenerateMock<IDbTransaction>();
@@ -43,6 +37,31 @@ namespace NCommon.Data.LinqToSql.Tests
             transaction.Commit();
 
             mockTransaction.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Commit_Raises_TransactionComitted_Event()
+        {
+            var mockTransaction = MockRepository.GenerateMock<IDbTransaction>();
+            mockTransaction.Expect(x => x.Commit());
+
+            var commitCalled = false;
+            var rollbackCalled = false;
+            var transaction = new LinqToSqlTransaction(mockTransaction);
+            transaction.TransactionCommitted += delegate { commitCalled = true; };
+            transaction.TransactionRolledback += delegate { rollbackCalled = true; };
+
+            transaction.Commit();
+
+            mockTransaction.VerifyAllExpectations();
+            Assert.That(commitCalled);
+            Assert.That(!rollbackCalled);
+        }
+
+        [Test]
+        public void Ctor_Throws_ArgumentNullException_When_ITransation_Parameter_Is_Null()
+        {
+            Assert.Throws<ArgumentNullException>(() => new LinqToSqlTransaction(null));
         }
 
         [Test]
@@ -58,32 +77,13 @@ namespace NCommon.Data.LinqToSql.Tests
         }
 
         [Test]
-        public void Commit_Raises_TransactionComitted_Event()
-        {
-            var mockTransaction = MockRepository.GenerateMock<IDbTransaction>();
-            mockTransaction.Expect(x => x.Commit());
-
-            bool commitCalled = false;
-            bool rollbackCalled = false;
-            var transaction = new LinqToSqlTransaction(mockTransaction);
-            transaction.TransactionCommitted += delegate { commitCalled = true; };
-            transaction.TransactionRolledback += delegate { rollbackCalled = true; };
-
-            transaction.Commit();
-
-            mockTransaction.VerifyAllExpectations();
-            Assert.That(commitCalled);
-            Assert.That(!rollbackCalled);
-        }
-
-        [Test]
         public void Rollback_Raises_RollbackComitted_Event()
         {
             var mockTransaction = MockRepository.GenerateMock<IDbTransaction>();
             mockTransaction.Expect(x => x.Rollback());
 
-            bool commitCalled = false;
-            bool rollbackCalled = false;
+            var commitCalled = false;
+            var rollbackCalled = false;
             var transaction = new LinqToSqlTransaction(mockTransaction);
             transaction.TransactionCommitted += delegate { commitCalled = true; };
             transaction.TransactionRolledback += delegate { rollbackCalled = true; };

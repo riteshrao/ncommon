@@ -22,11 +22,11 @@ namespace NCommon.Data.NHibernate.Tests.Domain
         public virtual Order Order { get; set; }
         public virtual Product Product { get; set; }
         public virtual int Quantity { get; set; }
-        public virtual float Price { get; set; }
+        public virtual decimal Price { get; set; }
 		public virtual string Store { get; set; }
-        public virtual float TotalPrice
+        public virtual decimal TotalPrice
         {
-            get { return Quantity*Price; }
+            get { return Quantity * Price; }
         }
     }
 }

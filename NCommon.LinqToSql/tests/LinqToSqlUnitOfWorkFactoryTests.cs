@@ -27,27 +27,26 @@ namespace NCommon.Data.LinqToSql.Tests
     public class LinqToSqlUnitOfWorkFactoryTests
     {
         [Test]
-        public void Create_Throws_InvalidOperationException_When_No_DataContextProvider_Has_Been_Set()
-        {
-            var factory = new LinqToSqlUnitOfWorkFactory();
-            Assert.Throws<InvalidOperationException>(
-                () => factory.Create()
-                );
-        }
-
-        [Test]
         public void Create_Returns_LinqToSqlUnitOfWork_Instance_When_DataContextProvider_Has_Been_Set()
         {
-
             LinqToSqlUnitOfWorkFactory.SetDataContextProvider(() => new TestDataDataContext());
 
             var factory = new LinqToSqlUnitOfWorkFactory();
             var uowInstance = factory.Create();
 
             Assert.That(uowInstance, Is.Not.Null);
-            Assert.That(uowInstance, Is.TypeOf(typeof(LinqToSqlUnitOfWork)));
+            Assert.That(uowInstance, Is.TypeOf(typeof (LinqToSqlUnitOfWork)));
 
             LinqToSqlUnitOfWorkFactory.SetDataContextProvider(null);
+        }
+
+        [Test]
+        public void Create_Throws_InvalidOperationException_When_No_DataContextProvider_Has_Been_Set()
+        {
+            var factory = new LinqToSqlUnitOfWorkFactory();
+            Assert.Throws<InvalidOperationException>(
+                () => factory.Create()
+                );
         }
     }
 }

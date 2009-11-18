@@ -64,8 +64,8 @@
   <Table Name="dbo.Orders" Member="Orders">
     <Type Name="Order">
       <Column Name="OrderID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="OrderDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="ShipDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="OrderDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="ShipDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" UpdateCheck="Never" />
       <Column Name="CustomerId" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="Order_OrderItem" Member="OrderItems" ThisKey="OrderID" OtherKey="OrderId" Type="OrderItem" />
       <Association Name="Customer_Order" Member="Customer" ThisKey="CustomerId" OtherKey="CustomerID" Type="Customer" IsForeignKey="true" />

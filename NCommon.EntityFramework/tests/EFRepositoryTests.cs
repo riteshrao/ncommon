@@ -23,18 +23,17 @@ using NCommon.Extensions;
 using NCommon.Specifications;
 using NUnit.Framework;
 using Rhino.Mocks;
-using IsolationLevel=System.Data.IsolationLevel;
+using IsolationLevel = System.Data.IsolationLevel;
 
 namespace NCommon.Data.EntityFramework.Tests
 {
     [TestFixture]
     public class EFRepositoryTests
     {
-        #region setup
         /// <summary>
         /// Sets up the NHibernate SessionFactory and NHUnitOfWorkFactory.
         /// </summary>
-        [SetUp]
+        [TestFixtureSetUp]
         public void SetUp()
         {
             EFUnitOfWorkFactory.SetObjectContextProvider(() =>
@@ -42,134 +41,38 @@ namespace NCommon.Data.EntityFramework.Tests
                 var context = new TestModel();
                 return context;
             });
+
             var locator = MockRepository.GenerateStub<IServiceLocator>();
             locator.Stub(x => x.GetInstance<IUnitOfWorkFactory>())
-                   .Return(new EFUnitOfWorkFactory()).Repeat.Any();
+                .Return(new EFUnitOfWorkFactory()).Repeat.Any();
             ServiceLocator.SetLocatorProvider(() => locator);
         }
 
-        [TearDown]
+        [TestFixtureTearDown]
         public void TearDown()
         {
             EFUnitOfWorkFactory.SetObjectContextProvider(null);
         }
-        #endregion
-
-        #region tests
-        [Test]
-        public void Query_With_No_UnitOfWork_Throws_InvalidOperationException()
-        {
-            Assert.Throws<InvalidOperationException>(() =>
-                                                         {
-                                                             var repository = new EFRepository<Customer>
-                                                                                  {new Customer()};
-                                                         });
-        }
 
         [Test]
-        public void Query_With_Incompatible_UnitOfWork_Throws_InvalidOperationException()
+        public void Delete_Deletes_Record()
         {
-            IUnitOfWork mockUnitOfWork = MockRepository.GenerateStub<IUnitOfWork>();
-            UnitOfWork.Current = mockUnitOfWork;
-            Assert.Throws<InvalidOperationException>(() =>
-            {
-                var customerRepository = new EFRepository<Customer>();
-                var results = from customer in customerRepository
-                              select customer;
-            }
-                );
-            UnitOfWork.Current = null;
-        }
-
-        [Test]
-        public void Query_Allows_Lazy_Load_While_UnitOfWork_Still_Running()
-        {
-            using (new UnitOfWorkScope())
-            {
-                var ordersRepository = new EFRepository<Order>();
-                var results = from order in ordersRepository
-                              select order;
-
-                Assert.DoesNotThrow
-                (
-                    () => results.ForEach
-                    (   x => 
-                        {
-                            x.CustomersReference.Load();
-                            Assert.That(!string.IsNullOrEmpty(x.Customers.FirstName)); 
-                        }
-                    )
-                );
-
-            }
-        }
-
-        [Test]
-        public void Query_Allows_Eger_Loading_Using_With()
-        {
-            using (new UnitOfWorkScope())
-            {
-                var ordersRepository = new EFRepository<Order>();
-                var results = from order in ordersRepository.With(x => x.Customers)
-                              select order;
-
-                Assert.DoesNotThrow(() => results.ForEach(x =>
-                {
-                    Assert.That(x.Customers, Is.TypeOf(typeof(Customer)));
-                    Assert.That(!string.IsNullOrEmpty(x.Customers.FirstName));
-                }));
-            }
-        }
-
-        [Test]
-        public void Query_Allows_Projection_Using_Select_Projection()
-        {
-            using (new UnitOfWorkScope())
-            {
-                var ordersRepository = new EFRepository<Order>();
-                var results = from order in ordersRepository
-                              select new { order.Customers.FirstName, order.Customers.LastName, order.ShipDate, order.OrderDate };
-
-                Assert.DoesNotThrow(() => results.ForEach(x =>
-                {
-                    Assert.That(!string.IsNullOrEmpty(x.LastName));
-                    Assert.That(!string.IsNullOrEmpty(x.FirstName));
-                }));
-
-            }
-        }
-
-        [Test]
-        public void Query_Throws_Exception_When_LazyLoading_After_UnitOfWork_Is_Finished()
-        {
-            Customer customer;
-            using (new UnitOfWorkScope())
-            {
-                var customerRepository = new EFRepository<Customer>();
-                customer = (from cust in customerRepository select cust).FirstOrDefault();
-            }
-            Assert.Throws<ObjectDisposedException>(() => customer.Orders.Load());
-        }
-
-        [Test]
-        public void Save_New_Customer_Saves_Customer_When_UnitOfWork_Is_Committed()
-        {
-            Random rnd = new Random();
             var newCustomer = new Customer
             {
-                FirstName = ("John_" + rnd.Next(0, 30000)),
-                LastName = ("Doe_" + rnd.Next(0, 30000)),
-                StreetAddress1 = "This record was inserted via a test",
+                FirstName = ("John_DELETE_ME_" + DateTime.Now),
+                LastName = ("Doe_DELETE_ME_" + DateTime.Now),
+                StreetAddress1 = "This record was inserted for deletion",
                 City = "Fictional city",
                 State = "LA",
                 ZipCode = "12345"
             };
 
+            //Re-usable query to query for the matching record.
             var queryForCustomer = new Func<EFRepository<Customer>, Customer>
                 (
-                    x => (from cust in x
-                          where cust.FirstName == newCustomer.FirstName && cust.LastName == newCustomer.LastName
-                          select cust).FirstOrDefault()
+                x => (from cust in x
+                      where cust.FirstName == newCustomer.FirstName && cust.LastName == newCustomer.LastName
+                      select cust).FirstOrDefault()
                 );
 
             using (var scope = new UnitOfWorkScope())
@@ -182,22 +85,195 @@ namespace NCommon.Data.EntityFramework.Tests
                 scope.Commit();
             }
 
-            //Starting a completely new unit of work and repository to check for existance.
+            //Retrieve the record for deletion.
             using (var scope = new UnitOfWorkScope())
             {
                 var customerRepository = new EFRepository<Customer>();
-                var recordCheckResult = queryForCustomer(customerRepository);
-                Assert.That(recordCheckResult, Is.Not.Null);
-                Assert.That(recordCheckResult.FirstName, Is.EqualTo(newCustomer.FirstName));
-                Assert.That(recordCheckResult.LastName, Is.EqualTo(newCustomer.LastName));
+                var customerToDelete = queryForCustomer(customerRepository);
+                Assert.That(customerToDelete, Is.Not.Null);
+                customerRepository.Delete(customerToDelete);
                 scope.Commit();
             }
+
+            //Ensure customer record is deleted.
+            using (new UnitOfWorkScope())
+            {
+                var customerRepository = new EFRepository<Customer>();
+                var recordCheckResult = queryForCustomer(customerRepository);
+                Assert.That(recordCheckResult, Is.Null);
+            }
+        }
+
+        [Test]
+        public void Query_Allows_Eger_Loading_Using_With()
+        {
+            using (var testData = new EFDataGenerator(new TestModel()))
+            using (new UnitOfWorkScope())
+            {
+                testData.Batch(actions => actions.CreateCustomer());
+
+                var ordersRepository = new EFRepository<Order>();
+                var results = from order in ordersRepository.With(x => x.Customers)
+                              select order;
+
+                Assert.DoesNotThrow(() => results.ForEach(x =>
+                {
+                    Assert.That(x.Customers, Is.TypeOf(typeof (Customer)));
+                    Assert.That(!string.IsNullOrEmpty(x.Customers.FirstName));
+                }));
+            }
+        }
+
+        [Test]
+        public void Query_Allows_Lazy_Load_While_UnitOfWork_Still_Running()
+        {
+            using (var testData = new EFDataGenerator(new TestModel()))
+            using (new UnitOfWorkScope())
+            {
+                testData.Batch(actions => actions.CreateOrderForCustomer(actions.CreateCustomer()));
+                var ordersRepository = new EFRepository<Order>();
+                var results = from order in ordersRepository
+                              select order;
+
+                Assert.DoesNotThrow(() => results.ForEach(x =>
+                {
+                    x.CustomersReference.Load();
+                    Assert.That(!string.IsNullOrEmpty(x.Customers.FirstName));
+                }));
+            }
+        }
+
+        [Test]
+        public void Query_Allows_Projection_Using_Select_Projection()
+        {
+            using (var testData = new EFDataGenerator(new TestModel()))
+            using (new UnitOfWorkScope())
+            {
+                testData.Batch(actions => actions.CreateOrderForCustomer(actions.CreateCustomer()));
+
+                var ordersRepository = new EFRepository<Order>();
+                var results = from order in ordersRepository
+                              select new
+                              {
+                                  order.Customers.FirstName,
+                                  order.Customers.LastName,
+                                  order.ShipDate,
+                                  order.OrderDate
+                              };
+
+                Assert.DoesNotThrow(() => results.ForEach(x =>
+                {
+                    Assert.That(!string.IsNullOrEmpty(x.LastName));
+                    Assert.That(!string.IsNullOrEmpty(x.FirstName));
+                }));
+            }
+        }
+
+        [Test]
+        public void Query_Throws_Exception_When_LazyLoading_After_UnitOfWork_Is_Finished()
+        {
+            Customer customer;
+            using (var testData = new EFDataGenerator(new TestModel()))
+            using (new UnitOfWorkScope())
+            {
+                testData.Batch(actions => actions.CreateCustomer());
+
+                var customerRepository = new EFRepository<Customer>();
+                customer = (from cust in customerRepository select cust).FirstOrDefault();
+            }
+            Assert.Throws<ObjectDisposedException>(() => customer.Orders.Load());
+        }
+
+        [Test]
+        public void Query_Using_OrderBy_With_QueryMethod_Returns_Matched_Records_Only()
+        {
+            using (var testData = new EFDataGenerator(new TestModel()))
+            using (new UnitOfWorkScope())
+            {
+                testData.Batch(actions => actions.CreateOrderForCustomer(actions.CreateCustomerInState("PA")));
+
+                var customersInPA = new Specification<Order>(x => x.Customers.State == "PA");
+
+                var ordersRepository = new EFRepository<Order>();
+                var results = from order in ordersRepository.Query(customersInPA)
+                              orderby order.OrderDate
+                              select order;
+
+                Assert.That(results.Count(), Is.EqualTo(1));
+            }
+        }
+
+        [Test]
+        public void Query_Using_QueryMethod_Returns_Matched_Records_Only()
+        {
+            using (var testData = new EFDataGenerator(new TestModel()))
+            using (new UnitOfWorkScope())
+            {
+                testData.Batch(actions => actions.CreateOrderForCustomer(actions.CreateCustomerInState("PA")));
+
+                var customersInPA = new Specification<Order>(x => x.Customers.State == "PA");
+
+                var ordersRepository = new EFRepository<Order>();
+                var results = from order in ordersRepository.Query(customersInPA) select order;
+
+                Assert.That(results.Count(), Is.EqualTo(1));
+            }
+        }
+
+        [Test]
+        public void Query_With_Incompatible_UnitOfWork_Throws_InvalidOperationException()
+        {
+            var mockUnitOfWork = MockRepository.GenerateStub<IUnitOfWork>();
+            UnitOfWork.Current = mockUnitOfWork;
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                var customerRepository = new EFRepository<Customer>();
+                var results = from customer in customerRepository
+                              select customer;
+            }
+                );
+            UnitOfWork.Current = null;
+        }
+
+        [Test]
+        public void Query_With_No_UnitOfWork_Throws_InvalidOperationException()
+        {
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                var repository = new EFRepository<Customer>
+                {new Customer()};
+            });
+        }
+
+        [Test]
+        public void Repository_For_Uses_Registered_Fetching_Strategies()
+        {
+            IEnumerable<Order> orders;
+            using (var testData = new EFDataGenerator(new TestModel()))
+            using (new UnitOfWorkScope())
+            {
+                testData.Batch(actions =>
+                               actions.CreateOrderForProducts(actions.CreateProducts(5)));
+                var strategies = new IFetchingStrategy<Order, EFRepositoryTests>[]
+                {
+                    new OrderOrderItemsStrategy(),
+                    new OrderItemsProductStrategy()
+                };
+
+                IRepository<Order> ordersRepository = null;
+                ServiceLocator.Current.Expect(x => x.GetAllInstances<IFetchingStrategy<Order, EFRepositoryTests>>())
+                    .Return(strategies);
+
+                ordersRepository = new EFRepository<Order>().For<EFRepositoryTests>();
+                orders = (from o in ordersRepository select o).ToList();
+            }
+            orders.ForEach(x => Assert.That(x.CalculateTotal(), Is.GreaterThan(0)));
         }
 
         [Test]
         public void Save_Does_Not_Save_New_Customer_When_UnitOfWork_Is_Aborted()
         {
-            Random rnd = new Random();
+            var rnd = new Random();
             var newCustomer = new Customer
             {
                 FirstName = ("John_" + rnd.Next(30001, 50000)),
@@ -235,62 +311,24 @@ namespace NCommon.Data.EntityFramework.Tests
         }
 
         [Test]
-        public void Save_Updates_Existing_Order_Record()
+        public void Save_New_Customer_Saves_Customer_When_UnitOfWork_Is_Committed()
         {
-            int orderIDRetrieved;
-            var updatedDate = DateTime.Now;
-            var randomOrderNo = new Random();
-
-            var randomID = randomOrderNo.Next(1, 3);
-            using (var scope = new UnitOfWorkScope())
-            {
-                var orderRepository = new EFRepository<Order>();
-                var order = (from o in orderRepository
-                             where o.OrderID == randomID 
-                             select o).FirstOrDefault();
-
-                Assert.That(order, Is.Not.Null);
-
-                orderIDRetrieved = order.OrderID;
-                order.OrderDate = updatedDate;
-
-                scope.Commit();
-            }
-
-            using (new UnitOfWorkScope())
-            {
-                var orderRepository = new EFRepository<Order>();
-                var order = (from o in orderRepository
-                             where o.OrderID == orderIDRetrieved
-                             select o).FirstOrDefault();
-
-                Assert.That(order, Is.Not.Null);
-                Assert.That(order.OrderDate.Date, Is.EqualTo(updatedDate.Date));
-                Assert.That(order.OrderDate.Hour, Is.EqualTo(updatedDate.Hour));
-                Assert.That(order.OrderDate.Minute, Is.EqualTo(updatedDate.Minute));
-                Assert.That(order.OrderDate.Second, Is.EqualTo(updatedDate.Second));
-            }
-        }
-
-        [Test]
-        public void Delete_Deletes_Record()
-        {
+            var rnd = new Random();
             var newCustomer = new Customer
             {
-                FirstName = ("John_DELETE_ME_" + DateTime.Now),
-                LastName = ("Doe_DELETE_ME_" + DateTime.Now),
-                StreetAddress1 = "This record was inserted for deletion",
+                FirstName = ("John_" + rnd.Next(0, 30000)),
+                LastName = ("Doe_" + rnd.Next(0, 30000)),
+                StreetAddress1 = "This record was inserted via a test",
                 City = "Fictional city",
                 State = "LA",
                 ZipCode = "12345"
             };
 
-            //Re-usable query to query for the matching record.
             var queryForCustomer = new Func<EFRepository<Customer>, Customer>
                 (
-                    x => (from cust in x
-                          where cust.FirstName == newCustomer.FirstName && cust.LastName == newCustomer.LastName
-                          select cust).FirstOrDefault()
+                x => (from cust in x
+                      where cust.FirstName == newCustomer.FirstName && cust.LastName == newCustomer.LastName
+                      select cust).FirstOrDefault()
                 );
 
             using (var scope = new UnitOfWorkScope())
@@ -303,61 +341,100 @@ namespace NCommon.Data.EntityFramework.Tests
                 scope.Commit();
             }
 
-            //Retrieve the record for deletion.
+            //Starting a completely new unit of work and repository to check for existance.
             using (var scope = new UnitOfWorkScope())
             {
                 var customerRepository = new EFRepository<Customer>();
-                var customerToDelete = queryForCustomer(customerRepository);
-                Assert.That(customerToDelete, Is.Not.Null);
-                customerRepository.Delete(customerToDelete);
+                var recordCheckResult = queryForCustomer(customerRepository);
+                Assert.That(recordCheckResult, Is.Not.Null);
+                Assert.That(recordCheckResult.FirstName, Is.EqualTo(newCustomer.FirstName));
+                Assert.That(recordCheckResult.LastName, Is.EqualTo(newCustomer.LastName));
+                customerRepository.Delete(recordCheckResult); //Deleting record after verification.
                 scope.Commit();
             }
+        }
 
-            //Ensure customer record is deleted.
-            using (new UnitOfWorkScope())
+        [Test]
+        public void Save_Updates_Existing_Order_Record()
+        {
+            int orderIDRetrieved;
+            var updatedDate = DateTime.Now;
+
+            using (var testData = new EFDataGenerator(new TestModel()))
             {
-                var customerRepository = new EFRepository<Customer>();
-                var recordCheckResult = queryForCustomer(customerRepository);
-                Assert.That(recordCheckResult, Is.Null);
+                testData.Batch(actions => actions.CreateOrderForCustomer(actions.CreateCustomer()));
+
+                using (var scope = new UnitOfWorkScope())
+                {
+                    var order = new EFRepository<Order>().First();
+                    Assert.That(order, Is.Not.Null);
+                    orderIDRetrieved = order.OrderID;
+                    order.OrderDate = updatedDate;
+
+                    scope.Commit();
+                }
+
+                using (new UnitOfWorkScope())
+                {
+                    var orderRepository = new EFRepository<Order>();
+                    var order = (from o in orderRepository
+                                 where o.OrderID == orderIDRetrieved
+                                 select o).FirstOrDefault();
+
+                    Assert.That(order, Is.Not.Null);
+                    Assert.That(order.OrderDate.Date, Is.EqualTo(updatedDate.Date));
+                    Assert.That(order.OrderDate.Hour, Is.EqualTo(updatedDate.Hour));
+                    Assert.That(order.OrderDate.Minute, Is.EqualTo(updatedDate.Minute));
+                    Assert.That(order.OrderDate.Second, Is.EqualTo(updatedDate.Second));
+                }
             }
         }
 
         [Test]
-        public void Query_Using_QueryMethod_Returns_Matched_Records_Only()
+        public void UnitOfWork_is_rolledback_when_containing_TransactionScope_is_rolledback()
         {
-            using (new UnitOfWorkScope())
+            using (var testData = new EFDataGenerator(new TestModel()))
             {
-                var customersInPA = new Specification<Order>(x => x.Customers.State == "PA");
+                testData.Batch(actions =>
+                               actions.CreateOrderForCustomer(actions.CreateCustomer()));
+                int orderId;
+                DateTime oldDate;
 
-                var ordersRepository = new EFRepository<Order>();
-                var results = from order in ordersRepository.Query(customersInPA) select order;
+                using (var txScope = new TransactionScope(TransactionScopeOption.Required))
+                using (var uowScope = new UnitOfWorkScope(IsolationLevel.Serializable))
+                {
+                    var ordersRepository = new EFRepository<Order>();
+                    var order = (from o in ordersRepository
+                                 select o).First();
 
-                Assert.That(results.Count() > 0);
-            }
-        }
+                    oldDate = order.OrderDate;
+                    order.OrderDate = DateTime.Now;
+                    orderId = order.OrderID;
+                    uowScope.Commit();
 
-        [Test]
-        public void Query_Using_OrderBy_With_QueryMethod_Returns_Matched_Records_Only()
-        {
+                    //Note: txScope has not been committed
+                }
 
-            using (new UnitOfWorkScope())
-            {
-                var customersInPA = new Specification<Order>(x => x.Customers.State == "PA");
+                using (var uowScope = new UnitOfWorkScope())
+                {
+                    var ordersRepository = new EFRepository<Order>();
+                    var order = (from o in ordersRepository
+                                 where o.OrderID == orderId
+                                 select o).First();
 
-                var ordersRepository = new EFRepository<Order>();
-                var results = from order in ordersRepository.Query(customersInPA)
-                              orderby order.OrderDate
-                              select order;
-
-                Assert.That(results.Count() > 0);
+                    Assert.That(order.OrderDate, Is.EqualTo(oldDate));
+                }
             }
         }
 
         [Test]
         public void When_Calling_CalculateTotal_On_Order_Returns_Valid_When_Under_UnitOfWork()
         {
+            using (var testData = new EFDataGenerator(new TestModel()))
             using (new UnitOfWorkScope())
             {
+                testData.Batch(actions =>
+                               actions.CreateOrderForProducts(actions.CreateProducts(5)));
                 var oredersRepository = new EFRepository<Order>();
                 var order = (from o in oredersRepository
                              select o).FirstOrDefault();
@@ -370,8 +447,11 @@ namespace NCommon.Data.EntityFramework.Tests
         public void When_Calling_CalculateTotal_On_Order_Returns_Valid_With_No_UnitOfWork_Throws()
         {
             Order order;
+            using (var testData = new EFDataGenerator(new TestModel()))
             using (new UnitOfWorkScope())
             {
+                testData.Batch(actions =>
+                               actions.CreateOrderForProducts(actions.CreateProducts(5)));
                 var oredersRepository = new EFRepository<Order>();
                 order = (from o in oredersRepository
                          select o).FirstOrDefault();
@@ -383,97 +463,16 @@ namespace NCommon.Data.EntityFramework.Tests
         public void When_No_FetchingStrategy_Registered_For_Makes_No_Changes()
         {
             Order order;
+            using (var testData = new EFDataGenerator(new TestModel()))
             using (new UnitOfWorkScope())
             {
+                testData.Batch(actions =>
+                               actions.CreateOrderForProducts(actions.CreateProducts(5)));
                 var oredersRepository = new EFRepository<Order>().For<EFRepositoryTests>();
                 order = (from o in oredersRepository
                          select o).FirstOrDefault();
             }
             Assert.Throws<ObjectDisposedException>(() => order.CalculateTotal());
         }
-
-        [Test]
-        public void Repository_For_Uses_Registered_Fetching_Strategies()
-        {
-            IEnumerable<Order> orders;
-            using (new UnitOfWorkScope())
-            {
-                var strategies = new IFetchingStrategy<Order, EFRepositoryTests>[]
-                                     {
-                                             new Order_OrderItems_Strategy(),
-                                             new OrderItems_Product_Strategy()
-                                     };
-
-                IRepository<Order> ordersRepository = null;
-                ServiceLocator.Current.Expect(x => x.GetAllInstances<IFetchingStrategy<Order, EFRepositoryTests>>())
-                                        .Return(strategies);
-
-                ordersRepository = new EFRepository<Order>().For<EFRepositoryTests>();
-                orders = (from o in ordersRepository select o).ToList();
-            }
-            orders.ForEach(x => Assert.That(x.CalculateTotal(), Is.GreaterThan(0)));
-        }
-
-		[Test]
-		public void UnitOfWork_is_rolledback_when_containing_TransactionScope_is_rolledback()
-		{
-			int orderId;
-			DateTime oldDate;
-
-			using (var txScope = new TransactionScope(TransactionScopeOption.Required))
-			using (var uowScope = new UnitOfWorkScope(IsolationLevel.Serializable))
-			{
-				var ordersRepository = new EFRepository<Order>();
-				var order = (from o in ordersRepository
-							 select o).First();
-
-				oldDate = order.OrderDate;
-				order.OrderDate = DateTime.Now;
-				orderId = order.OrderID;
-				uowScope.Commit();
-
-				//Note: txScope has not been committed
-			}
-
-			using (var uowScope = new UnitOfWorkScope())
-			{
-				var ordersRepository = new EFRepository<Order>();
-				var order = (from o in ordersRepository
-							 where o.OrderID == orderId
-							 select o).First();
-
-				Assert.That(order.OrderDate, Is.EqualTo(oldDate));
-
-			}
-		}
-
-        private class Order_OrderItems_Strategy : IFetchingStrategy<Order, EFRepositoryTests>
-        {
-            #region Implementation of IFetchingStrategy<Order,NHUnitOfWorkTests>
-            ///<summary>
-            /// Instructs the instance to define the fetching strategy on the repository instance.
-            ///</summary>
-            ///<param name="repository"></param>
-            public void Define(IRepository<Order> repository)
-            {
-                repository.With(x => x.OrderItems);
-            }
-            #endregion
-        }
-
-        public class OrderItems_Product_Strategy : IFetchingStrategy<Order, EFRepositoryTests>
-        {
-            #region Implementation of IFetchingStrategy<Order,NHUnitOfWorkTests>
-            ///<summary>
-            /// Instructs the instance to define the fetching strategy on the repository instance.
-            ///</summary>
-            ///<param name="repository"></param>
-            public void Define(IRepository<Order> repository)
-            {
-                repository.With<OrderItem>(x => x.Product);
-            }
-            #endregion
-        }
-        #endregion
     }
 }

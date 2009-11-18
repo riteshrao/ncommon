@@ -65,16 +65,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain\ModelExtemds.cs" />
+    <Compile Include="Domain\ModelExtends.cs" />
     <Compile Include="Domain\TestModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TestModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="EFDataGenerator.cs" />
+    <Compile Include="EFDataGeneratorActions.cs" />
     <Compile Include="EFRepositoryTests.cs" />
     <Compile Include="EFTransactionTests.cs" />
     <Compile Include="EFUnitOfWorkFactoryTests.cs" />
     <Compile Include="EFUnitOfWorkTests.cs" />
+    <Compile Include="OrderItemsProductStrategy.cs" />
+    <Compile Include="OrderOrderItemsStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -93,8 +93,6 @@
   <ItemGroup>
     <Compile Include="CompositeUserTypeBaseTests.cs" />
     <Compile Include="Domain\Address.cs" />
-    <Compile Include="Domain\CustomOrder.cs" />
-    <Compile Include="Domain\CustomOrderItem.cs" />
     <Compile Include="Domain\Money.cs" />
     <Compile Include="Domain\MoneyUserType.cs" />
     <Compile Include="Domain\MonthlySalesSummary.cs" />
@@ -103,18 +101,20 @@
     <Compile Include="Domain\OrderItem.cs" />
     <Compile Include="Domain\Product.cs" />
     <Compile Include="Mappings\CustomerMap.cs" />
-    <Compile Include="Mappings\CustomOrderItemMap.cs" />
-    <Compile Include="Mappings\CustomOrderMap.cs" />
     <Compile Include="Mappings\MonthlySalesSummaryMap.cs" />
     <Compile Include="Mappings\OrderItemMap.cs" />
     <Compile Include="Mappings\OrderMap.cs" />
     <Compile Include="Mappings\ProductMap.cs" />
     <Compile Include="NHRepositoryTests.cs" />
     <Compile Include="NHTestBase.cs" />
+    <Compile Include="NHTestDataActions.cs" />
+    <Compile Include="NHTestDataGenerator.cs" />
     <Compile Include="NHTransactionTests.cs" />
     <Compile Include="NHUnitOfWorkFactoryTests.cs" />
     <Compile Include="NHUnitOfWorkTests.cs" />
     <Compile Include="NHUnitOfWorkTransactionTests.cs" />
+    <Compile Include="OrderItemsProductStrategy.cs" />
+    <Compile Include="OrderOrderItemsStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

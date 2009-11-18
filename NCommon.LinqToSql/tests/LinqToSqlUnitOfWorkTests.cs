@@ -16,8 +16,6 @@
 
 using System;
 using System.Data;
-using System.Data.Common;
-using System.Data.Linq;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -29,22 +27,6 @@ namespace NCommon.Data.LinqToSql.Tests
     [TestFixture]
     public class LinqToSqlUnitOfWorkTests
     {
-
-        [Test]
-        public void Ctor_Throws_ArgumentNullException_When_DataContext_Parameter_Is_Null()
-        {
-            Assert.Throws<ArgumentNullException>(() => new LinqToSqlUnitOfWork(null));
-        }
-
-        [Test]
-        public void IsInTransaction_Should_Return_False_When_No_Transaction_Exists()
-        {
-            var mockDataContext = MockRepository.GenerateStub<ILinqSession>();
-            var unitOfWork = new LinqToSqlUnitOfWork(mockDataContext);
-
-            Assert.That(!unitOfWork.IsInTransaction);
-        }
-
         [Test]
         public void Begin_Transaction_Should_Start_A_New_Transaction_With_Default_IsolationLevel()
         {
@@ -98,7 +80,7 @@ namespace NCommon.Data.LinqToSql.Tests
 
             mockDataContext.Stub(x => x.Connection).Return(mockConnection);
             mockConnection.Expect(x => x.BeginTransaction(IsolationLevel.Unspecified))
-                            .IgnoreArguments().Return(mockTransaction);
+                .IgnoreArguments().Return(mockTransaction);
             mockDataContext.Expect(x => x.Transaction = mockTransaction);
 
             var unitOfWork = new LinqToSqlUnitOfWork(mockDataContext);
@@ -106,6 +88,64 @@ namespace NCommon.Data.LinqToSql.Tests
 
             Assert.That(unitOfWork.IsInTransaction);
             Assert.Throws<InvalidOperationException>(() => unitOfWork.BeginTransaction());
+
+            mockDataContext.VerifyAllExpectations();
+            mockConnection.VerifyAllExpectations();
+            mockTransaction.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Comitting_Transaction_Releases_Transaction_From_UnitOfWork()
+        {
+            var mockDataContext = MockRepository.GenerateMock<ILinqSession>();
+            var mockConnection = MockRepository.GenerateMock<IDbConnection>();
+            var mockTransaction = MockRepository.GenerateMock<IDbTransaction>();
+
+            mockDataContext.Stub(x => x.Connection).Return(mockConnection);
+            mockConnection.Expect(x => x.BeginTransaction(IsolationLevel.Unspecified))
+                .IgnoreArguments()
+                .Return(mockTransaction);
+            mockDataContext.Expect(x => x.Transaction = mockTransaction);
+            mockTransaction.Expect(x => x.Commit());
+
+            var unitOfWork = new LinqToSqlUnitOfWork(mockDataContext);
+            var transaction = unitOfWork.BeginTransaction();
+
+            Assert.That(unitOfWork.IsInTransaction);
+            transaction.Commit();
+            Assert.That(!unitOfWork.IsInTransaction);
+
+            mockDataContext.VerifyAllExpectations();
+            mockConnection.VerifyAllExpectations();
+            mockTransaction.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Ctor_Throws_ArgumentNullException_When_DataContext_Parameter_Is_Null()
+        {
+            Assert.Throws<ArgumentNullException>(() => new LinqToSqlUnitOfWork(null));
+        }
+
+        [Test]
+        public void Dispose_UnitOfWork_Disposed_Underlying_Transaction_And_Session()
+        {
+            var mockDataContext = MockRepository.GenerateMock<ILinqSession>();
+            var mockConnection = MockRepository.GenerateMock<IDbConnection>();
+            var mockTransaction = MockRepository.GenerateMock<IDbTransaction>();
+
+            mockDataContext.Stub(x => x.Connection).Return(mockConnection);
+            mockConnection.Expect(x => x.BeginTransaction(IsolationLevel.Unspecified))
+                .IgnoreArguments()
+                .Return(mockTransaction);
+            mockDataContext.Expect(x => x.Transaction = mockTransaction);
+
+            mockTransaction.Expect(x => x.Dispose());
+            mockDataContext.Expect(x => x.Dispose());
+
+            using (var unitOfWork = new LinqToSqlUnitOfWork(mockDataContext))
+            {
+                unitOfWork.BeginTransaction();
+            }
 
             mockDataContext.VerifyAllExpectations();
             mockConnection.VerifyAllExpectations();
@@ -125,129 +165,12 @@ namespace NCommon.Data.LinqToSql.Tests
         }
 
         [Test]
-        public void TransactionalFlush_Starts_A_Transaction_With_Default_Isolation_And_Commits_When_Flush_Succeeds()
+        public void IsInTransaction_Should_Return_False_When_No_Transaction_Exists()
         {
-            var mockDataContext = MockRepository.GenerateMock<ILinqSession>();
-            var mockConnection = MockRepository.GenerateMock<IDbConnection>();
-            var mockTransaction = MockRepository.GenerateMock<IDbTransaction>();
-
-            mockDataContext.Stub(x => x.Connection).Return(mockConnection);
-            mockConnection.Expect(x => x.BeginTransaction(IsolationLevel.Unspecified))
-                          .IgnoreArguments()
-                          .Return(mockTransaction);
-
-            mockDataContext.Expect(x => x.Transaction = mockTransaction);
-            mockDataContext.Expect(x => x.SubmitChanges());
-            mockConnection.Expect(x => x.State).Return(ConnectionState.Closed); //First call should be closed
-            mockConnection.Expect(x => x.Open());
-            mockTransaction.Expect(x => x.Commit());
-            mockConnection.Expect(x => x.State).Return(ConnectionState.Open); //Second call should be open
-            mockConnection.Expect(x => x.Close());
-            
-
-            var unitOfWork = new LinqToSqlUnitOfWork(mockDataContext);
-            unitOfWork.TransactionalFlush();
-
-            mockDataContext.VerifyAllExpectations();
-            mockConnection.VerifyAllExpectations();
-            mockTransaction.VerifyAllExpectations();
-        }
-
-        [Test]
-        public void TransactionalFlush_Starts_A_Transaction_With_Specified_IsolationLevel_And_Commits_When_Flush_Succeeds()
-        {
-            var mockDataContext = MockRepository.GenerateMock<ILinqSession>();
-            var mockConnection = MockRepository.GenerateMock<IDbConnection>();
-            var mockTransaction = MockRepository.GenerateMock<IDbTransaction>();
-
-            mockDataContext.Stub(x => x.Connection).Return(mockConnection);
-            mockConnection.Expect(x => x.BeginTransaction(IsolationLevel.Unspecified))
-                          .IgnoreArguments()
-                          .Return(mockTransaction);
-            mockDataContext.Expect(x => x.Transaction = mockTransaction);
-            mockDataContext.Expect(x => x.SubmitChanges());
-            mockTransaction.Expect(x => x.Commit());
-
-            var unitOfWork = new LinqToSqlUnitOfWork(mockDataContext);
-            unitOfWork.TransactionalFlush(IsolationLevel.ReadUncommitted);
-
-            mockDataContext.VerifyAllExpectations();
-            mockConnection.VerifyAllExpectations();
-            mockTransaction.VerifyAllExpectations();
-        }
-
-        [Test]
-        public void TransactionalFlush_Rollsback_Transaction_When_Flush_Throws_Exception()
-        {
-            var mockDataContext = MockRepository.GenerateMock<ILinqSession>();
-            var mockConnection = MockRepository.GenerateMock<IDbConnection>();
-            var mockTransaction = MockRepository.GenerateMock<IDbTransaction>();
-
-            mockDataContext.Stub(x => x.Connection).Return(mockConnection);
-            mockConnection.Expect(x => x.BeginTransaction(IsolationLevel.Unspecified))
-                          .IgnoreArguments()
-                          .Return(mockTransaction);
-            mockDataContext.Expect(x => x.Transaction = mockTransaction);
-            mockDataContext.Expect(x => x.SubmitChanges()).Throw(new Exception());
-            mockTransaction.Expect(x => x.Rollback());
-
-            var unitOfWork = new LinqToSqlUnitOfWork(mockDataContext);
-            Assert.Throws<Exception>(unitOfWork.TransactionalFlush);
-
-            mockDataContext.VerifyAllExpectations();
-            mockConnection.VerifyAllExpectations();
-            mockTransaction.VerifyAllExpectations();
-        }
-
-        [Test]
-        public void TransactionalFlush_Uses_Existing_Transaction_When_Transactional_AlreadyRunning()
-        {
-            var mockDataContext = MockRepository.GenerateMock<ILinqSession>();
-            var mockConnection = MockRepository.GenerateMock<IDbConnection>();
-            var mockTransaction = MockRepository.GenerateMock<IDbTransaction>();
-
-            mockDataContext.Expect(x => x.Connection).Repeat.Any().Return(mockConnection);
-            mockConnection.Stub(x => x.BeginTransaction(IsolationLevel.Unspecified))
-                          .IgnoreArguments()
-                          .Repeat.Once()
-                          .Return(mockTransaction);
-            mockDataContext.Expect(x => x.Transaction = mockTransaction);
-
-
+            var mockDataContext = MockRepository.GenerateStub<ILinqSession>();
             var unitOfWork = new LinqToSqlUnitOfWork(mockDataContext);
 
-            unitOfWork.BeginTransaction();
-            unitOfWork.TransactionalFlush();
-
-            mockDataContext.VerifyAllExpectations();
-            mockConnection.VerifyAllExpectations();
-            mockTransaction.VerifyAllExpectations();
-        }
-
-        [Test]
-        public void Comitting_Transaction_Releases_Transaction_From_UnitOfWork()
-        {
-            var mockDataContext = MockRepository.GenerateMock<ILinqSession>();
-            var mockConnection = MockRepository.GenerateMock<IDbConnection>();
-            var mockTransaction = MockRepository.GenerateMock<IDbTransaction>();
-
-            mockDataContext.Stub(x => x.Connection).Return(mockConnection);
-            mockConnection.Expect(x => x.BeginTransaction(IsolationLevel.Unspecified))
-                          .IgnoreArguments()
-                          .Return(mockTransaction);
-            mockDataContext.Expect(x => x.Transaction = mockTransaction);
-            mockTransaction.Expect(x => x.Commit());
-
-            var unitOfWork = new LinqToSqlUnitOfWork(mockDataContext);
-            var transaction = unitOfWork.BeginTransaction();
-
-            Assert.That(unitOfWork.IsInTransaction);
-            transaction.Commit();
             Assert.That(!unitOfWork.IsInTransaction);
-
-            mockDataContext.VerifyAllExpectations();
-            mockConnection.VerifyAllExpectations();
-            mockTransaction.VerifyAllExpectations();
         }
 
         [Test]
@@ -259,8 +182,8 @@ namespace NCommon.Data.LinqToSql.Tests
 
             mockDataContext.Stub(x => x.Connection).Return(mockConnection);
             mockConnection.Expect(x => x.BeginTransaction(IsolationLevel.Unspecified))
-                          .IgnoreArguments()
-                          .Return(mockTransaction);
+                .IgnoreArguments()
+                .Return(mockTransaction);
             mockDataContext.Expect(x => x.Transaction = mockTransaction);
             mockTransaction.Expect(x => x.Rollback());
 
@@ -277,7 +200,7 @@ namespace NCommon.Data.LinqToSql.Tests
         }
 
         [Test]
-        public void Dispose_UnitOfWork_Disposed_Underlying_Transaction_And_Session()
+        public void TransactionalFlush_Rollsback_Transaction_When_Flush_Throws_Exception()
         {
             var mockDataContext = MockRepository.GenerateMock<ILinqSession>();
             var mockConnection = MockRepository.GenerateMock<IDbConnection>();
@@ -285,17 +208,92 @@ namespace NCommon.Data.LinqToSql.Tests
 
             mockDataContext.Stub(x => x.Connection).Return(mockConnection);
             mockConnection.Expect(x => x.BeginTransaction(IsolationLevel.Unspecified))
-                          .IgnoreArguments()
-                          .Return(mockTransaction);
+                .IgnoreArguments()
+                .Return(mockTransaction);
+            mockDataContext.Expect(x => x.Transaction = mockTransaction);
+            mockDataContext.Expect(x => x.SubmitChanges()).Throw(new Exception());
+            mockTransaction.Expect(x => x.Rollback());
+
+            var unitOfWork = new LinqToSqlUnitOfWork(mockDataContext);
+            Assert.Throws<Exception>(unitOfWork.TransactionalFlush);
+
+            mockDataContext.VerifyAllExpectations();
+            mockConnection.VerifyAllExpectations();
+            mockTransaction.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void TransactionalFlush_Starts_A_Transaction_With_Default_Isolation_And_Commits_When_Flush_Succeeds()
+        {
+            var mockDataContext = MockRepository.GenerateMock<ILinqSession>();
+            var mockConnection = MockRepository.GenerateMock<IDbConnection>();
+            var mockTransaction = MockRepository.GenerateMock<IDbTransaction>();
+
+            mockDataContext.Stub(x => x.Connection).Return(mockConnection);
+            mockConnection.Expect(x => x.BeginTransaction(IsolationLevel.Unspecified))
+                .IgnoreArguments()
+                .Return(mockTransaction);
+
+            mockDataContext.Expect(x => x.Transaction = mockTransaction);
+            mockDataContext.Expect(x => x.SubmitChanges());
+            mockConnection.Expect(x => x.State).Return(ConnectionState.Closed); //First call should be closed
+            mockConnection.Expect(x => x.Open());
+            mockTransaction.Expect(x => x.Commit());
+            mockConnection.Expect(x => x.State).Return(ConnectionState.Open); //Second call should be open
+            mockConnection.Expect(x => x.Close());
+
+
+            var unitOfWork = new LinqToSqlUnitOfWork(mockDataContext);
+            unitOfWork.TransactionalFlush();
+
+            mockDataContext.VerifyAllExpectations();
+            mockConnection.VerifyAllExpectations();
+            mockTransaction.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void
+            TransactionalFlush_Starts_A_Transaction_With_Specified_IsolationLevel_And_Commits_When_Flush_Succeeds()
+        {
+            var mockDataContext = MockRepository.GenerateMock<ILinqSession>();
+            var mockConnection = MockRepository.GenerateMock<IDbConnection>();
+            var mockTransaction = MockRepository.GenerateMock<IDbTransaction>();
+
+            mockDataContext.Stub(x => x.Connection).Return(mockConnection);
+            mockConnection.Expect(x => x.BeginTransaction(IsolationLevel.Unspecified))
+                .IgnoreArguments()
+                .Return(mockTransaction);
+            mockDataContext.Expect(x => x.Transaction = mockTransaction);
+            mockDataContext.Expect(x => x.SubmitChanges());
+            mockTransaction.Expect(x => x.Commit());
+
+            var unitOfWork = new LinqToSqlUnitOfWork(mockDataContext);
+            unitOfWork.TransactionalFlush(IsolationLevel.ReadUncommitted);
+
+            mockDataContext.VerifyAllExpectations();
+            mockConnection.VerifyAllExpectations();
+            mockTransaction.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void TransactionalFlush_Uses_Existing_Transaction_When_Transactional_AlreadyRunning()
+        {
+            var mockDataContext = MockRepository.GenerateMock<ILinqSession>();
+            var mockConnection = MockRepository.GenerateMock<IDbConnection>();
+            var mockTransaction = MockRepository.GenerateMock<IDbTransaction>();
+
+            mockDataContext.Expect(x => x.Connection).Repeat.Any().Return(mockConnection);
+            mockConnection.Stub(x => x.BeginTransaction(IsolationLevel.Unspecified))
+                .IgnoreArguments()
+                .Repeat.Once()
+                .Return(mockTransaction);
             mockDataContext.Expect(x => x.Transaction = mockTransaction);
 
-            mockTransaction.Expect(x => x.Dispose());
-            mockDataContext.Expect(x => x.Dispose());
 
-            using (var unitOfWork = new LinqToSqlUnitOfWork(mockDataContext))
-            {
-                unitOfWork.BeginTransaction();
-            }
+            var unitOfWork = new LinqToSqlUnitOfWork(mockDataContext);
+
+            unitOfWork.BeginTransaction();
+            unitOfWork.TransactionalFlush();
 
             mockDataContext.VerifyAllExpectations();
             mockConnection.VerifyAllExpectations();

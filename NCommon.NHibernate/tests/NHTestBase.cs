@@ -45,13 +45,13 @@ namespace NCommon.Data.NHibernate.Tests
 				.BuildSessionFactory();
 
 			Store.Local.Set("NHRepositoryTests.SessionFactory", Factory);
-			NHUnitOfWorkFactory.SetSessionProvider
-				(
-				() => Store.Local.Get<ISessionFactory>("NHRepositoryTests.SessionFactory").OpenSession()
-				);
+			NHUnitOfWorkFactory.SetSessionProvider(
+				() => Store.Local.Get<ISessionFactory>("NHRepositoryTests.SessionFactory").OpenSession());
+
 			var locator = MockRepository.GenerateStub<IServiceLocator>();
 			locator.Stub(x => x.GetInstance<IUnitOfWorkFactory>())
 				.Return(new NHUnitOfWorkFactory()).Repeat.Any();
+
 			ServiceLocator.SetLocatorProvider(() => locator);
 			HibernatingRhinos.NHibernate.Profiler.Appender.NHibernateProfiler.Initialize();
 		}

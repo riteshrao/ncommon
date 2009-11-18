@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using FluentNHibernate.Mapping;
 using NCommon.NHibernate.Tests.Domain;
 

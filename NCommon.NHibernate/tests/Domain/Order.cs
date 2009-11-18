@@ -21,7 +21,9 @@ using NCommon.Extensions;
 namespace NCommon.Data.NHibernate.Tests.Domain
 {
     public class Order
-    {
+    {        public Order()        {
+            Items = new HashSet<OrderItem>();   
+        }
         public virtual int OrderID { get; set; }
         public virtual Customer Customer { get; set; }
         public virtual DateTime OrderDate { get; set; }
@@ -32,9 +34,9 @@ namespace NCommon.Data.NHibernate.Tests.Domain
         /// Simple method to calculate total of all items in the order.
         /// </summary>
         /// <returns></returns>
-        public virtual float CalculateTotal ()
+        public virtual decimal CalculateTotal ()
         {
-            float total = 0;
+            decimal total = 0;
             Items.ForEach(x => total += x.TotalPrice);
             return total;
         }

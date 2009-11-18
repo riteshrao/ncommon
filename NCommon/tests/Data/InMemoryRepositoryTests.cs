@@ -11,6 +11,7 @@ namespace NCommon.Tests.Data
 	[TestFixture]
 	public class InMemoryRepositoryTests
 	{
+        [Test]
 		public void Repository_returns_values_only_contained_in_internal_list ()
 		{
 			var list = new List<string> {"Apple", "Ball", "Cat", "Dog"};
@@ -24,6 +25,7 @@ namespace NCommon.Tests.Data
 			Assert.That(result.First(), Is.EqualTo("Apple"));
 		}
 
+        [Test]
 		public void Repository_adds_to_internal_list_on_save()
 		{
 			var list = new List<string> { "Apple", "Ball", "Cat", "Dog" };
@@ -33,6 +35,7 @@ namespace NCommon.Tests.Data
 			Assert.That(list.Contains("DoDo"));
 		}
 
+        [Test]
 		public void Repository_removes_from_internal_list_on_delete()
 		{
 			var list = new List<string> { "Apple", "Ball", "Cat", "Dog" };

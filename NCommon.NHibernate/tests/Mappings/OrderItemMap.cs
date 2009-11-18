@@ -15,6 +15,7 @@ namespace NCommon.Data.NHibernate.Tests.Mappings
 			Map(x => x.Store);
 			References(x => x.Product)
 				.Column("ProductId")
+                .Cascade.SaveUpdate()
 				.ForeignKey("FK_OrderItems_Product");
 			References(x => x.Order)
 				.Column("OrderId")

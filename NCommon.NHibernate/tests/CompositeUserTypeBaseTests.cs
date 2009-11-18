@@ -15,8 +15,11 @@ namespace NCommon.Data.NHibernate.Tests
         public void Test_Can_Get_MonthlySalesSummary_With_Money_Type()
         {
             IList<MonthlySalesSummary> report;
+            using (var testData = new NHTestDataGenerator(Factory.OpenSession()))
             using (var scope = new UnitOfWorkScope())
             {
+                testData.Batch(action => action.CreateMonthlySalesSummaryForMonth(1));
+
                 var repository = new NHRepository<MonthlySalesSummary>();
                 report = (from summary in repository
                           where summary.Month == 1
@@ -41,11 +44,16 @@ namespace NCommon.Data.NHibernate.Tests
         public void Test_Can_Query_MonthlySalesSummary_Based_On_Currency()
         {
             IList<MonthlySalesSummary> report;
+            using (var testData = new NHTestDataGenerator(Factory.OpenSession()))
             using (var scope = new UnitOfWorkScope())
             {
+                testData.Batch(actions => actions.CreateMonthlySalesSummaryWithAmount(
+                    new Money{Amount = 100, Currency = "YEN"}
+                    ));
+
                 var repository = new NHRepository<MonthlySalesSummary>();
                 report = (from summary in repository
-                          where summary.TotalSale.Currency == "USD"
+                          where summary.TotalSale.Currency == "YEN"
                           select summary).ToList();
 
                 scope.Commit();
@@ -59,7 +67,7 @@ namespace NCommon.Data.NHibernate.Tests
                 Assert.That(rep.TotalSale, Is.Not.Null);
                 Assert.That(rep.TotalSale.Amount, Is.GreaterThan(0));
                 Assert.That(rep.TotalSale.Currency, Is.Not.Null);
-                Assert.That(rep.TotalSale.Currency, Is.EqualTo("USD"));
+                Assert.That(rep.TotalSale.Currency, Is.EqualTo("YEN"));
             });
         }
 
@@ -67,30 +75,30 @@ namespace NCommon.Data.NHibernate.Tests
         public void Test_Updating_Money_Amount_Updates_Amount_In_Store_And_Returns_Updated_Figure ()
         {
             var newAmount = (decimal) new Random().Next();	
-            Console.WriteLine(newAmount);
-            using (var scope = new UnitOfWorkScope())
+            using (var testData = new NHTestDataGenerator(Factory.OpenSession()))
             {
-                var repository = new NHRepository<MonthlySalesSummary>();
-                var report = (from summary in repository
-                              where summary.Year == 2008 &&
-                                    summary.Month == 1 &&
-                                    summary.SalesPersonId == 1
-                              select summary).SingleOrDefault();
-                report.TotalSale.Amount = newAmount;
-                scope.Commit();
-            }
+                testData.Batch(actions => actions.CreateMonthlySalesSummaryForSalesPerson(1));
 
-            using (var scope = new UnitOfWorkScope())
-            {
-                var repository = new NHRepository<MonthlySalesSummary>();
-                var report = (from summary in repository
-                              where summary.Year == 2008 &&
-                                    summary.Month == 1 &&
-                                    summary.SalesPersonId == 1
-                              select summary).SingleOrDefault();
+                using (var scope = new UnitOfWorkScope())
+                {
+                    var repository = new NHRepository<MonthlySalesSummary>();
+                    var report = (from summary in repository
+                                  where summary.SalesPersonId == 1
+                                  select summary).SingleOrDefault();
+                    report.TotalSale.Amount = newAmount;
+                    scope.Commit();
+                }
 
-                Assert.That(report.TotalSale.Amount, Is.EqualTo(newAmount));
-                scope.Commit();
+                using (var scope = new UnitOfWorkScope())
+                {
+                    var repository = new NHRepository<MonthlySalesSummary>();
+                    var report = (from summary in repository
+                                  where summary.SalesPersonId == 1
+                                  select summary).SingleOrDefault();
+
+                    Assert.That(report.TotalSale.Amount, Is.EqualTo(newAmount));
+                    scope.Commit();
+                } 
             }
         }
         #endregion
