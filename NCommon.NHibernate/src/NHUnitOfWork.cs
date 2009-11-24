@@ -26,13 +26,10 @@ namespace NCommon.Data.NHibernate
     /// </summary>
     public class NHUnitOfWork : IUnitOfWork
     {
-        #region fields
         private bool _disposed;
         private ISession _session; // The session used by the <see cref="NHUnitOfWork"/> instance.
         private NHTransaction _transaction; // The current transaction under which the UnitOfWork instance is operating.
-        #endregion
 
-        #region ctor
         /// <summary>
         /// Default Constructor.
         /// Creates a new instance of the <see cref="NHUnitOfWork"/> that uses the provided
@@ -44,9 +41,7 @@ namespace NCommon.Data.NHibernate
             Guard.Against<ArgumentNullException>(session == null, "Cannot create a NHUnitOfWork that uses a null reference ISession instance.");
             _session = session;
         }
-        #endregion
 
-        #region properties
         /// <summary>
         /// Gets the <see cref="ISession"/> that the <see cref="NHUnitOfWork"/> wraps.
         /// </summary>
@@ -54,43 +49,7 @@ namespace NCommon.Data.NHibernate
         {
             get { return _session; }
         } 
-        #endregion
 
-        #region Implementation of IDisposable
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Disposes off managed resources used by the NHUnitOfWork instance.
-        /// </summary>
-        /// <param name="disposing"></param>
-        private void Dispose (bool disposing)
-        {
-            if (!disposing) return;
-            if (_disposed) return;
-
-            if (_transaction != null)
-            {
-                _transaction.Dispose();
-                _transaction = null;    
-            }
-            if (_session != null)
-            {
-                _session.Dispose();
-                _session = null;
-            }
-            _disposed = true;
-        }
-        #endregion
-
-        #region Implementation of IUnitOfWork
         /// <summary>
         /// Gets a boolean value indicating whether the current unit of work is running under
         /// a transaction.
@@ -106,7 +65,7 @@ namespace NCommon.Data.NHibernate
         /// <returns></returns>
         public ITransaction BeginTransaction()
         {
-            return this.BeginTransaction(IsolationLevel.ReadCommitted); //Default isolation is ReadCommitted
+            return BeginTransaction(IsolationLevel.ReadCommitted); //Default isolation is ReadCommitted
         }
 
         /// <summary>
@@ -165,9 +124,7 @@ namespace NCommon.Data.NHibernate
                 throw;
             }
         }
-        #endregion
 
-        #region methods
         /// <summary>
         /// Handles the <see cref="ITransaction.TransactionRolledback"/> event.
         /// </summary>
@@ -205,6 +162,37 @@ namespace NCommon.Data.NHibernate
             }
             _transaction = null;
         }
-        #endregion
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2</filterpriority>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Disposes off managed resources used by the NHUnitOfWork instance.
+        /// </summary>
+        /// <param name="disposing"></param>
+        private void Dispose(bool disposing)
+        {
+            if (!disposing) return;
+            if (_disposed) return;
+
+            if (_transaction != null)
+            {
+                _transaction.Dispose();
+                _transaction = null;
+            }
+            if (_session != null)
+            {
+                _session.Dispose();
+                _session = null;
+            }
+            _disposed = true;
+        }
     }
 }

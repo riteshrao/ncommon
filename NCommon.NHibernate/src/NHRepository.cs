@@ -30,16 +30,12 @@ namespace NCommon.Data.NHibernate
     /// </summary>
     public class NHRepository<TEntity> : RepositoryBase<TEntity>
     {
-        #region fields
     	private int _batchSize = -1;
     	private readonly ISession _privateSession;
     	private readonly List<string> _expands = new List<string>();
     	private bool _enableCached;
     	private string _cachedQueryName;
 
-    	#endregion
-
-        #region .ctor
         /// <summary>
         /// Default Constructor.
         /// Creates a new instance of the <see cref="NHRepository{TEntity}"/> class.
@@ -54,12 +50,9 @@ namespace NCommon.Data.NHibernate
         /// <param name="session">The <see cref="ISession"/> instance that the repository should use.</param>
         public NHRepository(ISession session)
         {
-            //ArgumentNullException is not thrown when session is null to allow a possible IoC injection.
             _privateSession = session; 
         }
-        #endregion
 
-        #region properties
         /// <summary>
         /// Gets the <see cref="ISession"/> instnace that is used by the repository.
         /// </summary>
@@ -70,9 +63,7 @@ namespace NCommon.Data.NHibernate
                 return _privateSession ?? GetCurrentUnitOfWork<NHUnitOfWork>().Session;
             }
         }
-        #endregion
 
-        #region Overrides of RepositoryBase<TEntity>
         /// <summary>
         /// Gets the <see cref="IQueryable{TEntity}"/> used by the <see cref="RepositoryBase{TEntity}"/> 
         /// to execute Linq queries.
@@ -228,6 +219,5 @@ namespace NCommon.Data.NHibernate
     		_batchSize = size;
     		return this;
     	}
-    	#endregion
     }
 }

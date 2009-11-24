@@ -26,15 +26,9 @@ namespace NCommon.Data.NHibernate
     /// </summary>
     public class NHUnitOfWorkFactory : IUnitOfWorkFactory
     {
-        #region methods
-        /// <summary>
-        /// Get delegate used to build ISession instances.
-        /// </summary>
         private static Func<ISession> _sessionProvider;
         private static readonly object _sessionProviderLock = new object();
-        #endregion
 
-        #region methods
         /// <summary>
         /// Sets the delegate to be used for building <see cref="ISession"/> instances.
         /// </summary>
@@ -44,9 +38,7 @@ namespace NCommon.Data.NHibernate
             lock(_sessionProviderLock)
                 _sessionProvider = sessionProvider;
         }
-        #endregion
 
-        #region Implementation of IUnitOfWorkFactory
         /// <summary>
         /// Creates a new instance of <see cref="IUnitOfWork"/>.
         /// </summary>
@@ -54,10 +46,9 @@ namespace NCommon.Data.NHibernate
         public IUnitOfWork Create()
         {
             Guard.Against<InvalidOperationException>(_sessionProvider == null,
-                                                    "A ISession provider has not been specified. Please specify set a " +
-                                                     "provider using SetSessuibProvider before creating NHUnitOfWork instances");
+                                                    "A ISession provider has not been specified. Please specify a " +
+                                                     "provider using SetSessionProvider before creating NHUnitOfWork instances");
             return new NHUnitOfWork(_sessionProvider());
         }
-        #endregion
     }
 }

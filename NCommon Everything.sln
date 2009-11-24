@@ -31,6 +31,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		ncommon.snk = ncommon.snk
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCommon.Db4o", "NCommon.Db4o\src\NCommon.Db4o.csproj", "{715AB4B8-0F34-4AA0-B842-BCF2A4270B5F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{96B9D9DE-3389-4FBF-A552-C09434E27329}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96B9D9DE-3389-4FBF-A552-C09434E27329}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96B9D9DE-3389-4FBF-A552-C09434E27329}.Release|Any CPU.Build.0 = Release|Any CPU
+		{715AB4B8-0F34-4AA0-B842-BCF2A4270B5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{715AB4B8-0F34-4AA0-B842-BCF2A4270B5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{715AB4B8-0F34-4AA0-B842-BCF2A4270B5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{715AB4B8-0F34-4AA0-B842-BCF2A4270B5F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -83,6 +89,7 @@ Global
 		{C853736D-3576-468A-A716-ACEC1CD4FAC1} = {30523764-A7D9-4037-9DA5-7355C56C2761}
 		{2781A661-3EA8-4917-B043-F3193FB0F7C8} = {30523764-A7D9-4037-9DA5-7355C56C2761}
 		{01A6D2F9-C34E-4D87-BE7A-4F36A78BED66} = {30523764-A7D9-4037-9DA5-7355C56C2761}
+		{715AB4B8-0F34-4AA0-B842-BCF2A4270B5F} = {30523764-A7D9-4037-9DA5-7355C56C2761}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		VisualSVNWorkingCopyRoot = .

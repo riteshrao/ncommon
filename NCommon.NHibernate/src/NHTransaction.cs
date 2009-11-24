@@ -20,12 +20,9 @@ namespace NCommon.Data.NHibernate
 {
     public class NHTransaction : ITransaction
     {
-        #region fields
         private bool _disposed;
         private readonly global::NHibernate.ITransaction _transaction;
-        #endregion
 
-        #region ctor
         /// <summary>
         /// Default Constructor.
         /// Creates a new instance of the <see cref="NHTransaction"/> instance.
@@ -36,9 +33,7 @@ namespace NCommon.Data.NHibernate
             Guard.Against<ArgumentNullException>(transaction == null, "Expected a non null NHibernate.ITransaction instance.");
             _transaction = transaction;
         }
-        #endregion
 
-        #region Implementation of IDisposable
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -64,9 +59,7 @@ namespace NCommon.Data.NHibernate
                 }
             }
         }
-        #endregion
 
-        #region Implementation of ITransaction
         /// <summary>
         /// Event raised when the transaction has been comitted.
         /// </summary>
@@ -102,6 +95,5 @@ namespace NCommon.Data.NHibernate
             if (TransactionRolledback != null)
                 TransactionRolledback(this, EventArgs.Empty);
         }
-        #endregion
     }
 }
