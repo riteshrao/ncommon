@@ -25,7 +25,7 @@ namespace NCommon.Db4o
 
         protected override IQueryable<TEntity> RepositoryQuery
         {
-            get { return (IQueryable<TEntity>) _privateContainer.Cast<TEntity>(); }
+            get { return ObjectContainer.Cast<TEntity>().AsQueryable(); }
         }
 
         public override void Add(TEntity entity)

@@ -31,15 +31,12 @@ namespace NCommon.Data.NHibernate.Tests
         public void Create_Throws_InvalidOperationException_When_No_SessionProvider_Has_Been_Set()
         {
             var factory = new NHUnitOfWorkFactory();
-            Assert.Throws<InvalidOperationException>(
-                () => factory.Create()
-                );
+            Assert.Throws<InvalidOperationException>(() => factory.Create());
         }
 
         [Test]
-        public void Create_Returns_LinqToSqlUnitOfWork_Instance_When_DataContextProvider_Has_Been_Set()
+        public void Create_Returns_NHUnitOfWork_Instance_When_DataContextProvider_Has_Been_Set()
         {
-
             NHUnitOfWorkFactory.SetSessionProvider(() => MockRepository.GenerateStub<ISession>());
 
             var factory = new NHUnitOfWorkFactory();

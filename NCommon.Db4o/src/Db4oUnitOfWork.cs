@@ -21,7 +21,7 @@ namespace NCommon.Db4o
 
         public bool IsInTransaction
         {
-            get { return true; } 
+            get { return _transaction != null; } 
         }
 
         public IObjectContainer ObjectContainer { get; private set; }
@@ -44,7 +44,11 @@ namespace NCommon.Db4o
 
         public void Flush()
         {
-            TransactionalFlush(); //Performs a transactional flush since Db4o works using implicit transactions.
+            //If a transaction as not been started then perform a transactional flush.
+            //Otherwise the the transaction will take care of either calling a Commit / Rollback.
+            //[Added to support UnitOfWorkTransactionScope]
+            if (_transaction == null)
+                TransactionalFlush();
         }
 
         public void TransactionalFlush()

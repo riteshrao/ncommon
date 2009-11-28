@@ -14,12 +14,8 @@ namespace NCommon.Db4o
 
         public static void SetContainerProvider(Func<IObjectContainer> containerProvider)
         {
-            Guard.Against<ArgumentNullException>(containerProvider == null, "Expected a non-null reference to a IObjectContianer.");
             lock(_setContainerProviderLock)
-            {
-                
-            }
-            _containerProvider = containerProvider;
+                _containerProvider = containerProvider;       
         }
 
         public IUnitOfWork Create()
