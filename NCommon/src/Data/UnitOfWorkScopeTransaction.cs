@@ -95,13 +95,13 @@ namespace NCommon.Data
 		/// Gets a <see cref="IList{TEntity}"/> containing instances of <see cref="UnitOfWorkScopeTransaction"/> currently
 		/// started for the current request / thread.
 		/// </summary>
-		static LinkedList<UnitOfWorkScopeTransaction> CurrentTransactions
+		private static LinkedList<UnitOfWorkScopeTransaction> CurrentTransactions
 		{
 			get
 			{
 				var key = typeof (UnitOfWorkScopeTransaction).FullName;
 				if (!Store.Local.Contains(key))
-					Store.Local.Set<LinkedList<UnitOfWorkScopeTransaction>>(key, new LinkedList<UnitOfWorkScopeTransaction>());
+					Store.Local.Set(key, new LinkedList<UnitOfWorkScopeTransaction>());
 				return Store.Local.Get<LinkedList<UnitOfWorkScopeTransaction>>(key);
 			}
 		}

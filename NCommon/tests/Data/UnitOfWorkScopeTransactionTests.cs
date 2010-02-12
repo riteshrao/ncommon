@@ -2,7 +2,6 @@ using System;
 using System.Data;
 using NCommon.Data;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace NCommon.Tests.Data
 {
