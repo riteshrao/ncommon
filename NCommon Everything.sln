@@ -1,18 +1,23 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB Scripts", "DB Scripts", "{3A03BA71-D17C-400A-8147-B5A3A97CC2F1}"
 	ProjectSection(SolutionItems) = preProject
 		TestDB.sql = TestDB.sql
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCommon", "NCommon\src\NCommon.csproj", "{C853736D-3576-468A-A716-ACEC1CD4FAC1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCommon.EntityFramework", "NCommon.EntityFramework\src\NCommon.EntityFramework.csproj", "{98FB0800-6605-4FD9-9948-36D11C744881}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{30523764-A7D9-4037-9DA5-7355C56C2761}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{7B17ACFF-BF87-47C8-8D2C-6E6100699F00}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BA1AA1F9-24F4-4734-A811-D54B7A7DCE13}"
+	ProjectSection(SolutionItems) = preProject
+		ncommon.snk = ncommon.snk
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCommon", "NCommon\src\NCommon.csproj", "{C853736D-3576-468A-A716-ACEC1CD4FAC1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCommon.EntityFramework", "NCommon.EntityFramework\src\NCommon.EntityFramework.csproj", "{98FB0800-6605-4FD9-9948-36D11C744881}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCommon.LinqToSql", "NCommon.LinqToSql\src\NCommon.LinqToSql.csproj", "{2781A661-3EA8-4917-B043-F3193FB0F7C8}"
 EndProject
@@ -26,14 +31,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCommon.LinqToSql.Tests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCommon.NHibernate.Tests", "NCommon.NHibernate\tests\NCommon.NHibernate.Tests.csproj", "{96B9D9DE-3389-4FBF-A552-C09434E27329}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BA1AA1F9-24F4-4734-A811-D54B7A7DCE13}"
-	ProjectSection(SolutionItems) = preProject
-		ncommon.snk = ncommon.snk
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCommon.Db4o", "NCommon.Db4o\src\NCommon.Db4o.csproj", "{715AB4B8-0F34-4AA0-B842-BCF2A4270B5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCommon.Db4o.Tests", "NCommon.Db4o.Tests\NCommon.Db4o.Tests.csproj", "{7B0486B6-74A0-48FD-B27C-E6704D4F739F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCommon.Db4o.Tests", "NCommon.Db4o\tests\NCommon.Db4o.Tests.csproj", "{7B0486B6-74A0-48FD-B27C-E6704D4F739F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -92,8 +92,8 @@ Global
 		{E6957BB7-B9C6-414F-A4BD-23E038014A85} = {7B17ACFF-BF87-47C8-8D2C-6E6100699F00}
 		{96B9D9DE-3389-4FBF-A552-C09434E27329} = {7B17ACFF-BF87-47C8-8D2C-6E6100699F00}
 		{7B0486B6-74A0-48FD-B27C-E6704D4F739F} = {7B17ACFF-BF87-47C8-8D2C-6E6100699F00}
-		{98FB0800-6605-4FD9-9948-36D11C744881} = {30523764-A7D9-4037-9DA5-7355C56C2761}
 		{C853736D-3576-468A-A716-ACEC1CD4FAC1} = {30523764-A7D9-4037-9DA5-7355C56C2761}
+		{98FB0800-6605-4FD9-9948-36D11C744881} = {30523764-A7D9-4037-9DA5-7355C56C2761}
 		{2781A661-3EA8-4917-B043-F3193FB0F7C8} = {30523764-A7D9-4037-9DA5-7355C56C2761}
 		{01A6D2F9-C34E-4D87-BE7A-4F36A78BED66} = {30523764-A7D9-4037-9DA5-7355C56C2761}
 		{715AB4B8-0F34-4AA0-B842-BCF2A4270B5F} = {30523764-A7D9-4037-9DA5-7355C56C2761}
