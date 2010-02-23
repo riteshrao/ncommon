@@ -5,13 +5,15 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{A4E698A8-8E7F-401D-B0BA-CBA6CA58BBEE}</ProjectGuid>
+    <ProjectGuid>{C853736D-3576-468A-A716-ACEC1CD4FAC1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NCommon.EntityFramework.Tests</RootNamespace>
-    <AssemblyName>NCommon.EntityFramework.Tests</AssemblyName>
+    <RootNamespace>NCommon</RootNamespace>
+    <AssemblyName>NCommon</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>ncommon.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\NCommon.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,26 +38,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libs\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.5.0.9096, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Rhino.Mocks, Version=3.5.0.1337, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Rhino.Mocks.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data.Entity">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Security" />
     <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -65,31 +54,49 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain\ModelExtends.cs" />
-    <Compile Include="Domain\TestModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>TestModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="EFDataGenerator.cs" />
-    <Compile Include="EFDataGeneratorActions.cs" />
-    <Compile Include="EFRepositoryTests.cs" />
-    <Compile Include="EFTransactionTests.cs" />
-    <Compile Include="EFUnitOfWorkFactoryTests.cs" />
-    <Compile Include="EFUnitOfWorkTests.cs" />
-    <Compile Include="OrderItemsProductStrategy.cs" />
-    <Compile Include="OrderOrderItemsStrategy.cs" />
+    <Compile Include="Data\IFetchingStrategy.cs" />
+    <Compile Include="Data\InMemoryRepository.cs" />
+    <Compile Include="Events\DomainEvent.cs" />
+    <Compile Include="Events\Handles.cs" />
+    <Compile Include="Events\IDomainEvent.cs" />
+    <Compile Include="Expressions\ExpressionVisitor.cs" />
+    <Compile Include="Expressions\MemberAccessPathVisitor.cs" />
+    <Compile Include="Expressions\MemberAccessPropertyInfoVisitor.cs" />
+    <Compile Include="Extensions\CollectionExtensions.cs" />
+    <Compile Include="Extensions\SpecificationExtensions.cs" />
+    <Compile Include="Guard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Data\IRepository.cs" />
+    <Compile Include="Data\RepositoryBase.cs" />
+    <Compile Include="Rules\BusinessRule.cs" />
+    <Compile Include="Rules\BusinessRulesEvaluatorBase.cs" />
+    <Compile Include="Rules\EntityValidatorBase.cs" />
+    <Compile Include="Rules\IBusinessRule.cs" />
+    <Compile Include="Rules\IBusinessRulesEvaluator.cs" />
+    <Compile Include="Rules\IEntityValidator.cs" />
+    <Compile Include="Rules\IValidationRule.cs" />
+    <Compile Include="Rules\SpecificationRuleBase.cs" />
+    <Compile Include="Rules\ValidationError.cs" />
+    <Compile Include="Rules\ValidationResult.cs" />
+    <Compile Include="Rules\ValidationRule.cs" />
+    <Compile Include="Specifications\ISpecification.cs" />
+    <Compile Include="Specifications\Specification.cs" />
+    <Compile Include="Storage\AppStorage.cs" />
+    <Compile Include="Storage\LocalStorage.cs" />
+    <Compile Include="Storage\SessionStorage.cs" />
+    <Compile Include="Storage\Store.cs" />
+    <Compile Include="Data\ITransaction.cs" />
+    <Compile Include="Data\IUnitOfWork.cs" />
+    <Compile Include="Data\IUnitOfWorkFactory.cs" />
+    <Compile Include="Data\UnitOfWork.cs" />
+    <Compile Include="Data\UnitOfWorkScope.cs" />
+    <Compile Include="Data\UnitOfWorkScopeTransaction.cs" />
+    <Compile Include="Data\UnitOfWorkScopeTransactionOptions.cs" />
+    <Compile Include="Util\GuidCombGenerator.cs" />
+    <Compile Include="Util\Inflector.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="Domain\TestModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>TestModel.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>NCommon.Data.EntityFramework.Tests</CustomToolNamespace>
-    </EntityDeploy>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.Config" />
+    <None Include="ncommon.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

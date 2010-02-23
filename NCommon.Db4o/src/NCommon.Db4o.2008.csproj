@@ -5,15 +5,13 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{01A6D2F9-C34E-4D87-BE7A-4F36A78BED66}</ProjectGuid>
+    <ProjectGuid>{715AB4B8-0F34-4AA0-B842-BCF2A4270B5F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NCommon.NHibernate</RootNamespace>
-    <AssemblyName>NCommon.NHibernate</AssemblyName>
+    <RootNamespace>NCommon.Db4o</RootNamespace>
+    <AssemblyName>NCommon.Db4o</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>ncommon.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,13 +31,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NHibernate, Version=2.1.0.1003, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
+    <Reference Include="Db4objects.Db4o, Version=7.4.121.14026, Culture=neutral, PublicKeyToken=6199cd4f203aa8eb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\NHibernate.dll</HintPath>
+      <HintPath>..\..\Libs\Db4objects.Db4o.dll</HintPath>
     </Reference>
-    <Reference Include="NHibernate.Linq, Version=1.0.0.0, Culture=neutral, PublicKeyToken=444cf6a87fdab271, processorArchitecture=MSIL">
+    <Reference Include="Db4objects.Db4o.Linq, Version=7.4.121.14026, Culture=neutral, PublicKeyToken=6199cd4f203aa8eb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\NHibernate.Linq.dll</HintPath>
+      <HintPath>..\..\Libs\Db4objects.Db4o.Linq.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -55,15 +53,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CompositeUserTypeBase.cs" />
-    <Compile Include="NHRepository.cs" />
-    <Compile Include="NHTransaction.cs" />
-    <Compile Include="NHUnitOfWork.cs" />
-    <Compile Include="NHUnitOfWorkFactory.cs" />
+    <Compile Include="Db4oRepository.cs" />
+    <Compile Include="Db4oTransaction.cs" />
+    <Compile Include="Db4oUnitOfWork.cs" />
+    <Compile Include="Db4oUnitOfWorkFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ncommon.snk" />
+    <ProjectReference Include="..\..\NCommon\src\NCommon.2008.csproj">
+      <Project>{C853736D-3576-468A-A716-ACEC1CD4FAC1}</Project>
+      <Name>NCommon.2008</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

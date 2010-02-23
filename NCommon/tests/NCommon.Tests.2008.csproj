@@ -5,13 +5,15 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{7B0486B6-74A0-48FD-B27C-E6704D4F739F}</ProjectGuid>
+    <ProjectGuid>{0F54234D-745A-46F3-B813-ED99C1498633}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NCommon.Db4o.Tests</RootNamespace>
-    <AssemblyName>NCommon.Db4o.Tests</AssemblyName>
+    <RootNamespace>NCommon.Tests</RootNamespace>
+    <AssemblyName>NCommon.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>ncommon.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,31 +33,22 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Db4objects.Db4o, Version=7.4.121.14026, Culture=neutral, PublicKeyToken=6199cd4f203aa8eb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libs\Db4objects.Db4o.dll</HintPath>
-    </Reference>
-    <Reference Include="Db4objects.Db4o.Linq, Version=7.4.121.14026, Culture=neutral, PublicKeyToken=6199cd4f203aa8eb, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libs\Db4objects.Db4o.Linq.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libs\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <HintPath>..\..\Libs\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=2.5.2.9222, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libs\nunit.framework.dll</HintPath>
+      <HintPath>..\..\Libs\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.Mocks, Version=3.5.0.1337, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Libs\Rhino.Mocks.dll</HintPath>
+      <HintPath>..\..\Libs\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -66,29 +59,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Db4oRepositoryTests.cs" />
-    <Compile Include="Db4oTestDataActions.cs" />
-    <Compile Include="Db4oTestDataGenerator.cs" />
-    <Compile Include="Db4oTransactionTests.cs" />
-    <Compile Include="Db4oUnitOfWorkFactoryTests.cs" />
-    <Compile Include="Db4oUnitOfWorkTests.cs" />
-    <Compile Include="Domain\Address.cs" />
-    <Compile Include="Domain\Customer.cs" />
-    <Compile Include="Domain\Money.cs" />
-    <Compile Include="Domain\Order.cs" />
-    <Compile Include="Domain\OrderItem.cs" />
-    <Compile Include="Domain\Product.cs" />
+    <Compile Include="Data\InMemoryRepositoryTests.cs" />
+    <Compile Include="Data\UnitOfWorkScopeTransactionTests.cs" />
+    <Compile Include="Events\DomainEventTests.cs" />
+    <Compile Include="Expressions\MemberAccessPathVisitorTests.cs" />
+    <Compile Include="Rules\BusinessRuleEvaluatorBaseTests.cs" />
+    <Compile Include="Rules\BusinessRuleTests.cs" />
+    <Compile Include="Rules\EntityValidatorBaseTests.cs" />
+    <Compile Include="GuardTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Specifications\SpecificationRuleBaseTests.cs" />
+    <Compile Include="Specifications\SpecificationTests.cs" />
+    <Compile Include="Data\UnitOfWorkScopeTests.cs" />
+    <Compile Include="Data\UnitOfWorkTests.cs" />
+    <Compile Include="Rules\ValidationRuleTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NCommon.Db4o\src\NCommon.Db4o.csproj">
-      <Project>{715AB4B8-0F34-4AA0-B842-BCF2A4270B5F}</Project>
-      <Name>NCommon.Db4o</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NCommon\src\NCommon.csproj">
+    <ProjectReference Include="..\src\NCommon.csproj">
       <Project>{C853736D-3576-468A-A716-ACEC1CD4FAC1}</Project>
       <Name>NCommon</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ncommon.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

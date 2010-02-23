@@ -63,6 +63,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\NCommon\src\NCommon.2008.csproj">
+      <Project>{C853736D-3576-468A-A716-ACEC1CD4FAC1}</Project>
+      <Name>NCommon.2008</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <None Include="ncommon.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

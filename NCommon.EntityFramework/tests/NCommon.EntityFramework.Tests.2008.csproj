@@ -82,6 +82,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\src\NCommon.EntityFramework.2008.csproj">
+      <Project>{98FB0800-6605-4FD9-9948-36D11C744881}</Project>
+      <Name>NCommon.EntityFramework.2008</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NCommon\src\NCommon.2008.csproj">
+      <Project>{C853736D-3576-468A-A716-ACEC1CD4FAC1}</Project>
+      <Name>NCommon.2008</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <EntityDeploy Include="Domain\TestModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>TestModel.Designer.cs</LastGenOutput>

@@ -59,12 +59,6 @@
     <Compile Include="Db4oUnitOfWorkFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\NCommon\src\NCommon.csproj">
-      <Project>{C853736D-3576-468A-A716-ACEC1CD4FAC1}</Project>
-      <Name>NCommon</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

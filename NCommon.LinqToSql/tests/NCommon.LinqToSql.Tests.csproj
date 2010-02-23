@@ -101,16 +101,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\NCommon.LinqToSql.csproj">
-      <Project>{2781A661-3EA8-4917-B043-F3193FB0F7C8}</Project>
-      <Name>NCommon.LinqToSql</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\NCommon\src\NCommon.csproj">
-      <Project>{C853736D-3576-468A-A716-ACEC1CD4FAC1}</Project>
-      <Name>NCommon</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="TestData.dbml.layout">
       <DependentUpon>TestData.dbml</DependentUpon>
     </None>
