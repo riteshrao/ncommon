@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Microsoft.Practices.ServiceLocation;
-using NCommon.Storage;
+using NCommon.State;
 
 namespace NCommon.Data
 {
@@ -29,17 +29,15 @@ namespace NCommon.Data
 	/// </summary>
 	public class UnitOfWorkScopeTransaction : IDisposable
 	{
-		#region fields
 		readonly Stack<UnitOfWorkScope> _attachedScopes;
 		readonly IsolationLevel _isolationLevel;
 		readonly ITransaction _runningTransaction;
-		readonly Guid _transactionID;
+		readonly Guid _transactionId;
 		readonly IUnitOfWork _unitOfWork;
 		bool _disposed;
 		bool _transactionRolledback;
-		#endregion
+	    const string CurrentTransacitonsKey = "UnitOfWorkScopeTransactions.Key";
 
-		#region ctor
 		/// <summary>
 		/// Overloaded Constructor.
 		/// Creates a new instance of the <see cref="UnitOfWorkScopeTransaction"/> that takes in a 
@@ -54,7 +52,7 @@ namespace NCommon.Data
 		{
 			Guard.Against<ArgumentNullException>(unitOfWorkFactory == null,
 			                                     "A valid non-null instance that implements the IUnitOfWorkFactory is required.");
-			_transactionID = new Guid();
+			_transactionId = new Guid();
 			_transactionRolledback = false;
 			_disposed = false;
 			_unitOfWork = unitOfWorkFactory.Create();
@@ -62,16 +60,14 @@ namespace NCommon.Data
 			_isolationLevel = isolationLevel;
 			_attachedScopes = new Stack<UnitOfWorkScope>();
 		}
-		#endregion
 
-		#region properties
 		/// <summary>
 		/// Gets a <see cref="Guid"/> that uniqely identifies the transaction.
 		/// </summary>
 		/// <value>A <see cref="Guid"/> that uniquely identifies the transaction.</value>
 		public Guid TransactionID
 		{
-			get { return _transactionID; }
+			get { return _transactionId; }
 		}
 
 		/// <summary>
@@ -99,15 +95,17 @@ namespace NCommon.Data
 		{
 			get
 			{
-				var key = typeof (UnitOfWorkScopeTransaction).FullName;
-				if (!Store.Local.Contains(key))
-					Store.Local.Set(key, new LinkedList<UnitOfWorkScopeTransaction>());
-				return Store.Local.Get<LinkedList<UnitOfWorkScopeTransaction>>(key);
+			    var state = ServiceLocator.Current.GetInstance<IState>();
+			    var transactions = state.Local.Get<LinkedList<UnitOfWorkScopeTransaction>>(CurrentTransacitonsKey);
+                if (transactions == null)
+                {
+                    transactions = new LinkedList<UnitOfWorkScopeTransaction>();
+                    state.Local.Put(CurrentTransacitonsKey, transactions);
+                }
+			    return transactions;
 			}
 		}
-		#endregion
 
-		#region methods
 		/// <summary>
 		/// Gets a <see cref="UnitOfWorkScopeTransaction"/> instance that can be used by a <see cref="UnitOfWorkScope"/> instance.
 		/// </summary>
@@ -244,9 +242,7 @@ namespace NCommon.Data
 			_unitOfWork.Dispose();
 			CurrentTransactions.Remove(this);
 		}
-		#endregion
 
-		#region Implementation of IDisposable
 		/// <summary>
 		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
 		/// </summary>
@@ -259,6 +255,5 @@ namespace NCommon.Data
 				GC.SuppressFinalize(this);
 			}
 		}
-		#endregion
 	}
 }

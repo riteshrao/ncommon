@@ -17,7 +17,7 @@
 
 using System;
 using Microsoft.Practices.ServiceLocation;
-using NCommon.Storage;
+using NCommon.State;
 
 namespace NCommon.Data
 {
@@ -44,7 +44,11 @@ namespace NCommon.Data
         /// </value>
         public static bool HasStarted
         {
-            get { return Store.Local.Contains(currentUnitOfWorkKey); }
+            get
+            {
+                var state = ServiceLocator.Current.GetInstance<IState>();
+                return state.Local.Get<IUnitOfWork>(currentUnitOfWorkKey) == null;
+            }
         }
 
         /// <summary>
@@ -57,17 +61,17 @@ namespace NCommon.Data
         {
             get
             {
-                if (!HasStarted)
-                    return null;
-                return Store.Local.Get<IUnitOfWork>(currentUnitOfWorkKey);
+                var state = ServiceLocator.Current.GetInstance<IState>();
+                return state.Local.Get<IUnitOfWork>(currentUnitOfWorkKey);
             }
             set
             {
+                var state = ServiceLocator.Current.GetInstance<IState>();
                 if (value == null)
-                    Store.Local.Remove(currentUnitOfWorkKey);
-                    //Remove if the value is sepcified as null
+                    //Remove if the value is sepcified as null);
+                    state.Local.Remove<IUnitOfWork>(currentUnitOfWorkKey);
                 else
-                    Store.Local.Set(currentUnitOfWorkKey, value);
+                    state.Local.Put<IUnitOfWork>(currentUnitOfWorkKey, value);
             }
         }
 

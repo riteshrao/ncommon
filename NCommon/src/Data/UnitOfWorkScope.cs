@@ -19,7 +19,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Transactions;
-using NCommon.Storage;
+using Microsoft.Practices.ServiceLocation;
+using NCommon.State;
 using IsolationLevel=System.Data.IsolationLevel;
 
 namespace NCommon.Data
@@ -109,9 +110,11 @@ namespace NCommon.Data
         {
             get
             {
-                if (!Store.Local.Contains(UnitOfWorkScopeStackKey))
+                var state = ServiceLocator.Current.GetInstance<IState>();
+                var unitOfWorkScopes = state.Local.Get<Stack<UnitOfWorkScope>>(UnitOfWorkScopeStackKey);
+                if (unitOfWorkScopes == null)
                     return false;
-                return RunningScopes.Count > 0;
+                return unitOfWorkScopes.Count > 0;
             }
         }
 
@@ -139,9 +142,14 @@ namespace NCommon.Data
             get
             {
                 //Note: No locking is required since the stack is stored either on the current thread or on the current request. 
-                if (!Store.Local.Contains(UnitOfWorkScopeStackKey))
-                    Store.Local.Set(UnitOfWorkScopeStackKey, new Stack<UnitOfWorkScope>());
-                return Store.Local.Get<Stack<UnitOfWorkScope>>(UnitOfWorkScopeStackKey);
+                var state = ServiceLocator.Current.GetInstance<IState>();
+                var unitOfWorkScopes = state.Local.Get<Stack<UnitOfWorkScope>>(UnitOfWorkScopeStackKey);
+                if (unitOfWorkScopes == null)
+                {
+                    unitOfWorkScopes = new Stack<UnitOfWorkScope>();
+                    state.Local.Put<Stack<UnitOfWorkScope>>(UnitOfWorkScopeStackKey, unitOfWorkScopes);
+                }
+                return unitOfWorkScopes;
             }
         }
 

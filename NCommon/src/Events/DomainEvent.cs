@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Practices.ServiceLocation;
 using NCommon.Extensions;
-using NCommon.Storage;
+using NCommon.State;
 
 namespace NCommon.Events
 {
@@ -13,7 +13,7 @@ namespace NCommon.Events
     ///</summary>
     public class DomainEvent
     {
-        static readonly string CallbackListKey = typeof (DomainEvent).FullName + "_Callbacks";
+        static readonly string CallbackListKey = "DomainEvent.Callbacks";
 
         ///<summary>
         /// Registers a callback to be called when a domain event is raised.
@@ -22,11 +22,12 @@ namespace NCommon.Events
         ///<typeparam name="T">The domain event that the callback is registered to handle.</typeparam>
         public static void RegisterCallback<T>(Action<T> callback) where T : IDomainEvent
         {
-            var callbacks = Store.Local.Get<IList<Delegate>>(CallbackListKey);
+            var state = ServiceLocator.Current.GetInstance<IState>();
+            var callbacks = state.Local.Get<IList<Delegate>>(CallbackListKey);
             if (callbacks == null)
             {
                 callbacks = new List<Delegate>();
-                Store.Local.Set(CallbackListKey, callbacks);
+                state.Local.Put(CallbackListKey, callbacks);
             }
             callbacks.Add(callback);
         }
@@ -36,7 +37,8 @@ namespace NCommon.Events
         ///</summary>
         public static void ClearCallbacks()
         {
-            Store.Local.Remove(CallbackListKey);
+            var state = ServiceLocator.Current.GetInstance<IState>();
+            state.Application.Remove<IList<Delegate>>(CallbackListKey);
         }
 
         ///<summary>
@@ -45,11 +47,12 @@ namespace NCommon.Events
         ///<typeparam name="T"></typeparam>
         public static void Raise<T>(T @event) where T : IDomainEvent
         {
+            var state = ServiceLocator.Current.GetInstance<IState>();
             var handlers = ServiceLocator.Current.GetAllInstances<Handles<T>>();
             if (handlers != null)
                 handlers.ForEach(x => x.Handle(@event));
 
-            var callbacks = Store.Local.Get<IList<Delegate>>(CallbackListKey);
+            var callbacks = state.Local.Get<IList<Delegate>>(CallbackListKey);
             if (callbacks != null && callbacks.Count > 0)
                 callbacks.OfType<Action<T>>().ForEach(x => x(@event));
         }

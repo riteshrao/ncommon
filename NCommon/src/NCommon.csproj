@@ -63,6 +63,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq">
@@ -102,10 +103,6 @@
     <Compile Include="Rules\ValidationRule.cs" />
     <Compile Include="Specifications\ISpecification.cs" />
     <Compile Include="Specifications\Specification.cs" />
-    <Compile Include="Storage\AppStorage.cs" />
-    <Compile Include="Storage\LocalStorage.cs" />
-    <Compile Include="Storage\SessionStorage.cs" />
-    <Compile Include="Storage\Store.cs" />
     <Compile Include="Data\ITransaction.cs" />
     <Compile Include="Data\IUnitOfWork.cs" />
     <Compile Include="Data\IUnitOfWorkFactory.cs" />
@@ -113,6 +110,15 @@
     <Compile Include="Data\UnitOfWorkScope.cs" />
     <Compile Include="Data\UnitOfWorkScopeTransaction.cs" />
     <Compile Include="Data\UnitOfWorkScopeTransactionOptions.cs" />
+    <Compile Include="State\IApplicationState.cs" />
+    <Compile Include="State\ICacheState.cs" />
+    <Compile Include="State\ILocalState.cs" />
+    <Compile Include="State\Impl\ApplicationState.cs" />
+    <Compile Include="State\Impl\HttpRuntimeCache.cs" />
+    <Compile Include="State\Impl\LocalState.cs" />
+    <Compile Include="State\Impl\SessionState.cs" />
+    <Compile Include="State\ISessionState.cs" />
+    <Compile Include="State\IState.cs" />
     <Compile Include="Util\GuidCombGenerator.cs" />
     <Compile Include="Util\Inflector.cs" />
   </ItemGroup>

@@ -2,7 +2,6 @@ using System.Configuration;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using Microsoft.Practices.ServiceLocation;
-using NCommon.Storage;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
 using NUnit.Framework;
@@ -44,9 +43,7 @@ namespace NCommon.Data.NHibernate.Tests
 				})
 				.BuildSessionFactory();
 
-			Store.Local.Set("NHRepositoryTests.SessionFactory", Factory);
-			NHUnitOfWorkFactory.SetSessionProvider(
-				() => Store.Local.Get<ISessionFactory>("NHRepositoryTests.SessionFactory").OpenSession());
+			NHUnitOfWorkFactory.SetSessionProvider(Factory.OpenSession);
 
 			var locator = MockRepository.GenerateStub<IServiceLocator>();
 			locator.Stub(x => x.GetInstance<IUnitOfWorkFactory>())
@@ -60,7 +57,6 @@ namespace NCommon.Data.NHibernate.Tests
 		public virtual void TearDown()
 		{
 			NHUnitOfWorkFactory.SetSessionProvider(null);
-			Store.Local.Clear();
 			HibernatingRhinos.NHibernate.Profiler.Appender.NHibernateProfiler.Stop();
 		}
 	}
