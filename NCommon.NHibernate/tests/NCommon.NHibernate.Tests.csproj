@@ -112,7 +112,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CompositeUserTypeBaseTests.cs" />
     <Compile Include="Domain\Address.cs" />
     <Compile Include="Domain\Money.cs" />
     <Compile Include="Domain\MoneyUserType.cs" />
@@ -127,16 +126,8 @@
     <Compile Include="Mappings\OrderItemMap.cs" />
     <Compile Include="Mappings\OrderMap.cs" />
     <Compile Include="Mappings\ProductMap.cs" />
-    <Compile Include="NHRepositoryTests.cs" />
-    <Compile Include="NHTestBase.cs" />
     <Compile Include="NHTestDataActions.cs" />
     <Compile Include="NHTestDataGenerator.cs" />
-    <Compile Include="NHTransactionTests.cs" />
-    <Compile Include="NHUnitOfWorkFactoryTests.cs" />
-    <Compile Include="NHUnitOfWorkTests.cs" />
-    <Compile Include="NHUnitOfWorkTransactionTests.cs" />
-    <Compile Include="OrderItemsProductStrategy.cs" />
-    <Compile Include="OrderOrderItemsStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -60,7 +60,7 @@ namespace NCommon.Data.NHibernate
         {
             get
             {
-                return _privateSession ?? GetCurrentUnitOfWork<NHUnitOfWork>().Session;
+                return _privateSession ?? GetCurrentUnitOfWork<NHUnitOfWork>().GetSession<TEntity>();
             }
         }
 

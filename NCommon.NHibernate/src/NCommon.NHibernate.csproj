@@ -8,7 +8,7 @@
     <ProjectGuid>{01A6D2F9-C34E-4D87-BE7A-4F36A78BED66}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NCommon.NHibernate</RootNamespace>
+    <RootNamespace>NCommon.Data.NHibernate</RootNamespace>
     <AssemblyName>NCommon.NHibernate</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -77,10 +77,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CompositeUserTypeBase.cs" />
+    <Compile Include="INHSessionResolver.cs" />
+    <Compile Include="NHConfiguration.cs" />
     <Compile Include="NHRepository.cs" />
+    <Compile Include="NHSessionResolver.cs" />
     <Compile Include="NHTransaction.cs" />
     <Compile Include="NHUnitOfWork.cs" />
     <Compile Include="NHUnitOfWorkFactory.cs" />
+    <Compile Include="NHUnitOfWorkSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

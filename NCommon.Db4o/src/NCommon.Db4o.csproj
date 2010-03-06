@@ -74,6 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Db4oConfiguration.cs" />
     <Compile Include="Db4oRepository.cs" />
     <Compile Include="Db4oTransaction.cs" />
     <Compile Include="Db4oUnitOfWork.cs" />

@@ -77,6 +77,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\IContainer.cs" />
+    <Compile Include="Configuration\IDataConfiguration.cs" />
+    <Compile Include="Configuration\Impl\StateConfiguration.cs" />
+    <Compile Include="Configuration\INCommonConfig.cs" />
+    <Compile Include="Configuration\IStateConfiguration.cs" />
+    <Compile Include="Configure.cs" />
     <Compile Include="Context\IContext.cs" />
     <Compile Include="Context\IInstanceContext.cs" />
     <Compile Include="Context\Impl\Context.cs" />
@@ -96,6 +102,7 @@
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\SpecificationExtensions.cs" />
     <Compile Include="Guard.cs" />
+    <Compile Include="Configuration\Impl\NCommonConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\IRepository.cs" />
     <Compile Include="Data\RepositoryBase.cs" />
@@ -161,6 +168,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

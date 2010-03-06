@@ -15,7 +15,10 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using NCommon.Extensions;
 using NHibernate;
 
 namespace NCommon.Data.NHibernate
@@ -26,9 +29,10 @@ namespace NCommon.Data.NHibernate
     /// </summary>
     public class NHUnitOfWork : IUnitOfWork
     {
-        private bool _disposed;
-        private ISession _session; // The session used by the <see cref="NHUnitOfWork"/> instance.
-        private NHTransaction _transaction; // The current transaction under which the UnitOfWork instance is operating.
+        bool _disposed;
+        NHTransaction _transaction;
+        readonly NHUnitOfWorkSettings _settings;
+        readonly IDictionary<Guid, ISession> _openSessions = new Dictionary<Guid, ISession>();
 
         /// <summary>
         /// Default Constructor.
@@ -36,19 +40,30 @@ namespace NCommon.Data.NHibernate
         /// NHibernate <see cref="ISession"/> instance.
         /// </summary>
         /// <param name="session">The NHiberante <see cref="ISession"/> instance to use.</param>
-        public NHUnitOfWork(ISession session)
+        public NHUnitOfWork(NHUnitOfWorkSettings settings)
         {
-            Guard.Against<ArgumentNullException>(session == null, "Cannot create a NHUnitOfWork that uses a null reference ISession instance.");
-            _session = session;
+            _settings = settings;
         }
 
         /// <summary>
-        /// Gets the <see cref="ISession"/> that the <see cref="NHUnitOfWork"/> wraps.
+        /// Gets a <see cref="ISession"/> instance that can be used for querying and managing
+        /// instances of <typeparamref name="T"/>
         /// </summary>
-        public ISession Session
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public ISession GetSession<T>()
         {
-            get { return _session; }
-        } 
+            var sessionKey = _settings.NHSessionResolver.GetSessionKeyFor<T>();
+            if (_openSessions.ContainsKey(sessionKey))
+                return _openSessions[sessionKey];
+
+            //Opening a new session...
+            var session = _settings.NHSessionResolver.OpenSessionFor<T>();
+            _openSessions.Add(sessionKey, session);
+            if (IsInTransaction)
+                _transaction.RegisterNHTransaction(session.BeginTransaction());
+            return session;
+        }
 
         /// <summary>
         /// Gets a boolean value indicating whether the current unit of work is running under
@@ -65,7 +80,7 @@ namespace NCommon.Data.NHibernate
         /// <returns></returns>
         public ITransaction BeginTransaction()
         {
-            return BeginTransaction(IsolationLevel.ReadCommitted); //Default isolation is ReadCommitted
+            return BeginTransaction(_settings.DefaultIsolation); 
         }
 
         /// <summary>
@@ -80,7 +95,10 @@ namespace NCommon.Data.NHibernate
             Guard.Against<InvalidOperationException>(_transaction != null,
                                                      "Cannot begin a new transaction while an existing transaction is still running. " + 
                                                      "Please commit or rollback the existing transaction before starting a new one.");
-            _transaction = new NHTransaction(_session.BeginTransaction(isolationLevel));
+            _transaction = new NHTransaction(_openSessions
+                .Select(session => session.Value.BeginTransaction())
+                .ToArray());
+
             _transaction.TransactionCommitted += TransactionCommitted;
             _transaction.TransactionRolledback += TransactionRolledback;
             return _transaction;
@@ -91,7 +109,7 @@ namespace NCommon.Data.NHibernate
         /// </summary>
         public void Flush()
         {
-            _session.Flush(); //Flush the underlying session.
+            _openSessions.ForEach(session => session.Value.Flush());
         }
 
         /// <summary>
@@ -100,7 +118,7 @@ namespace NCommon.Data.NHibernate
         /// </summary>
         public void TransactionalFlush()
         {
-            TransactionalFlush(IsolationLevel.ReadCommitted);
+            TransactionalFlush(_settings.DefaultIsolation);
         }
 
         /// <summary>
@@ -115,7 +133,7 @@ namespace NCommon.Data.NHibernate
                 BeginTransaction(isolationLevel);
             try
             {
-                _session.Flush();
+                Flush();
                 _transaction.Commit();
             }
             catch 
@@ -187,10 +205,10 @@ namespace NCommon.Data.NHibernate
                 _transaction.Dispose();
                 _transaction = null;
             }
-            if (_session != null)
+            if (_openSessions.Count > 0)
             {
-                _session.Dispose();
-                _session = null;
+                _openSessions.ForEach(session => session.Value.Dispose());
+                _openSessions.Clear();
             }
             _disposed = true;
         }

@@ -47,7 +47,7 @@ namespace NCommon.Data.NHibernate.Tests
 				})
 				.BuildSessionFactory();
 
-			NHUnitOfWorkFactory.SetSessionProvider(Factory.OpenSession);
+            //NHUnitOfWorkFactory.SetSessionProvider(Factory.OpenSession);
 
 			Locator = MockRepository.GenerateStub<IServiceLocator>();
 			Locator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(new NHUnitOfWorkFactory());
@@ -66,7 +66,7 @@ namespace NCommon.Data.NHibernate.Tests
 		[TestFixtureTearDown]
 		public virtual void TearDown()
 		{
-			NHUnitOfWorkFactory.SetSessionProvider(null);
+            //NHUnitOfWorkFactory.SetSessionProvider(null);
 			HibernatingRhinos.NHibernate.Profiler.Appender.NHibernateProfiler.Stop();
 		}
 	}

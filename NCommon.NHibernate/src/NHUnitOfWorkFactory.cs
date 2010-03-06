@@ -15,6 +15,7 @@
 #endregion
 
 using System;
+using System.Data;
 using NHibernate;
 
 namespace NCommon.Data.NHibernate
@@ -25,29 +26,37 @@ namespace NCommon.Data.NHibernate
     /// </summary>
     public class NHUnitOfWorkFactory : IUnitOfWorkFactory
     {
-        private static Func<ISession> _sessionProvider;
-        private static readonly object _sessionProviderLock = new object();
+        readonly NHUnitOfWorkSettings _settings = new NHUnitOfWorkSettings
+        {
+            DefaultIsolation = IsolationLevel.ReadCommitted,
+            NHSessionResolver = new NHSessionResolver()
+        };
 
         /// <summary>
-        /// Sets the delegate to be used for building <see cref="ISession"/> instances.
+        /// 
         /// </summary>
-        /// <param name="sessionProvider">The delegate used for building <see cref="ISession"/> instances.</param>
-        public static void SetSessionProvider (Func<ISession> sessionProvider)
+        public IsolationLevel DefaultIsolation 
         {
-            lock(_sessionProviderLock)
-                _sessionProvider = sessionProvider;
+            get { return _settings.DefaultIsolation; }
+            set { _settings.DefaultIsolation = value; }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="factoryProvider"></param>
+        public void RegisterSessionFactoryProvider(Func<ISessionFactory> factoryProvider)
+        {
+            _settings.NHSessionResolver.RegisterSessionFactoryProvider(factoryProvider);
+        }
+        
         /// <summary>
         /// Creates a new instance of <see cref="IUnitOfWork"/>.
         /// </summary>
         /// <returns></returns>
         public IUnitOfWork Create()
         {
-            Guard.Against<InvalidOperationException>(_sessionProvider == null,
-                                                    "A ISession provider has not been specified. Please specify a " +
-                                                     "provider using SetSessionProvider before creating NHUnitOfWork instances");
-            return new NHUnitOfWork(_sessionProvider());
+            return new NHUnitOfWork(_settings);
         }
     }
 }

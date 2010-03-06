@@ -15,23 +15,33 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
+using NCommon.Extensions;
 
 namespace NCommon.Data.NHibernate
 {
     public class NHTransaction : ITransaction
     {
-        private bool _disposed;
-        private readonly global::NHibernate.ITransaction _transaction;
+        bool _disposed;
+        readonly ICollection<global::NHibernate.ITransaction> _transactions = new HashSet<global::NHibernate.ITransaction>();
 
         /// <summary>
         /// Default Constructor.
         /// Creates a new instance of the <see cref="NHTransaction"/> instance.
         /// </summary>
-        /// <param name="transaction">The underlying NHibernate.ITransaction instance.</param>
-        public NHTransaction(global::NHibernate.ITransaction transaction)
+        /// <param name="transactions">The underlying NHibernate.ITransaction instance.</param>
+        public NHTransaction(params global::NHibernate.ITransaction[] transactions)
         {
-            Guard.Against<ArgumentNullException>(transaction == null, "Expected a non null NHibernate.ITransaction instance.");
-            _transaction = transaction;
+            transactions.ForEach(tx => _transactions.Add(tx));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="transaction"></param>
+        public void RegisterNHTransaction(global::NHibernate.ITransaction transaction)
+        {
+            _transactions.Add(transaction);
         }
 
         /// <summary>
@@ -50,14 +60,18 @@ namespace NCommon.Data.NHibernate
         /// <param name="disposing"></param>
         private void Dispose(bool disposing)
         {
-            if (disposing)
+            if (!disposing) 
+                return;
+
+            if (_disposed) 
+                return;
+
+            if (_transactions.Count > 0)
             {
-                if (!_disposed)
-                {
-                    _transaction.Dispose();
-                    _disposed = true;
-                }
+                _transactions.ForEach(tx => tx.Dispose());
+                _transactions.Clear();     
             }
+            _disposed = true;
         }
 
         /// <summary>
@@ -77,8 +91,7 @@ namespace NCommon.Data.NHibernate
         {
             if (_disposed)
                 throw new ObjectDisposedException("NHTransaction", "Cannot commit a disposed transaction.");
-
-            _transaction.Commit();
+            _transactions.ForEach(tx => tx.Commit());
             if (TransactionCommitted != null)
                 TransactionCommitted(this, EventArgs.Empty);
         }
@@ -91,7 +104,7 @@ namespace NCommon.Data.NHibernate
             if (_disposed)
                 throw new ObjectDisposedException("NHTransaction", "Cannot rollback a disposed transaction.");
 
-            _transaction.Rollback();
+            _transactions.ForEach(tx => tx.Rollback());
             if (TransactionRolledback != null)
                 TransactionRolledback(this, EventArgs.Empty);
         }
