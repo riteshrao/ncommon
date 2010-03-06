@@ -8,7 +8,7 @@
     <ProjectGuid>{98FB0800-6605-4FD9-9948-36D11C744881}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NCommon.EntityFramework</RootNamespace>
+    <RootNamespace>NCommon.Data.EntityFramework</RootNamespace>
     <AssemblyName>NCommon.EntityFramework</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

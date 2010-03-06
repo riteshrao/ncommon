@@ -1,7 +1,6 @@
 using FluentNHibernate.Mapping;
-using NCommon.Data.NHibernate.Tests.Domain;
 
-namespace NCommon.Data.NHibernate.Tests.Mappings
+namespace NCommon.Data.NHibernate.Tests.OrdersDomain.Mappings
 {
 	public class CustomerMap : ClassMap<Customer>
 	{

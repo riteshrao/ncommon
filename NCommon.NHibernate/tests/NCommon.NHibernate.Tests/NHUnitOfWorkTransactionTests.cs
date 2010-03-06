@@ -1,7 +1,8 @@
 using System;
 using System.Linq;
 using System.Transactions;
-using NCommon.Data.NHibernate.Tests.Domain;
+using NCommon.Data.NHibernate.Tests.HRDomain.Domain;
+using NCommon.Data.NHibernate.Tests.OrdersDomain;
 using NUnit.Framework;
 
 namespace NCommon.Data.NHibernate.Tests
@@ -15,7 +16,7 @@ namespace NCommon.Data.NHibernate.Tests
 		[Test]
 		public void changes_are_persisted_when_ambient_scope_is_committed()
 		{
-            using (var testData = new NHTestDataGenerator(Factory.OpenSession()))
+            using (var testData = new NHTestDataGenerator(OrdersDomainFactory.OpenSession()))
             {
                 testData.Batch(actions => actions.CreateCustomer());
                 using (var ambientScope = new TransactionScope())
@@ -41,7 +42,7 @@ namespace NCommon.Data.NHibernate.Tests
 		[Test]
 		public void changes_are_not_persisted_when_ambient_transaction_rolls_back()
 		{
-            using (var testData = new NHTestDataGenerator(Factory.OpenSession()))
+            using (var testData = new NHTestDataGenerator(OrdersDomainFactory.OpenSession()))
             {
                 testData.Batch(actions => actions.CreateCustomer());
                 using (var ambientScope = new TransactionScope())
@@ -65,7 +66,7 @@ namespace NCommon.Data.NHibernate.Tests
 		[Test]
 		public void when_ambient_transaction_is_running_multiple_scopes_work()
 		{
-            using (var testData = new NHTestDataGenerator(Factory.OpenSession()))
+            using (var testData = new NHTestDataGenerator(OrdersDomainFactory.OpenSession()))
             {
                 testData.Batch(actions => actions.CreateCustomerInState("LA"));
                 using (var ambientScope = new TransactionScope())
@@ -103,7 +104,7 @@ namespace NCommon.Data.NHibernate.Tests
 		[Test]
 		public void when_ambient_transaction_is_running_and_a_previous_scope_rollsback_new_scope_still_works()
 		{
-            using (var testData = new NHTestDataGenerator(Factory.OpenSession()))
+            using (var testData = new NHTestDataGenerator(OrdersDomainFactory.OpenSession()))
             {
                 testData.Batch(actions => actions.CreateCustomer());
 
@@ -176,7 +177,7 @@ namespace NCommon.Data.NHibernate.Tests
 			});
 
             var newCustomerName = "Changed" + new Random().Next(0, int.MaxValue);
-            using (var testData = new NHTestDataGenerator(Factory.OpenSession()))
+            using (var testData = new NHTestDataGenerator(OrdersDomainFactory.OpenSession()))
             {
                 testData.Batch(actions => actions.CreateCustomer());
                
@@ -195,5 +196,42 @@ namespace NCommon.Data.NHibernate.Tests
                 Assert.That(checkCustomer.FirstName, Is.EqualTo(newCustomerName));
             }
 		}
+
+        [Test]
+        public void rolling_back_scope_rollsback_everything_for_all_managed_sessions()
+        {
+            using (new UnitOfWorkScope())
+            {
+                var customerRepository = new NHRepository<Customer>();
+                var salesPersonRepository = new NHRepository<SalesPerson>();
+
+                var customer = new Customer
+                {
+                    FirstName = "Should Not Save",
+                    LastName = "Should Not Save."
+                };
+
+                var salesPerson = new SalesPerson
+                {
+                    FirstName = "Should Not Save",
+                    LastName = "Should Not Save"
+                };
+
+                customerRepository.Save(customer);
+                salesPersonRepository.Save(salesPerson);
+            } //Rolling back all operations
+
+            using (var scope = new UnitOfWorkScope())
+            {
+                var customerRepository = new NHRepository<Customer>();
+                var salesPersonRepository = new NHRepository<SalesPerson>();
+
+                var customer = customerRepository.FirstOrDefault();
+                var salesPerson = salesPersonRepository.FirstOrDefault();
+                Assert.That(customer, Is.Null);
+                Assert.That(salesPerson, Is.Null);
+                scope.Commit();
+            }
+        }
 	}
 }

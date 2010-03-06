@@ -1,7 +1,7 @@
 using FluentNHibernate.Mapping;
-using NCommon.Data.NHibernate.Tests.Domain;
+using NCommon.Data.NHibernate.Tests.OrdersDomain;
 
-namespace NCommon.Data.NHibernate.Tests.Mappings
+namespace NCommon.Data.NHibernate.Tests.OrdersDomain.Mappings
 {
 	public class OrderItemMap : ClassMap<OrderItem>
 	{

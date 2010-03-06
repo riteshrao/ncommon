@@ -1,7 +1,6 @@
 using System;
 using System.Data;
 using Db4objects.Db4o;
-using NCommon.Data;
 
 namespace NCommon.Data.Db4o
 {
@@ -36,7 +35,7 @@ namespace NCommon.Data.Db4o
             Guard.Against<InvalidOperationException>(_transaction != null,
                                                      "Cannot begin a new transaction while an existing transaction is still running. " +
                                                      "Please commit or rollback the existing transaction before starting a new one.");
-            _transaction = new Db4oTransaction(ObjectContainer);
+            _transaction = new Db4oTransaction(isolationLevel, ObjectContainer);
             _transaction.TransactionCommitted += TransactionCommitted;
             _transaction.TransactionRolledback += TransactionRolledback;
             return _transaction;

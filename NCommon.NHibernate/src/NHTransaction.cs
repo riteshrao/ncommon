@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using NCommon.Extensions;
 
 namespace NCommon.Data.NHibernate
@@ -30,48 +31,10 @@ namespace NCommon.Data.NHibernate
         /// Creates a new instance of the <see cref="NHTransaction"/> instance.
         /// </summary>
         /// <param name="transactions">The underlying NHibernate.ITransaction instance.</param>
-        public NHTransaction(params global::NHibernate.ITransaction[] transactions)
+        public NHTransaction(IsolationLevel isolationLevel, params global::NHibernate.ITransaction[] transactions)
         {
+            IsolationLevel = isolationLevel;
             transactions.ForEach(tx => _transactions.Add(tx));
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="transaction"></param>
-        public void RegisterNHTransaction(global::NHibernate.ITransaction transaction)
-        {
-            _transactions.Add(transaction);
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Disposes off managed and un-managed resources used by the <see cref="NHTransaction"/> instnace.
-        /// </summary>
-        /// <param name="disposing"></param>
-        private void Dispose(bool disposing)
-        {
-            if (!disposing) 
-                return;
-
-            if (_disposed) 
-                return;
-
-            if (_transactions.Count > 0)
-            {
-                _transactions.ForEach(tx => tx.Dispose());
-                _transactions.Clear();     
-            }
-            _disposed = true;
         }
 
         /// <summary>
@@ -83,6 +46,20 @@ namespace NCommon.Data.NHibernate
         /// Event raised when the transaction has been rolledback.
         /// </summary>
         public event EventHandler TransactionRolledback;
+
+        /// <summary>
+        /// The isolation level of the transaction.
+        /// </summary>
+        public IsolationLevel IsolationLevel { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="transaction"></param>
+        public void RegisterNHTransaction(global::NHibernate.ITransaction transaction)
+        {
+            _transactions.Add(transaction);
+        }
 
         /// <summary>
         /// Commits the changes made to the data store.
@@ -107,6 +84,36 @@ namespace NCommon.Data.NHibernate
             _transactions.ForEach(tx => tx.Rollback());
             if (TransactionRolledback != null)
                 TransactionRolledback(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2</filterpriority>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Disposes off managed and un-managed resources used by the <see cref="NHTransaction"/> instnace.
+        /// </summary>
+        /// <param name="disposing"></param>
+        private void Dispose(bool disposing)
+        {
+            if (!disposing)
+                return;
+
+            if (_disposed)
+                return;
+
+            if (_transactions.Count > 0)
+            {
+                _transactions.ForEach(tx => tx.Dispose());
+                _transactions.Clear();
+            }
+            _disposed = true;
         }
     }
 }

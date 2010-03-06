@@ -21,9 +21,9 @@ namespace NCommon.Data.NHibernate
             return this;
         }
 
-        public void Configure(IContainer container)
+        public void Configure(IContainerAdapter containerAdapter)
         {
-            container.RegisterInstance<IUnitOfWorkFactory>(_factory);
+            containerAdapter.RegisterInstance<IUnitOfWorkFactory>(_factory);
         }
     }
 }

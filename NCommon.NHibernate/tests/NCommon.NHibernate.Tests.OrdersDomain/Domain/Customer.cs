@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace NCommon.Data.NHibernate.Tests.Domain
+namespace NCommon.Data.NHibernate.Tests.OrdersDomain
 {
     public class Customer
     {

@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using Db4objects.Db4o;
 using NCommon.Data;
 
@@ -10,11 +11,13 @@ namespace NCommon.Data.Db4o
     public class Db4oTransaction : ITransaction
     {
         bool _disposed;
+        readonly IsolationLevel _isolationLevel;
         readonly IObjectContainer _contianer;
 
-        public Db4oTransaction(IObjectContainer container)
+        public Db4oTransaction(IsolationLevel isolationLevel, IObjectContainer container)
         {
             Guard.Against<ArgumentNullException>(container == null, "Expected a non-null IObjectContainer instance.");
+            _isolationLevel = isolationLevel;
             _contianer = container;
         }
 
@@ -34,6 +37,11 @@ namespace NCommon.Data.Db4o
             if (disposing && _contianer != null)
                 _contianer.Dispose();
             _disposed = true;
+        }
+
+        public IsolationLevel IsolationLevel
+        {
+            get { return _isolationLevel; }
         }
 
         public void Commit()

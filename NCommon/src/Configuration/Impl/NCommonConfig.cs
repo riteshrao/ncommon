@@ -9,25 +9,25 @@ namespace NCommon.Configuration.Impl
     ///</summary>
     public class NCommonConfig : INCommonConfig
     {
-        readonly IContainer _container;
+        readonly IContainerAdapter _containerAdapter;
 
         ///<summary>
         ///</summary>
-        ///<param name="container"></param>
-        public NCommonConfig(IContainer container)
+        ///<param name="containerAdapter"></param>
+        public NCommonConfig(IContainerAdapter containerAdapter)
         {
-            _container = container;
+            _containerAdapter = containerAdapter;
             InitializeDefaults();
         }
 
         void InitializeDefaults()
         {
-            _container.Register<IContext, Context.Impl.Context>();
-            _container.Register<ILocalStateSelector, DefaultLocalStateSelector>();
-            _container.Register<ISessionStateSelector, DefaultSessionStateSelector>();
-            _container.Register<ILocalState, LocalStateWrapper>();
-            _container.Register<ISessionState, SessionStateWrapper>();
-            _container.RegisterSingleton<IApplicationState, ApplicationState>();
+            _containerAdapter.Register<IContext, Context.Impl.Context>();
+            _containerAdapter.Register<ILocalStateSelector, DefaultLocalStateSelector>();
+            _containerAdapter.Register<ISessionStateSelector, DefaultSessionStateSelector>();
+            _containerAdapter.Register<ILocalState, LocalStateWrapper>();
+            _containerAdapter.Register<ISessionState, SessionStateWrapper>();
+            _containerAdapter.RegisterSingleton<IApplicationState, ApplicationState>();
         }
 
         ///<summary>
@@ -36,7 +36,7 @@ namespace NCommon.Configuration.Impl
         ///<returns></returns>
         public INCommonConfig ConfigureState(Action<IStateConfiguration> config)
         {
-            config(new StateConfiguration(_container));
+            config(new StateConfiguration(_containerAdapter));
             return this;
         }
 
@@ -48,7 +48,7 @@ namespace NCommon.Configuration.Impl
         public INCommonConfig ConfigureData<T>(Action<T> config) where T : IDataConfiguration
         {
             var dataConfiguration = (IDataConfiguration) Activator.CreateInstance(typeof (T));
-            dataConfiguration.Configure(_container);
+            dataConfiguration.Configure(_containerAdapter);
             return this;
         }
     }

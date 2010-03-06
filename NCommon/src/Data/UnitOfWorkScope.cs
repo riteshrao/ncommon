@@ -14,7 +14,6 @@
 //limitations under the License. 
 #endregion
 
-
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -37,17 +36,10 @@ namespace NCommon.Data
     /// </summary>
     public class UnitOfWorkScope : IDisposable
     {
-        #region fields
-
-        private static readonly string UnitOfWorkScopeStackKey = typeof (UnitOfWorkScope).FullName +
-                                                                 ".RunningScopeStack";
-
         private UnitOfWorkScopeTransaction _currentTransaction;
         private bool _disposed;
     	private readonly bool _autoComplete;
-        #endregion
-
-        #region ctor
+        private static readonly string UnitOfWorkScopeStackKey = typeof(UnitOfWorkScope).FullName + ".RunningScopeStack";
 
         /// <summary>
         /// Default Constuctor.
@@ -97,10 +89,6 @@ namespace NCommon.Data
                                                                                     transactionOptions);
             RegisterScope(this);
         }
-
-        #endregion
-
-        #region properties
 
         /// <summary>
         /// Checks if the current thread or request has a <see cref="UnitOfWorkScope"/> instance started.
@@ -164,9 +152,6 @@ namespace NCommon.Data
             }
         }
 
-        #endregion
-
-        #region methods
 		/// <summary>
 		/// Gets the current isolation level to use for a <see cref="UnitOfWorkScopeTransaction"/>
 		/// </summary>
@@ -294,6 +279,5 @@ namespace NCommon.Data
             _currentTransaction.Commit(this);
             _currentTransaction = null;
         }
-        #endregion
     }
 }

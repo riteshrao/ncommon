@@ -14,7 +14,7 @@
 //limitations under the License. 
 #endregion
 
-namespace NCommon.Data.NHibernate.Tests.Domain
+namespace NCommon.Data.NHibernate.Tests.OrdersDomain
 {
     public class Address
     {

@@ -15,7 +15,9 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using NHibernate;
+using NHibernate.Metadata;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -37,15 +39,15 @@ namespace NCommon.Data.NHibernate.Tests
         [Test]
         public void Create_Returns_NHUnitOfWork_Instance_When_DataContextProvider_Has_Been_Set()
         {
-            NHUnitOfWorkFactory.SetSessionProvider(() => MockRepository.GenerateStub<ISession>());
-
             var factory = new NHUnitOfWorkFactory();
+            var sessionFactory = MockRepository.GenerateStub<ISessionFactory>();
+            sessionFactory.Stub(x => x.GetAllClassMetadata()).Return(
+                MockRepository.GenerateStub<IDictionary<string, IClassMetadata>>());
+            factory.RegisterSessionFactoryProvider(() => sessionFactory);
             var uowInstance = factory.Create();
 
             Assert.That(uowInstance, Is.Not.Null);
             Assert.That(uowInstance, Is.TypeOf(typeof(NHUnitOfWork)));
-
-            NHUnitOfWorkFactory.SetSessionProvider(null);
         }
     }
 }

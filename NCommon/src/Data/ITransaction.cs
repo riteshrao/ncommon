@@ -16,6 +16,7 @@
 
 
 using System;
+using System.Data;
 
 namespace NCommon.Data
 {
@@ -34,6 +35,11 @@ namespace NCommon.Data
         /// Event raised when the transaction has been rolledback.
         /// </summary>
         event EventHandler TransactionRolledback;
+
+        /// <summary>
+        /// The isolation level of the transaction.
+        /// </summary>
+        IsolationLevel IsolationLevel { get; }
 
         /// <summary>
         /// Commits the changes made to the data store.

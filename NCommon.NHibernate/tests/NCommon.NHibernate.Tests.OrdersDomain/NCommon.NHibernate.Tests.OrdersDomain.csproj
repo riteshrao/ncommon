@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6FE3005E-FFA1-4DE7-BC47-995D53CFB9CB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NCommon.Data.NHibernate.Tests.OrdersDomain</RootNamespace>
+    <AssemblyName>NCommon.NHibernate.Tests.OrdersDomain</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FluentNHibernate">
+      <HintPath>..\NCommon.NHibernate.Tests\bin\Debug\FluentNHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\..\..\Libs\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Domain\Address.cs" />
+    <Compile Include="Domain\Customer.cs" />
+    <Compile Include="Domain\Money.cs" />
+    <Compile Include="Domain\MoneyUserType.cs" />
+    <Compile Include="Domain\MonthlySalesSummary.cs" />
+    <Compile Include="Domain\Order.cs" />
+    <Compile Include="Domain\OrderItem.cs" />
+    <Compile Include="Domain\Product.cs" />
+    <Compile Include="Mappings\CustomerMap.cs" />
+    <Compile Include="Mappings\MonthlySalesSummaryMap.cs" />
+    <Compile Include="Mappings\OrderItemMap.cs" />
+    <Compile Include="Mappings\OrderMap.cs" />
+    <Compile Include="Mappings\ProductMap.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\NCommon\src\NCommon.csproj">
+      <Project>{C853736D-3576-468A-A716-ACEC1CD4FAC1}</Project>
+      <Name>NCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\src\NCommon.NHibernate.csproj">
+      <Project>{01A6D2F9-C34E-4D87-BE7A-4F36A78BED66}</Project>
+      <Name>NCommon.NHibernate %28src\NCommon.NHibernate%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

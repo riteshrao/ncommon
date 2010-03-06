@@ -19,13 +19,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
 using Microsoft.Practices.ServiceLocation;
-using NCommon.Data.NHibernate.Tests.Domain;
+using NCommon.Data.NHibernate.Tests.HRDomain.Domain;
 using NCommon.Extensions;
+using NCommon.Data.NHibernate.Tests.OrdersDomain;
 using NCommon.Specifications;
 using NHibernate;
 using NUnit.Framework;
 using Rhino.Mocks;
-using IsolationLevel = System.Data.IsolationLevel;
 
 namespace NCommon.Data.NHibernate.Tests
 {
@@ -96,7 +96,7 @@ namespace NCommon.Data.NHibernate.Tests
             var changedShipDate = DateTime.Now.AddDays(1);
             var changedOrderDate = DateTime.Now.AddDays(2);
 
-            using (var testData = new NHTestDataGenerator(Factory.OpenSession()))
+            using (var testData = new NHTestDataGenerator(OrdersDomainFactory.OpenSession()))
             {
                 testData.Batch(actions =>
                                actions.CreateOrderForCustomer(actions.CreateCustomer()));
@@ -137,7 +137,7 @@ namespace NCommon.Data.NHibernate.Tests
         [Test]
         public void Query_Allows_Eger_Loading_Using_With()
         {
-            using (var testData = new NHTestDataGenerator(Factory.OpenSession()))
+            using (var testData = new NHTestDataGenerator(OrdersDomainFactory.OpenSession()))
             {
                 testData.Batch(actions =>
                                actions.CreateOrderForCustomer(actions.CreateCustomer()));
@@ -157,7 +157,7 @@ namespace NCommon.Data.NHibernate.Tests
         [Test]
         public void Query_Allows_Lazy_Load_While_UnitOfWork_Still_Running()
         {
-            using (var testData = new NHTestDataGenerator(Factory.OpenSession()))
+            using (var testData = new NHTestDataGenerator(OrdersDomainFactory.OpenSession()))
             using (new UnitOfWorkScope())
             {
                 testData.Batch(actions =>
@@ -178,7 +178,7 @@ namespace NCommon.Data.NHibernate.Tests
         [Test]
         public void Query_Allows_Projection_Using_Select_Projection()
         {
-            using (var testData = new NHTestDataGenerator(Factory.OpenSession()))
+            using (var testData = new NHTestDataGenerator(OrdersDomainFactory.OpenSession()))
             using (new UnitOfWorkScope())
             {
                 testData.Batch(actions =>
@@ -205,7 +205,7 @@ namespace NCommon.Data.NHibernate.Tests
         [Test]
         public void Query_Throws_Exception_When_LazyLoading_After_UnitOfWork_Is_Finished()
         {
-            using (var testData = new NHTestDataGenerator(Factory.OpenSession()))
+            using (var testData = new NHTestDataGenerator(OrdersDomainFactory.OpenSession()))
             {
                 testData.Batch(actions =>
                                actions.CreateOrderForCustomer(actions.CreateCustomer()));
@@ -226,7 +226,7 @@ namespace NCommon.Data.NHibernate.Tests
         [Test]
         public void Query_Using_OrderBy_With_QueryMethod_Returns_Matched_Records_Only()
         {
-            using (var testData = new NHTestDataGenerator(Factory.OpenSession()))
+            using (var testData = new NHTestDataGenerator(OrdersDomainFactory.OpenSession()))
             using (new UnitOfWorkScope())
             {
                 testData.Batch(actions =>
@@ -250,7 +250,7 @@ namespace NCommon.Data.NHibernate.Tests
         [Test]
         public void Query_Using_QueryMethod_Returns_Matched_Records_Only()
         {
-            using (var testData = new NHTestDataGenerator(Factory.OpenSession()))
+            using (var testData = new NHTestDataGenerator(OrdersDomainFactory.OpenSession()))
             using (new UnitOfWorkScope())
             {
                 testData.Batch(actions =>
@@ -278,13 +278,13 @@ namespace NCommon.Data.NHibernate.Tests
             //the queryState local variable. The test then proceeds to build a query using the specification
             //and enumerates over the states array and executes the query by changing the queryState parameter.
 
-            var states = new[] {"PA", "LA"};
+            var states = new[] { "PA", "LA" };
             var queryState = string.Empty;
 
             var spec = new Specification<Order>((order) => order.Customer.Address.State == queryState);
             var repository = new NHRepository<Order>();
 
-            using (var testData = new NHTestDataGenerator(Factory.OpenSession()))
+            using (var testData = new NHTestDataGenerator(OrdersDomainFactory.OpenSession()))
             using (new UnitOfWorkScope())
             {
                 testData.Batch(actions =>
@@ -323,14 +323,14 @@ namespace NCommon.Data.NHibernate.Tests
         [Test]
         public void Query_With_No_UnitOfWork_Throws_InvalidOperationException()
         {
-            Assert.Throws<InvalidOperationException>(() => { new NHRepository<Customer> {new Customer()}; });
+            Assert.Throws<InvalidOperationException>(() => { new NHRepository<Customer> { new Customer() }; });
         }
 
         [Test]
         public void Repository_For_Uses_Registered_Fetching_Strategies()
         {
             IEnumerable<Order> orders;
-            using (var testData = new NHTestDataGenerator(Factory.OpenSession()))
+            using (var testData = new NHTestDataGenerator(OrdersDomainFactory.OpenSession()))
             using (new UnitOfWorkScope())
             {
                 testData.Batch(actions =>
@@ -454,7 +454,7 @@ namespace NCommon.Data.NHibernate.Tests
         {
             var updatedDate = DateTime.Now;
 
-            using (var testData = new NHTestDataGenerator(Factory.OpenSession()))
+            using (var testData = new NHTestDataGenerator(OrdersDomainFactory.OpenSession()))
             {
                 testData.Batch(actions =>
                                actions.CreateOrderForCustomer(actions.CreateCustomer()));
@@ -490,7 +490,7 @@ namespace NCommon.Data.NHibernate.Tests
         [Test]
         public void UnitOfWork_Rolledback_When_Containing_TransactionScope_Is_Rolledback()
         {
-            using (var testData = new NHTestDataGenerator(Factory.OpenSession()))
+            using (var testData = new NHTestDataGenerator(OrdersDomainFactory.OpenSession()))
             {
                 testData.Batch(actions =>
                                actions.CreateOrderForCustomer(actions.CreateCustomer()));
@@ -499,7 +499,7 @@ namespace NCommon.Data.NHibernate.Tests
                 DateTime oldDate;
 
                 using (var txScope = new TransactionScope(TransactionScopeOption.Required))
-                using (var uowScope = new UnitOfWorkScope(IsolationLevel.Serializable))
+                using (var uowScope = new UnitOfWorkScope(System.Data.IsolationLevel.Serializable))
                 {
                     var ordersRepository = new NHRepository<Order>();
                     var order = (from o in ordersRepository
@@ -527,7 +527,7 @@ namespace NCommon.Data.NHibernate.Tests
         [Test]
         public void When_Calling_CalculateTotal_On_Order_Returns_Valid_When_Under_UnitOfWork()
         {
-            using (var testData = new NHTestDataGenerator(Factory.OpenSession()))
+            using (var testData = new NHTestDataGenerator(OrdersDomainFactory.OpenSession()))
             using (new UnitOfWorkScope())
             {
                 testData.Batch(actions =>
@@ -545,7 +545,7 @@ namespace NCommon.Data.NHibernate.Tests
         public void When_Calling_CalculateTotal_On_Order_Returns_Valid_With_No_UnitOfWork_Throws()
         {
             Order order;
-            using (var testData = new NHTestDataGenerator(Factory.OpenSession()))
+            using (var testData = new NHTestDataGenerator(OrdersDomainFactory.OpenSession()))
             using (new UnitOfWorkScope())
             {
                 testData.Batch(actions =>
@@ -562,7 +562,7 @@ namespace NCommon.Data.NHibernate.Tests
         public void When_No_FetchingStrategy_Registered_For_Makes_No_Changes()
         {
             Order order;
-            using (var testData = new NHTestDataGenerator(Factory.OpenSession()))
+            using (var testData = new NHTestDataGenerator(OrdersDomainFactory.OpenSession()))
             using (new UnitOfWorkScope())
             {
                 testData.Batch(actions =>
@@ -573,6 +573,31 @@ namespace NCommon.Data.NHibernate.Tests
                          select o).FirstOrDefault();
             }
             Assert.That(NHibernateUtil.IsInitialized(order.Customer), Is.False);
+        }
+
+        [Test]
+        public void can_query_multiple_data_sources()
+        {
+            using (var ordersDomainTestData = new NHTestDataGenerator(OrdersDomainFactory.OpenSession()))
+            using (var hrDomainTestData = new NHTestDataGenerator(HRDomainFactory.OpenSession()))
+            {
+                var customerId = 0;
+                var salesPersonId = 0;
+                ordersDomainTestData.Batch(action => customerId = action.CreateCustomer().CustomerID);
+                hrDomainTestData.Batch(action => salesPersonId = action.CreateSalesPerson().Id);
+
+                using (var scope = new UnitOfWorkScope())
+                {
+                    var customerRepository = new NHRepository<Customer>();
+                    var salesPersonRepository = new NHRepository<SalesPerson>();
+                    var customer = customerRepository.Where(x => x.CustomerID == customerId).FirstOrDefault();
+                    var salesPerson = salesPersonRepository.Where(x => x.Id == salesPersonId).FirstOrDefault();
+
+                    Assert.That(customer, Is.Not.Null);
+                    Assert.That(salesPerson, Is.Not.Null);
+                    scope.Commit();
+                }
+            }
         }
     }
 }

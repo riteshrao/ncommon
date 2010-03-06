@@ -60,6 +60,7 @@
       <HintPath>..\..\Libs\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -77,7 +78,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\IContainer.cs" />
+    <Compile Include="Configuration\IContainerAdapter.cs" />
     <Compile Include="Configuration\IDataConfiguration.cs" />
     <Compile Include="Configuration\Impl\StateConfiguration.cs" />
     <Compile Include="Configuration\INCommonConfig.cs" />
@@ -145,6 +146,7 @@
     <Compile Include="State\ISessionState.cs" />
     <Compile Include="State\ISessionStateSelector.cs" />
     <Compile Include="State\IState.cs" />
+    <Compile Include="Util\ConnectionString.cs" />
     <Compile Include="Util\GuidCombGenerator.cs" />
     <Compile Include="Util\Inflector.cs" />
   </ItemGroup>

@@ -5,7 +5,7 @@ namespace NCommon.Configuration
     ///<summary>
     /// Base interface for abstract specific containers that 
     ///</summary>
-    public interface IContainer
+    public interface IContainerAdapter
     {
         void Register<TService, TImplementation>();
         void Register<TService, TImplementation>(string named);

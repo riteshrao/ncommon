@@ -33,7 +33,7 @@ namespace NCommon.Data.NHibernate
         };
 
         /// <summary>
-        /// 
+        /// Sets the default isolation to be used when creating <see cref="NHUnitOfWork"/> instances.
         /// </summary>
         public IsolationLevel DefaultIsolation 
         {
@@ -42,11 +42,14 @@ namespace NCommon.Data.NHibernate
         }
 
         /// <summary>
-        /// 
+        /// Registers a Func&lt;<see cref="ISessionFactory"/>&gt; provider with the unit of work factory.
         /// </summary>
-        /// <param name="factoryProvider"></param>
+        /// <param name="factoryProvider">A Func&lt;<see cref="ISessionFactory"/>&gt; instance.</param>
         public void RegisterSessionFactoryProvider(Func<ISessionFactory> factoryProvider)
         {
+            Guard.Against<ArgumentNullException>(factoryProvider == null,
+                                                 "Invalid session factory provider registration. " +
+                                                 "Expected a non-null Func<ISessionFactory> instance.");
             _settings.NHSessionResolver.RegisterSessionFactoryProvider(factoryProvider);
         }
         
@@ -56,6 +59,11 @@ namespace NCommon.Data.NHibernate
         /// <returns></returns>
         public IUnitOfWork Create()
         {
+            Guard.Against<InvalidOperationException>(
+                _settings.NHSessionResolver.SessionFactoriesRegistered == 0,
+                "No session factory providers have been registered. You must register ISessionFactory providers using " +
+                "the RegisterSessionFactoryProvider method or use NCommon.Configure class to configure NCommon.NHibernate " +
+                "using the NHConfiguration class and register ISessionFactory instances using the WithSessionFactory method.");
             return new NHUnitOfWork(_settings);
         }
     }

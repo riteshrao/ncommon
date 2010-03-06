@@ -35,199 +35,329 @@ namespace NCommon.Data.NHibernate.Tests
         }
 
         [Test]
-        public void IsInTransaction_Should_Return_False_When_No_Transaction_Exists ()
+        public void GetSession_returns_session_from_session_resolver()
         {
-            var mockSession = MockRepository.GenerateStub<ISession>();
-            var unitOfWork = new NHUnitOfWork(mockSession);
+            var resolver = MockRepository.GenerateMock<INHSessionResolver>();
+            resolver.Expect(x => x.GetSessionKeyFor<string>()).Return(Guid.NewGuid());
+            resolver.Expect(x => x.OpenSessionFor<string>()).Return(MockRepository.GenerateStub<ISession>());
 
-            Assert.That(!unitOfWork.IsInTransaction);
+            var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings {NHSessionResolver = resolver});
+            var session = unitOfWork.GetSession<string>();
+            Assert.That(session, Is.Not.Null);
+            resolver.VerifyAllExpectations();
         }
 
         [Test]
-        public void Begin_Transaction_Should_Start_A_New_Transaction_With_Default_IsolationLevel ()
+        public void GetSession_returns_same_session_instance_once_opened()
         {
-            var mockSession = MockRepository.GenerateMock<ISession>();
-            var mockTransaction = MockRepository.GenerateStub<global::NHibernate.ITransaction>();
+            var resolver = MockRepository.GenerateMock<INHSessionResolver>();
+            resolver.Expect(x => x.GetSessionKeyFor<string>())
+                .Return(Guid.NewGuid())
+                .Repeat.Twice();
 
-            mockSession.Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted))
-                        .Return(mockTransaction);
+            resolver.Expect(x => x.OpenSessionFor<string>())
+                .Return(MockRepository.GenerateStub<ISession>())
+                .Repeat.Once();
 
-            var unitOfWork = new NHUnitOfWork(mockSession);
-            Assert.That(!unitOfWork.IsInTransaction);
+            var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings { NHSessionResolver = resolver });
+            var session1 = unitOfWork.GetSession<string>();
+            var session2 = unitOfWork.GetSession<string>();
+            Assert.That(session1, Is.Not.Null);
+            Assert.That(session2, Is.Not.Null);
+            Assert.That(session1, Is.SameAs(session2));
+            resolver.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void GetSession_returns_seperate_session_instances_for_different_types()
+        {
+            var resolver = MockRepository.GenerateMock<INHSessionResolver>();
+            resolver.Expect(x => x.GetSessionKeyFor<string>()).Return(Guid.NewGuid());
+            resolver.Expect(x => x.GetSessionKeyFor<int>()).Return(Guid.NewGuid());
+            resolver.Expect(x => x.OpenSessionFor<string>()).Return(MockRepository.GenerateStub<ISession>());
+            resolver.Expect(x => x.OpenSessionFor<int>()).Return(MockRepository.GenerateStub<ISession>());
+
+            var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings { NHSessionResolver = resolver });
+            var session1 = unitOfWork.GetSession<string>();
+            var session2 = unitOfWork.GetSession<int>();
+            Assert.That(session1, Is.Not.Null);
+            Assert.That(session2, Is.Not.Null);
+            Assert.That(session1, Is.Not.SameAs(session2));
+            resolver.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void GetSession_calls_BeginSession_on_session_being_opened_if_transaction_has_already_started()
+        {
+            var resolver = MockRepository.GenerateStub<INHSessionResolver>();
+            resolver.Stub(x => x.GetSessionKeyFor<string>()).Return(Guid.NewGuid());
+            resolver.Stub(x => x.OpenSessionFor<string>()).Return(MockRepository.GenerateMock<ISession>());
+            resolver.OpenSessionFor<string>()
+                .Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted))
+                .Return(MockRepository.GenerateMock<global::NHibernate.ITransaction>());
+
+            var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings
+            {
+                DefaultIsolation = IsolationLevel.ReadCommitted,
+                NHSessionResolver = resolver
+            });
+
             unitOfWork.BeginTransaction();
-
-            Assert.That(unitOfWork.IsInTransaction);
-            mockSession.VerifyAllExpectations();
+            var session = unitOfWork.GetSession<string>();
+            session.VerifyAllExpectations();
         }
 
         [Test]
-        public void BeginTransaction_Should_Start_A_New_Transaction_With_Specified_IsolatinLevel ()
+        public void IsInTransaction_Should_Return_False_When_No_Transaction_Exists()
         {
-            var mockSession = MockRepository.GenerateMock<ISession>();
-            var mockTransaction = MockRepository.GenerateStub<global::NHibernate.ITransaction>();
-
-            mockSession.Expect(x => x.BeginTransaction(IsolationLevel.Snapshot))
-                        .Return(mockTransaction);
-
-            var unitOfWork = new NHUnitOfWork(mockSession);
+            var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings());
             Assert.That(!unitOfWork.IsInTransaction);
-            unitOfWork.BeginTransaction(IsolationLevel.Snapshot);
-
-            Assert.That(unitOfWork.IsInTransaction);
-            mockSession.VerifyAllExpectations();
-            
         }
 
         [Test]
-        public void BeginTransaction_Throws_InvalidOperationException_When_Transaction_Already_Running ()
+        public void Begin_Transaction_Should_Start_A_New_Transaction_With_Default_IsolationLevel()
         {
-            var mockSession = MockRepository.GenerateStub<ISession>();
-            mockSession.Stub(x => x.BeginTransaction(IsolationLevel.Unspecified))
-                .IgnoreArguments().Return(MockRepository.GenerateStub<global::NHibernate.ITransaction>());
+            var settings = new NHUnitOfWorkSettings {DefaultIsolation = IsolationLevel.Chaos};
+            var unitOfWork = new NHUnitOfWork(settings);
+            var transaction = unitOfWork.BeginTransaction();
+            Assert.That(transaction.IsolationLevel, Is.EqualTo(settings.DefaultIsolation));
+        }
 
-            var unitOfWork = new NHUnitOfWork(mockSession);
+        [Test]
+        public void BeginTransaction_Should_Start_A_New_Transaction_With_Specified_IsolatinLevel()
+        {
+            var settings = new NHUnitOfWorkSettings { DefaultIsolation = IsolationLevel.Chaos };
+            var unitOfWork = new NHUnitOfWork(settings);
+            var transaction = unitOfWork.BeginTransaction(IsolationLevel.ReadCommitted);
+            Assert.That(transaction.IsolationLevel, Is.Not.EqualTo(settings.DefaultIsolation));
+            Assert.That(transaction.IsolationLevel, Is.EqualTo(IsolationLevel.ReadCommitted));
+
+        }
+
+        [Test]
+        public void BeginTransaction_Throws_InvalidOperationException_When_Transaction_Already_Running()
+        {
+            var settings = new NHUnitOfWorkSettings();
+            var unitOfWork = new NHUnitOfWork(settings);
             unitOfWork.BeginTransaction();
-
-            Assert.That(unitOfWork.IsInTransaction);
             Assert.Throws<InvalidOperationException>(() => unitOfWork.BeginTransaction());
         }
 
         [Test]
-        public void Flush_Calls_Underlying_ISession_Flush ()
+        public void BeginTransaction_calls_BeginTransaction_on_sessions_already_opened()
         {
-            var mockSession = MockRepository.GenerateMock<ISession>();
-            mockSession.Expect(x => x.Flush());
+            var resolver = MockRepository.GenerateStub<INHSessionResolver>();
+            resolver.Stub(x => x.GetSessionKeyFor<string>()).Return(Guid.NewGuid());
+            resolver.Stub(x => x.OpenSessionFor<string>()).Return(MockRepository.GenerateMock<ISession>());
+            resolver.OpenSessionFor<string>()
+                .Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted))
+                .Return(MockRepository.GenerateMock<global::NHibernate.ITransaction>());
 
-            var unitOfWork = new NHUnitOfWork(mockSession);
+            var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings
+            {
+                DefaultIsolation = IsolationLevel.ReadCommitted,
+                NHSessionResolver = resolver
+            });
+
+            var session = unitOfWork.GetSession<string>();
+            unitOfWork.BeginTransaction();
+            session.VerifyAllExpectations();
+        }
+
+        [Test]
+        public void Flush_Calls_Underlying_ISession_Flush()
+        {
+            var resolver = MockRepository.GenerateStub<INHSessionResolver>();
+            resolver.Stub(x => x.GetSessionKeyFor<string>()).Return(Guid.NewGuid());
+            resolver.Stub(x => x.OpenSessionFor<string>()).Return(MockRepository.GenerateMock<ISession>());
+
+            var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings {NHSessionResolver = resolver});
+            var session = unitOfWork.GetSession<string>();
             unitOfWork.Flush();
-
-            mockSession.VerifyAllExpectations();
+            session.AssertWasCalled(x => x.Flush());
         }
 
         [Test]
-        public void TransactionalFlush_Starts_A_Transaction_With_Default_Isolation_And_Commits_When_Flush_Succeeds ()
+        public void TransactionalFlush_Starts_A_Transaction_With_Default_Isolation_And_Commits_When_Flush_Succeeds()
         {
-            var mockSession = MockRepository.GenerateMock<ISession>();
-            var mockTransaction = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
+            var resolver = MockRepository.GenerateStub<INHSessionResolver>();
+            var transaction = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
+            resolver.Stub(x => x.GetSessionKeyFor<string>()).Return(Guid.NewGuid());
+            resolver.Stub(x => x.OpenSessionFor<string>()).Return(MockRepository.GenerateMock<ISession>());
+            resolver.OpenSessionFor<string>()
+                .Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted))
+                .Return(transaction);
 
-            mockSession.Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted))
-                                        .Return(mockTransaction);
-            mockSession.Expect(x => x.Flush());
+            var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings
+            {
+                DefaultIsolation = IsolationLevel.ReadCommitted,
+                NHSessionResolver = resolver
+            });
 
-            mockTransaction.Expect(x => x.Commit());
-
-            var unitOfWork = new NHUnitOfWork(mockSession);
+            var session = unitOfWork.GetSession<string>();
             unitOfWork.TransactionalFlush();
-            
-            mockSession.VerifyAllExpectations();
-            mockTransaction.VerifyAllExpectations();
+            transaction.AssertWasCalled(x => x.Commit());
+            session.VerifyAllExpectations();
         }
 
         [Test]
-        public void TransactionalFlush_Starts_A_Transaction_With_Specified_IsolationLevel_And_Commits_When_Flush_Succeeds ()
+        public void TransactionalFlush_Starts_A_Transaction_With_Specified_IsolationLevel_And_Commits_When_Flush_Succeeds()
         {
-            var mockSession = MockRepository.GenerateMock<ISession>();
-            var mockTransaction = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
+            var resolver = MockRepository.GenerateStub<INHSessionResolver>();
+            var transaction = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
+            resolver.Stub(x => x.GetSessionKeyFor<string>()).Return(Guid.NewGuid());
+            resolver.Stub(x => x.OpenSessionFor<string>()).Return(MockRepository.GenerateMock<ISession>());
+            resolver.OpenSessionFor<string>()
+                .Expect(x => x.BeginTransaction(IsolationLevel.Serializable))
+                .Return(transaction);
 
-            mockSession.Expect(x => x.BeginTransaction(IsolationLevel.ReadUncommitted))
-                                        .Return(mockTransaction);
-            mockSession.Expect(x => x.Flush());
+            var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings
+            {
+                DefaultIsolation = IsolationLevel.ReadCommitted,
+                NHSessionResolver = resolver
+            });
 
-            mockTransaction.Expect(x => x.Commit());
-
-            var unitOfWork = new NHUnitOfWork(mockSession);
-            unitOfWork.TransactionalFlush(IsolationLevel.ReadUncommitted);
-
-            mockSession.VerifyAllExpectations();
-            mockTransaction.VerifyAllExpectations();
+            var session = unitOfWork.GetSession<string>();
+            unitOfWork.TransactionalFlush(IsolationLevel.Serializable);
+            transaction.AssertWasCalled(x => x.Commit());
+            session.VerifyAllExpectations();
         }
 
         [Test]
-        public void TransactionalFlush_Rollsback_Transaction_When_Flush_Throws_Exception ()
+        public void TransactionalFlush_Rollsback_Transaction_When_TransactionalFlush_Throws_Exception()
         {
-            var mockSession = MockRepository.GenerateMock<ISession>();
-            var mockTransaction = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
+            var resolver = MockRepository.GenerateStub<INHSessionResolver>();
+            var transaction = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
+            resolver.Stub(x => x.GetSessionKeyFor<string>()).Return(Guid.NewGuid());
+            resolver.Stub(x => x.OpenSessionFor<string>()).Return(MockRepository.GenerateMock<ISession>());
+            resolver.OpenSessionFor<string>()
+                .Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted))
+                .Return(transaction);
+            transaction.Expect(x => x.Commit()).Throw(new ApplicationException());
 
+            var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings
+            {
+                DefaultIsolation = IsolationLevel.ReadCommitted,
+                NHSessionResolver = resolver
+            });
 
-            mockSession.Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted))
-                                        .Return(mockTransaction);
-            mockSession.Expect(x => x.Flush()).Throw(new Exception());
-
-            mockTransaction.Expect(x => x.Rollback());
-
-            var unitOfWork = new NHUnitOfWork(mockSession);
-            Assert.Throws<Exception>(unitOfWork.TransactionalFlush);
-
-            mockSession.VerifyAllExpectations();
-            mockTransaction.VerifyAllExpectations();
+            var session = unitOfWork.GetSession<string>();
+            Assert.Throws<ApplicationException>(unitOfWork.TransactionalFlush);
+            transaction.AssertWasCalled(x => x.Rollback());
+            transaction.VerifyAllExpectations();
+            session.VerifyAllExpectations();
         }
 
         [Test]
-        public void TransactionalFlush_Uses_Existing_Transaction_When_Transactional_AlreadyRunning ()
+        public void TransactionalFlush_Uses_Existing_Transaction_When_Transactional_AlreadyRunning()
         {
-            var mockSession = MockRepository.GenerateMock<ISession>();
-            var mockTransaction = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
+            var resolver = MockRepository.GenerateStub<INHSessionResolver>();
+            var transaction = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
+            resolver.Stub(x => x.GetSessionKeyFor<string>()).Return(Guid.NewGuid());
+            resolver.Stub(x => x.OpenSessionFor<string>()).Return(MockRepository.GenerateMock<ISession>());
+            resolver.OpenSessionFor<string>()
+                .Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted))
+                .Return(transaction)
+                .Repeat.Once();
 
-            mockSession.Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted))
-                       .Return(mockTransaction)
-                       .Repeat.Once(); //Expect BeginTransaction to be called only once.
+            var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings
+            {
+                DefaultIsolation = IsolationLevel.ReadCommitted,
+                NHSessionResolver = resolver
+            });
 
-            var unitOfWork = new NHUnitOfWork(mockSession);
+            var session = unitOfWork.GetSession<string>();
             unitOfWork.BeginTransaction();
             unitOfWork.TransactionalFlush();
-
-            mockSession.VerifyAllExpectations();
-            mockTransaction.VerifyAllExpectations();
+            transaction.AssertWasCalled(x => x.Commit());
+            session.VerifyAllExpectations();
         }
 
         [Test]
-        public void Comitting_Transaction_Releases_Transaction_From_UnitOfWork ()
+        public void Comitting_Transaction_Releases_Transaction_From_UnitOfWork()
         {
-            var mockSession = MockRepository.GenerateMock<ISession>();
-            mockSession.Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted))
-                       .Return(MockRepository.GenerateStub<global::NHibernate.ITransaction>());
+            var resolver = MockRepository.GenerateStub<INHSessionResolver>();
+            var transaction = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
+            resolver.Stub(x => x.GetSessionKeyFor<string>()).Return(Guid.NewGuid());
+            resolver.Stub(x => x.OpenSessionFor<string>()).Return(MockRepository.GenerateMock<ISession>());
+            resolver.OpenSessionFor<string>()
+                .Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted))
+                .Return(transaction);
 
-            var unitOfWork = new NHUnitOfWork(mockSession);
-            var transaction = unitOfWork.BeginTransaction();
+            var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings
+            {
+                DefaultIsolation = IsolationLevel.ReadCommitted,
+                NHSessionResolver = resolver
+            });
 
-            Assert.That(unitOfWork.IsInTransaction);
-            transaction.Commit();
+            var session = unitOfWork.GetSession<string>();
+            var tx = unitOfWork.BeginTransaction();
+            tx.Commit();
             Assert.That(!unitOfWork.IsInTransaction);
-            mockSession.VerifyAllExpectations();
+            transaction.AssertWasCalled(x => x.Commit());
+            transaction.AssertWasCalled(x => x.Dispose());
+            session.VerifyAllExpectations();
         }
 
         [Test]
         public void Rollback_Transaction_Releases_Transaction_From_UnitOfWork()
         {
-            var mockSession = MockRepository.GenerateMock<ISession>();
-            mockSession.Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted))
-                       .Return(MockRepository.GenerateStub<global::NHibernate.ITransaction>());
+            var resolver = MockRepository.GenerateStub<INHSessionResolver>();
+            var transaction = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
+            resolver.Stub(x => x.GetSessionKeyFor<string>()).Return(Guid.NewGuid());
+            resolver.Stub(x => x.OpenSessionFor<string>()).Return(MockRepository.GenerateMock<ISession>());
+            resolver.OpenSessionFor<string>()
+                .Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted))
+                .Return(transaction);
 
-            var unitOfWork = new NHUnitOfWork(mockSession);
-            var transaction = unitOfWork.BeginTransaction();
+            var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings
+            {
+                DefaultIsolation = IsolationLevel.ReadCommitted,
+                NHSessionResolver = resolver
+            });
 
-            Assert.That(unitOfWork.IsInTransaction);
-            transaction.Rollback();
+            var session = unitOfWork.GetSession<string>();
+            var tx = unitOfWork.BeginTransaction();
+            tx.Rollback();
             Assert.That(!unitOfWork.IsInTransaction);
-            mockSession.VerifyAllExpectations();
+            transaction.AssertWasCalled(x => x.Rollback());
+            transaction.AssertWasCalled(x => x.Dispose());
+            session.VerifyAllExpectations();
         }
 
         [Test]
-        public void Dispose_UnitOfWork_Disposed_Underlying_Transaction_And_Session ()
+        public void disposing_NHUnitOfWork_disposes_off_open_transactions_and_open_sessions()
         {
-            var mockSession = MockRepository.GenerateMock<ISession>();
-            var mockTransaction = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
-            mockSession.Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted))
-                       .Return(mockTransaction);
-            mockTransaction.Expect(x => x.Dispose());
-            mockSession.Expect(x => x.Dispose());
-            
-            using (var unitOfWork = new NHUnitOfWork(mockSession))
+            var resolver = MockRepository.GenerateStub<INHSessionResolver>();
+            var transaction = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
+            resolver.Stub(x => x.GetSessionKeyFor<string>()).Return(Guid.NewGuid());
+            resolver.Stub(x => x.OpenSessionFor<string>()).Return(MockRepository.GenerateMock<ISession>());
+            resolver.OpenSessionFor<string>()
+                .Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted))
+                .Return(transaction);
+
+            resolver.Stub(x => x.GetSessionKeyFor<int>()).Return(Guid.NewGuid());
+            resolver.Stub(x => x.OpenSessionFor<int>()).Return(MockRepository.GenerateMock<ISession>());
+            resolver.OpenSessionFor<int>()
+                .Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted))
+                .Return(transaction);
+
+            var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings
             {
-                unitOfWork.BeginTransaction();
-            }
-            mockSession.VerifyAllExpectations();
-            mockTransaction.VerifyAllExpectations();
+                DefaultIsolation = IsolationLevel.ReadCommitted,
+                NHSessionResolver = resolver
+            });
+
+            var session1 = unitOfWork.GetSession<string>();
+            var session2 = unitOfWork.GetSession<int>();
+            unitOfWork.BeginTransaction();
+            unitOfWork.Dispose();
+            Assert.That(!unitOfWork.IsInTransaction);
+            transaction.AssertWasCalled(x => x.Dispose());
+            session1.AssertWasCalled(x => x.Dispose());
+            session2.AssertWasCalled(x => x.Dispose());
+            session1.VerifyAllExpectations();
+            session2.VerifyAllExpectations();
         }
     }
 }

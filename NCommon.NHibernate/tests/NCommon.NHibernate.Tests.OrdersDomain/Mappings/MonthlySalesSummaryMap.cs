@@ -1,7 +1,7 @@
 using FluentNHibernate.Mapping;
 using NCommon.NHibernate.Tests.Domain;
 
-namespace NCommon.Data.NHibernate.Tests.Mappings
+namespace NCommon.Data.NHibernate.Tests.OrdersDomain.Mappings
 {
 	public class MonthlySalesSummaryMap : ClassMap<MonthlySalesSummary>
 	{

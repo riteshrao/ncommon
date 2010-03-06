@@ -4,28 +4,28 @@ namespace NCommon.Configuration.Impl
 {
     public class StateConfiguration : IStateConfiguration
     {
-        readonly IContainer _container;
+        readonly IContainerAdapter _containerAdapter;
 
-        public StateConfiguration(IContainer container)
+        public StateConfiguration(IContainerAdapter containerAdapter)
         {
-            _container = container;
+            _containerAdapter = containerAdapter;
         }
 
         public IStateConfiguration Cache<T>() where T : ICacheState
         {
-            _container.ReplaceComponent<ICacheState, T>();
+            _containerAdapter.ReplaceComponent<ICacheState, T>();
             return this;
         }
 
         public IStateConfiguration Session<T>() where T : ISessionState
         {
-            _container.ReplaceComponent<ISessionState, T>();
+            _containerAdapter.ReplaceComponent<ISessionState, T>();
             return this;
         }
 
         public IStateConfiguration LocalState<T>() where T : ILocalState
         {
-            _container.ReplaceComponent<ILocalState, T>();
+            _containerAdapter.ReplaceComponent<ILocalState, T>();
             return this;
         }
     }

@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Linq;
-using NCommon.Data.NHibernate.Tests.Domain;
+using NCommon.Data.NHibernate.Tests.HRDomain.Domain;
+using NCommon.Data.NHibernate.Tests.OrdersDomain;
 using NCommon.NHibernate.Tests.Domain;
 
 namespace NCommon.Data.NHibernate.Tests
@@ -170,6 +170,21 @@ namespace NCommon.Data.NHibernate.Tests
             _generator.Session.Save(summary);
             _generator.EntitiesPersisted.Add(summary);
             return summary;
+        }
+
+        public SalesPerson CreateSalesPerson()
+        {
+            var salesPerson = new SalesPerson
+            {
+                FirstName = "John" + RandomString(),
+                LastName = "Doe" + RandomString(),
+                SalesQuota = 200,
+                SalesYTD = 45000,
+                Status = EmployeeStatus.PartTime
+            };
+            _generator.Session.Save(salesPerson);
+            _generator.EntitiesPersisted.Add(salesPerson);
+            return salesPerson;
         }
 
         protected string RandomString()

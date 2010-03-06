@@ -10,12 +10,11 @@ namespace NCommon.Data.NHibernate.Tests
     [TestFixture]
     public class CompositeUserTypeBaseTests : NHTestBase
     {
-        #region tests
         [Test]
         public void Test_Can_Get_MonthlySalesSummary_With_Money_Type()
         {
             IList<MonthlySalesSummary> report;
-            using (var testData = new NHTestDataGenerator(Factory.OpenSession()))
+            using (var testData = new NHTestDataGenerator(OrdersDomainFactory.OpenSession()))
             using (var scope = new UnitOfWorkScope())
             {
                 testData.Batch(action => action.CreateMonthlySalesSummaryForMonth(1));
@@ -44,7 +43,7 @@ namespace NCommon.Data.NHibernate.Tests
         public void Test_Can_Query_MonthlySalesSummary_Based_On_Currency()
         {
             IList<MonthlySalesSummary> report;
-            using (var testData = new NHTestDataGenerator(Factory.OpenSession()))
+            using (var testData = new NHTestDataGenerator(OrdersDomainFactory.OpenSession()))
             using (var scope = new UnitOfWorkScope())
             {
                 testData.Batch(actions => actions.CreateMonthlySalesSummaryWithAmount(
@@ -75,7 +74,7 @@ namespace NCommon.Data.NHibernate.Tests
         public void Test_Updating_Money_Amount_Updates_Amount_In_Store_And_Returns_Updated_Figure ()
         {
             var newAmount = (decimal) new Random().Next();	
-            using (var testData = new NHTestDataGenerator(Factory.OpenSession()))
+            using (var testData = new NHTestDataGenerator(OrdersDomainFactory.OpenSession()))
             {
                 testData.Batch(actions => actions.CreateMonthlySalesSummaryForSalesPerson(1));
 
@@ -101,6 +100,5 @@ namespace NCommon.Data.NHibernate.Tests
                 } 
             }
         }
-        #endregion
     }
 }

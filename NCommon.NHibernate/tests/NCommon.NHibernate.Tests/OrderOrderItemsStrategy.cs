@@ -1,4 +1,4 @@
-﻿using NCommon.Data.NHibernate.Tests.Domain;
+﻿using NCommon.Data.NHibernate.Tests.OrdersDomain;
 
 namespace NCommon.Data.NHibernate.Tests
 {

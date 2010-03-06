@@ -42,6 +42,8 @@ namespace NCommon.Data.NHibernate
         /// <param name="session">The NHiberante <see cref="ISession"/> instance to use.</param>
         public NHUnitOfWork(NHUnitOfWorkSettings settings)
         {
+            Guard.Against<ArgumentNullException>(settings == null,
+                                                 "Expected a non-null instance of NHUnitOfWorkSettings.");
             _settings = settings;
         }
 
@@ -61,7 +63,7 @@ namespace NCommon.Data.NHibernate
             var session = _settings.NHSessionResolver.OpenSessionFor<T>();
             _openSessions.Add(sessionKey, session);
             if (IsInTransaction)
-                _transaction.RegisterNHTransaction(session.BeginTransaction());
+                _transaction.RegisterNHTransaction(session.BeginTransaction(_transaction.IsolationLevel));
             return session;
         }
 
@@ -95,8 +97,8 @@ namespace NCommon.Data.NHibernate
             Guard.Against<InvalidOperationException>(_transaction != null,
                                                      "Cannot begin a new transaction while an existing transaction is still running. " + 
                                                      "Please commit or rollback the existing transaction before starting a new one.");
-            _transaction = new NHTransaction(_openSessions
-                .Select(session => session.Value.BeginTransaction())
+            _transaction = new NHTransaction(isolationLevel, _openSessions
+                .Select(session => session.Value.BeginTransaction(isolationLevel))
                 .ToArray());
 
             _transaction.TransactionCommitted += TransactionCommitted;

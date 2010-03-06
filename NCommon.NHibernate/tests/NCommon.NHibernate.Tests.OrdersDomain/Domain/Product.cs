@@ -16,7 +16,7 @@
 
 using NCommon.NHibernate.Tests.Domain;
 
-namespace NCommon.Data.NHibernate.Tests.Domain
+namespace NCommon.Data.NHibernate.Tests.OrdersDomain
 {
     public class Product
     {

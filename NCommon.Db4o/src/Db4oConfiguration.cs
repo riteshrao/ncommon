@@ -14,10 +14,10 @@ namespace NCommon.Data.Db4o
             return this;
         }
 
-        public void Configure(IContainer container)
+        public void Configure(IContainerAdapter containerAdapter)
         {
-            container.Register<IUnitOfWorkFactory, Db4oUnitOfWorkFactory>();
-            container.Register(typeof (IRepository<>), typeof (Db4oRepository<>));
+            containerAdapter.Register<IUnitOfWorkFactory, Db4oUnitOfWorkFactory>();
+            containerAdapter.Register(typeof (IRepository<>), typeof (Db4oRepository<>));
             Db4oUnitOfWorkFactory.SetContainerProvider(_containerProvider);
         }
     }

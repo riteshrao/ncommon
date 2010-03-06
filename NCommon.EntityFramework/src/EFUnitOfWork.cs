@@ -125,7 +125,7 @@ namespace NCommon.Data.EntityFramework
                 _session.Connection.Open();
 
             IDbTransaction transaction = _session.Connection.BeginTransaction(isolationLevel);
-            _transaction = new EFTransaction(transaction);
+            _transaction = new EFTransaction(isolationLevel, transaction);
             _transaction.TransactionCommitted += TransactionCommitted;
             _transaction.TransactionRolledback += TransactionRolledback;
             return _transaction;

@@ -6,9 +6,9 @@ namespace NCommon
 {
     public static class Configure
     {
-        public static INCommonConfig Using(IContainer container)
+        public static INCommonConfig Using(IContainerAdapter containerAdapter)
         {
-            return new NCommonConfig(container);
+            return new NCommonConfig(containerAdapter);
         }
     }
 }

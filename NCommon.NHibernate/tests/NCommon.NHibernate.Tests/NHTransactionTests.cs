@@ -1,97 +1,52 @@
-﻿#region license
-//Copyright 2008 Ritesh Rao 
-
-//Licensed under the Apache License, Version 2.0 (the "License"); 
-//you may not use this file except in compliance with the License. 
-//You may obtain a copy of the License at 
-
-//http://www.apache.org/licenses/LICENSE-2.0 
-
-//Unless required by applicable law or agreed to in writing, software 
-//distributed under the License is distributed on an "AS IS" BASIS, 
-//WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-//See the License for the specific language governing permissions and 
-//limitations under the License. 
-#endregion
-
-using System;
+using System.Data;
 using NUnit.Framework;
 using Rhino.Mocks;
 
 namespace NCommon.Data.NHibernate.Tests
 {
-    /// <summary>
-    /// Tests the <see cref="NHTransaction"/> class.
-    /// </summary>
     [TestFixture]
     public class NHTransactionTests
     {
         [Test]
-        public void Ctor_Throws_ArgumentNullException_When_ITransation_Parameter_Is_Null()
+        public void Commit_commits_all_NHibernate_transactions_handled_by_NHTransaction()
         {
-            Assert.Throws<ArgumentNullException>(() => new NHTransaction(null));
+            var tx = new NHTransaction(IsolationLevel.ReadCommitted);
+            var nhTx1 = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
+            var nhTx2 = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
+
+            tx.RegisterNHTransaction(nhTx1);
+            tx.RegisterNHTransaction(nhTx2);
+            tx.Commit();
+
+            nhTx1.AssertWasCalled(x => x.Commit());
+            nhTx2.AssertWasCalled(x => x.Commit());
         }
 
         [Test]
-        public void Commit_Calls_Commit_On_Underlying_ITransaction ()
+        public void Rollback_rollsback_all_NHibernate_transactions_handled_by_NHTransaction()
         {
-            var mockTransaction = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
-            mockTransaction.Expect(x => x.Commit()).IgnoreArguments();
+            var tx = new NHTransaction(IsolationLevel.ReadCommitted);
+            var nhTx1 = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
+            var nhTx2 = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
 
-            var transaction = new NHTransaction(mockTransaction);
-            transaction.Commit();
+            tx.RegisterNHTransaction(nhTx1);
+            tx.RegisterNHTransaction(nhTx2);
+            tx.Rollback();
 
-            mockTransaction.VerifyAllExpectations();
+            nhTx1.AssertWasCalled(x => x.Rollback());
+            nhTx2.AssertWasCalled(x => x.Rollback());
         }
 
         [Test]
-        public void Rollback_Calls_Rollback_On_Underlying_ITransaction ()
+        public void Dispose_calls_dispose_on_all_NHibernate_transactions_handled_by_NHTransaction()
         {
-            var mockTransaction = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
-            mockTransaction.Expect(x => x.Rollback()).IgnoreArguments();
-
-            var transaction = new NHTransaction(mockTransaction);
-            transaction.Rollback();
-
-            mockTransaction.VerifyAllExpectations();
-        }
-
-        [Test]
-        public void Commit_Raises_TransactionComitted_Event ()
-        {
-            var mockTransaction = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
-            mockTransaction.Expect(x => x.Commit());
-
-            bool commitCalled = false;
-            bool rollbackCalled = false;
-            var transaction = new NHTransaction(mockTransaction);
-            transaction.TransactionCommitted += delegate { commitCalled = true; };
-            transaction.TransactionRolledback += delegate { rollbackCalled = true; };
-
-            transaction.Commit();
-
-            mockTransaction.VerifyAllExpectations();
-            Assert.That(commitCalled);
-            Assert.That(!rollbackCalled);
-        }
-
-        [Test]
-        public void Rollback_Raises_RollbackComitted_Event()
-        {
-            var mockTransaction = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
-            mockTransaction.Expect(x => x.Rollback());
-
-            bool commitCalled = false;
-            bool rollbackCalled = false;
-            var transaction = new NHTransaction(mockTransaction);
-            transaction.TransactionCommitted += delegate { commitCalled = true; };
-            transaction.TransactionRolledback += delegate { rollbackCalled = true; };
-
-            transaction.Rollback();
-
-            mockTransaction.VerifyAllExpectations();
-            Assert.That(!commitCalled);
-            Assert.That(rollbackCalled);
+            var nhTx1 = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
+            var nhTx2 = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
+            using (var tx = new NHTransaction(IsolationLevel.ReadCommitted, nhTx1, nhTx2))
+            {
+            }
+            nhTx1.AssertWasCalled(x => x.Dispose());
+            nhTx2.AssertWasCalled(x => x.Dispose());
         }
     }
 }

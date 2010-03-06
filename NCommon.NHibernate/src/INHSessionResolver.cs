@@ -8,5 +8,7 @@ namespace NCommon.Data.NHibernate
         Guid GetSessionKeyFor<T>();
         ISession OpenSessionFor<T>();
         void RegisterSessionFactoryProvider(Func<ISessionFactory> factoryProvider);
+        ISessionFactory GetFactoryFor<T>();
+        int SessionFactoriesRegistered { get; }
     }
 }

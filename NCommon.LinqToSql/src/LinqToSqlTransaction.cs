@@ -21,12 +21,9 @@ namespace NCommon.Data.LinqToSql
 {
     public class LinqToSqlTransaction : ITransaction
     {
-        #region fields
-        private bool _disposed;
-        private readonly IDbTransaction _internalTransaction;
-        #endregion
+        bool _disposed;
+        readonly IDbTransaction _internalTransaction;
 
-        #region ctor
         /// <summary>
         /// Default Constructor.
         /// Creates a new instance of the <see cref="LinqToSqlTransaction"/>
@@ -37,38 +34,7 @@ namespace NCommon.Data.LinqToSql
             Guard.Against<ArgumentNullException>(transaction == null, "Expected a non null IDbTransaction instance.");
             _internalTransaction = transaction;
         }
-        #endregion
 
-        #region Implementation of IDisposable
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Disposes off managed and un-managed transactions.
-        /// </summary>
-        /// <param name="disposing"></param>
-        private void Dispose (bool disposing)
-        {
-            if (disposing)
-            {
-                if (!_disposed)
-                {
-                    _internalTransaction.Dispose();
-                    _disposed = true;
-                }
-            }
-        }
-        #endregion
-
-        #region Implementation of ITransaction
         /// <summary>
         /// Event raised when the transaction has been comitted.
         /// </summary>
@@ -78,6 +44,8 @@ namespace NCommon.Data.LinqToSql
         /// Event raised when the transaction has been rolledback.
         /// </summary>
         public event EventHandler TransactionRolledback;
+
+        public IsolationLevel IsolationLevel { get; private set; }
 
         /// <summary>
         /// Commits the changes made to the data store.
@@ -106,6 +74,31 @@ namespace NCommon.Data.LinqToSql
             if (TransactionRolledback != null)
                 TransactionRolledback(this, EventArgs.Empty);
         }
-        #endregion
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2</filterpriority>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Disposes off managed and un-managed transactions.
+        /// </summary>
+        /// <param name="disposing"></param>
+        private void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (!_disposed)
+                {
+                    _internalTransaction.Dispose();
+                    _disposed = true;
+                }
+            }
+        }
     }
 }
