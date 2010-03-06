@@ -5,7 +5,7 @@ using Db4objects.Db4o;
 using Db4objects.Db4o.Linq;
 using NCommon.Data;
 
-namespace NCommon.Db4o
+namespace NCommon.Data.Db4o
 {
     public class Db4oRepository<TEntity> : RepositoryBase<TEntity>
     {

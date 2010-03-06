@@ -70,6 +70,9 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -80,6 +83,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CrossThreadTests.cs" />
+    <Compile Include="Context\ContextTests.cs" />
+    <Compile Include="Data\FakeState.cs" />
     <Compile Include="Data\InMemoryRepositoryTests.cs" />
     <Compile Include="Data\UnitOfWorkScopeTransactionTests.cs" />
     <Compile Include="Events\DomainEventTests.cs" />
@@ -94,6 +100,12 @@
     <Compile Include="Data\UnitOfWorkScopeTests.cs" />
     <Compile Include="Data\UnitOfWorkTests.cs" />
     <Compile Include="Rules\ValidationRuleTests.cs" />
+    <Compile Include="State\ApplicationStateTests.cs" />
+    <Compile Include="State\DefaultLocalStateSelectorTests.cs" />
+    <Compile Include="State\DefaultSessionStateSelectorTests.cs" />
+    <Compile Include="State\HtpRuntimeCacheTests.cs" />
+    <Compile Include="State\HttpSessionStateTests.cs" />
+    <Compile Include="State\ThreadLocalStateTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ncommon.snk" />
@@ -121,6 +133,7 @@
       <Name>NCommon</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

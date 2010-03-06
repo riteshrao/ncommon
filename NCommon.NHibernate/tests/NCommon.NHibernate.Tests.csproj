@@ -121,6 +121,7 @@
     <Compile Include="Domain\Customer.cs" />
     <Compile Include="Domain\OrderItem.cs" />
     <Compile Include="Domain\Product.cs" />
+    <Compile Include="FakeState.cs" />
     <Compile Include="Mappings\CustomerMap.cs" />
     <Compile Include="Mappings\MonthlySalesSummaryMap.cs" />
     <Compile Include="Mappings\OrderItemMap.cs" />

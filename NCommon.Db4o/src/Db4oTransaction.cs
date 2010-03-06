@@ -2,7 +2,7 @@ using System;
 using Db4objects.Db4o;
 using NCommon.Data;
 
-namespace NCommon.Db4o
+namespace NCommon.Data.Db4o
 {
     /// <summary>
     /// Implementation of <see cref="ITransaction"/> interface for Db4o. 

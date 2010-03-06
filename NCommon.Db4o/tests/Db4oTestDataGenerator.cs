@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Db4objects.Db4o;
 using NCommon.Extensions;
 
-namespace NCommon.Db4o.Tests
+namespace NCommon.Data.Db4o.Tests
 {
     public class Db4oTestDataGenerator : IDisposable
     {

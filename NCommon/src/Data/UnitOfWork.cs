@@ -47,7 +47,7 @@ namespace NCommon.Data
             get
             {
                 var state = ServiceLocator.Current.GetInstance<IState>();
-                return state.Local.Get<IUnitOfWork>(currentUnitOfWorkKey) == null;
+                return state.Local.Get<IUnitOfWork>(currentUnitOfWorkKey) != null;
             }
         }
 

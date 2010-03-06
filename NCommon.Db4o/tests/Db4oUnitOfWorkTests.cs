@@ -3,7 +3,7 @@ using Db4objects.Db4o;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace NCommon.Db4o.Tests
+namespace NCommon.Data.Db4o.Tests
 {
     public class Db4oUnitOfWorkTests
     {

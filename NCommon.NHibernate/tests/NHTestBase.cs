@@ -1,7 +1,9 @@
+using System;
 using System.Configuration;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using Microsoft.Practices.ServiceLocation;
+using NCommon.State;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
 using NUnit.Framework;
@@ -11,7 +13,9 @@ namespace NCommon.Data.NHibernate.Tests
 {
 	public class NHTestBase
 	{
+        protected IState State { get; private set; }
 		protected ISessionFactory Factory { get; private set; }
+        protected IServiceLocator Locator { get; private set; }
 
 		/// <summary>
 		/// Sets up the NHibernate SessionFactory and NHUnitOfWorkFactory.
@@ -45,13 +49,19 @@ namespace NCommon.Data.NHibernate.Tests
 
 			NHUnitOfWorkFactory.SetSessionProvider(Factory.OpenSession);
 
-			var locator = MockRepository.GenerateStub<IServiceLocator>();
-			locator.Stub(x => x.GetInstance<IUnitOfWorkFactory>())
-				.Return(new NHUnitOfWorkFactory()).Repeat.Any();
+			Locator = MockRepository.GenerateStub<IServiceLocator>();
+			Locator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(new NHUnitOfWorkFactory());
+            Locator.Stub(x => x.GetInstance<IState>()).Do(new Func<IState>(() => State));
 
-			ServiceLocator.SetLocatorProvider(() => locator);
+			ServiceLocator.SetLocatorProvider(() => Locator);
 			HibernatingRhinos.NHibernate.Profiler.Appender.NHibernateProfiler.Initialize();
 		}
+
+        [SetUp]
+        public virtual void TestSetup ()
+        {
+            State = new FakeState();
+        }
 
 		[TestFixtureTearDown]
 		public virtual void TearDown()

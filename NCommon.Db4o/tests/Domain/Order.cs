@@ -18,7 +18,7 @@ using System;
 using System.Collections.Generic;
 using NCommon.Extensions;
 
-namespace NCommon.Db4o.Tests.Domain
+namespace NCommon.Data.Db4o.Tests.Domain
 {
     public class Order
     {

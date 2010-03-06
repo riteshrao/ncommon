@@ -4,15 +4,15 @@ using System.Linq;
 using System.Transactions;
 using Db4objects.Db4o;
 using Microsoft.Practices.ServiceLocation;
-using NCommon.Data;
-using NCommon.Db4o.Tests.Domain;
+using NCommon.Data.Db4o.Tests.Domain;
 using NCommon.Extensions;
 using NCommon.Specifications;
+using NCommon.State;
 using NUnit.Framework;
 using Rhino.Mocks;
 using IsolationLevel=System.Data.IsolationLevel;
 
-namespace NCommon.Db4o.Tests
+namespace NCommon.Data.Db4o.Tests
 {
     [TestFixture]
     public class Db4oRepositoryTests
@@ -22,7 +22,7 @@ namespace NCommon.Db4o.Tests
         readonly string _databasePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "testdatabase.db4o");
 
         [TestFixtureSetUp]
-        public void Setup()
+        public void FixtureSetUp()
         {
             if (File.Exists(_databasePath))
                 File.Delete(_databasePath);
@@ -39,6 +39,12 @@ namespace NCommon.Db4o.Tests
                 .Return(new Db4oUnitOfWorkFactory())
                 .Repeat.Any();
             ServiceLocator.SetLocatorProvider(() => _mockLocator);
+        }
+
+        [SetUp]
+        public void SetUp()
+        {
+            ServiceLocator.Current.Stub(x => x.GetInstance<IState>()).Return(new FakeState());
         }
 
         [Test]

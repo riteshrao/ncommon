@@ -54,7 +54,7 @@ namespace NCommon.LinqToSql.Tests
     #endregion
 		
 		public TestDataDataContext() : 
-				base(global::NCommon.LinqToSql.Tests.Properties.Settings.Default.DevelopmentDBConnectionString1, mappingSource)
+				base(global::NCommon.LinqToSql.Tests.Properties.Settings.Default.DevelopmentDBConnectionString, mappingSource)
 		{
 			OnCreated();
 		}

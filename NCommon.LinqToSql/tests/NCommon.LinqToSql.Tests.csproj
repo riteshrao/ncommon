@@ -82,6 +82,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FakeState.cs" />
     <Compile Include="LinqToSqlDataActions.cs" />
     <Compile Include="LinqToSqlDataGenerator.cs" />
     <Compile Include="LinqToSqlRepositoryTests.cs" />

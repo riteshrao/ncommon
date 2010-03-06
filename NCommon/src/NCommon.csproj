@@ -66,6 +66,7 @@
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -76,6 +77,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Context\IContext.cs" />
+    <Compile Include="Context\IInstanceContext.cs" />
+    <Compile Include="Context\Impl\Context.cs" />
+    <Compile Include="Context\Impl\InstanceContextWrapper.cs" />
+    <Compile Include="Context\Impl\OperationContextWrapper.cs" />
+    <Compile Include="Context\Impl\ServiceHostWrapper.cs" />
+    <Compile Include="Context\IOperationContext.cs" />
+    <Compile Include="Context\IServiceHost.cs" />
     <Compile Include="Data\IFetchingStrategy.cs" />
     <Compile Include="Data\InMemoryRepository.cs" />
     <Compile Include="Events\DomainEvent.cs" />
@@ -113,11 +122,21 @@
     <Compile Include="State\IApplicationState.cs" />
     <Compile Include="State\ICacheState.cs" />
     <Compile Include="State\ILocalState.cs" />
+    <Compile Include="State\ILocalStateSelector.cs" />
     <Compile Include="State\Impl\ApplicationState.cs" />
+    <Compile Include="State\Impl\DefaultLocalStateSelector.cs" />
+    <Compile Include="State\Impl\DefaultSessionStateSelector.cs" />
+    <Compile Include="State\Impl\HttpLocalState.cs" />
     <Compile Include="State\Impl\HttpRuntimeCache.cs" />
-    <Compile Include="State\Impl\LocalState.cs" />
-    <Compile Include="State\Impl\SessionState.cs" />
+    <Compile Include="State\Impl\HttpSessionState.cs" />
+    <Compile Include="State\Impl\LocalStateWrapper.cs" />
+    <Compile Include="State\Impl\SessionStateWrapper.cs" />
+    <Compile Include="State\Impl\State.cs" />
+    <Compile Include="State\Impl\ThreadLocalState.cs" />
+    <Compile Include="State\Impl\WcfLocalState.cs" />
+    <Compile Include="State\Impl\WcfSessionState.cs" />
     <Compile Include="State\ISessionState.cs" />
+    <Compile Include="State\ISessionStateSelector.cs" />
     <Compile Include="State\IState.cs" />
     <Compile Include="Util\GuidCombGenerator.cs" />
     <Compile Include="Util\Inflector.cs" />

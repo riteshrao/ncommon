@@ -18,6 +18,8 @@ using System;
 using System.Data;
 using Microsoft.Practices.ServiceLocation;
 using NCommon.Data;
+using NCommon.Data.Tests;
+using NCommon.State;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -30,17 +32,16 @@ namespace NCommon.Tests
     public class UnitOfWorkScopeTests
     {
         [Test]
-        public void Creating_Scope_Starts_New_UnitOfWork_Session ()
+        public void Creating_Scope_Starts_New_UnitOfWork_Session()
         {
-            var mockLocator = MockRepository.GenerateStub<IServiceLocator>();
-            var mockUOWFactory = MockRepository.GenerateMock<IUnitOfWorkFactory>();
-            var mockUOW = MockRepository.GenerateMock<IUnitOfWork>();
-            var mockTransaction = MockRepository.GenerateMock<ITransaction>();
-
-            mockLocator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(mockUOWFactory);
-            mockUOWFactory.Expect(x => x.Create()).IgnoreArguments().Return(mockUOW);
-            mockUOW.Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted)).Return(mockTransaction);
-            ServiceLocator.SetLocatorProvider(() => mockLocator);
+            var locator = MockRepository.GenerateStub<IServiceLocator>();
+            var unitOfWork = MockRepository.GenerateMock<IUnitOfWork>();
+            locator.Stub(x => x.GetInstance<IState>()).Return(new FakeState());
+            locator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(MockRepository.GenerateStub<IUnitOfWorkFactory>());
+            locator.GetInstance<IUnitOfWorkFactory>().Stub(x => x.Create()).Return(unitOfWork);
+            unitOfWork.Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted))
+                .Return(MockRepository.GenerateStub<ITransaction>());
+            ServiceLocator.SetLocatorProvider(() => locator);
 
             Assert.That(!UnitOfWorkScope.HasStarted);
             Assert.That(UnitOfWorkScope.Current, Is.Null);
@@ -50,60 +51,45 @@ namespace NCommon.Tests
                 Assert.That(UnitOfWorkScope.HasStarted);
                 Assert.That(UnitOfWorkScope.Current, Is.EqualTo(scope));
                 Assert.That(scope.UnitOfWork, Is.Not.Null);
-                Assert.That(scope.UnitOfWork, Is.SameAs(mockUOW));
+                Assert.That(scope.UnitOfWork, Is.SameAs(unitOfWork));
             }
-
-            mockUOWFactory.VerifyAllExpectations();
-            mockUOW.VerifyAllExpectations();
+            unitOfWork.VerifyAllExpectations();
         }
 
         [Test]
         public void Disposing_Scope_Calls_Rollback_On_Transaction ()
         {
-            var mockLocator = MockRepository.GenerateStub<IServiceLocator>();
-            var mockUOWFactory = MockRepository.GenerateMock<IUnitOfWorkFactory>();
-            var mockUOW = MockRepository.GenerateMock<IUnitOfWork>();
-            var mockTransaction = MockRepository.GenerateMock<ITransaction>();
-
-            mockLocator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(mockUOWFactory);
-            mockUOWFactory.Expect(x => x.Create()).IgnoreArguments().Return(mockUOW);
-            mockUOW.Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted)).Return(mockTransaction);
-            mockUOW.Expect(x => x.Dispose());
-
-            mockTransaction.Expect(x => x.Rollback());
-            mockTransaction.Expect(x => x.Dispose());
-
-            ServiceLocator.SetLocatorProvider(() => mockLocator);
-
+            var locator = MockRepository.GenerateStub<IServiceLocator>();
+            var unitOfWork = MockRepository.GenerateMock<IUnitOfWork>();
+            var transaction = MockRepository.GenerateMock<ITransaction>();
+            locator.Stub(x => x.GetInstance<IState>()).Return(new FakeState());
+            locator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(MockRepository.GenerateStub<IUnitOfWorkFactory>());
+            locator.GetInstance<IUnitOfWorkFactory>().Stub(x => x.Create()).Return(unitOfWork);
+            unitOfWork.Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted)).Return(transaction);
+            ServiceLocator.SetLocatorProvider(() => locator);
+            
             using (new UnitOfWorkScope())
             {
                 Assert.That(UnitOfWorkScope.HasStarted);
             }
 
             Assert.That(!UnitOfWorkScope.HasStarted);
-            mockUOWFactory.VerifyAllExpectations();
-            mockUOW.VerifyAllExpectations();
-            mockTransaction.VerifyAllExpectations();
+            unitOfWork.AssertWasCalled(x => x.Dispose());
+            transaction.AssertWasCalled(x => x.Rollback());
+            transaction.AssertWasCalled(x => x.Dispose());
         }
 
         [Test]
         public void Commit_Scope_Calls_Flush_On_UOW_And_Commit_On_Transaction ()
         {
-            var mockLocator = MockRepository.GenerateStub<IServiceLocator>();
-            var mockUOWFactory = MockRepository.GenerateMock<IUnitOfWorkFactory>();
-            var mockUOW = MockRepository.GenerateMock<IUnitOfWork>();
-            var mockTransaction = MockRepository.GenerateMock<ITransaction>();
-
-            mockLocator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(mockUOWFactory);
-            mockUOWFactory.Expect(x => x.Create()).IgnoreArguments().Return(mockUOW);
-            mockUOW.Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted)).Return(mockTransaction);
-            mockUOW.Expect(x => x.Flush());
-            mockUOW.Expect(x => x.Dispose());
-
-            mockTransaction.Expect(x => x.Commit());
-            mockTransaction.Expect(x => x.Dispose());
-
-            ServiceLocator.SetLocatorProvider(() => mockLocator);
+            var locator = MockRepository.GenerateStub<IServiceLocator>();
+            var unitOfWork = MockRepository.GenerateMock<IUnitOfWork>();
+            var transaction = MockRepository.GenerateMock<ITransaction>();
+            locator.Stub(x => x.GetInstance<IState>()).Return(new FakeState());
+            locator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(MockRepository.GenerateStub<IUnitOfWorkFactory>());
+            locator.GetInstance<IUnitOfWorkFactory>().Stub(x => x.Create()).Return(unitOfWork);
+            unitOfWork.Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted)).Return(transaction);
+            ServiceLocator.SetLocatorProvider(() => locator);
 
             using (var scope = new UnitOfWorkScope())
             {
@@ -112,32 +98,32 @@ namespace NCommon.Tests
             }
 
             Assert.That(!UnitOfWorkScope.HasStarted);
-            mockUOWFactory.VerifyAllExpectations();
-            mockUOW.VerifyAllExpectations();
-            mockTransaction.VerifyAllExpectations();
+            unitOfWork.Expect(x => x.Flush());
+            unitOfWork.Expect(x => x.Dispose());
+            transaction.Expect(x => x.Commit());
+            transaction.Expect(x => x.Dispose());
         }
 
         [Test]
         public void Creating_Child_Scope_Uses_Same_UnitOfWork_When_No_UnitOfWorkScopeTransactionOption_Specified ()
         {
-            var mockLocator = MockRepository.GenerateStub<IServiceLocator>();
-            var mockUOWFactory = MockRepository.GenerateMock<IUnitOfWorkFactory>();
-            IUnitOfWork mockUOW;
-            
-            mockLocator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(mockUOWFactory);
-            mockUOWFactory.Expect(x => x.Create())
+            IUnitOfWork unitOfWork;
+            var locator = MockRepository.GenerateStub<IServiceLocator>();
+            var factory = MockRepository.GenerateMock<IUnitOfWorkFactory>();
+            locator.Stub(x => x.GetInstance<IState>()).Return(new FakeState());
+            locator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(factory);
+            factory.Expect(x => x.Create())
                             .Do (new Func<IUnitOfWork>(() =>
                                      {
-                                         mockUOW = MockRepository.GenerateStub<IUnitOfWork>();
-                                         mockUOW.Stub(x => x.BeginTransaction(IsolationLevel.Unspecified))
+                                         unitOfWork = MockRepository.GenerateStub<IUnitOfWork>();
+                                         unitOfWork.Stub(x => x.BeginTransaction(IsolationLevel.Unspecified))
                                              .IgnoreArguments()
                                              .Return(MockRepository.GenerateStub<ITransaction>());
-                                         return mockUOW;
+                                         return unitOfWork;
                                      })
                                 )
                             .Repeat.Once();
-
-            ServiceLocator.SetLocatorProvider(() => mockLocator);
+            ServiceLocator.SetLocatorProvider(() => locator);
 
             using (var parentScope = new UnitOfWorkScope())
             {
@@ -149,31 +135,28 @@ namespace NCommon.Tests
             }
 
             Assert.That(!UnitOfWorkScope.HasStarted);
-            mockUOWFactory.VerifyAllExpectations();
+            factory.VerifyAllExpectations();
         }
 
         [Test]
         public void Creating_Child_Scope_Uses_Different_UnitOfWork_When_Different_IsolationLevel_Is_Specified ()
         {
-            var mockLocator = MockRepository.GenerateStub<IServiceLocator>();
-            var mockUOWFactory = MockRepository.GenerateMock<IUnitOfWorkFactory>();
-            IUnitOfWork mockUOW;
-
-            mockLocator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(mockUOWFactory).Repeat.Twice();
-            mockUOWFactory.Expect(x => x.Create())
+            IUnitOfWork unitOfWork;
+            var locator = MockRepository.GenerateStub<IServiceLocator>();
+            var factory = MockRepository.GenerateMock<IUnitOfWorkFactory>();
+            locator.Stub(x => x.GetInstance<IState>()).Return(new FakeState());
+            locator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(factory);
+            factory.Expect(x => x.Create())
                             .Do(new Func<IUnitOfWork>(() =>
-                                                          {
-                                                              mockUOW = MockRepository.GenerateStub<IUnitOfWork>();
-                                                              mockUOW.Stub(
-                                                                  x => x.BeginTransaction(IsolationLevel.Unspecified))
-                                                                  .IgnoreArguments()
-                                                                  .Return(MockRepository.GenerateStub<ITransaction>());
-                                                              return mockUOW;
-                                                          }))
-                            .Repeat.Twice();
+                            {
+                                unitOfWork = MockRepository.GenerateStub<IUnitOfWork>();
+                                unitOfWork.Stub(x => x.BeginTransaction(IsolationLevel.Unspecified))
+                                    .IgnoreArguments()
+                                    .Return(MockRepository.GenerateStub<ITransaction>());
+                                return unitOfWork;
+                            })).Repeat.Twice();
+            ServiceLocator.SetLocatorProvider(() => locator);
 
-
-            ServiceLocator.SetLocatorProvider(() => mockLocator);
             using (var parentScope = new UnitOfWorkScope(IsolationLevel.Chaos))
             {
                 Assert.That(UnitOfWorkScope.HasStarted);
@@ -184,30 +167,28 @@ namespace NCommon.Tests
             }
 
             Assert.That(!UnitOfWorkScope.HasStarted);
-            mockUOWFactory.VerifyAllExpectations();
+            factory.VerifyAllExpectations();
         }
 
         [Test]
         public void Creating_Child_Scope_Uses_Different_UnitOfWork_When_UnitOfWorkScopeTransactionOption_Is_NewTransaction ()
         {
-            var mockLocator = MockRepository.GenerateStub<IServiceLocator>();
-            var mockUOWFactory = MockRepository.GenerateMock<IUnitOfWorkFactory>();
-            IUnitOfWork mockUOW = null;
-
-            mockLocator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(mockUOWFactory).Repeat.Twice();
-            mockUOWFactory.Expect(x => x.Create())
+            IUnitOfWork unitOfWork;
+            var locator = MockRepository.GenerateStub<IServiceLocator>();
+            var factory = MockRepository.GenerateMock<IUnitOfWorkFactory>();
+            locator.Stub(x => x.GetInstance<IState>()).Return(new FakeState());
+            locator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(factory);
+            factory.Expect(x => x.Create())
                             .Do(new Func<IUnitOfWork>(() =>
-                                                          {
-                                                              mockUOW = MockRepository.GenerateStub<IUnitOfWork>();
-                                                              mockUOW.Stub(
-                                                                  x => x.BeginTransaction(IsolationLevel.Unspecified))
-                                                                  .IgnoreArguments()
-                                                                  .Return(MockRepository.GenerateStub<ITransaction>());
-                                                              return mockUOW;
-                                                          }))
-                            .Repeat.Twice();
+                            {
+                                unitOfWork = MockRepository.GenerateStub<IUnitOfWork>();
+                                unitOfWork.Stub(x => x.BeginTransaction(IsolationLevel.Unspecified))
+                                    .IgnoreArguments()
+                                    .Return(MockRepository.GenerateStub<ITransaction>());
+                                return unitOfWork;
+                            })).Repeat.Twice();
+            ServiceLocator.SetLocatorProvider(() => locator);
 
-            ServiceLocator.SetLocatorProvider(() => mockLocator);
             using (var parentScope = new UnitOfWorkScope(IsolationLevel.ReadCommitted))
             {
                 Assert.That(UnitOfWorkScope.HasStarted);
@@ -218,48 +199,56 @@ namespace NCommon.Tests
             }
 
             Assert.That(!UnitOfWorkScope.HasStarted);
-            mockUOWFactory.VerifyAllExpectations();
-            mockUOW.VerifyAllExpectations();
+            factory.VerifyAllExpectations();
         }
 
         [Test]
         public void Creating_Child_Scope_Uses_Same_UnitOfWork_When_Same_IsolationLevel_And_Default_UnitOfWorkScopeTransactionOption_Specified()
         {
-            var mockLocator = MockRepository.GenerateStub<IServiceLocator>();
-            var mockUOWFactory = MockRepository.GenerateMock<IUnitOfWorkFactory>();
-            var mockUOW = MockRepository.GenerateMock<IUnitOfWork>();
-            var mockTransaction = MockRepository.GenerateMock<ITransaction>();
-
-            mockLocator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(mockUOWFactory).Repeat.Once();
-            mockUOWFactory.Expect(x => x.Create()).Return(mockUOW).Repeat.Once();
-            mockUOW.Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted)).IgnoreArguments().Return(mockTransaction).Repeat.Once();
-
-            ServiceLocator.SetLocatorProvider(() => mockLocator);
+            IUnitOfWork unitOfWork;
+            var locator = MockRepository.GenerateStub<IServiceLocator>();
+            var factory = MockRepository.GenerateMock<IUnitOfWorkFactory>();
+            locator.Stub(x => x.GetInstance<IState>()).Return(new FakeState());
+            locator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(factory);
+            factory.Expect(x => x.Create())
+                            .Do(new Func<IUnitOfWork>(() =>
+                            {
+                                unitOfWork = MockRepository.GenerateStub<IUnitOfWork>();
+                                unitOfWork.Stub(x => x.BeginTransaction(IsolationLevel.Unspecified))
+                                    .IgnoreArguments()
+                                    .Return(MockRepository.GenerateStub<ITransaction>());
+                                return unitOfWork;
+                            })).Repeat.Once();
+            ServiceLocator.SetLocatorProvider(() => locator);
+           
             using (new UnitOfWorkScope(IsolationLevel.ReadCommitted))
             {
                 Assert.That(UnitOfWorkScope.HasStarted);
                 using (new UnitOfWorkScope(IsolationLevel.ReadCommitted)){ }
             }
             Assert.That(!UnitOfWorkScope.HasStarted);
-            mockUOWFactory.VerifyAllExpectations();
-            mockUOW.VerifyAllExpectations();
-            mockTransaction.VerifyAllExpectations();   
+            factory.VerifyAllExpectations();
         }
 
         [Test]
         public void Calling_Commit_On_Parent_Scope_Throws_InvalidOperaitonException_When_Child_Scope_Active ()
         {
-            var mockLocator = MockRepository.GenerateStub<IServiceLocator>();
-            var mockUOWFactory = MockRepository.GenerateMock<IUnitOfWorkFactory>();
-            var mockUOW = MockRepository.GenerateMock<IUnitOfWork>();
-            var mockTransaction = MockRepository.GenerateMock<ITransaction>();
-            
-            mockLocator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(mockUOWFactory).Repeat.Once();
-            mockUOWFactory.Expect(x => x.Create()).Return(mockUOW).Repeat.Once();
-            mockUOW.Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted)).IgnoreArguments().Return(mockTransaction).Repeat.Once();
-            mockTransaction.Expect(x => x.Rollback()).Repeat.Once();
+            IUnitOfWork unitOfWork = null;
+            var locator = MockRepository.GenerateStub<IServiceLocator>();
+            var factory = MockRepository.GenerateMock<IUnitOfWorkFactory>();
+            locator.Stub(x => x.GetInstance<IState>()).Return(new FakeState());
+            locator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(factory);
+            factory.Expect(x => x.Create())
+                            .Do(new Func<IUnitOfWork>(() =>
+                            {
+                                unitOfWork = MockRepository.GenerateStub<IUnitOfWork>();
+                                unitOfWork.Stub(x => x.BeginTransaction(IsolationLevel.Unspecified))
+                                    .IgnoreArguments()
+                                    .Return(MockRepository.GenerateStub<ITransaction>());
+                                return unitOfWork;
+                            })).Repeat.Once();
+            ServiceLocator.SetLocatorProvider(() => locator);
 
-            ServiceLocator.SetLocatorProvider(() => mockLocator);
             using (var parentScope = new UnitOfWorkScope(IsolationLevel.ReadCommitted))
             {
                 Assert.That(UnitOfWorkScope.HasStarted);
@@ -270,25 +259,29 @@ namespace NCommon.Tests
             }
 
             Assert.That(!UnitOfWorkScope.HasStarted);
-            mockUOWFactory.VerifyAllExpectations();
-            mockUOW.VerifyAllExpectations();
-            mockTransaction.VerifyAllExpectations();
+            factory.VerifyAllExpectations();
+            unitOfWork.VerifyAllExpectations();
         }
 
         [Test]
         public void Calling_Commit_On_Parent_Scope_Throws_InvalidOperationException_When_Child_Disposed_And_Transaction_Rolledback ()
         {
-            var mockLocator = MockRepository.GenerateStub<IServiceLocator>();
-            var mockUOWFactory = MockRepository.GenerateMock<IUnitOfWorkFactory>();
-            var mockUOW = MockRepository.GenerateMock<IUnitOfWork>();
-            var mockTransaction = MockRepository.GenerateMock<ITransaction>();
+            IUnitOfWork unitOfWork = null;
+            var locator = MockRepository.GenerateStub<IServiceLocator>();
+            var factory = MockRepository.GenerateMock<IUnitOfWorkFactory>();
+            locator.Stub(x => x.GetInstance<IState>()).Return(new FakeState());
+            locator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(factory);
+            factory.Expect(x => x.Create())
+                            .Do(new Func<IUnitOfWork>(() =>
+                            {
+                                unitOfWork = MockRepository.GenerateStub<IUnitOfWork>();
+                                unitOfWork.Stub(x => x.BeginTransaction(IsolationLevel.Unspecified))
+                                    .IgnoreArguments()
+                                    .Return(MockRepository.GenerateStub<ITransaction>());
+                                return unitOfWork;
+                            })).Repeat.Once();
+            ServiceLocator.SetLocatorProvider(() => locator);
 
-            mockLocator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(mockUOWFactory).Repeat.Once();
-            mockUOWFactory.Expect(x => x.Create()).Return(mockUOW).Repeat.Once();
-            mockUOW.Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted)).IgnoreArguments().Return(mockTransaction).Repeat.Once();
-            mockTransaction.Expect(x => x.Rollback()).Repeat.Once();
-
-            ServiceLocator.SetLocatorProvider(() => mockLocator);
             using (var parentScope = new UnitOfWorkScope(IsolationLevel.ReadCommitted))
             {
                 Assert.That(UnitOfWorkScope.HasStarted);
@@ -297,9 +290,8 @@ namespace NCommon.Tests
             }
 
             Assert.That(!UnitOfWorkScope.HasStarted);
-            mockUOWFactory.VerifyAllExpectations();
-            mockUOW.VerifyAllExpectations();
-            mockTransaction.VerifyAllExpectations();
+            factory.VerifyAllExpectations();
+            unitOfWork.VerifyAllExpectations();
         }
 
         [Test]
@@ -310,6 +302,7 @@ namespace NCommon.Tests
             var mockUOW = MockRepository.GenerateMock<IUnitOfWork>();
             var mockTransaction = MockRepository.GenerateMock<ITransaction>();
 
+            mockLocator.Stub(x => x.GetInstance<IState>()).Return(new FakeState());
             mockLocator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(mockUOWFactory).Repeat.Once();
             mockUOWFactory.Expect(x => x.Create()).Return(mockUOW).Repeat.Once();
             mockUOW.Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted)).IgnoreArguments().Return(mockTransaction).Repeat.Once();
@@ -341,6 +334,7 @@ namespace NCommon.Tests
             var mockTransaction = MockRepository.GenerateMock<ITransaction>();
 
             mockLocator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(mockUOWFactory).Repeat.Once();
+            mockLocator.Stub(x => x.GetInstance<IState>()).Return(new FakeState());
             mockUOWFactory.Expect(x => x.Create()).Return(mockUOW).Repeat.Once();
             mockUOW.Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted)).IgnoreArguments().Return(mockTransaction).Repeat.Once();
             mockUOW.Expect(x => x.Flush()).Repeat.Once();
@@ -373,6 +367,7 @@ namespace NCommon.Tests
             var mockUOW = MockRepository.GenerateMock<IUnitOfWork>();
             var mockTransaction = MockRepository.GenerateMock<ITransaction>();
 
+            mockLocator.Stub(x => x.GetInstance<IState>()).Return(new FakeState());
             mockLocator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(mockUOWFactory).Repeat.Once();
             mockUOWFactory.Expect(x => x.Create()).Return(mockUOW).Repeat.Once();
             mockUOW.Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted)).IgnoreArguments().Return(mockTransaction).Repeat.Once();
@@ -403,6 +398,7 @@ namespace NCommon.Tests
 			var mockUOW = MockRepository.GenerateMock<IUnitOfWork>();
 			var mockTransaction = MockRepository.GenerateMock<ITransaction>();
 
+            mockLocator.Stub(x => x.GetInstance<IState>()).Return(new FakeState());
 			mockLocator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(mockUOWFactory);
 			mockUOWFactory.Expect(x => x.Create()).Return(mockUOW);
 			mockUOW.Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted)).IgnoreArguments().Return(mockTransaction);
@@ -428,6 +424,7 @@ namespace NCommon.Tests
 			var mockUOW = MockRepository.GenerateMock<IUnitOfWork>();
 			var mockTransaction = MockRepository.GenerateMock<ITransaction>();
 
+            mockLocator.Stub(x => x.GetInstance<IState>()).Return(new FakeState());
 			mockLocator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(mockUOWFactory);
 			mockUOWFactory.Expect(x => x.Create()).Return(mockUOW);
 			mockUOW.Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted)).IgnoreArguments().Return(mockTransaction);

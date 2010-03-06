@@ -22,6 +22,7 @@ using Microsoft.Practices.ServiceLocation;
 using NCommon.Extensions;
 using NCommon.LinqToSql.Tests;
 using NCommon.Specifications;
+using NCommon.State;
 using NUnit.Framework;
 using Rhino.Mocks;
 using IsolationLevel = System.Data.IsolationLevel;
@@ -39,7 +40,7 @@ namespace NCommon.Data.LinqToSql.Tests
         /// Sets up the NHibernate SessionFactory and NHUnitOfWorkFactory.
         /// </summary>
         [TestFixtureSetUp]
-        public void SetUp()
+        public void FixtureSetUp()
         {
             LinqToSqlUnitOfWorkFactory.SetDataContextProvider(() =>
             {
@@ -53,8 +54,14 @@ namespace NCommon.Data.LinqToSql.Tests
             ServiceLocator.SetLocatorProvider(() => locator);
         }
 
+        [SetUp]
+        public void SetUp()
+        {
+            ServiceLocator.Current.Stub(x => x.GetInstance<IState>()).Return(new FakeState());
+        }
+
         [TestFixtureTearDown]
-        public void TearDown()
+        public void FixtureTearDown()
         {
             LinqToSqlUnitOfWorkFactory.SetDataContextProvider(null);
         }

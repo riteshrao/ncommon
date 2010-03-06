@@ -98,6 +98,7 @@
     <Compile Include="EFTransactionTests.cs" />
     <Compile Include="EFUnitOfWorkFactoryTests.cs" />
     <Compile Include="EFUnitOfWorkTests.cs" />
+    <Compile Include="FakeState.cs" />
     <Compile Include="OrderItemsProductStrategy.cs" />
     <Compile Include="OrderOrderItemsStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -3,7 +3,7 @@ using System.Data;
 using Db4objects.Db4o;
 using NCommon.Data;
 
-namespace NCommon.Db4o
+namespace NCommon.Data.Db4o
 {
     /// <summary>
     /// 
