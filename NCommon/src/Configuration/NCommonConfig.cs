@@ -23,31 +23,30 @@ namespace NCommon.Configuration.Impl
         void InitializeDefaults()
         {
             _containerAdapter.Register<IContext, Context.Impl.Context>();
-            _containerAdapter.Register<ILocalStateSelector, DefaultLocalStateSelector>();
-            _containerAdapter.Register<ISessionStateSelector, DefaultSessionStateSelector>();
-            _containerAdapter.Register<ILocalState, LocalStateWrapper>();
-            _containerAdapter.Register<ISessionState, SessionStateWrapper>();
-            _containerAdapter.RegisterSingleton<IApplicationState, ApplicationState>();
+            
         }
 
         ///<summary>
         ///</summary>
-        ///<param name="config"></param>
+        ///<param name="actions"></param>
         ///<returns></returns>
-        public INCommonConfig ConfigureState(Action<IStateConfiguration> config)
+        public INCommonConfig ConfigureState<T>(Action<T> actions) where T : IStateConfiguration, new()
         {
-            config(new StateConfiguration(_containerAdapter));
+            var configuration = (T) Activator.CreateInstance(typeof (T));
+            actions(configuration);
+            configuration.Configure(_containerAdapter);
             return this;
         }
 
         ///<summary>
         ///</summary>
-        ///<param name="config"></param>
+        ///<param name="actions"></param>
         ///<typeparam name="T"></typeparam>
         ///<returns></returns>
-        public INCommonConfig ConfigureData<T>(Action<T> config) where T : IDataConfiguration
+        public INCommonConfig ConfigureData<T>(Action<T> actions) where T : IDataConfiguration, new()
         {
-            var dataConfiguration = (IDataConfiguration) Activator.CreateInstance(typeof (T));
+            var dataConfiguration = (T) Activator.CreateInstance(typeof (T));
+            actions(dataConfiguration);
             dataConfiguration.Configure(_containerAdapter);
             return this;
         }

@@ -4,7 +4,7 @@ namespace NCommon.Configuration
 {
     public interface INCommonConfig
     {
-        INCommonConfig ConfigureState(Action<IStateConfiguration> config);
-        INCommonConfig ConfigureData<T>(Action<T> config) where T : IDataConfiguration;
+        INCommonConfig ConfigureState<T>(Action<T> actions) where T : IStateConfiguration, new();
+        INCommonConfig ConfigureData<T>(Action<T> actions) where T : IDataConfiguration, new();
     }
 }
