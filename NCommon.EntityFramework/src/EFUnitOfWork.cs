@@ -15,8 +15,11 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Objects;
+using System.Linq;
+using NCommon.Extensions;
 
 namespace NCommon.Data.EntityFramework
 {
@@ -26,70 +29,21 @@ namespace NCommon.Data.EntityFramework
     /// </summary>
     public class EFUnitOfWork : IUnitOfWork
     {
-        #region fields
-        private bool _disposed;
-        private IEFSession _session;
-        private EFTransaction _transaction;
-        #endregion
+        bool _disposed;
+        EFTransaction _transaction;
+        readonly EFUnitOfWorkSettings _settings;
+        readonly IDictionary<Guid, EFSession> _openSessions = new Dictionary<Guid, EFSession>();
 
-        #region ctor
         /// <summary>
         /// Default Constructor.
         /// Creates a new instance of the <see cref="EFUnitOfWork"/> class that uses the specified object context.
         /// </summary>
         /// <param name="session">The <see cref="IEFSession"/> instance that the EFUnitOfWork instance uses.</param>
-        public EFUnitOfWork (IEFSession session)
+        public EFUnitOfWork(EFUnitOfWorkSettings settings)
         {
-            Guard.Against<ArgumentNullException>(session == null, "Expected a non-null ObjectContext instance.");
-            _session = session;
-        }
-        #endregion
-
-        #region properties
-        /// <summary>
-        /// Gets the <see cref="ObjectContext"/> bound with the EFUnitOfWork instance.
-        /// </summary>
-        public ObjectContext Context
-        {
-            get { return _session.Context; }
-        }
-        #endregion
-
-        #region Implementation of IDisposable
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            _settings = settings;
         }
 
-        /// <summary>
-        /// Disposes off the managed and unmanaged resources used.
-        /// </summary>
-        /// <param name="disposing"></param>
-        private void Dispose(bool disposing)
-        {
-            if (!disposing) return;
-            if (_disposed) return;
-
-            if (_transaction != null)
-            {
-                _transaction.Dispose();
-                _transaction = null;
-            }
-            if (_session != null)
-            {
-                _session.Dispose();
-                _session = null;
-            }
-            _disposed = true;
-        }
-        #endregion
-
-        #region Implementation of IUnitOfWork
         /// <summary>
         /// Gets a boolean value indicating whether the current unit of work is running under
         /// a transaction.
@@ -100,12 +54,33 @@ namespace NCommon.Data.EntityFramework
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public ObjectContext GetContext<T>()
+        {
+            var sessionKey = _settings.SessionResolver.GetSessionKeyFor<T>();
+            if (_openSessions.ContainsKey(sessionKey))
+                return _openSessions[sessionKey].Context;
+            //Opening a new session...
+            var session = _settings.SessionResolver.OpenSessionFor<T>();
+            if (IsInTransaction)
+            {
+                if (session.Connection.State != ConnectionState.Open)
+                    session.Connection.Open();
+                _transaction.RegisterTransaction(session.Connection.BeginTransaction(_transaction.IsolationLevel));
+            }
+            return session.Context;
+        }
+
+        /// <summary>
         /// Instructs the <see cref="IUnitOfWork"/> instance to begin a new transaction.
         /// </summary>
         /// <returns></returns>
         public ITransaction BeginTransaction()
         {
-            return BeginTransaction(IsolationLevel.ReadCommitted);
+            return BeginTransaction(_settings.DefaultIsolationLevel);
         }
 
         /// <summary>
@@ -121,11 +96,13 @@ namespace NCommon.Data.EntityFramework
                                                      "Cannot begin a new transaction while an existing transaction is still running. " +
                                                      "Please commit or rollback the existing transaction before starting a new one.");
 
-            if (_session.Connection.State != ConnectionState.Open)
-                _session.Connection.Open();
+            _transaction = new EFTransaction(isolationLevel, _openSessions.Select(session =>
+            {
+                if (session.Value.Connection.State != ConnectionState.Open)
+                    session.Value.Connection.Open();
+                return session.Value.Connection.BeginTransaction(isolationLevel);
+            }).ToArray());
 
-            IDbTransaction transaction = _session.Connection.BeginTransaction(isolationLevel);
-            _transaction = new EFTransaction(isolationLevel, transaction);
             _transaction.TransactionCommitted += TransactionCommitted;
             _transaction.TransactionRolledback += TransactionRolledback;
             return _transaction;
@@ -136,7 +113,7 @@ namespace NCommon.Data.EntityFramework
         /// </summary>
         public void Flush()
         {
-            _session.SaveChanges();
+            _openSessions.ForEach(session => session.Value.SaveChanges());
         }
 
         /// <summary>
@@ -145,7 +122,7 @@ namespace NCommon.Data.EntityFramework
         /// </summary>
         public void TransactionalFlush()
         {
-            TransactionalFlush(IsolationLevel.ReadCommitted);
+            TransactionalFlush(_settings.DefaultIsolationLevel);
         }
 
         /// <summary>
@@ -160,7 +137,7 @@ namespace NCommon.Data.EntityFramework
                 BeginTransaction(isolationLevel);
             try
             {
-                _session.SaveChanges();
+                Flush();
                 _transaction.Commit();
             }
             catch
@@ -169,18 +146,16 @@ namespace NCommon.Data.EntityFramework
                 throw;
             }
         }
-        #endregion
 
-        #region methods
         /// <summary>
         /// Handles the <see cref="ITransaction.TransactionRolledback"/> event.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void TransactionRolledback(object sender, EventArgs e)
+        void TransactionRolledback(object sender, EventArgs e)
         {
             Guard.IsEqual<InvalidOperationException>(sender, _transaction,
-                        "Expected the sender of TransactionRolledback event to be the transaction that was created by the EFUnitOfWork instance.");
+                                                     "Expected the sender of TransactionRolledback event to be the transaction that was created by the EFUnitOfWork instance.");
             ReleaseCurrentTransaction();
         }
 
@@ -189,17 +164,17 @@ namespace NCommon.Data.EntityFramework
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void TransactionCommitted(object sender, EventArgs e)
+        void TransactionCommitted(object sender, EventArgs e)
         {
             Guard.IsEqual<InvalidOperationException>(sender, _transaction,
-                "Expected the sender of TransactionComitted event to be the transaction that was created by the EFUnitOfWork instance.");
+                                                     "Expected the sender of TransactionComitted event to be the transaction that was created by the EFUnitOfWork instance.");
             ReleaseCurrentTransaction();
         }
 
         /// <summary>
         /// Releases the current transaction in the <see cref="EFTransaction"/> instance.
         /// </summary>
-        private void ReleaseCurrentTransaction()
+        void ReleaseCurrentTransaction()
         {
             if (_transaction != null)
             {
@@ -208,11 +183,38 @@ namespace NCommon.Data.EntityFramework
                 _transaction.Dispose();
             }
             _transaction = null;
-
-            //Closing the connection once the transaction has completed.
-            if (_session.Connection.State == ConnectionState.Open)
-                _session.Connection.Close();
         }
-        #endregion
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2</filterpriority>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Disposes off the managed and unmanaged resources used.
+        /// </summary>
+        /// <param name="disposing"></param>
+        void Dispose(bool disposing)
+        {
+            if (!disposing) return;
+            if (_disposed) return;
+
+            if (_transaction != null)
+            {
+                _transaction.Dispose();
+                _transaction = null;
+            }
+            if(_openSessions.Count > 0)
+            {
+                _openSessions.ForEach(session => session.Value.Dispose());
+                _openSessions.Clear();
+            }
+            _disposed = true;
+        }
     }
 }

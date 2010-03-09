@@ -15,6 +15,7 @@
 #endregion
 
 using System;
+using System.Data;
 using System.Data.Objects;
 
 namespace NCommon.Data.EntityFramework
@@ -25,41 +26,39 @@ namespace NCommon.Data.EntityFramework
     /// </summary>
     public class EFUnitOfWorkFactory : IUnitOfWorkFactory
     {
-        #region fields
-        private static Func<ObjectContext> _objectContextProvider;
-        private static readonly object _objectContextProviderLock = new object();
-        #endregion
-
-        #region methods
-        /// <summary>
-        /// Sets delegate that needs to be used for getting <see cref="ObjectContext"/> instances.
-        /// </summary>
-        /// <param name="provider"><see cref="Func{TResult}"/> The delegate when called creates insances of 
-        /// <see cref="ObjectContext"/> instances.</param>
-        public static void SetObjectContextProvider(Func<ObjectContext> provider)
+        readonly EFUnitOfWorkSettings _settings = new EFUnitOfWorkSettings
         {
-            lock (_objectContextProviderLock)
-                _objectContextProvider = provider;
+            DefaultIsolationLevel = IsolationLevel.ReadCommitted,
+            SessionResolver = new EFSessionResolver()
+        };
+        
+        public IsolationLevel DefaultIsolation
+        {
+            get { return _settings.DefaultIsolationLevel; }
+            set { _settings.DefaultIsolationLevel = value; }
         }
-        #endregion
 
-        #region Implementation of IUnitOfWorkFactory
+        public void RegisterObjectContextProvider(Func<ObjectContext> contextProvider)
+        {
+            Guard.Against<ArgumentNullException>(contextProvider == null,
+                                                 "Invalid object context provider registration. " +
+                                                 "Expected a non-null Func<ObjectContext> instance.");
+            _settings.SessionResolver.RegisterObjectContextProvider(contextProvider);
+        }
+
         /// <summary>
         /// Creates a new instance of <see cref="IUnitOfWork"/>.
         /// </summary>
         /// <returns>Instances of <see cref="EFUnitOfWork"/>.</returns>
         public IUnitOfWork Create()
         {
-            Guard.Against<InvalidOperationException>(_objectContextProvider == null,
-                                                     "A ObjectContext provider has not been specified. Please specify set a " +
-                                                     "provider using SetObjectContextProvider before creating EFUnitOfWork instances");
-            ObjectContext context;
-            lock (_objectContextProviderLock)
-            {
-                context = _objectContextProvider();
-            }
-            return new EFUnitOfWork(new EFSession(context));
+            Guard.Against<InvalidOperationException>(
+               _settings.SessionResolver.ObjectContextsRegistered == 0,
+               "No ObjectContext providers have been registered. You must register ObjectContext providers using " +
+               "the RegisterObjectContextProvider method or use NCommon.Configure class to configure NCommon.EntityFramework " +
+               "using the EFConfiguration class and register ObjectContext instances using the WithObjectContext method.");
+            
+            return new EFUnitOfWork(_settings);
         }
-        #endregion
     }
 }

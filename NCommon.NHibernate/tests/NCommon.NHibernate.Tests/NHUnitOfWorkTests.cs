@@ -41,7 +41,7 @@ namespace NCommon.Data.NHibernate.Tests
             resolver.Expect(x => x.GetSessionKeyFor<string>()).Return(Guid.NewGuid());
             resolver.Expect(x => x.OpenSessionFor<string>()).Return(MockRepository.GenerateStub<ISession>());
 
-            var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings {NHSessionResolver = resolver});
+            var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings {SessionResolver = resolver});
             var session = unitOfWork.GetSession<string>();
             Assert.That(session, Is.Not.Null);
             resolver.VerifyAllExpectations();
@@ -59,7 +59,7 @@ namespace NCommon.Data.NHibernate.Tests
                 .Return(MockRepository.GenerateStub<ISession>())
                 .Repeat.Once();
 
-            var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings { NHSessionResolver = resolver });
+            var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings { SessionResolver = resolver });
             var session1 = unitOfWork.GetSession<string>();
             var session2 = unitOfWork.GetSession<string>();
             Assert.That(session1, Is.Not.Null);
@@ -77,7 +77,7 @@ namespace NCommon.Data.NHibernate.Tests
             resolver.Expect(x => x.OpenSessionFor<string>()).Return(MockRepository.GenerateStub<ISession>());
             resolver.Expect(x => x.OpenSessionFor<int>()).Return(MockRepository.GenerateStub<ISession>());
 
-            var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings { NHSessionResolver = resolver });
+            var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings { SessionResolver = resolver });
             var session1 = unitOfWork.GetSession<string>();
             var session2 = unitOfWork.GetSession<int>();
             Assert.That(session1, Is.Not.Null);
@@ -99,7 +99,7 @@ namespace NCommon.Data.NHibernate.Tests
             var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings
             {
                 DefaultIsolation = IsolationLevel.ReadCommitted,
-                NHSessionResolver = resolver
+                SessionResolver = resolver
             });
 
             unitOfWork.BeginTransaction();
@@ -156,7 +156,7 @@ namespace NCommon.Data.NHibernate.Tests
             var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings
             {
                 DefaultIsolation = IsolationLevel.ReadCommitted,
-                NHSessionResolver = resolver
+                SessionResolver = resolver
             });
 
             var session = unitOfWork.GetSession<string>();
@@ -171,7 +171,7 @@ namespace NCommon.Data.NHibernate.Tests
             resolver.Stub(x => x.GetSessionKeyFor<string>()).Return(Guid.NewGuid());
             resolver.Stub(x => x.OpenSessionFor<string>()).Return(MockRepository.GenerateMock<ISession>());
 
-            var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings {NHSessionResolver = resolver});
+            var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings {SessionResolver = resolver});
             var session = unitOfWork.GetSession<string>();
             unitOfWork.Flush();
             session.AssertWasCalled(x => x.Flush());
@@ -191,7 +191,7 @@ namespace NCommon.Data.NHibernate.Tests
             var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings
             {
                 DefaultIsolation = IsolationLevel.ReadCommitted,
-                NHSessionResolver = resolver
+                SessionResolver = resolver
             });
 
             var session = unitOfWork.GetSession<string>();
@@ -214,7 +214,7 @@ namespace NCommon.Data.NHibernate.Tests
             var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings
             {
                 DefaultIsolation = IsolationLevel.ReadCommitted,
-                NHSessionResolver = resolver
+                SessionResolver = resolver
             });
 
             var session = unitOfWork.GetSession<string>();
@@ -238,7 +238,7 @@ namespace NCommon.Data.NHibernate.Tests
             var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings
             {
                 DefaultIsolation = IsolationLevel.ReadCommitted,
-                NHSessionResolver = resolver
+                SessionResolver = resolver
             });
 
             var session = unitOfWork.GetSession<string>();
@@ -263,7 +263,7 @@ namespace NCommon.Data.NHibernate.Tests
             var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings
             {
                 DefaultIsolation = IsolationLevel.ReadCommitted,
-                NHSessionResolver = resolver
+                SessionResolver = resolver
             });
 
             var session = unitOfWork.GetSession<string>();
@@ -287,7 +287,7 @@ namespace NCommon.Data.NHibernate.Tests
             var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings
             {
                 DefaultIsolation = IsolationLevel.ReadCommitted,
-                NHSessionResolver = resolver
+                SessionResolver = resolver
             });
 
             var session = unitOfWork.GetSession<string>();
@@ -313,7 +313,7 @@ namespace NCommon.Data.NHibernate.Tests
             var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings
             {
                 DefaultIsolation = IsolationLevel.ReadCommitted,
-                NHSessionResolver = resolver
+                SessionResolver = resolver
             });
 
             var session = unitOfWork.GetSession<string>();
@@ -345,7 +345,7 @@ namespace NCommon.Data.NHibernate.Tests
             var unitOfWork = new NHUnitOfWork(new NHUnitOfWorkSettings
             {
                 DefaultIsolation = IsolationLevel.ReadCommitted,
-                NHSessionResolver = resolver
+                SessionResolver = resolver
             });
 
             var session1 = unitOfWork.GetSession<string>();

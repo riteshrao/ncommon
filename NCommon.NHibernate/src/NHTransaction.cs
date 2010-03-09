@@ -56,7 +56,7 @@ namespace NCommon.Data.NHibernate
         /// 
         /// </summary>
         /// <param name="transaction"></param>
-        public void RegisterNHTransaction(global::NHibernate.ITransaction transaction)
+        public void RegisterTransaction(global::NHibernate.ITransaction transaction)
         {
             _transactions.Add(transaction);
         }

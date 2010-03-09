@@ -15,24 +15,27 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Data;
+using NCommon.Extensions;
 
 namespace NCommon.Data.LinqToSql
 {
     public class LinqToSqlTransaction : ITransaction
     {
         bool _disposed;
-        readonly IDbTransaction _internalTransaction;
+        readonly ICollection<IDbTransaction> _transactions = new HashSet<IDbTransaction>();
 
         /// <summary>
         /// Default Constructor.
         /// Creates a new instance of the <see cref="LinqToSqlTransaction"/>
         /// </summary>
         /// <param name="transaction">The underlying <see cref="IDbTransaction"/></param>
-        public LinqToSqlTransaction(IDbTransaction transaction)
+        public LinqToSqlTransaction(IsolationLevel isolationLevel, params IDbTransaction[] transaction)
         {
             Guard.Against<ArgumentNullException>(transaction == null, "Expected a non null IDbTransaction instance.");
-            _internalTransaction = transaction;
+            IsolationLevel = isolationLevel;
+            transaction.ForEach(tx => _transactions.Add(tx));
         }
 
         /// <summary>
@@ -47,6 +50,11 @@ namespace NCommon.Data.LinqToSql
 
         public IsolationLevel IsolationLevel { get; private set; }
 
+        public void RegisterTransaction(IDbTransaction transaction)
+        {
+            _transactions.Add(transaction);
+        }
+
         /// <summary>
         /// Commits the changes made to the data store.
         /// </summary>
@@ -56,7 +64,7 @@ namespace NCommon.Data.LinqToSql
             if (_disposed)
                 throw new ObjectDisposedException("LinqToSqlTransaction", "Cannot commit a disposed transaction.");
 
-            _internalTransaction.Commit();
+            _transactions.ForEach(tx => tx.Commit());
             if (TransactionCommitted != null)
                 TransactionCommitted(this, EventArgs.Empty);
         }
@@ -70,7 +78,7 @@ namespace NCommon.Data.LinqToSql
             if (_disposed)
                 throw new ObjectDisposedException("LinqToSqlTransaction", "Cannot rollback a disposed transaction.");
 
-            _internalTransaction.Rollback();
+            _transactions.ForEach(x => x.Rollback());
             if (TransactionRolledback != null)
                 TransactionRolledback(this, EventArgs.Empty);
         }
@@ -91,14 +99,17 @@ namespace NCommon.Data.LinqToSql
         /// <param name="disposing"></param>
         private void Dispose(bool disposing)
         {
-            if (disposing)
+            if (!disposing) return;
+            if (_disposed) return;
+
+            if (_transactions.Count > 0)
             {
-                if (!_disposed)
-                {
-                    _internalTransaction.Dispose();
-                    _disposed = true;
-                }
+                _transactions.ForEach(tx => tx.Dispose());
+                _transactions.Clear();
             }
+            _disposed = true;
         }
+
+      
     }
 }

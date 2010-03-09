@@ -15,9 +15,12 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.Linq;
+using System.Linq;
+using NCommon.Extensions;
 
 namespace NCommon.Data.LinqToSql
 {
@@ -27,70 +30,21 @@ namespace NCommon.Data.LinqToSql
     /// </summary>
     public class LinqToSqlUnitOfWork : IUnitOfWork
     {
-        #region fields
         private bool _disposed;
-        private ILinqSession _linqContext;
         private LinqToSqlTransaction _transaction;
-        #endregion
+        readonly LinqToSqlUnitOfWorkSettings _settings;
+        readonly IDictionary<Guid, ILinqSession> _openSessions = new Dictionary<Guid, ILinqSession>();
 
-        #region ctor
         /// <summary>
         /// Default Constructor.
         /// Creates a new instance of the <see cref="LinqToSqlUnitOfWork"/> class that uses the specified data  context.
         /// </summary>
         /// <param name="context">The <see cref="DataContext"/> instance that the LinqToSqlUnitOfWork instance uses.</param>
-        public LinqToSqlUnitOfWork(ILinqSession context) 
+        public LinqToSqlUnitOfWork(LinqToSqlUnitOfWorkSettings settings) 
         {
-            Guard.Against<ArgumentNullException>(context == null, "Expected a non-nul DataContext instance");
-            _linqContext = context;
-        }
-        #endregion
-
-        #region properties
-        /// <summary>
-        /// Gets the <see cref="DataContext"/> that the LinqToSqlUnitOfWork instance wraps.
-        /// </summary>
-        public DataContext Context
-        {
-            get { return _linqContext.Context;}
-        }
-        #endregion
-
-        #region Implementation of IDisposable
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            _settings = settings;
         }
 
-        /// <summary>
-        /// Disposes off manages resources used by the LinqToSqlUnitOfWork instance.
-        /// </summary>
-        /// <param name="disposing"></param>
-        private void Dispose(bool disposing)
-        {
-            if (!disposing) return;
-            if (_disposed) return;
-
-            if (_transaction != null)
-            {
-                _transaction.Dispose();
-                _transaction = null;
-            }
-            if (_linqContext != null)
-            {
-                _linqContext.Dispose();
-                _linqContext = null;
-            }
-            _disposed = true;
-        }
-        #endregion
-
-        #region Implementation of IUnitOfWork
         /// <summary>
         /// Gets a boolean value indicating whether the current unit of work is running under
         /// a transaction.
@@ -100,13 +54,30 @@ namespace NCommon.Data.LinqToSql
             get { return _transaction != null; }
         }
 
+        public DataContext GetContext<T>()
+        {
+            var key = _settings.SessionResolver.GetSessionKeyFor<T>();
+            if (_openSessions.ContainsKey(key))
+                return _openSessions[key].Context;
+            //Opening a new session...
+            var session = _settings.SessionResolver.OpenSessionFor<T>();
+            _openSessions.Add(key, session);
+            if (IsInTransaction)
+            {
+                if (session.Connection.State != ConnectionState.Open)
+                    session.Connection.Open();
+                _transaction.RegisterTransaction(session.Connection.BeginTransaction(_transaction.IsolationLevel));
+            }
+            return session.Context;
+        }
+
         /// <summary>
         /// Instructs the <see cref="IUnitOfWork"/> instance to begin a new transaction.
         /// </summary>
         /// <returns></returns>
         public ITransaction BeginTransaction()
         {
-            return BeginTransaction(IsolationLevel.ReadCommitted);
+            return BeginTransaction(_settings.DefaultIsolation);
         }
 
         /// <summary>
@@ -121,12 +92,14 @@ namespace NCommon.Data.LinqToSql
             Guard.Against<InvalidOperationException>(_transaction != null,
                                                      "Cannot begin a new transaction while an existing transaction is still running. " +
                                                      "Please commit or rollback the existing transaction before starting a new one.");
-            if (_linqContext.Connection.State != ConnectionState.Open)
-                _linqContext.Connection.Open();
 
-            IDbTransaction transaction = _linqContext.Connection.BeginTransaction(isolationLevel);
-            _linqContext.Transaction = transaction;
-            _transaction = new LinqToSqlTransaction(transaction);
+            _transaction = new LinqToSqlTransaction(isolationLevel, _openSessions.Select(session =>
+            {
+                if (session.Value.Connection.State != ConnectionState.Open)
+                    session.Value.Connection.Open();
+                return session.Value.Connection.BeginTransaction(isolationLevel);
+            }).ToArray());
+
             _transaction.TransactionCommitted += TransactionCommitted;
             _transaction.TransactionRolledback += TransactionRolledback;
             return _transaction;
@@ -137,7 +110,7 @@ namespace NCommon.Data.LinqToSql
         /// </summary>
         public void Flush()
         {
-            _linqContext.SubmitChanges();
+            _openSessions.ForEach(session => session.Value.SubmitChanges());
         }
 
         /// <summary>
@@ -146,7 +119,7 @@ namespace NCommon.Data.LinqToSql
         /// </summary>
         public void TransactionalFlush()
         {
-            TransactionalFlush(IsolationLevel.ReadCommitted);
+            TransactionalFlush(_settings.DefaultIsolation);
         }
 
         /// <summary>
@@ -161,7 +134,7 @@ namespace NCommon.Data.LinqToSql
                 BeginTransaction(isolationLevel);
             try
             {
-                _linqContext.SubmitChanges();
+                Flush();
                 _transaction.Commit();
             }
             catch
@@ -170,9 +143,7 @@ namespace NCommon.Data.LinqToSql
                 throw;
             }
         }
-        #endregion
 
-        #region methods
         /// <summary>
         /// Handles the <see cref="ITransaction.TransactionRolledback"/> event.
         /// </summary>
@@ -209,11 +180,38 @@ namespace NCommon.Data.LinqToSql
                 _transaction.Dispose();
             }
             _transaction = null;
-
-            //Closing the connection once the transaction has completed.
-            if (_linqContext.Connection.State == ConnectionState.Open)
-                _linqContext.Connection.Close();
         }
-        #endregion
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2</filterpriority>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Disposes off manages resources used by the LinqToSqlUnitOfWork instance.
+        /// </summary>
+        /// <param name="disposing"></param>
+        private void Dispose(bool disposing)
+        {
+            if (!disposing) return;
+            if (_disposed) return;
+
+            if (_transaction != null)
+            {
+                _transaction.Dispose();
+                _transaction = null;
+            }
+            if(_openSessions.Count > 0)
+            {
+                _openSessions.ForEach(session => session.Value.Dispose());
+                _openSessions.Clear();
+            }
+            _disposed = true;
+        }
     }
 }

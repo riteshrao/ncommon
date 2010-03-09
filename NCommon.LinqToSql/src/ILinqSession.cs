@@ -59,7 +59,7 @@ namespace NCommon.Data.LinqToSql
     /// <summary>
     /// Internal implementation of the <see cref="ILinqSession"/> interface
     /// </summary>
-    internal class LinqUnitOfWorkDataContext : ILinqSession
+    internal class LinqSession : ILinqSession
     {
         #region fields
         private bool _disposed;
@@ -69,9 +69,9 @@ namespace NCommon.Data.LinqToSql
         #region .ctor
         /// <summary>
         /// Default Constructor.
-        /// Creates a new instance of the <see cref="LinqUnitOfWorkDataContext"/> class.
+        /// Creates a new instance of the <see cref="LinqSession"/> class.
         /// </summary>
-        public LinqUnitOfWorkDataContext(DataContext context)
+        public LinqSession(DataContext context)
         {
             Guard.Against<ArgumentNullException>(context == null, "Expected a non-null DataContext instance.");
             _context = context;

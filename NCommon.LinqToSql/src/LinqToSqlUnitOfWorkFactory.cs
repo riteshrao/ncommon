@@ -15,6 +15,7 @@
 #endregion
 
 using System;
+using System.Data;
 using System.Data.Linq;
 
 namespace NCommon.Data.LinqToSql
@@ -25,27 +26,22 @@ namespace NCommon.Data.LinqToSql
     /// </summary>
     public class LinqToSqlUnitOfWorkFactory : IUnitOfWorkFactory
     {
-        #region fields
-        private static Func<DataContext> _dataContextProvider;
-        private static readonly object _dataContextProviderLock = new object();
-        #endregion
-
-        #region methods
-        /// <summary>
-        /// Sets delegate that needs to be used for getting <see cref="DataContext"/> instances.
-        /// </summary>
-        /// <param name="provider"><see cref="Func{TResult}"/> The delegate when called creates insances of 
-        /// <see cref="DataContext"/> instances.</param>
-        public static void SetDataContextProvider (Func<DataContext> provider)
+        readonly LinqToSqlUnitOfWorkSettings _settings = new LinqToSqlUnitOfWorkSettings
         {
-            lock (_dataContextProviderLock)
-            {
-                _dataContextProvider = provider;
-            }
-        }
-        #endregion
+            DefaultIsolation = IsolationLevel.ReadCommitted,
+            SessionResolver = new LinqToSqlSessionResolver()
+        };
 
-        #region Implementation of IUnitOfWorkFactory
+        public IsolationLevel DefaultIsolation
+        {
+            get { return _settings.DefaultIsolation; }
+            set { _settings.DefaultIsolation = value; }
+        }
+
+        public void RegisterDataContextProvider(Func<DataContext> contextProvider)
+        {
+            _settings.SessionResolver.RegisterDataContextProvider(contextProvider);
+        }
 
         /// <summary>
         /// Creates a new instance of <see cref="IUnitOfWork"/>.
@@ -53,15 +49,12 @@ namespace NCommon.Data.LinqToSql
         /// <returns>Instances of <see cref="LinqToSqlUnitOfWork"/>.</returns>
         public IUnitOfWork Create()
         {
-            Guard.Against<InvalidOperationException>(_dataContextProvider == null,
-                                                     "A DataContext provider has not been specified. Please specify set a " + 
-                                                     "provider using SetDataContextProvider before creating LinqToUnitOfWork instances");
-            DataContext context;
-            lock (_dataContextProviderLock)
-                context = _dataContextProvider();
-
-            return new LinqToSqlUnitOfWork(new LinqUnitOfWorkDataContext(context));
+            Guard.Against<InvalidOperationException>(
+                 _settings.SessionResolver.DataContextsRegistered == 0,
+                 "No DataContext providers have been registered. You must register DataContext providers using " +
+                 "the RegisterDataContextProvider method or use NCommon.Configure class to configure NCommon.LinqToSql " +
+                 "using the LinqToSqlConfiguration class and register DataContext instances using the WithDataContext method.");
+            return new LinqToSqlUnitOfWork(_settings);
         }
-        #endregion
     }
 }

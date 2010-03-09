@@ -15,25 +15,26 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Data;
+using NCommon.Extensions;
 
 namespace NCommon.Data.EntityFramework
 {
     public class EFTransaction : ITransaction
     {
         private bool _disposed;
-        private IDbTransaction _transaction;
+        readonly ICollection<IDbTransaction> _transactions = new HashSet<IDbTransaction>();
 
         /// <summary>
         /// Default Constructor.
         /// Creates a new instance of the <see cref="EFTransaction"/> instance.
         /// </summary>
         /// <param name="transaction"></param>
-        public EFTransaction(IsolationLevel isolationLevel, IDbTransaction transaction)
+        public EFTransaction(IsolationLevel isolationLevel, params IDbTransaction[] transaction)
         {
             Guard.Against<ArgumentNullException>(transaction == null, "Expected a non-null DbTransaction instance.");
-            IsolationLevel = isolationLevel;
-            _transaction = transaction;
+            transaction.ForEach(tx => _transactions.Add(tx));
         }
 
         /// <summary>
@@ -46,7 +47,19 @@ namespace NCommon.Data.EntityFramework
         /// </summary>
         public event EventHandler TransactionRolledback;
 
+        /// <summary>
+        /// 
+        /// </summary>
         public IsolationLevel IsolationLevel { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="transaction"></param>
+        public void RegisterTransaction(IDbTransaction transaction)
+        {
+            _transactions.Add(transaction);
+        }
 
         /// <summary>
         /// Commits the changes made to the data store.
@@ -56,7 +69,7 @@ namespace NCommon.Data.EntityFramework
         {
             if (_disposed)
                 throw new ObjectDisposedException("EFTransaction", "Cannot commit a disposed transaction.");
-            _transaction.Commit();
+            _transactions.ForEach(tx => tx.Commit());
             if (TransactionCommitted != null)
                 TransactionCommitted(this, EventArgs.Empty);
         }
@@ -70,7 +83,7 @@ namespace NCommon.Data.EntityFramework
             if (_disposed)
                 throw new ObjectDisposedException("EFTransaction", "Cannot rollback a disposed transaction.");
 
-            _transaction.Rollback();
+            _transactions.ForEach(tx => tx.Rollback());
             if (TransactionRolledback != null)
                 TransactionRolledback(this, EventArgs.Empty);
         }
@@ -91,15 +104,17 @@ namespace NCommon.Data.EntityFramework
         /// <param name="disposing"></param>
         private void Dispose(bool disposing)
         {
-            if (disposing)
+            if (!disposing) 
+                return;
+            if (_disposed) 
+                return;
+
+            if (_transactions.Count > 0)
             {
-                if (!_disposed)
-                {
-                    _transaction.Dispose();
-                    _transaction = null;
-                    _disposed = true;
-                }
+                _transactions.ForEach(x => x.Dispose());
+                _transactions.Clear();
             }
+            _disposed = true;
         }
     }
 }

@@ -48,6 +48,15 @@ namespace NCommon.Data.NHibernate
         }
 
         /// <summary>
+        /// Gets a boolean value indicating whether the current unit of work is running under
+        /// a transaction.
+        /// </summary>
+        public bool IsInTransaction
+        {
+            get { return _transaction != null; }
+        }
+
+        /// <summary>
         /// Gets a <see cref="ISession"/> instance that can be used for querying and managing
         /// instances of <typeparamref name="T"/>
         /// </summary>
@@ -55,25 +64,16 @@ namespace NCommon.Data.NHibernate
         /// <returns></returns>
         public ISession GetSession<T>()
         {
-            var sessionKey = _settings.NHSessionResolver.GetSessionKeyFor<T>();
+            var sessionKey = _settings.SessionResolver.GetSessionKeyFor<T>();
             if (_openSessions.ContainsKey(sessionKey))
                 return _openSessions[sessionKey];
 
             //Opening a new session...
-            var session = _settings.NHSessionResolver.OpenSessionFor<T>();
+            var session = _settings.SessionResolver.OpenSessionFor<T>();
             _openSessions.Add(sessionKey, session);
             if (IsInTransaction)
-                _transaction.RegisterNHTransaction(session.BeginTransaction(_transaction.IsolationLevel));
+                _transaction.RegisterTransaction(session.BeginTransaction(_transaction.IsolationLevel));
             return session;
-        }
-
-        /// <summary>
-        /// Gets a boolean value indicating whether the current unit of work is running under
-        /// a transaction.
-        /// </summary>
-        public bool IsInTransaction
-        {
-            get { return _transaction != null; }
         }
 
         /// <summary>

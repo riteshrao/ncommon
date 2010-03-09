@@ -55,12 +55,9 @@ namespace NCommon.Data.EntityFramework
     /// </summary>
     internal class EFSession : IEFSession
     {
-        #region fields
         private bool _disposed;
         private ObjectContext _context;
-        #endregion
 
-        #region .ctor
         /// <summary>
         /// Default Constructor.
         /// Creates a new instance of the <see cref="EFSession"/> class.
@@ -71,9 +68,7 @@ namespace NCommon.Data.EntityFramework
             Guard.Against<ArgumentNullException>(context == null, "Expected a non-null ObjectContext instance.");
             _context = context;
         }
-        #endregion
 
-        #region Implementation of IEFSession
         /// <summary>
         /// Gets the underlying <see cref="ObjectContext"/>
         /// </summary>
@@ -97,9 +92,7 @@ namespace NCommon.Data.EntityFramework
         {
             _context.SaveChanges(true);
         }
-        #endregion
 
-        #region Implementation of IDisposable
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -116,15 +109,13 @@ namespace NCommon.Data.EntityFramework
         /// <param name="disposing"></param>
         private void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                if (!_disposed)
-                {
-                    _context.Dispose();
-                    _disposed = true;
-                }
-            }
+            if (!disposing) 
+                return;
+            if (_disposed) 
+                return;
+
+            _context.Dispose();
+            _disposed = true;
         }
-        #endregion
     }
 }

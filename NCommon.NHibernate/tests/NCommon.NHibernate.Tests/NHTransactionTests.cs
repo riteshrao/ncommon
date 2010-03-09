@@ -14,8 +14,8 @@ namespace NCommon.Data.NHibernate.Tests
             var nhTx1 = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
             var nhTx2 = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
 
-            tx.RegisterNHTransaction(nhTx1);
-            tx.RegisterNHTransaction(nhTx2);
+            tx.RegisterTransaction(nhTx1);
+            tx.RegisterTransaction(nhTx2);
             tx.Commit();
 
             nhTx1.AssertWasCalled(x => x.Commit());
@@ -29,8 +29,8 @@ namespace NCommon.Data.NHibernate.Tests
             var nhTx1 = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
             var nhTx2 = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
 
-            tx.RegisterNHTransaction(nhTx1);
-            tx.RegisterNHTransaction(nhTx2);
+            tx.RegisterTransaction(nhTx1);
+            tx.RegisterTransaction(nhTx2);
             tx.Rollback();
 
             nhTx1.AssertWasCalled(x => x.Rollback());

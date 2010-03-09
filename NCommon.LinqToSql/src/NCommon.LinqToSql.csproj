@@ -58,6 +58,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -72,10 +73,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ILinqSession.cs" />
+    <Compile Include="ILinqToSqlSessionResolver.cs" />
+    <Compile Include="LinqToSqlConfiguration.cs" />
     <Compile Include="LinqToSqlRepository.cs" />
+    <Compile Include="LinqToSqlSessionResolver.cs" />
     <Compile Include="LinqToSqlTransaction.cs" />
     <Compile Include="LinqToSqlUnitOfWork.cs" />
     <Compile Include="LinqToSqlUnitOfWorkFactory.cs" />
+    <Compile Include="LinqToSqlUnitOfWorkSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

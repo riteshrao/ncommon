@@ -27,13 +27,9 @@ namespace NCommon.Data.LinqToSql
     /// </summary>
     public class LinqToSqlRepository<TEntity> : RepositoryBase<TEntity> where TEntity : class
     {
-        #region fields
-        private DataContext _privateDataContext;
-        private readonly DataLoadOptions _loadOptions = new DataLoadOptions();
-        
-        #endregion
+        readonly DataContext _privateDataContext;
+        readonly DataLoadOptions _loadOptions = new DataLoadOptions();
 
-        #region .ctor
         /// <summary>
         /// Default Constructor.
         /// Creates a new instance of the <see cref="LinqToSqlRepository{TEntity}"/> class.
@@ -53,9 +49,7 @@ namespace NCommon.Data.LinqToSql
 
             this._privateDataContext = context;
         }
-        #endregion
 
-        #region properties
         /// <summary>
         /// Gets the <see cref="DataContext"/> instnace that is used by the repository.
         /// </summary>
@@ -63,7 +57,7 @@ namespace NCommon.Data.LinqToSql
         {
             get
             {
-                return _privateDataContext ?? GetCurrentUnitOfWork<LinqToSqlUnitOfWork>().Context;
+                return _privateDataContext ?? GetCurrentUnitOfWork<LinqToSqlUnitOfWork>().GetContext<TEntity>();
             }   
         }
 
@@ -77,9 +71,7 @@ namespace NCommon.Data.LinqToSql
                 return DataContext.GetTable<TEntity>();
             }
         }
-        #endregion
 
-        #region Overrides of RepositoryBase<TEntity>
         /// <summary>
         /// Gets the <see cref="IQueryable{TEntity}"/> used by the <see cref="RepositoryBase{TEntity}"/> 
         /// to execute Linq queries.
@@ -196,7 +188,5 @@ namespace NCommon.Data.LinqToSql
     	{
     		return this; //Does nothing.
     	}
-
-    	#endregion
     }
 }
