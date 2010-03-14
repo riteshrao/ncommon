@@ -14,8 +14,8 @@
 //limitations under the License. 
 #endregion
 
-
 using System;
+using System.Deployment.Internal.Isolation;
 using Microsoft.Practices.ServiceLocation;
 using NCommon.State;
 
@@ -26,14 +26,10 @@ namespace NCommon.Data
     /// </summary>
     public static class UnitOfWork
     {
-        #region const
         /// <summary>
-        /// The Key used to store the current unit of work in <see cref="Store.Local"/>.
+        /// The Key used to store the current unit of work in <see cref="ILocalState"/>.
         /// </summary>
-        private const string currentUnitOfWorkKey = "CurrentUnitOfWorkSession.Key";
-        #endregion
-
-        #region properties
+        private const string CurrentUnitOfWorkKey = "CurrentUnitOfWorkSession.Key";
 
         /// <summary>
         /// Gets a boolean value indicating whether a _unitOfWork has been started for the current
@@ -47,7 +43,7 @@ namespace NCommon.Data
             get
             {
                 var state = ServiceLocator.Current.GetInstance<IState>();
-                return state.Local.Get<IUnitOfWork>(currentUnitOfWorkKey) != null;
+                return state.Local.Get<IUnitOfWork>(CurrentUnitOfWorkKey) != null;
             }
         }
 
@@ -62,22 +58,19 @@ namespace NCommon.Data
             get
             {
                 var state = ServiceLocator.Current.GetInstance<IState>();
-                return state.Local.Get<IUnitOfWork>(currentUnitOfWorkKey);
+                return state.Local.Get<IUnitOfWork>(CurrentUnitOfWorkKey);
             }
             set
             {
                 var state = ServiceLocator.Current.GetInstance<IState>();
                 if (value == null)
                     //Remove if the value is sepcified as null);
-                    state.Local.Remove<IUnitOfWork>(currentUnitOfWorkKey);
+                    state.Local.Remove<IUnitOfWork>(CurrentUnitOfWorkKey);
                 else
-                    state.Local.Put<IUnitOfWork>(currentUnitOfWorkKey, value);
+                    state.Local.Put<IUnitOfWork>(CurrentUnitOfWorkKey, value);
             }
         }
 
-        #endregion
-
-        #region methods
         /// <summary>
         /// Starts a new <see cref="IUnitOfWork"/> session that implements a unit of work operation.
         /// </summary>
@@ -104,6 +97,5 @@ namespace NCommon.Data
             Current.Dispose();
             Current = null;
         }
-        #endregion
     }
 }

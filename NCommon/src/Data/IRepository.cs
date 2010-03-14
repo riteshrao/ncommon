@@ -119,6 +119,7 @@ namespace NCommon.Data
         /// the exact same instance.
         /// </remarks>
         IRepository<TEntity> For<TService>();
+
 		/// <summary>
 		/// Sets a batch size on the repository.
 		/// </summary>

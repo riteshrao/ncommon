@@ -32,12 +32,22 @@ namespace NCommon.Data.EntityFramework
             SessionResolver = new EFSessionResolver()
         };
         
+        /// <summary>
+        /// Gets or sets the default isolation level of <see cref="EFUnitOfWork"/> instances that the 
+        /// factory creates.
+        /// </summary>
+        /// <value>The default <see cref="IsolationLevel"/> of <see cref="EFUnitOfWork"/> instances.</value>
         public IsolationLevel DefaultIsolation
         {
             get { return _settings.DefaultIsolationLevel; }
             set { _settings.DefaultIsolationLevel = value; }
         }
 
+        /// <summary>
+        /// Registers a <see cref="Func{T}"/> of type <see cref="ObjectContext"/> provider that can be used
+        /// to resolve instances of <see cref="ObjectContext"/>.
+        /// </summary>
+        /// <param name="contextProvider">A <see cref="Func{T}"/> of type <see cref="ObjectContext"/>.</param>
         public void RegisterObjectContextProvider(Func<ObjectContext> contextProvider)
         {
             Guard.Against<ArgumentNullException>(contextProvider == null,

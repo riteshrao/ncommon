@@ -14,7 +14,6 @@
 //limitations under the License. 
 #endregion
 
-
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -30,13 +29,8 @@ namespace NCommon.Specifications
     /// </remarks>
     public class Specification<T> : ISpecification<T>
     {
-        #region fields
-
         private readonly Expression<Func<T, bool>> _predicate;
         private readonly Func<T, bool> _predicateCompiled;
-        #endregion
-
-        #region .ctor
 
         /// <summary>
         /// Default Constructor.
@@ -51,10 +45,6 @@ namespace NCommon.Specifications
             _predicate = predicate;
             _predicateCompiled = predicate.Compile();
         }
-
-        #endregion
-
-        #region Implementation of ISpecification<TEntity>
 
         /// <summary>
         /// Gets the expression that encapsulates the criteria of the specification.
@@ -74,10 +64,6 @@ namespace NCommon.Specifications
         {
             return _predicateCompiled.Invoke(entity);
         }
-
-        #endregion
-
-        #region Operator overloads
 
         /// <summary>
         /// Overloads the &amp; operator and combines two <see cref="Specification{TEntity}"/> in a Boolean And expression
@@ -114,7 +100,5 @@ namespace NCommon.Specifications
                 Expression.Lambda<Func<T, bool>>(newExpression, leftHand.Predicate.Parameters)
                 );
         }
-
-        #endregion
     }
 }

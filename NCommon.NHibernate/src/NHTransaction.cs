@@ -21,6 +21,9 @@ using NCommon.Extensions;
 
 namespace NCommon.Data.NHibernate
 {
+    /// <summary>
+    /// Implementation of <see cref="ITransaction"/> used by <see cref="NHTransaction"/>.
+    /// </summary>
     public class NHTransaction : ITransaction
     {
         bool _disposed;

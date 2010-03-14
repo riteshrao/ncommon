@@ -27,12 +27,9 @@ namespace NCommon.Rules
     ///<typeparam name="TEntity"></typeparam>
     public abstract class BusinessRulesEvaluatorBase<TEntity> : IBusinessRulesEvaluator<TEntity> where TEntity : class
     {
-        #region fields
         //The internal dictionary used to store rule sets.
         private readonly Dictionary<string, IBusinessRule<TEntity>> _ruleSets = new Dictionary<string, IBusinessRule<TEntity>>();
-        #endregion
 
-        #region methods
         /// <summary>
         /// Adds a <see cref="IBusinessRule{TEntity}"/> instance to the rules evaluator.
         /// </summary>
@@ -85,6 +82,5 @@ namespace NCommon.Rules
                 _ruleSets[ruleName].Evaluate(entity);
             }
         }
-        #endregion
     }
 }

@@ -29,13 +29,10 @@ namespace NCommon.Util
     ///</summary>
     public static class Inflector
     {
-        #region fields
-        private static readonly List<Rule> _plurals = new List<Rule>();
-        private static readonly List<Rule> _singulars = new List<Rule>();
-        private static readonly List<string> _uncountables = new List<string>();
-        #endregion
+        private static readonly List<Rule> Plurals = new List<Rule>();
+        private static readonly List<Rule> Singulars = new List<Rule>();
+        private static readonly List<string> Uncountables = new List<string>();
 
-        #region ..ctor
         /// <summary>
         /// Class Constructor.
         /// </summary>
@@ -100,9 +97,6 @@ namespace NCommon.Util
             AddUncountable("sheep");
         }
 
-        #endregion
-
-        #region private class Rule
         private class Rule
         {
             private readonly Regex _regex;
@@ -124,9 +118,7 @@ namespace NCommon.Util
                 return _regex.Replace(word, _replacement);
             }
         }
-        #endregion
 
-        #region private rule buolder methods
         private static void AddIrregular(string singular, string plural)
         {
             AddPlural("(" + singular[0] + ")" + singular.Substring(1) + "$", "$1" + plural.Substring(1));
@@ -135,24 +127,24 @@ namespace NCommon.Util
 
         private static void AddUncountable(string word)
         {
-            _uncountables.Add(word.ToLower());
+            Uncountables.Add(word.ToLower());
         }
 
         private static void AddPlural(string rule, string replacement)
         {
-            _plurals.Add(new Rule(rule, replacement));
+            Plurals.Add(new Rule(rule, replacement));
         }
 
         private static void AddSingular(string rule, string replacement)
         {
-            _singulars.Add(new Rule(rule, replacement));
+            Singulars.Add(new Rule(rule, replacement));
         }
 
         private static string ApplyRules(List<Rule> rules, string word)
         {
             string result = word;
 
-            if (!_uncountables.Contains(word.ToLower()))
+            if (!Uncountables.Contains(word.ToLower()))
             {
                 for (int i = rules.Count - 1; i >= 0; i--)
                 {
@@ -165,9 +157,7 @@ namespace NCommon.Util
 
             return result;
         }
-        #endregion
 
-        #region methods
         /// <summary>
         /// Returns the plural form of the word in the string
         /// </summary>
@@ -175,7 +165,7 @@ namespace NCommon.Util
         /// <returns>The pluralized word.</returns>
         public static string Pluralize(string word)
         {
-            return ApplyRules(_plurals, word);
+            return ApplyRules(Plurals, word);
         }
 
         /// <summary>
@@ -185,7 +175,7 @@ namespace NCommon.Util
         /// <returns>The singluralized word.</returns>
         public static string Singularize(string word)
         {
-            return ApplyRules(_singulars, word);
+            return ApplyRules(Singulars, word);
         }
 
         /// <summary>
@@ -307,7 +297,6 @@ namespace NCommon.Util
         public static string Dasherize(string underscoredWord)
         {
             return underscoredWord.Replace('_', '-');
-        } 
-        #endregion
+        }
     }
 }

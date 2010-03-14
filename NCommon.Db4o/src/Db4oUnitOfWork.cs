@@ -1,3 +1,19 @@
+#region license
+//Copyright 2008 Ritesh Rao 
+
+//Licensed under the Apache License, Version 2.0 (the "License"); 
+//you may not use this file except in compliance with the License. 
+//You may obtain a copy of the License at 
+
+//http://www.apache.org/licenses/LICENSE-2.0 
+
+//Unless required by applicable law or agreed to in writing, software 
+//distributed under the License is distributed on an "AS IS" BASIS, 
+//WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+//See the License for the specific language governing permissions and 
+//limitations under the License. 
+#endregion
+
 using System;
 using System.Data;
 using Db4objects.Db4o;
@@ -5,31 +21,58 @@ using Db4objects.Db4o;
 namespace NCommon.Data.Db4o
 {
     /// <summary>
-    /// 
+    /// Implements the <see cref="IUnitOfWork"/> interface to provide an implementation
+    /// of a IUnitOfWork that uses Db4o to query and update the underlying store.
     /// </summary>
     public class Db4oUnitOfWork : IUnitOfWork
     {
         bool _disposed;
         Db4oTransaction _transaction;
 
+        /// <summary>
+        /// Default Constructor.
+        /// Creates a new instance of the <see cref="IObjectContainer"/> class.
+        /// </summary>
+        /// <param name="container"></param>
         public Db4oUnitOfWork(IObjectContainer container)
         {
-            Guard.Against<ArgumentNullException>(container == null, "Expected a non-null IObjectContainer instance.");
+            Guard.Against<ArgumentNullException>(container == null,
+                                                 "Expected a non-null IObjectContainer instance.");
             ObjectContainer = container;
         }
 
+        /// <summary>
+        /// Gets a boolean value indicating whether the current unit of work is running under
+        /// a transaction.
+        /// </summary>
         public bool IsInTransaction
         {
             get { return _transaction != null; } 
         }
 
+        /// <summary>
+        /// Gets a <see cref="IObjectContainer"/> instance that can be used for querying and modifying
+        /// the Db4o container.
+        /// </summary>
+        /// <returns>An instance of <see cref="IObjectContainer"/>.</returns>
         public IObjectContainer ObjectContainer { get; private set; }
 
+        /// <summary>
+        /// Instructs the <see cref="IUnitOfWork"/> instance to begin a new transaction.
+        /// </summary>
+        /// <returns></returns>
         public ITransaction BeginTransaction()
         {
             return BeginTransaction(IsolationLevel.Unspecified);
         }
 
+        /// <summary>
+        /// Instructs the <see cref="IUnitOfWork"/> instance to begin a new transaction
+        /// with the specified isolation level.
+        /// </summary>
+        /// <param name="isolationLevel">One of the values of <see cref="IsolationLevel"/>
+        /// that specifies the isolation level of the transaction.</param>
+        /// <returns></returns>
         public ITransaction BeginTransaction(IsolationLevel isolationLevel)
         {
             Guard.Against<InvalidOperationException>(_transaction != null,
@@ -41,6 +84,9 @@ namespace NCommon.Data.Db4o
             return _transaction;
         }
 
+        /// <summary>
+        /// Flushes the changes made in the unit of work to the data store.
+        /// </summary>
         public void Flush()
         {
             //If a transaction as not been started then perform a transactional flush.
@@ -50,11 +96,20 @@ namespace NCommon.Data.Db4o
                 TransactionalFlush();
         }
 
+        /// <summary>
+        /// Flushes the changes made in the unit of work to the data store
+        /// within a transaction.
+        /// </summary>
         public void TransactionalFlush()
         {
             TransactionalFlush(IsolationLevel.Unspecified);
         }
 
+        /// <summary>
+        /// Flushes the changes made in the unit of work to the data store
+        /// within a transaction with the specified isolation level.
+        /// </summary>
+        /// <param name="isolationLevel"></param>
         public void TransactionalFlush(IsolationLevel isolationLevel)
         {
             if (!IsInTransaction)

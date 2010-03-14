@@ -10,6 +10,11 @@ namespace NCommon.Data.LinqToSql
         readonly IDictionary<Type, Guid> _dataContextTypeCache = new Dictionary<Type, Guid>();
         readonly IDictionary<Guid, Func<DataContext>> _dataContextProviders = new Dictionary<Guid, Func<DataContext>>();
 
+        /// <summary>
+        /// Gets the unique <see cref="ILinqToSqlSession"/> key for a type. 
+        /// </summary>
+        /// <typeparam name="T">The type for which the ObjectContext key should be retrieved.</typeparam>
+        /// <returns>A <see cref="Guid"/> representing the unique object context key.</returns>
         public Guid GetSessionKeyFor<T>()
         {
             Guid key;
@@ -18,12 +23,22 @@ namespace NCommon.Data.LinqToSql
             return key;
         }
 
-        public ILinqSession OpenSessionFor<T>()
+        /// <summary>
+        /// Gets a <see cref="ILinqToSqlSession"/> instance for a given type.
+        /// </summary>
+        /// <typeparam name="T">The type for which an <see cref="ILinqToSqlSession"/> is returned.</typeparam>
+        /// <returns>An instance of <see cref="ILinqToSqlSession"/>.</returns>
+        public ILinqToSqlSession OpenSessionFor<T>()
         {
             var key = GetSessionKeyFor<T>();
-            return new LinqSession(_dataContextProviders[key]());
+            return new LinqToSqlSession(_dataContextProviders[key]());
         }
 
+        /// <summary>
+        /// Gets the <see cref="DataContext"/> that can be used to query and update a given type.
+        /// </summary>
+        /// <typeparam name="T">The type for which an <see cref="DataContext"/> is returned.</typeparam>
+        /// <returns>An <see cref="DataContext"/> that can be used to query and update the given type.</returns>
         public DataContext GetDataContextFor<T>()
         {
             Guid key;
@@ -32,6 +47,10 @@ namespace NCommon.Data.LinqToSql
             return _dataContextProviders[key]();
         }
 
+        /// <summary>
+        /// Registers an <see cref="DataContext"/> provider with the resolver.
+        /// </summary>
+        /// <param name="contextProvider">A <see cref="Func{T}"/> of type <see cref="DataContext"/>.</param>
         public void RegisterDataContextProvider(Func<DataContext> contextProvider)
         {
             var key = Guid.NewGuid();
@@ -41,6 +60,9 @@ namespace NCommon.Data.LinqToSql
             context.Mapping.GetTables().ForEach(table => _dataContextTypeCache.Add(table.RowType.Type, key));
         }
 
+        /// <summary>
+        /// Gets the count of <see cref="DataContext"/> providers registered with the resolver.
+        /// </summary>
         public int DataContextsRegistered
         {
             get { return _dataContextProviders.Count; }

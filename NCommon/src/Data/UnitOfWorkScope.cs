@@ -46,9 +46,7 @@ namespace NCommon.Data
         /// Creates a new <see cref="UnitOfWorkScope"/> with the <see cref="System.Data.IsolationLevel.Serializable"/> 
         /// transaction isolation level.
         /// </summary>
-        public UnitOfWorkScope() : this(GetScopeIsolationLevel(), UnitOfWorkScopeTransactionOptions.UseCompatible)
-        {
-        }
+        public UnitOfWorkScope() : this(GetScopeIsolationLevel(), UnitOfWorkScopeTransactionOptions.UseCompatible) { }
 
 		/// <summary>
 		/// Overloaded Constructor.
@@ -56,9 +54,7 @@ namespace NCommon.Data
 		/// specified <see cref="UnitOfWorkScopeTransactionOptions"/> and default <see cref="IsolationLevel"/>
 		/// </summary>
 		/// <param name="options"></param>
-		public UnitOfWorkScope(UnitOfWorkScopeTransactionOptions options) : this(GetScopeIsolationLevel(), options)
-		{
-		}
+		public UnitOfWorkScope(UnitOfWorkScopeTransactionOptions options) : this(GetScopeIsolationLevel(), options) { }
 
 
     	/// <summary>
@@ -68,10 +64,7 @@ namespace NCommon.Data
         /// </summary>
         /// <param name="isolationLevel">One of the values of <see cref="System.Data.IsolationLevel"/> that specifies
         /// the transation isolation level the scope should use.</param>
-        public UnitOfWorkScope(IsolationLevel isolationLevel)
-            : this(isolationLevel, UnitOfWorkScopeTransactionOptions.UseCompatible)
-        {
-        }
+        public UnitOfWorkScope(IsolationLevel isolationLevel) : this(isolationLevel, UnitOfWorkScopeTransactionOptions.UseCompatible) { }
 
         /// <summary>
         /// Overloaded Constructor.

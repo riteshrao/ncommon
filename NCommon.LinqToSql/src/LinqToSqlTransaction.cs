@@ -48,10 +48,20 @@ namespace NCommon.Data.LinqToSql
         /// </summary>
         public event EventHandler TransactionRolledback;
 
+        /// <summary>
+        /// Gets the <see cref="IsolationLevel"/> of the transaction.
+        /// </summary>
         public IsolationLevel IsolationLevel { get; private set; }
 
+        /// <summary>
+        /// Registers a <see cref="IDbTransaction"/> instance to be managed by the <see cref="LinqToSqlTransaction"/> instance.
+        /// </summary>
+        /// <param name="transaction">A <see cref="IDbTransaction"/> instance to be managed by the
+        /// <see cref="LinqToSqlTransaction"/> instance.</param>
         public void RegisterTransaction(IDbTransaction transaction)
         {
+            Guard.Against<ArgumentNullException>(transaction == null,
+                                                 "Cannot register a null IDbTransaction instance with the LinqToSqlTransaction instance.");
             _transactions.Add(transaction);
         }
 
@@ -109,7 +119,5 @@ namespace NCommon.Data.LinqToSql
             }
             _disposed = true;
         }
-
-      
     }
 }

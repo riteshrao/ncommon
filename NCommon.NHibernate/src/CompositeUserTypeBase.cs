@@ -29,11 +29,8 @@ namespace NCommon.NHibernate
 {
     public abstract class CompositeUserTypeBase<T> : ICompositeUserType
     {
-        #region fields
         private readonly List<PropertyInfo> _properties = new List<PropertyInfo>();
-        #endregion
 
-        #region methods
         /// <summary>
         /// Maps a property for the composite user type.
         /// </summary>
@@ -63,9 +60,7 @@ namespace NCommon.NHibernate
         /// Inheritors must return a cloned or deep copied instance of the provided entity. If 
         /// </remarks>
         protected abstract T PerformDeepCopy(T source);
-        #endregion
 
-        #region Implementation of ICompositeUserType
         /// <summary>
         /// Get the value of a property
         /// </summary>
@@ -258,6 +253,5 @@ namespace NCommon.NHibernate
         {
             get ;
         }
-        #endregion
     }
 }

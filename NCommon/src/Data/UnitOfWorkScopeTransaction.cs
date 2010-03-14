@@ -112,8 +112,7 @@ namespace NCommon.Data
 		/// <param name="scope">The <see cref="UnitOfWorkScope"/> instance that is requesting the transaction.</param>
 		/// <param name="isolationLevel">One of the values of <see cref="IsolationLevel"/> that specifies the transaction isolation level.</param>
 		/// <returns>A <see cref="UnitOfWorkScopeTransaction"/> instance.</returns>
-		public static UnitOfWorkScopeTransaction GetTransactionForScope(UnitOfWorkScope scope,
-		                                                                IsolationLevel isolationLevel)
+		public static UnitOfWorkScopeTransaction GetTransactionForScope(UnitOfWorkScope scope, IsolationLevel isolationLevel)
 		{
 			return GetTransactionForScope(scope, isolationLevel, UnitOfWorkScopeTransactionOptions.UseCompatible);
 		}

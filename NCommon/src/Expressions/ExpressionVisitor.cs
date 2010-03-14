@@ -140,7 +140,7 @@ namespace NCommon.Expressions
         /// <returns></returns>
         protected virtual ElementInit VisitElementInitializer(ElementInit elementInitExp)
         {
-            ReadOnlyCollection<Expression> arguments = VisitList(elementInitExp.Arguments);
+            IEnumerable<Expression> arguments = VisitList(elementInitExp.Arguments);
             if (arguments != elementInitExp.Arguments)
             {
                 return Expression.ElementInit(elementInitExp.AddMethod, arguments);
@@ -276,7 +276,7 @@ namespace NCommon.Expressions
         /// </summary>
         /// <param name="listExp"></param>
         /// <returns></returns>
-        protected virtual ReadOnlyCollection<Expression> VisitList(ReadOnlyCollection<Expression> listExp)
+        protected virtual IEnumerable<Expression> VisitList(ReadOnlyCollection<Expression> listExp)
         {
             List<Expression> list = null;
             for (int i = 0, n = listExp.Count; i < n; i++)

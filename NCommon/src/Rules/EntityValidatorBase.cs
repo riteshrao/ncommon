@@ -27,12 +27,9 @@ namespace NCommon.Rules
     ///<typeparam name="TEntity"></typeparam>
     public abstract class EntityValidatorBase<TEntity> : IEntityValidator<TEntity> where TEntity : class
     {
-        #region fields
         //The internal dictionary used to store rule sets.
         private readonly Dictionary<string, IValidationRule<TEntity>> _validations = new Dictionary<string, IValidationRule<TEntity>>();
-        #endregion
 
-        #region methods
         /// <summary>
         /// Adds a <see cref="IValidationRule{TEntity}"/> instance to the entity validator.
         /// </summary>
@@ -77,7 +74,6 @@ namespace NCommon.Rules
                                           });
             return result;
         }
-        #endregion
     }
 
 }

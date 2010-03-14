@@ -14,7 +14,6 @@
 //limitations under the License. 
 #endregion
 
-
 using System;
 using System.Data;
 
@@ -27,15 +26,11 @@ namespace NCommon.Data
     /// </summary>
     public interface IUnitOfWork : IDisposable
     {
-        #region properties
         /// <summary>
         /// Gets a boolean value indicating whether the current unit of work is running under
         /// a transaction.
         /// </summary>
         bool IsInTransaction { get; }
-        #endregion
-
-        #region methods
 
         /// <summary>
         /// Instructs the <see cref="IUnitOfWork"/> instance to begin a new transaction.
@@ -69,7 +64,5 @@ namespace NCommon.Data
         /// </summary>
         /// <param name="isolationLevel"></param>
         void TransactionalFlush(IsolationLevel isolationLevel);
-
-        #endregion
     }
 }

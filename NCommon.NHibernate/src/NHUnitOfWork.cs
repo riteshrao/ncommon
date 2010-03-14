@@ -39,7 +39,7 @@ namespace NCommon.Data.NHibernate
         /// Creates a new instance of the <see cref="NHUnitOfWork"/> that uses the provided
         /// NHibernate <see cref="ISession"/> instance.
         /// </summary>
-        /// <param name="session">The NHiberante <see cref="ISession"/> instance to use.</param>
+        /// <param name="settings">An instance of <see cref="NHUnitOfWorkSettings"/>.</param>
         public NHUnitOfWork(NHUnitOfWorkSettings settings)
         {
             Guard.Against<ArgumentNullException>(settings == null,
@@ -57,11 +57,12 @@ namespace NCommon.Data.NHibernate
         }
 
         /// <summary>
-        /// Gets a <see cref="ISession"/> instance that can be used for querying and managing
+        /// Gets a <see cref="ISession"/> instance that can be used for querying and updating
         /// instances of <typeparamref name="T"/>
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
+        /// <typeparam name="T">The type for which a <see cref="ISession"/> is retrieved.</typeparam>
+        /// <returns>An instance of <see cref="ISession"/> that can be used for querying and updating
+        /// instances of <typeparamref name="T"/></returns>
         public ISession GetSession<T>()
         {
             var sessionKey = _settings.SessionResolver.GetSessionKeyFor<T>();

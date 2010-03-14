@@ -27,12 +27,9 @@ namespace NCommon.Rules
     /// <typeparam name="TEntity"></typeparam>
     public class ValidationRule<TEntity> : SpecificationRuleBase<TEntity>, IValidationRule<TEntity>
     {
-        #region fields
         private readonly string _message;
         private readonly string _property;
-        #endregion
 
-        #region .ctor
         /// <summary>
         /// Default Constructor.
         /// Creates a new instance of the <see cref="ValidationRule{TEntity}"/> class.
@@ -46,10 +43,8 @@ namespace NCommon.Rules
             Guard.Against<ArgumentNullException>(string.IsNullOrEmpty(property), "Please provide a valid non null value for the validationProperty parameter.");
             _message = message;
             _property = property;
-        } 
-        #endregion
+        }
 
-        #region methods
         /// <summary>
         /// Gets the message of the validation rule.
         /// </summary>
@@ -75,6 +70,5 @@ namespace NCommon.Rules
         {
             return IsSatisfied(entity);
         }
-        #endregion
     }
 }

@@ -32,14 +32,25 @@ namespace NCommon.Data.LinqToSql
             SessionResolver = new LinqToSqlSessionResolver()
         };
 
+        /// <summary>
+        /// Gets or sets the default <see cref="IsolationLevel"/> of <see cref="IUnitOfWork"/> instances created by the factory.
+        /// </summary>
+        /// <value>The default <see cref="IsolationLevel"/> of <see cref="IUnitOfWork"/> instances.</value>
         public IsolationLevel DefaultIsolation
         {
             get { return _settings.DefaultIsolation; }
             set { _settings.DefaultIsolation = value; }
         }
 
+        /// <summary>
+        /// Registers a <see cref="Func{T}"/> of type <see cref="DataContext"/> provider that can be used to 
+        /// get instances of <see cref="DataContext"/>.
+        /// </summary>
+        /// <param name="contextProvider">An instance of <see cref="Func{T}"/> of type <see cref="DataContext"/>.</param>
         public void RegisterDataContextProvider(Func<DataContext> contextProvider)
         {
+            Guard.Against<ArgumentNullException>(contextProvider == null,
+                                                 "Cannot register a null Func<DataContext> provider with the factory.");
             _settings.SessionResolver.RegisterDataContextProvider(contextProvider);
         }
 

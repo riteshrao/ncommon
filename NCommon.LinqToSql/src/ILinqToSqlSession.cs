@@ -33,7 +33,7 @@ namespace NCommon.Data.LinqToSql
     /// access incase there is ever a requirement to provide specialized implementations of 
     /// ILinqSession instances.
     /// </remarks>
-    public interface ILinqSession : IDisposable
+    public interface ILinqToSqlSession : IDisposable
     {
         /// <summary>
         /// Gets the actual <see cref="DataContext"/> that the interface wraps.
@@ -57,28 +57,22 @@ namespace NCommon.Data.LinqToSql
     }
 
     /// <summary>
-    /// Internal implementation of the <see cref="ILinqSession"/> interface
+    /// Internal implementation of the <see cref="ILinqToSqlSession"/> interface
     /// </summary>
-    internal class LinqSession : ILinqSession
+    internal class LinqToSqlSession : ILinqToSqlSession
     {
-        #region fields
         private bool _disposed;
         private DataContext _context;
-        #endregion
 
-        #region .ctor
         /// <summary>
         /// Default Constructor.
-        /// Creates a new instance of the <see cref="LinqSession"/> class.
+        /// Creates a new instance of the <see cref="LinqToSqlSession"/> class.
         /// </summary>
-        public LinqSession(DataContext context)
+        public LinqToSqlSession(DataContext context)
         {
             Guard.Against<ArgumentNullException>(context == null, "Expected a non-null DataContext instance.");
             _context = context;
         }
-        #endregion
-
-        #region Implementation of ILinqSession
 
         /// <summary>
         /// Gets the actual <see cref="DataContext"/> that the interface wraps.
@@ -112,9 +106,7 @@ namespace NCommon.Data.LinqToSql
         {
             _context.SubmitChanges();
         }
-        #endregion
 
-        #region Implementation of IDisposable
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -140,7 +132,5 @@ namespace NCommon.Data.LinqToSql
                 }
             }
         }
-
-        #endregion
     }
 }

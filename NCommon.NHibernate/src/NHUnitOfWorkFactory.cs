@@ -33,7 +33,7 @@ namespace NCommon.Data.NHibernate
         };
 
         /// <summary>
-        /// Sets the default isolation to be used when creating <see cref="NHUnitOfWork"/> instances.
+        /// Sets the default isolation to be used when creating <see cref="IUnitOfWork"/> instances.
         /// </summary>
         public IsolationLevel DefaultIsolation 
         {
@@ -42,9 +42,9 @@ namespace NCommon.Data.NHibernate
         }
 
         /// <summary>
-        /// Registers a Func&lt;<see cref="ISessionFactory"/>&gt; provider with the unit of work factory.
+        /// Registers a <see cref="Func{T}"/> of type <see cref="ISessionFactory"/> provider with the unit of work factory.
         /// </summary>
-        /// <param name="factoryProvider">A Func&lt;<see cref="ISessionFactory"/>&gt; instance.</param>
+        /// <param name="factoryProvider">A <see cref="Func{T}"/> of type <see cref="ISessionFactory"/> instance.</param>
         public void RegisterSessionFactoryProvider(Func<ISessionFactory> factoryProvider)
         {
             Guard.Against<ArgumentNullException>(factoryProvider == null,

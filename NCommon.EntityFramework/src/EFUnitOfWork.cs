@@ -32,13 +32,14 @@ namespace NCommon.Data.EntityFramework
         bool _disposed;
         EFTransaction _transaction;
         readonly EFUnitOfWorkSettings _settings;
-        readonly IDictionary<Guid, EFSession> _openSessions = new Dictionary<Guid, EFSession>();
+        readonly IDictionary<Guid, IEFSession> _openSessions = new Dictionary<Guid, IEFSession>();
 
         /// <summary>
         /// Default Constructor.
         /// Creates a new instance of the <see cref="EFUnitOfWork"/> class that uses the specified object context.
         /// </summary>
-        /// <param name="session">The <see cref="IEFSession"/> instance that the EFUnitOfWork instance uses.</param>
+        /// <param name="settings">An instance of <see cref="EFUnitOfWorkSettings"/> that contains settings for
+        /// Entity Framework unit of work instances.</param>
         public EFUnitOfWork(EFUnitOfWorkSettings settings)
         {
             _settings = settings;
@@ -54,9 +55,9 @@ namespace NCommon.Data.EntityFramework
         }
 
         /// <summary>
-        /// 
+        /// Gets a <see cref="ObjectContext"/> that can be used to query and update the specified type.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type for which an <see cref="ObjectContext"/> should be returned.</typeparam>
         /// <returns></returns>
         public ObjectContext GetContext<T>()
         {
@@ -65,6 +66,7 @@ namespace NCommon.Data.EntityFramework
                 return _openSessions[sessionKey].Context;
             //Opening a new session...
             var session = _settings.SessionResolver.OpenSessionFor<T>();
+            _openSessions.Add(sessionKey, session);
             if (IsInTransaction)
             {
                 if (session.Connection.State != ConnectionState.Open)

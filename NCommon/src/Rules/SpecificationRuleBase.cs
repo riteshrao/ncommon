@@ -14,7 +14,6 @@
 //limitations under the License. 
 #endregion
 
-
 using System;
 using NCommon.Specifications;
 
@@ -27,11 +26,8 @@ namespace NCommon.Rules
     /// <typeparam name="TEntity"></typeparam>
     public abstract class SpecificationRuleBase<TEntity>
     {
-        #region fields
-        private ISpecification<TEntity> _rule; //The underlying rule as a specification.
-        #endregion
+        private readonly ISpecification<TEntity> _rule; //The underlying rule as a specification.
 
-        #region .ctor
         /// <summary>
         /// Default Constructor. 
         /// Protected. Must be called by implementors.
@@ -42,9 +38,7 @@ namespace NCommon.Rules
             Guard.Against<ArgumentNullException>(rule == null, "Expected a non null and valid ISpecification<TEntity> rule instance.");
             _rule = rule;
         }
-        #endregion
 
-        #region methods
         /// <summary>
         /// Checks if the entity instance satisfies this rule.
         /// </summary>
@@ -55,7 +49,6 @@ namespace NCommon.Rules
             Guard.Against<ArgumentNullException>(entity == null,
                                                  "Expected a valid non-null entity instance against which the rule can be evaluated.");
             return _rule.IsSatisfiedBy(entity);
-        } 
-        #endregion
+        }
     }
 }

@@ -26,7 +26,7 @@ namespace NCommon.Data.NHibernate
 {
     /// <summary>
     /// Inherits from the <see cref="RepositoryBase{TEntity}"/> class to provide an implementation of a
-    /// Repository that uses NHibernate.
+    /// repository that uses NHibernate.
     /// </summary>
     public class NHRepository<TEntity> : RepositoryBase<TEntity>
     {
@@ -130,8 +130,6 @@ namespace NCommon.Data.NHibernate
         /// Detaches a instance from the repository.
         /// </summary>
         /// <param name="entity">The entity instance, currently being tracked via the repository, to detach.</param>
-        /// <exception cref="NotImplementedException">Implentors should throw the NotImplementedException if Detaching
-        /// entities is not supported.</exception>
         public override void Detach(TEntity entity)
         {
             Session.Evict(entity);
@@ -141,8 +139,6 @@ namespace NCommon.Data.NHibernate
         /// Attaches a detached entity, previously detached via the <see cref="IRepository{TEntity}.Detach"/> method.
         /// </summary>
         /// <param name="entity">The entity instance to attach back to the repository.</param>
-        /// <exception cref="NotImplementedException">Implentors should throw the NotImplementedException if Attaching
-        /// entities is not supported.</exception>
         public override void Attach(TEntity entity)
         {
             Session.Lock(entity, LockMode.None);
@@ -152,8 +148,6 @@ namespace NCommon.Data.NHibernate
         /// Refreshes a entity instance.
         /// </summary>
         /// <param name="entity">The entity to refresh.</param>
-        /// <exception cref="NotImplementedException">Implementors should throw the NotImplementedException if Refreshing
-        /// entities is not supported.</exception>
         public override void Refresh(TEntity entity)
         {
             Session.Refresh(entity, LockMode.None);
@@ -213,6 +207,11 @@ namespace NCommon.Data.NHibernate
 			return this;
     	}
 
+        /// <summary>
+        /// Sets a batch size on the repository.
+        /// </summary>
+        /// <param name="size">int. A positive integer representing the batch size.</param>
+        /// <remarks>Use this property when persisteing large amounts of data to batch insert statements.</remarks>
     	public override IRepository<TEntity> SetBatchSize(int size)
     	{
     		Guard.Against<ArgumentOutOfRangeException>(size < 0, "BatchSize cannot be set to a value lesser than 0.");

@@ -23,11 +23,8 @@ namespace NCommon.Rules
     /// </summary>
     public class ValidationResult
     {
-        #region fields
         private readonly List<ValidationError> _errors = new List<ValidationError>();
-        #endregion
 
-        #region properties
         /// <summary>
         /// Gets wheater the validation operation on an entity was valid or not.
         /// </summary>
@@ -46,9 +43,7 @@ namespace NCommon.Rules
                     yield return error;
             }
         }
-        #endregion
 
-        #region methods
         /// <summary>
         /// Adds a validation error into the result.
         /// </summary>
@@ -67,6 +62,5 @@ namespace NCommon.Rules
             if (_errors.Contains(error))
                 _errors.Remove(error);
         }
-        #endregion
     }
 }

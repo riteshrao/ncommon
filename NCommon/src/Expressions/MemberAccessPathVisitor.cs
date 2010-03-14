@@ -28,12 +28,9 @@ namespace NCommon.Expressions
     /// </summary>
     public class MemberAccessPathVisitor : ExpressionVisitor
     {
-        #region fields
         //StringBuilder instance that will store the path.
         private readonly Stack<string> _path = new Stack<string>();
-        #endregion
 
-        #region properties
         /// <summary>
         /// Gets the path analyzed by the visitor.
         /// </summary>
@@ -51,9 +48,7 @@ namespace NCommon.Expressions
                 return pathString.ToString();
             }
         }
-        #endregion
 
-        #region overriden methods
         /// <summary>
         /// Overriden. Overrides all MemberAccess to build a path string.
         /// </summary>
@@ -78,6 +73,5 @@ namespace NCommon.Expressions
             throw new NotSupportedException(
                 "MemberAccessPathVisitor does not support method calls. Only MemberAccess expressions are allowed.");
         }
-        #endregion
     }
 }

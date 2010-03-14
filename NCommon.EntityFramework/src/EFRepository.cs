@@ -31,13 +31,10 @@ namespace NCommon.Data.EntityFramework
     /// </summary>
     public class EFRepository<TEntity> : RepositoryBase<TEntity>
     {
-        #region fields
         private ObjectContext _privateContext;
         private PropertyInfo _contextQueryProperty;
         private readonly List<string> _includes = new List<string>();
-        #endregion
 
-        #region ctor
         /// <summary>
         /// Creates a new instance of the <see cref="EFRepository{TEntity}"/> class.
         /// </summary>
@@ -57,9 +54,7 @@ namespace NCommon.Data.EntityFramework
             _privateContext = context;
             LoadObjectQueryPropertyAndEntitySetName(_privateContext);
         }
-        #endregion
 
-        #region properties
         /// <summary>
         /// Gets the <see cref="ObjectContext"/> to be used by the repository.
         /// </summary>
@@ -80,9 +75,7 @@ namespace NCommon.Data.EntityFramework
         /// Gets or sets the entity set name defined for the entity in the <see cref="Context"/> instance.
         /// </summary>
         private string EntitySetName { get; set; }
-        #endregion
 
-        #region methods
         /// <summary>
         /// Loads the <see cref="PropertyInfo"/> that can be invoked to get a <see cref="ObjectQuery{T}"/> 
         /// for the entity from the current ObjectContext instnace.
@@ -115,9 +108,7 @@ namespace NCommon.Data.EntityFramework
             var currentContext = this.Context;
             return (ObjectQuery<TEntity>) this._contextQueryProperty.GetValue(currentContext, null);
         }
-        #endregion
 
-        #region Overrides of RepositoryBase<TEntity>
         /// <summary>
         /// Gets the <see cref="IQueryable{TEntity}"/> used by the <see cref="RepositoryBase{TEntity}"/> 
         /// to execute Linq queries.
@@ -247,11 +238,14 @@ namespace NCommon.Data.EntityFramework
     		return this;
     	}
 
+        /// <summary>
+        /// Sets a batch size on the repository.
+        /// </summary>
+        /// <param name="size">int. A positive integer representing the batch size.</param>
+        /// <remarks>Use this property when persisteing large amounts of data to batch insert statements.</remarks>
     	public override IRepository<TEntity> SetBatchSize(int size)
     	{
     		return this; //Does nothing.
     	}
-
-    	#endregion
     }
 }

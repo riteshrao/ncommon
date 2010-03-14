@@ -8,7 +8,7 @@
     <ProjectGuid>{715AB4B8-0F34-4AA0-B842-BCF2A4270B5F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NCommon.Db4o</RootNamespace>
+    <RootNamespace>NCommon.Data.Db4o</RootNamespace>
     <AssemblyName>NCommon.Db4o</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

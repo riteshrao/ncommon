@@ -27,11 +27,8 @@ namespace NCommon.Rules
     /// <typeparam name="TEntity"></typeparam>
     public class BusinessRule<TEntity> : SpecificationRuleBase<TEntity>, IBusinessRule<TEntity> where TEntity : class
     {
-        #region fields
-        private Action<TEntity> _action; //The business action to undertake.
-        #endregion
+        private readonly Action<TEntity> _action; //The business action to undertake.
 
-        #region ctor
         /// <summary>
         /// Default Constructor.
         /// Creates a new instance of the <see cref="BusinessRule{TEntity}"/> instance.
@@ -44,10 +41,8 @@ namespace NCommon.Rules
         {
             Guard.Against<ArgumentNullException>(action == null, "Please provide a valid non null Action<TEntity> delegate instance.");
             _action = action;
-        } 
-        #endregion
+        }
 
-        #region methods
         /// <summary>
         /// Evaluates the business rule against an entity instance.
         /// </summary>
@@ -59,7 +54,6 @@ namespace NCommon.Rules
                                                  "Cannot evaulate a business rule against a null reference.");
             if (IsSatisfied(entity))
                 _action(entity);
-        } 
-        #endregion
+        }
     }
 }

@@ -14,7 +14,6 @@
 //limitations under the License. 
 #endregion
 
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,21 +31,16 @@ namespace NCommon.Data
     ///<typeparam name="TEntity"></typeparam>
     public abstract class RepositoryBase<TEntity> : IRepository<TEntity>
     {
-        #region properties
-
         /// <summary>
         /// Gets the <see cref="IQueryable{TEntity}"/> used by the <see cref="RepositoryBase{TEntity}"/> 
         /// to execute Linq queries.
         /// </summary>
         /// <value>A <see cref="IQueryable{TEntity}"/> instance.</value>
         /// <remarks>
-        /// Inheritos of this base class should return a valid non-null <see cref="IQueryable{TEntity}"/> instance.
+        /// Inheritors of this base class should return a valid non-null <see cref="IQueryable{TEntity}"/> instance.
         /// </remarks>
         protected abstract IQueryable<TEntity> RepositoryQuery { get; }
 
-        #endregion
-
-        #region methods
         /// <summary>
         /// Gets the <see cref="IUnitOfWork"/> that the repository should use.
         /// </summary>
@@ -62,9 +56,6 @@ namespace NCommon.Data
                                               "Please start a compatible unit of work before using the repository.");
             return ((TUnitOfWork)UnitOfWork.Current);
         }
-        #endregion
-
-        #region Implementation of IEnumerable
 
         /// <summary>
         /// Returns an enumerator that iterates through the collection.
@@ -89,10 +80,6 @@ namespace NCommon.Data
         {
             return RepositoryQuery.GetEnumerator();
         }
-
-        #endregion
-
-        #region Implementation of IQueryable
 
         /// <summary>
         /// Gets the expression tree that is associated with the instance of <see cref="IQueryable" />.
@@ -127,9 +114,6 @@ namespace NCommon.Data
             get { return RepositoryQuery.Provider; }
         }
 
-        #endregion
-
-        #region Implementation of IRepository<TEntity>
         /// <summary>
         /// Marks the entity instance to be saved to the store.
         /// </summary>
@@ -156,50 +140,45 @@ namespace NCommon.Data
         /// Detaches a instance from the repository.
         /// </summary>
         /// <param name="entity">The entity instance, currently being tracked via the repository, to detach.</param>
-        /// <exception cref="NotImplementedException">Implentors should throw the NotImplementedException if Detaching
-        /// entities is not supported.</exception>
         public abstract void Detach(TEntity entity);
 
         /// <summary>
         /// Attaches a detached entity, previously detached via the <see cref="IRepository{TEntity}.Detach"/> method.
         /// </summary>
         /// <param name="entity">The entity instance to attach back to the repository.</param>
-        /// <exception cref="NotImplementedException">Implentors should throw the NotImplementedException if Attaching
-        /// entities is not supported.</exception>
         public abstract void Attach(TEntity entity);
 
         /// <summary>
         /// Refreshes a entity instance.
         /// </summary>
         /// <param name="entity">The entity to refresh.</param>
-        /// <exception cref="NotImplementedException">Implementors should throw the NotImplementedException if Refreshing
-        /// entities is not supported.</exception>
         public abstract void Refresh(TEntity entity);
 
         /// <summary>
         /// Instructs the repository to eager load a child entities. 
         /// </summary>
         /// <param name="path">The path of the child entities to eager load.</param>
-        /// <remarks>Implementors should throw a <see cref="NotSupportedException"/> if the underling provider
-        /// does not support eager loading of entities</remarks>
         public abstract IRepository<TEntity> With(Expression<Func<TEntity, object>> path);
 
         /// <summary>
         /// Instructs the repository to eager load entities that may be in the repository's association path.
         /// </summary>
         /// <param name="path">The path of the child entities to eager load.</param>
-        /// <remarks>Implementors should throw a <see cref="NotSupportedException"/> if the underling provider
-        /// does not support eager loading of entities</remarks>
 		public abstract IRepository<TEntity> With<T>(Expression<Func<T, object>> path);
 
 		/// <summary>
 		/// Instructs the repository to cache the following query.
 		/// </summary>
 		/// <param name="cachedQueryName">string. The name to give to the cached query.</param>
-		/// <remarks>Implementors should return the repository if caching is not supported.</remarks>
     	public abstract IRepository<TEntity> Cached(string cachedQueryName);
 
-    	/// <summary>
+        /// <summary>
+    	/// Sets the batch size on the repository
+    	/// </summary>
+    	/// <param name="size">int. The batch size.</param>
+    	public abstract IRepository<TEntity> SetBatchSize(int size);
+
+        /// <summary>
         /// Defines the service context under which the repository will execute.
         /// </summary>
         /// <typeparam name="TService">The service type that defines the context of the repository.</typeparam>
@@ -211,19 +190,13 @@ namespace NCommon.Data
         public IRepository<TEntity> For<TService>()
         {
             var strategies = ServiceLocator.Current
-                    .GetAllInstances<IFetchingStrategy<TEntity, TService>>();
+                .GetAllInstances<IFetchingStrategy<TEntity, TService>>();
             if (strategies != null && strategies.Count() > 0)
                 strategies.ForEach(x => x.Define(this));
             return this;
         }
 
-    	/// <summary>
-    	/// Sets the batch size on the repository
-    	/// </summary>
-    	/// <param name="size"></param>
-    	public abstract IRepository<TEntity> SetBatchSize(int size);
-
-    	/// <summary>
+        /// <summary>
         /// Querries the repository based on the provided specification and returns results that
         /// are only satisfied by the specification.
         /// </summary>
@@ -235,6 +208,5 @@ namespace NCommon.Data
         {
             return RepositoryQuery.Where(specification.Predicate).AsQueryable();
         }
-        #endregion
     }
 }

@@ -33,7 +33,7 @@ namespace NCommon.Data.LinqToSql
         private bool _disposed;
         private LinqToSqlTransaction _transaction;
         readonly LinqToSqlUnitOfWorkSettings _settings;
-        readonly IDictionary<Guid, ILinqSession> _openSessions = new Dictionary<Guid, ILinqSession>();
+        readonly IDictionary<Guid, ILinqToSqlSession> _openSessions = new Dictionary<Guid, ILinqToSqlSession>();
 
         /// <summary>
         /// Default Constructor.
@@ -54,11 +54,17 @@ namespace NCommon.Data.LinqToSql
             get { return _transaction != null; }
         }
 
+        /// <summary>
+        /// Gets a <see cref="DataContext"/> that can be used to query and update the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type for which a <see cref="DataContext"/> instance is retrieved.</typeparam>
+        /// <returns>A <see cref="DataContext"/> instance that can be used to query and update the specified type.</returns>
         public DataContext GetContext<T>()
         {
             var key = _settings.SessionResolver.GetSessionKeyFor<T>();
             if (_openSessions.ContainsKey(key))
                 return _openSessions[key].Context;
+
             //Opening a new session...
             var session = _settings.SessionResolver.OpenSessionFor<T>();
             _openSessions.Add(key, session);
