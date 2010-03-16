@@ -61,7 +61,6 @@ namespace NCommon.Data.NHibernate.Tests
             Locator.Stub(x => x.GetInstance<IState>()).Do(new Func<IState>(() => State));
 
 			ServiceLocator.SetLocatorProvider(() => Locator);
-			HibernatingRhinos.NHibernate.Profiler.Appender.NHibernateProfiler.Initialize();
 		}
 
         [SetUp]
@@ -69,11 +68,5 @@ namespace NCommon.Data.NHibernate.Tests
         {
             State = new FakeState();
         }
-
-		[TestFixtureTearDown]
-		public virtual void TearDown()
-		{
-			HibernatingRhinos.NHibernate.Profiler.Appender.NHibernateProfiler.Stop();
-		}
 	}
 }

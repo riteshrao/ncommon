@@ -83,7 +83,7 @@ namespace NCommon.Configuration
         /// <typeparam name="T">A <see cref="IDataConfiguration"/> type that can be used to configure
         /// data providers for NCommon.</typeparam>
         /// <returns><see cref="INCommonConfig"/></returns>
-        public INCommonConfig ConfigureData<T>() where T : IStateConfiguration, new()
+        public INCommonConfig ConfigureData<T>() where T : IDataConfiguration, new()
         {
             var datConfiguration = (T) Activator.CreateInstance(typeof (T));
             datConfiguration.Configure(_containerAdapter);

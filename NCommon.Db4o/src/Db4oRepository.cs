@@ -3,6 +3,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Db4objects.Db4o;
 using Db4objects.Db4o.Linq;
+using Microsoft.Practices.ServiceLocation;
 using NCommon.Data;
 
 namespace NCommon.Data.Db4o
@@ -19,17 +20,9 @@ namespace NCommon.Data.Db4o
         /// Default Constructor.
         /// Creates a new instance of the <see cref="Db4oRepository{TEntity}"/> class.
         /// </summary>
-        public Db4oRepository() {}
-
-        /// <summary>
-        /// Overloaded Constructor.
-        /// Creates a new instance of the <see cref="Db4oRepository{TEntity}"/> class
-        /// that uses the specified Db4o container..
-        /// </summary>
-        /// <param name="privateContainer">The <see cref="IObjectContainer"/> instance that the repository should use.</param>
-        public Db4oRepository(IObjectContainer privateContainer)
+        public Db4oRepository()
         {
-            _privateContainer = privateContainer;
+            _privateContainer = ServiceLocator.Current.GetAllInstances<IObjectContainer>().FirstOrDefault();
         }
 
         /// <summary>

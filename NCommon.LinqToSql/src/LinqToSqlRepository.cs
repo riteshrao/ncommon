@@ -18,6 +18,7 @@ using System;
 using System.Data.Linq;
 using System.Linq;
 using System.Linq.Expressions;
+using Microsoft.Practices.ServiceLocation;
 
 namespace NCommon.Data.LinqToSql
 {
@@ -34,20 +35,14 @@ namespace NCommon.Data.LinqToSql
         /// Default Constructor.
         /// Creates a new instance of the <see cref="LinqToSqlRepository{TEntity}"/> class.
         /// </summary>
-        public LinqToSqlRepository() {}
-
-        /// <summary>
-        /// Overloaded Constructor.
-        /// Creates a new instance of the <see cref="LinqToSqlRepository{TEntity}"/> instance that uses
-        /// the specified DataContext.
-        /// </summary>
-        /// <param name="context">The <see cref="DataContext"/> instance that the repository should use.</param>
-        public LinqToSqlRepository(DataContext context)
+        public LinqToSqlRepository()
         {
-            if (context == null)
-                return; //ArgumentNullException is not thrown when context is null to allow a possible IoC injection.
+            if (ServiceLocator.Current == null)
+                return;
 
-            this._privateDataContext = context;
+            var contexts = ServiceLocator.Current.GetAllInstances<DataContext>();
+            if (contexts != null && contexts.Count() > 0)
+                _privateDataContext = contexts.FirstOrDefault();
         }
 
         /// <summary>

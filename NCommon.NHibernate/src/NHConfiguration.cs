@@ -45,6 +45,7 @@ namespace NCommon.Data.NHibernate
         public void Configure(IContainerAdapter containerAdapter)
         {
             containerAdapter.RegisterInstance<IUnitOfWorkFactory>(_factory);
+            containerAdapter.Register(typeof(IRepository<>), typeof(NHRepository<>));
         }
     }
 }

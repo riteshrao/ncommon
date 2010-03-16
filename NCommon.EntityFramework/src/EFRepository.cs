@@ -21,6 +21,7 @@ using System.Data.Objects.DataClasses;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Microsoft.Practices.ServiceLocation;
 using NCommon.Expressions;
 
 namespace NCommon.Data.EntityFramework
@@ -38,21 +39,14 @@ namespace NCommon.Data.EntityFramework
         /// <summary>
         /// Creates a new instance of the <see cref="EFRepository{TEntity}"/> class.
         /// </summary>
-        public EFRepository() {}
-
-        /// <summary>
-        /// Overloaded Constructor.
-        /// Creates a new instance of the <see cref="EFRepository{TEntity}"/> class that uses
-        /// the specified ObjectContext
-        /// </summary>
-        /// <param name="context">The <see cref="ObjectContext"/> instance that the repository should use.</param>
-        public EFRepository(ObjectContext context)
+        public EFRepository()
         {
-            if (context == null)
-                return; //ArgumentNullException is not thrown when context is null to allow a possible IoC injection.
+            if (ServiceLocator.Current == null) 
+                return;
 
-            _privateContext = context;
-            LoadObjectQueryPropertyAndEntitySetName(_privateContext);
+            var objectContexts = ServiceLocator.Current.GetAllInstances<ObjectContext>();
+            if (objectContexts != null && objectContexts.Count() > 0)
+                _privateContext = objectContexts.FirstOrDefault();
         }
 
         /// <summary>

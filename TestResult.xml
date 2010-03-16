@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--This file represents the results of running a test suite-->
+<test-results name="C:\Development\Personal\ncommon\build\\NCommon.LinqToSql.Tests.dll" total="48" errors="0" failures="1" not-run="1" inconclusive="0" ignored="1" skipped="0" invalid="0" date="2010-03-16" time="02:23:05">
+  <environment nunit-version="2.5.3.9345" clr-version="2.0.50727.4927" os-version="Microsoft Windows NT 6.1.7600.0" platform="Win32NT" cwd="C:\Development\Personal\ncommon" machine-name="PHOENIX" user="Ritesh" user-domain="Phoenix" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite name="C:\Development\Personal\ncommon\build\\NCommon.LinqToSql.Tests.dll" executed="True" success="False" time="5.135" asserts="0">
+    <results>
+      <test-suite name="NCommon" executed="True" success="False" time="5.132" asserts="0">
+        <results>
+          <test-suite name="Data" executed="True" success="False" time="5.132" asserts="0">
+            <results>
+              <test-suite name="LinqToSql" executed="True" success="False" time="5.132" asserts="0">
+                <results>
+                  <test-suite name="Tests" executed="True" success="False" time="5.131" asserts="0">
+                    <results>
+                      <test-suite name="LinqToSqlRepositoryTests" executed="True" success="False" time="2.774" asserts="0">
+                        <results>
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlRepositoryTests.can_query_multiple_data_sources" executed="True" success="True" time="1.224" asserts="2" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlRepositoryTests.Delete_Deletes_Record" executed="True" success="True" time="0.056" asserts="3" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlRepositoryTests.Nested_UnitOfWork_With_Different_Transaction_Compatibility_Works" executed="True" success="False" time="0.113" asserts="2">
+                            <failure>
+                              <message><![CDATA[  Expected: not 2010-03-17 02:23:02.300
+  But was:  2010-03-17 02:23:02.300
+]]></message>
+                              <stack-trace><![CDATA[at NCommon.Data.LinqToSql.Tests.LinqToSqlRepositoryTests.Nested_UnitOfWork_With_Different_Transaction_Compatibility_Works() in c:\Development\Personal\ncommon\NCommon.LinqToSql\tests\NCommon.LinqToSql.Tests\LinqToSqlRepositoryTests.cs:line 123
+]]></stack-trace>
+                            </failure>
+                          </test-case>
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlRepositoryTests.Query_Allows_Eger_Loading_Using_With" executed="True" success="True" time="0.071" asserts="0" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlRepositoryTests.Query_Allows_Lazy_Load_While_UnitOfWork_Still_Running" executed="True" success="True" time="0.214" asserts="1" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlRepositoryTests.Query_Allows_Projection_Using_Select_Projection" executed="True" success="True" time="0.032" asserts="2" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlRepositoryTests.Query_Throws_Exception_When_LazyLoading_After_UnitOfWork_Is_Finished" executed="True" success="True" time="0.020" asserts="2" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlRepositoryTests.Query_Using_OrderBy_With_QueryMethod_Returns_Matched_Records_Only" executed="True" success="True" time="0.023" asserts="1" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlRepositoryTests.Query_Using_QueryMethod_Returns_Matched_Records_Only" executed="True" success="True" time="0.013" asserts="1" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlRepositoryTests.Query_With_Incompatible_UnitOfWork_Throws_InvalidOperationException" executed="True" success="True" time="0.025" asserts="1" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlRepositoryTests.Query_With_No_UnitOfWork_Throws_InvalidOperationException" executed="True" success="True" time="0.001" asserts="1" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlRepositoryTests.Repository_For_Uses_Registered_Fetching_Strategies" executed="True" success="True" time="0.154" asserts="1" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlRepositoryTests.Save_Does_Not_Save_New_Customer_When_UnitOfWork_Is_Aborted" executed="True" success="True" time="0.013" asserts="2" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlRepositoryTests.Save_New_Customer_Saves_Customer_When_UnitOfWork_Is_Committed" executed="True" success="True" time="0.017" asserts="4" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlRepositoryTests.Save_Updates_Existing_Order_Record" executed="True" success="True" time="0.017" asserts="6" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlRepositoryTests.UnitOfWork_Is_Rolledback_When_Containing_TransactionScope_Is_Rolledback" executed="True" success="True" time="0.047" asserts="1" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlRepositoryTests.When_Calling_CalculateTotal_On_Order_Returns_Valid_When_Under_UnitOfWork" executed="True" success="True" time="0.029" asserts="1" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlRepositoryTests.When_Calling_CalculateTotal_On_Order_Returns_Valid_With_No_UnitOfWork_Throws" executed="True" success="True" time="0.022" asserts="1" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlRepositoryTests.When_No_FetchingStrategy_Registered_For_Makes_No_Changes" executed="True" success="True" time="0.022" asserts="1" />
+                        </results>
+                      </test-suite>
+                      <test-suite name="LinqToSqlTransactionTests" executed="True" success="True" time="0.050" asserts="0">
+                        <results>
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlTransactionTests.Commit_commits_all_IDbTransaction_transactions_handled_by_LinqToSqlTransaction" executed="True" success="True" time="0.043" asserts="0" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlTransactionTests.Commit_Raises_TransactionComitted_Event" executed="True" success="True" time="0.001" asserts="2" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlTransactionTests.Dispose_calls_dispose_on_all_NHibernate_transactions_handled_by_NHTransaction" executed="True" success="True" time="0.002" asserts="0" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlTransactionTests.Rollback_Raises_RollbackComitted_Event" executed="True" success="True" time="0.001" asserts="2" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlTransactionTests.Rollback_rollsback_all_NHibernate_transactions_handled_by_NHTransaction" executed="True" success="True" time="0.001" asserts="0" />
+                        </results>
+                      </test-suite>
+                      <test-suite name="LinqToSqlUnitOfWorkFactoryTests" executed="True" success="True" time="0.014" asserts="0">
+                        <results>
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlUnitOfWorkFactoryTests.Create_Returns_LinqToSqlUnitOfWork_Instance_When_DataContextProvider_Has_Been_Registered" executed="True" success="True" time="0.012" asserts="2" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlUnitOfWorkFactoryTests.Create_Throws_InvalidOperationException_When_No_DataContextProvider_Has_Been_Set" executed="True" success="True" time="0.001" asserts="1" />
+                        </results>
+                      </test-suite>
+                      <test-suite name="LinqToSqlUnitOfWorkTests" executed="True" success="True" time="0.172" asserts="0">
+                        <results>
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlUnitOfWorkTests.Begin_Transaction_Should_Start_A_New_Transaction_With_Default_IsolationLevel" executed="True" success="True" time="0.000" asserts="1" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlUnitOfWorkTests.BeginTransaction_calls_BeginTransaction_on_sessions_already_opened" executed="True" success="True" time="0.103" asserts="0" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlUnitOfWorkTests.BeginTransaction_Should_Start_A_New_Transaction_With_Specified_IsolatinLevel" executed="True" success="True" time="0.001" asserts="2" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlUnitOfWorkTests.BeginTransaction_Throws_InvalidOperationException_When_Transaction_Already_Running" executed="True" success="True" time="0.000" asserts="1" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlUnitOfWorkTests.Comitting_Transaction_Releases_Transaction_From_UnitOfWork" executed="True" success="True" time="0.005" asserts="1" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlUnitOfWorkTests.Ctor_Throws_ArgumentNullException_when_settings_parameter_is_null" executed="True" success="True" time="0.001" asserts="1" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlUnitOfWorkTests.disposing_LinqToSqlUnitOfWork_disposes_off_open_transactions_and_open_sessions" executed="True" success="True" time="0.012" asserts="1" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlUnitOfWorkTests.Flush_Calls_Underlying_ISession_Flush" executed="True" success="True" time="0.002" asserts="0" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlUnitOfWorkTests.GetSession_calls_BeginTransaction_on_session_being_opened_if_transaction_has_already_started" executed="True" success="True" time="0.008" asserts="0" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlUnitOfWorkTests.GetSession_returns_same_session_instance_once_opened" executed="True" success="True" time="0.003" asserts="3" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlUnitOfWorkTests.GetSession_returns_seperate_session_instances_for_different_types" executed="True" success="True" time="0.003" asserts="3" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlUnitOfWorkTests.GetSession_returns_session_from_session_resolver" executed="True" success="True" time="0.002" asserts="1" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlUnitOfWorkTests.IsInTransaction_Should_Return_False_When_No_Transaction_Exists" executed="True" success="True" time="0.000" asserts="1" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlUnitOfWorkTests.Rollback_Transaction_Releases_Transaction_From_UnitOfWork" executed="True" success="True" time="0.004" asserts="1" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlUnitOfWorkTests.TransactionalFlush_Rollsback_Transaction_When_TransactionalFlush_Throws_Exception" executed="True" success="True" time="0.007" asserts="1" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlUnitOfWorkTests.TransactionalFlush_Starts_A_Transaction_With_Default_Isolation_And_Commits_When_Flush_Succeeds" executed="True" success="True" time="0.004" asserts="0" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlUnitOfWorkTests.TransactionalFlush_Starts_A_Transaction_With_Specified_IsolationLevel_And_Commits_When_Flush_Succeeds" executed="True" success="True" time="0.004" asserts="0" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlUnitOfWorkTests.TransactionalFlush_Uses_Existing_Transaction_When_Transactional_AlreadyRunning" executed="True" success="True" time="0.004" asserts="0" />
+                        </results>
+                      </test-suite>
+                      <test-suite name="LinqToSqlUnitOfWorkTransactionTests" executed="True" success="True" time="2.113" asserts="0">
+                        <results>
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlUnitOfWorkTransactionTests.changes_are_not_persisted_when_ambient_transaction_rolls_back" executed="True" success="True" time="0.013" asserts="1" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlUnitOfWorkTransactionTests.changes_are_persisted_when_ambient_scope_is_committed" executed="True" success="True" time="0.017" asserts="1" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlUnitOfWorkTransactionTests.rolling_back_scope_rollsback_everything_for_all_managed_sessions" executed="True" success="True" time="0.013" asserts="2" />
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlUnitOfWorkTransactionTests.when_ambient_transaction_is_running_and_a_previous_scope_rollsback_new_scope_still_works" executed="False">
+                            <reason>
+                              <message><![CDATA[]]></message>
+                            </reason>
+                          </test-case>
+                          <test-case name="NCommon.Data.LinqToSql.Tests.LinqToSqlUnitOfWorkTransactionTests.when_ambient_transaction_is_running_multiple_scopes_work" executed="True" success="True" time="2.063" asserts="1" />
+                        </results>
+                      </test-suite>
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

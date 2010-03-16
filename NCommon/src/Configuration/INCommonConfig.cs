@@ -49,7 +49,7 @@ namespace NCommon.Configuration
         /// <typeparam name="T">A <see cref="IDataConfiguration"/> type that can be used to configure
         /// data providers for NCommon.</typeparam>
         /// <returns><see cref="INCommonConfig"/></returns>
-        INCommonConfig ConfigureData<T>() where T : IStateConfiguration, new();
+        INCommonConfig ConfigureData<T>() where T : IDataConfiguration, new();
 
         /// <summary>
         /// Configure data providers used by NCommon.

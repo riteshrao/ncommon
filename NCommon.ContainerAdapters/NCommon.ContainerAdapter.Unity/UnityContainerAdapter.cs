@@ -147,7 +147,7 @@ namespace NCommon.ContainerAdapter.Unity
         /// registered as an instance for <typeparamref name="TService"/>.</param>
         public void RegisterInstance<TService>(TService instance)
         {
-            RegisterInstance(typeof(TService));
+            RegisterInstance(typeof(TService), instance);
         }
 
         /// <summary>

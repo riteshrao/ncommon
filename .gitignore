@@ -9,3 +9,5 @@ _ReSharper.*
 .svn
 *.suo
 *.user
+build
+output

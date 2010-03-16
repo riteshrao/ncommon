@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Practices.ServiceLocation;
 using NCommon.Expressions;
 using NHibernate;
 using NHibernate.Linq;
@@ -40,17 +41,14 @@ namespace NCommon.Data.NHibernate
         /// Default Constructor.
         /// Creates a new instance of the <see cref="NHRepository{TEntity}"/> class.
         /// </summary>
-        public NHRepository () {}
-
-        /// <summary>
-        /// Overloaded Constructor.
-        /// Creates a new instance of the <see cref="NHRepository{TEntity}"/> class
-        /// that uses the specified NHiberante session.
-        /// </summary>
-        /// <param name="session">The <see cref="ISession"/> instance that the repository should use.</param>
-        public NHRepository(ISession session)
+        public NHRepository ()
         {
-            _privateSession = session; 
+            if (ServiceLocator.Current == null)
+                return;
+
+            var sessions = ServiceLocator.Current.GetAllInstances<ISession>();
+            if (sessions != null && sessions.Count() > 0)
+                _privateSession = sessions.FirstOrDefault();
         }
 
         /// <summary>
