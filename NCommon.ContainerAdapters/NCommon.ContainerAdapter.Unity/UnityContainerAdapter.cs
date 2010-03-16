@@ -160,7 +160,7 @@ namespace NCommon.ContainerAdapter.Unity
         /// <param name="named">string. The service name with which the implementation is registered.</param>
         public void RegisterInstance<TService>(TService instance, string named)
         {
-            RegisterInstance(typeof(TService), named);
+            RegisterInstance(typeof(TService), instance, named);
         }
 
         /// <summary>
