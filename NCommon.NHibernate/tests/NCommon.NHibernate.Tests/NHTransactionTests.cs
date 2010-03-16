@@ -48,5 +48,43 @@ namespace NCommon.Data.NHibernate.Tests
             nhTx1.AssertWasCalled(x => x.Dispose());
             nhTx2.AssertWasCalled(x => x.Dispose());
         }
+
+        [Test]
+        public void Commit_Raises_TransactionComitted_Event()
+        {
+            var tx = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
+
+            var commitCalled = false;
+            var rollbackCalled = false;
+            var transaction = new NHTransaction(IsolationLevel.Serializable);
+            transaction.RegisterTransaction(tx);
+            transaction.TransactionCommitted += delegate { commitCalled = true; };
+            transaction.TransactionRolledback += delegate { rollbackCalled = true; };
+
+            transaction.Commit();
+
+            tx.AssertWasCalled(x => x.Commit());
+            Assert.That(commitCalled);
+            Assert.That(!rollbackCalled);
+        }
+
+        [Test]
+        public void Rollback_Raises_RollbackComitted_Event()
+        {
+            var tx = MockRepository.GenerateMock<global::NHibernate.ITransaction>();
+
+            var commitCalled = false;
+            var rollbackCalled = false;
+            var transaction = new NHTransaction(IsolationLevel.Serializable);
+            transaction.RegisterTransaction(tx);
+            transaction.TransactionCommitted += delegate { commitCalled = true; };
+            transaction.TransactionRolledback += delegate { rollbackCalled = true; };
+
+            transaction.Rollback();
+
+            tx.AssertWasCalled(x => x.Rollback());
+            Assert.That(!commitCalled);
+            Assert.That(rollbackCalled);
+        }
     }
 }

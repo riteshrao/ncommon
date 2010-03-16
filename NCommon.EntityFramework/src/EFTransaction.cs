@@ -33,7 +33,9 @@ namespace NCommon.Data.EntityFramework
         /// <param name="transaction"></param>
         public EFTransaction(IsolationLevel isolationLevel, params IDbTransaction[] transaction)
         {
-            Guard.Against<ArgumentNullException>(transaction == null, "Expected a non-null DbTransaction instance.");
+            Guard.Against<ArgumentNullException>(transaction == null,
+                                                 "Expected a non-null DbTransaction instance.");
+            IsolationLevel = isolationLevel;
             transaction.ForEach(tx => _transactions.Add(tx));
         }
 

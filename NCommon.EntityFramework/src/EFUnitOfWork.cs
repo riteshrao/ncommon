@@ -42,6 +42,8 @@ namespace NCommon.Data.EntityFramework
         /// Entity Framework unit of work instances.</param>
         public EFUnitOfWork(EFUnitOfWorkSettings settings)
         {
+            Guard.Against<ArgumentNullException>(settings == null,
+                                                 "Expected a non-null EFUnitOfWorkSettings instance.");
             _settings = settings;
         }
 
@@ -55,15 +57,16 @@ namespace NCommon.Data.EntityFramework
         }
 
         /// <summary>
-        /// Gets a <see cref="ObjectContext"/> that can be used to query and update the specified type.
+        /// Gets a <see cref="IEFSession"/> that can be used to query and update the specified type.
         /// </summary>
-        /// <typeparam name="T">The type for which an <see cref="ObjectContext"/> should be returned.</typeparam>
-        /// <returns></returns>
-        public ObjectContext GetContext<T>()
+        /// <typeparam name="T">The type for which an <see cref="IEFSession"/> should be returned.</typeparam>
+        /// <returns>An <see cref="IEFSession"/> that can be used to query and update the specified type.</returns>
+        public IEFSession GetSession<T>()
         {
             var sessionKey = _settings.SessionResolver.GetSessionKeyFor<T>();
             if (_openSessions.ContainsKey(sessionKey))
-                return _openSessions[sessionKey].Context;
+                return _openSessions[sessionKey];
+
             //Opening a new session...
             var session = _settings.SessionResolver.OpenSessionFor<T>();
             _openSessions.Add(sessionKey, session);
@@ -73,7 +76,7 @@ namespace NCommon.Data.EntityFramework
                     session.Connection.Open();
                 _transaction.RegisterTransaction(session.Connection.BeginTransaction(_transaction.IsolationLevel));
             }
-            return session.Context;
+            return session;
         }
 
         /// <summary>
@@ -82,7 +85,7 @@ namespace NCommon.Data.EntityFramework
         /// <returns></returns>
         public ITransaction BeginTransaction()
         {
-            return BeginTransaction(_settings.DefaultIsolationLevel);
+            return BeginTransaction(_settings.DefaultIsolation);
         }
 
         /// <summary>
@@ -124,7 +127,7 @@ namespace NCommon.Data.EntityFramework
         /// </summary>
         public void TransactionalFlush()
         {
-            TransactionalFlush(_settings.DefaultIsolationLevel);
+            TransactionalFlush(_settings.DefaultIsolation);
         }
 
         /// <summary>

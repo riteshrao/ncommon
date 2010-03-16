@@ -7,7 +7,7 @@ namespace NCommon.Data.EntityFramework
     /// </summary>
     public class EFUnitOfWorkSettings
     {
-        public IsolationLevel DefaultIsolationLevel { get; set; }
+        public IsolationLevel DefaultIsolation { get; set; }
         public IEFSessionResolver SessionResolver { get; set; }
     }
 }

@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="HRData">
+  <DataContextMoniker Name="/HRDataDataContext" />
+  <nestedChildShapes>
+    <classShape Id="7dd0666c-dca7-48d2-b847-e91c04a51601" absoluteBounds="4.875, 3.375, 2, 1.9631982421874996">
+      <DataClassMoniker Name="/HRDataDataContext/Employee" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6faa22de-45f6-4ec5-9041-60db9099a369" absoluteBounds="4.8900000000000006, 3.835, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="e663c7bb-89ed-4421-b742-264ef0254bfc" absoluteBounds="2.125, 3.875, 2, 1.193992513020834">
+      <DataClassMoniker Name="/HRDataDataContext/Department" />
+      <nestedChildShapes>
+        <elementListCompartment Id="bb81daa7-a48b-46df-854b-54c3b606e84a" absoluteBounds="2.14, 4.335, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="f93afe6f-250e-4733-bb01-534b914ca241" absoluteBounds="8.25, 3.875, 2, 1.0016910807291666">
+      <DataClassMoniker Name="/HRDataDataContext/SalesManager" />
+      <nestedChildShapes>
+        <elementListCompartment Id="ee7cfb83-c72a-4612-b1c6-38af34394377" absoluteBounds="8.265, 4.335, 1.9700000000000002, 0.44169108072916669" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="9241cb73-8ffc-4d46-bd55-56dd74d1ed5d" absoluteBounds="7.625, 0.625, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/HRDataDataContext/SalesPerson" />
+      <nestedChildShapes>
+        <elementListCompartment Id="8360d908-b51d-400b-8fc0-66da223ba762" absoluteBounds="7.64, 1.085, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="6392c957-4fe3-40dc-bb27-b2e62f88d3a4" absoluteBounds="4.875, 6.625, 2, 1.3862939453125005">
+      <DataClassMoniker Name="/HRDataDataContext/SalesTerritory" />
+      <nestedChildShapes>
+        <elementListCompartment Id="a367a485-9f94-463a-bd47-0c1102275057" absoluteBounds="4.8900000000000006, 7.085, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(5.58363627929687 : 5.3381982421875); (5.58363627929687 : 5.5881982421875); (6.18023818359375 : 5.5881982421875); (6.18023818359375 : 5.3381982421875)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/HRDataDataContext/Employee/Employee_Employee" />
+      <nodes>
+        <classShapeMoniker Id="7dd0666c-dca7-48d2-b847-e91c04a51601" />
+        <classShapeMoniker Id="7dd0666c-dca7-48d2-b847-e91c04a51601" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(4.125 : 4.47199625651042); (4.875 : 4.47199625651042)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/HRDataDataContext/Department/Department_Employee" />
+      <nodes>
+        <classShapeMoniker Id="e663c7bb-89ed-4421-b742-264ef0254bfc" />
+        <classShapeMoniker Id="7dd0666c-dca7-48d2-b847-e91c04a51601" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(6.875 : 4.37584554036458); (8.25 : 4.37584554036458)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/HRDataDataContext/Employee/Employee_SalesManager" />
+      <nodes>
+        <classShapeMoniker Id="7dd0666c-dca7-48d2-b847-e91c04a51601" />
+        <classShapeMoniker Id="f93afe6f-250e-4733-bb01-534b914ca241" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.875 : 3.375); (5.875 : 1.41429768880208); (7.625 : 1.41429768880208)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/HRDataDataContext/Employee/Employee_SalesPerson" />
+      <nodes>
+        <classShapeMoniker Id="7dd0666c-dca7-48d2-b847-e91c04a51601" />
+        <classShapeMoniker Id="9241cb73-8ffc-4d46-bd55-56dd74d1ed5d" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(6.875 : 7.31814697265625); (7.90625 : 7.31814697265625); (7.90625 : 2.20359537760417)]" fixedFrom="NotFixed" fixedTo="NotFixed">
+      <AssociationMoniker Name="/HRDataDataContext/SalesTerritory/SalesTerritory_SalesPerson" />
+      <nodes>
+        <classShapeMoniker Id="6392c957-4fe3-40dc-bb27-b2e62f88d3a4" />
+        <classShapeMoniker Id="9241cb73-8ffc-4d46-bd55-56dd74d1ed5d" />
+      </nodes>
+    </associationConnector>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

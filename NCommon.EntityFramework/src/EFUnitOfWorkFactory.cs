@@ -28,7 +28,7 @@ namespace NCommon.Data.EntityFramework
     {
         readonly EFUnitOfWorkSettings _settings = new EFUnitOfWorkSettings
         {
-            DefaultIsolationLevel = IsolationLevel.ReadCommitted,
+            DefaultIsolation = IsolationLevel.ReadCommitted,
             SessionResolver = new EFSessionResolver()
         };
         
@@ -39,8 +39,8 @@ namespace NCommon.Data.EntityFramework
         /// <value>The default <see cref="IsolationLevel"/> of <see cref="EFUnitOfWork"/> instances.</value>
         public IsolationLevel DefaultIsolation
         {
-            get { return _settings.DefaultIsolationLevel; }
-            set { _settings.DefaultIsolationLevel = value; }
+            get { return _settings.DefaultIsolation; }
+            set { _settings.DefaultIsolation = value; }
         }
 
         /// <summary>

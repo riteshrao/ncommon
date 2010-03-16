@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="DevelopmentDB" Class="OrdersDataDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(local);Initial Catalog=DevelopmentDB;Integrated Security=True" SettingsObjectName="NCommon.Data.LinqToSql.Tests.OrdersDomain.Properties.Settings" SettingsPropertyName="DevelopmentDBConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Customers" Member="Customers">
+    <Type Name="Customer">
+      <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="StreetAddress1" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="StreetAddress2" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="City" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="State" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="ZipCode" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="FirstName" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="LastName" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="Customer_Order" Member="Orders" ThisKey="CustomerID" OtherKey="CustomerId" Type="Order" />
+    </Type>
+  </Table>
+  <Table Name="dbo.OrderItems" Member="OrderItems">
+    <Type Name="OrderItem">
+      <Column Name="OrderItemID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Price" Type="System.Decimal" DbType="Decimal(19,5)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Quantity" Type="System.Int32" DbType="Int" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Store" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="ProductId" Type="System.Int32" DbType="Int" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="OrderId" Type="System.Int32" DbType="Int" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="Order_OrderItem" Member="Order" ThisKey="OrderId" OtherKey="OrderID" Type="Order" IsForeignKey="true" />
+      <Association Name="Product_OrderItem" Member="Product" ThisKey="ProductId" OtherKey="ProductID" Type="Product" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Orders" Member="Orders">
+    <Type Name="Order">
+      <Column Name="OrderID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="OrderDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="ShipDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="CustomerId" Type="System.Int32" DbType="Int" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="Order_OrderItem" Member="OrderItems" ThisKey="OrderID" OtherKey="OrderId" Type="OrderItem" />
+      <Association Name="Customer_Order" Member="Customer" ThisKey="CustomerId" OtherKey="CustomerID" Type="Customer" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Products" Member="Products">
+    <Type Name="Product">
+      <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="Product_OrderItem" Member="OrderItems" ThisKey="ProductID" OtherKey="ProductId" Type="OrderItem" />
+    </Type>
+  </Table>
+  <Table Name="dbo.MonthlySalesSummary" Member="MonthlySalesSummaries">
+    <Type Name="MonthlySalesSummary">
+      <Column Name="Year" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Month" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="SalesPersonId" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="Amount" Type="System.Decimal" DbType="Decimal(19,5)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Currency" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="SalesPersonFirstName" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="SalesPersonLastName" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" UpdateCheck="Never" />
+    </Type>
+  </Table>
+</Database>

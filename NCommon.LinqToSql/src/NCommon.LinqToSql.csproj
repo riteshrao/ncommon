@@ -72,7 +72,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ILinqSession.cs" />
+    <Compile Include="ILinqToSqlSession.cs" />
     <Compile Include="ILinqToSqlSessionResolver.cs" />
     <Compile Include="LinqToSqlConfiguration.cs" />
     <Compile Include="LinqToSqlRepository.cs" />

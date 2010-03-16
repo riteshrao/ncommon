@@ -31,7 +31,7 @@ namespace NCommon.State.Impl
         /// A custom <see cref="IExtension{T}"/> of type <see cref="OperationContext"/> that is used
         /// to stored local state for the current <see cref="OperationContext"/>.
         /// </summary>
-        class WcfLocalStateExtension : IExtension<OperationContext>
+        public class WcfLocalStateExtension : IExtension<OperationContext>
         {
             readonly Hashtable _state = new Hashtable();
             

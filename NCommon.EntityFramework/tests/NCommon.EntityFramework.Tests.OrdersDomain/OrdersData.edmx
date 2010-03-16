@@ -1,0 +1,322 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="OrdersDataModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+        <EntityContainer Name="OrdersDataModelStoreContainer">
+          <EntitySet Name="Customers" EntityType="OrdersDataModel.Store.Customers" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="MonthlySalesSummary" EntityType="OrdersDataModel.Store.MonthlySalesSummary" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="OrderItems" EntityType="OrdersDataModel.Store.OrderItems" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Orders" EntityType="OrdersDataModel.Store.Orders" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Products" EntityType="OrdersDataModel.Store.Products" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Customer_Orders" Association="OrdersDataModel.Store.FK_Customer_Orders">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderItems_Product" Association="OrdersDataModel.Store.FK_OrderItems_Product">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="OrderItems" EntitySet="OrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_OrderItems" Association="OrdersDataModel.Store.FK_Orders_OrderItems">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OrderItems" EntitySet="OrderItems" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="CustomerID" />
+          </Key>
+          <Property Name="CustomerID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="StreetAddress1" Type="nvarchar" MaxLength="255" />
+          <Property Name="StreetAddress2" Type="nvarchar" MaxLength="255" />
+          <Property Name="City" Type="nvarchar" MaxLength="255" />
+          <Property Name="State" Type="nvarchar" MaxLength="255" />
+          <Property Name="ZipCode" Type="nvarchar" MaxLength="255" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="255" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="MonthlySalesSummary">
+          <Key>
+            <PropertyRef Name="Year" />
+            <PropertyRef Name="Month" />
+            <PropertyRef Name="SalesPersonId" />
+          </Key>
+          <Property Name="Year" Type="int" Nullable="false" />
+          <Property Name="Month" Type="int" Nullable="false" />
+          <Property Name="SalesPersonId" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="19" Scale="5" />
+          <Property Name="Currency" Type="nvarchar" MaxLength="255" />
+          <Property Name="SalesPersonFirstName" Type="nvarchar" MaxLength="255" />
+          <Property Name="SalesPersonLastName" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="OrderItems">
+          <Key>
+            <PropertyRef Name="OrderItemID" />
+          </Key>
+          <Property Name="OrderItemID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Price" Type="decimal" Precision="19" Scale="5" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="Store" Type="nvarchar" MaxLength="255" />
+          <Property Name="ProductId" Type="int" />
+          <Property Name="OrderId" Type="int" />
+        </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="OrderDate" Type="datetime" />
+          <Property Name="ShipDate" Type="datetime" />
+          <Property Name="CustomerId" Type="int" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="ProductID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" />
+          <Property Name="Description" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <Association Name="FK_Customer_Orders">
+          <End Role="Customers" Type="OrdersDataModel.Store.Customers" Multiplicity="0..1" />
+          <End Role="Orders" Type="OrdersDataModel.Store.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="CustomerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderItems_Product">
+          <End Role="Products" Type="OrdersDataModel.Store.Products" Multiplicity="0..1" />
+          <End Role="OrderItems" Type="OrdersDataModel.Store.OrderItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ProductID" />
+            </Principal>
+            <Dependent Role="OrderItems">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_OrderItems">
+          <End Role="Orders" Type="OrdersDataModel.Store.Orders" Multiplicity="0..1" />
+          <End Role="OrderItems" Type="OrdersDataModel.Store.OrderItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="OrderID" />
+            </Principal>
+            <Dependent Role="OrderItems">
+              <PropertyRef Name="OrderId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="NCommon.Data.EntityFramework.Tests.OrdersDomain" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
+        <EntityContainer Name="OrderEntities">
+          <EntitySet Name="Customers" EntityType="NCommon.Data.EntityFramework.Tests.OrdersDomain.Customer" />
+          <EntitySet Name="MonthlySalesSummaries" EntityType="NCommon.Data.EntityFramework.Tests.OrdersDomain.MonthlySalesSummary" />
+          <EntitySet Name="OrderItems" EntityType="NCommon.Data.EntityFramework.Tests.OrdersDomain.OrderItem" />
+          <EntitySet Name="Orders" EntityType="NCommon.Data.EntityFramework.Tests.OrdersDomain.Order" />
+          <EntitySet Name="Products" EntityType="NCommon.Data.EntityFramework.Tests.OrdersDomain.Product" />
+          <AssociationSet Name="FK_Customer_Orders" Association="NCommon.Data.EntityFramework.Tests.OrdersDomain.FK_Customer_Orders">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderItems_Product" Association="NCommon.Data.EntityFramework.Tests.OrdersDomain.FK_OrderItems_Product">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="OrderItems" EntitySet="OrderItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_OrderItems" Association="NCommon.Data.EntityFramework.Tests.OrdersDomain.FK_Orders_OrderItems">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OrderItems" EntitySet="OrderItems" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustomerID" />
+          </Key>
+          <Property Name="CustomerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StreetAddress1" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="StreetAddress2" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="City" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="State" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="ZipCode" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="FirstName" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="LastName" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Orders" Relationship="NCommon.Data.EntityFramework.Tests.OrdersDomain.FK_Customer_Orders" FromRole="Customers" ToRole="Orders" />
+        </EntityType>
+        <EntityType Name="MonthlySalesSummary">
+          <Key>
+            <PropertyRef Name="Year" />
+            <PropertyRef Name="Month" />
+            <PropertyRef Name="SalesPersonId" />
+          </Key>
+          <Property Name="Year" Type="Int32" Nullable="false" />
+          <Property Name="Month" Type="Int32" Nullable="false" />
+          <Property Name="SalesPersonId" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Precision="19" Scale="5" />
+          <Property Name="Currency" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="SalesPersonFirstName" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="SalesPersonLastName" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="OrderItem">
+          <Key>
+            <PropertyRef Name="OrderItemID" />
+          </Key>
+          <Property Name="OrderItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="5" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="Store" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Product" Relationship="NCommon.Data.EntityFramework.Tests.OrdersDomain.FK_OrderItems_Product" FromRole="OrderItems" ToRole="Products" />
+          <NavigationProperty Name="Order" Relationship="NCommon.Data.EntityFramework.Tests.OrdersDomain.FK_Orders_OrderItems" FromRole="OrderItems" ToRole="Orders" />
+        </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="OrderID" />
+          </Key>
+          <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderDate" Type="DateTime" />
+          <Property Name="ShipDate" Type="DateTime" />
+          <NavigationProperty Name="Customer" Relationship="NCommon.Data.EntityFramework.Tests.OrdersDomain.FK_Customer_Orders" FromRole="Orders" ToRole="Customers" />
+          <NavigationProperty Name="OrderItems" Relationship="NCommon.Data.EntityFramework.Tests.OrdersDomain.FK_Orders_OrderItems" FromRole="Orders" ToRole="OrderItems" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="ProductID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="OrderItems" Relationship="NCommon.Data.EntityFramework.Tests.OrdersDomain.FK_OrderItems_Product" FromRole="Products" ToRole="OrderItems" />
+        </EntityType>
+        <Association Name="FK_Customer_Orders">
+          <End Role="Customers" Type="NCommon.Data.EntityFramework.Tests.OrdersDomain.Customer" Multiplicity="0..1" />
+          <End Role="Orders" Type="NCommon.Data.EntityFramework.Tests.OrdersDomain.Order" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_OrderItems_Product">
+          <End Role="Products" Type="NCommon.Data.EntityFramework.Tests.OrdersDomain.Product" Multiplicity="0..1" />
+          <End Role="OrderItems" Type="NCommon.Data.EntityFramework.Tests.OrdersDomain.OrderItem" Multiplicity="*" />
+        </Association>
+        <Association Name="FK_Orders_OrderItems">
+          <End Role="Orders" Type="NCommon.Data.EntityFramework.Tests.OrdersDomain.Order" Multiplicity="0..1" />
+          <End Role="OrderItems" Type="NCommon.Data.EntityFramework.Tests.OrdersDomain.OrderItem" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
+        <EntityContainerMapping StorageEntityContainer="OrdersDataModelStoreContainer" CdmEntityContainer="OrderEntities">
+          <EntitySetMapping Name="Customers"><EntityTypeMapping TypeName="NCommon.Data.EntityFramework.Tests.OrdersDomain.Customer"><MappingFragment StoreEntitySet="Customers">
+            <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+            <ScalarProperty Name="StreetAddress1" ColumnName="StreetAddress1" />
+            <ScalarProperty Name="StreetAddress2" ColumnName="StreetAddress2" />
+            <ScalarProperty Name="City" ColumnName="City" />
+            <ScalarProperty Name="State" ColumnName="State" />
+            <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+            <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+            <ScalarProperty Name="LastName" ColumnName="LastName" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="MonthlySalesSummaries"><EntityTypeMapping TypeName="NCommon.Data.EntityFramework.Tests.OrdersDomain.MonthlySalesSummary"><MappingFragment StoreEntitySet="MonthlySalesSummary">
+            <ScalarProperty Name="Year" ColumnName="Year" />
+            <ScalarProperty Name="Month" ColumnName="Month" />
+            <ScalarProperty Name="SalesPersonId" ColumnName="SalesPersonId" />
+            <ScalarProperty Name="Amount" ColumnName="Amount" />
+            <ScalarProperty Name="Currency" ColumnName="Currency" />
+            <ScalarProperty Name="SalesPersonFirstName" ColumnName="SalesPersonFirstName" />
+            <ScalarProperty Name="SalesPersonLastName" ColumnName="SalesPersonLastName" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="OrderItems"><EntityTypeMapping TypeName="NCommon.Data.EntityFramework.Tests.OrdersDomain.OrderItem"><MappingFragment StoreEntitySet="OrderItems">
+            <ScalarProperty Name="OrderItemID" ColumnName="OrderItemID" />
+            <ScalarProperty Name="Price" ColumnName="Price" />
+            <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+            <ScalarProperty Name="Store" ColumnName="Store" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Orders"><EntityTypeMapping TypeName="NCommon.Data.EntityFramework.Tests.OrdersDomain.Order"><MappingFragment StoreEntitySet="Orders">
+            <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+            <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+            <ScalarProperty Name="ShipDate" ColumnName="ShipDate" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <EntitySetMapping Name="Products"><EntityTypeMapping TypeName="NCommon.Data.EntityFramework.Tests.OrdersDomain.Product"><MappingFragment StoreEntitySet="Products">
+            <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+            <ScalarProperty Name="Name" ColumnName="Name" />
+            <ScalarProperty Name="Description" ColumnName="Description" />
+          </MappingFragment></EntityTypeMapping></EntitySetMapping>
+          <AssociationSetMapping Name="FK_Customer_Orders" TypeName="NCommon.Data.EntityFramework.Tests.OrdersDomain.FK_Customer_Orders" StoreEntitySet="Orders">
+            <EndProperty Name="Customers">
+              <ScalarProperty Name="CustomerID" ColumnName="CustomerId" />
+            </EndProperty>
+            <EndProperty Name="Orders">
+              <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+            </EndProperty>
+            <Condition ColumnName="CustomerId" IsNull="false" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_OrderItems_Product" TypeName="NCommon.Data.EntityFramework.Tests.OrdersDomain.FK_OrderItems_Product" StoreEntitySet="OrderItems">
+            <EndProperty Name="Products">
+              <ScalarProperty Name="ProductID" ColumnName="ProductId" />
+            </EndProperty>
+            <EndProperty Name="OrderItems">
+              <ScalarProperty Name="OrderItemID" ColumnName="OrderItemID" />
+            </EndProperty>
+            <Condition ColumnName="ProductId" IsNull="false" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="FK_Orders_OrderItems" TypeName="NCommon.Data.EntityFramework.Tests.OrdersDomain.FK_Orders_OrderItems" StoreEntitySet="OrderItems">
+            <EndProperty Name="Orders">
+              <ScalarProperty Name="OrderID" ColumnName="OrderId" />
+            </EndProperty>
+            <EndProperty Name="OrderItems">
+              <ScalarProperty Name="OrderItemID" ColumnName="OrderItemID" />
+            </EndProperty>
+            <Condition ColumnName="OrderId" IsNull="false" />
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2007/06/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="OrdersData">
+        <EntityTypeShape EntityType="NCommon.Data.EntityFramework.Tests.OrdersDomain.Customer" Width="1.5" PointX="0.75" PointY="1" Height="2.7494921874999996" IsExpanded="true" />
+        <EntityTypeShape EntityType="NCommon.Data.EntityFramework.Tests.OrdersDomain.MonthlySalesSummary" Width="1.5" PointX="5.75" PointY="4.75" Height="2.3648893229166674" IsExpanded="true" />
+        <EntityTypeShape EntityType="NCommon.Data.EntityFramework.Tests.OrdersDomain.OrderItem" Width="1.5" PointX="5.25" PointY="1.25" Height="2.1725878906249996" IsExpanded="true" />
+        <EntityTypeShape EntityType="NCommon.Data.EntityFramework.Tests.OrdersDomain.Order" Width="1.5" PointX="3" PointY="1.375" Height="1.9802864583333335" IsExpanded="true" />
+        <EntityTypeShape EntityType="NCommon.Data.EntityFramework.Tests.OrdersDomain.Product" Width="1.5" PointX="3" PointY="5.5" Height="1.7879850260416674" IsExpanded="true" />
+        <AssociationConnector Association="NCommon.Data.EntityFramework.Tests.OrdersDomain.FK_Customer_Orders" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="2.3651432291666667" />
+          <ConnectorPoint PointX="3" PointY="2.3651432291666667" />
+        </AssociationConnector>
+        <AssociationConnector Association="NCommon.Data.EntityFramework.Tests.OrdersDomain.FK_OrderItems_Product" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="7.2326871744791674" />
+          <ConnectorPoint PointX="5.46875" PointY="7.2326871744791674" />
+          <ConnectorPoint PointX="5.46875" PointY="3.4225878906249996" />
+        </AssociationConnector>
+        <AssociationConnector Association="NCommon.Data.EntityFramework.Tests.OrdersDomain.FK_Orders_OrderItems" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.5" PointY="2.3651432291666667" />
+          <ConnectorPoint PointX="5.25" PointY="2.3651432291666667" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -7,9 +7,6 @@ using NUnit.Framework;
 
 namespace NCommon.Data.NHibernate.Tests
 {
-	/// <summary>
-	/// Specialized test cases that test issues with transaction management in the NHUnitOfWork implementation.
-	/// </summary>
 	[TestFixture]
 	public class NHUnitOfWorkTransactionTests : NHTestBase
 	{

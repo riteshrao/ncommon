@@ -61,6 +61,7 @@
     <Compile Include="Domain\Department.cs" />
     <Compile Include="Domain\Employee.cs" />
     <Compile Include="Domain\EmployeeStatus.cs" />
+    <Compile Include="Domain\EmployeeType.cs" />
     <Compile Include="Domain\SalesManager.cs" />
     <Compile Include="Domain\SalesPerson.cs" />
     <Compile Include="Domain\SalesTerritory.cs" />

@@ -8,5 +8,6 @@ namespace NCommon.Data.NHibernate.Tests.HRDomain.Domain
         public virtual Department Department { get; set; }
         public virtual Employee Manager { get; set; }
         public virtual EmployeeStatus Status { get; set; }
+        public virtual EmployeeType Type { get; set; }
     }
 }

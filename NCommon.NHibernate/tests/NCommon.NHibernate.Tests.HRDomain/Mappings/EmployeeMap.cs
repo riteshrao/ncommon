@@ -12,6 +12,7 @@ namespace NCommon.NHibernate.Tests.HRDomain.Mappings
                 .GeneratedBy.Identity();
             Map(x => x.FirstName);
             Map(x => x.LastName);
+            Map(x => x.Type);
             References(x => x.Department)
                 .Column("DepartmentId");
             References(x => x.Manager)

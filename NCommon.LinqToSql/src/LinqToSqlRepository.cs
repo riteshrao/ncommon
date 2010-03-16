@@ -57,7 +57,7 @@ namespace NCommon.Data.LinqToSql
         {
             get
             {
-                return _privateDataContext ?? GetCurrentUnitOfWork<LinqToSqlUnitOfWork>().GetContext<TEntity>();
+                return _privateDataContext ?? GetCurrentUnitOfWork<LinqToSqlUnitOfWork>().GetSession<TEntity>().Context;
             }   
         }
 

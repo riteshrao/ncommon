@@ -29,7 +29,7 @@ namespace NCommon.Data.NHibernate.Tests
     public class NHUnitOfWorkTests
     {
         [Test]
-        public void Ctor_Throws_ArgumentNullException_When_ISession_Parameter_Is_Null ()
+        public void Ctor_Throws_ArgumentNullException_When_Settings_Parameter_Is_Null ()
         {
             Assert.Throws<ArgumentNullException>(() => new NHUnitOfWork(null));
         }

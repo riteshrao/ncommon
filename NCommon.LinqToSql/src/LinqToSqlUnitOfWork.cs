@@ -42,6 +42,8 @@ namespace NCommon.Data.LinqToSql
         /// <param name="context">The <see cref="DataContext"/> instance that the LinqToSqlUnitOfWork instance uses.</param>
         public LinqToSqlUnitOfWork(LinqToSqlUnitOfWorkSettings settings) 
         {
+            Guard.Against<ArgumentNullException>(settings == null,
+                                                 "Expected a non-null LinqToSqlUnitOfWorkSettings class.");
             _settings = settings;
         }
 
@@ -55,15 +57,15 @@ namespace NCommon.Data.LinqToSql
         }
 
         /// <summary>
-        /// Gets a <see cref="DataContext"/> that can be used to query and update the specified type.
+        /// Gets a <see cref="ILinqToSqlSession"/> that can be used to query and update the specified type.
         /// </summary>
-        /// <typeparam name="T">The type for which a <see cref="DataContext"/> instance is retrieved.</typeparam>
-        /// <returns>A <see cref="DataContext"/> instance that can be used to query and update the specified type.</returns>
-        public DataContext GetContext<T>()
+        /// <typeparam name="T">The type for which a <see cref="ILinqToSqlSession"/> instance is retrieved.</typeparam>
+        /// <returns>A <see cref="ILinqToSqlSession"/> instance that can be used to query and update the specified type.</returns>
+        public ILinqToSqlSession GetSession<T>()
         {
             var key = _settings.SessionResolver.GetSessionKeyFor<T>();
             if (_openSessions.ContainsKey(key))
-                return _openSessions[key].Context;
+                return _openSessions[key];
 
             //Opening a new session...
             var session = _settings.SessionResolver.OpenSessionFor<T>();
@@ -72,9 +74,11 @@ namespace NCommon.Data.LinqToSql
             {
                 if (session.Connection.State != ConnectionState.Open)
                     session.Connection.Open();
-                _transaction.RegisterTransaction(session.Connection.BeginTransaction(_transaction.IsolationLevel));
+                var tx = session.Connection.BeginTransaction(_transaction.IsolationLevel);
+                session.Transaction = tx;
+                _transaction.RegisterTransaction(tx);
             }
-            return session.Context;
+            return session;
         }
 
         /// <summary>
@@ -103,7 +107,9 @@ namespace NCommon.Data.LinqToSql
             {
                 if (session.Value.Connection.State != ConnectionState.Open)
                     session.Value.Connection.Open();
-                return session.Value.Connection.BeginTransaction(isolationLevel);
+                var tx = session.Value.Connection.BeginTransaction(isolationLevel);
+                session.Value.Transaction = tx;
+                return tx;
             }).ToArray());
 
             _transaction.TransactionCommitted += TransactionCommitted;
