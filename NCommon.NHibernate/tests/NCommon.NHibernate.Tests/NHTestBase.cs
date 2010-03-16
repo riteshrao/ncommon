@@ -32,24 +32,14 @@ namespace NCommon.Data.NHibernate.Tests
 		        .Database(MsSqlConfiguration.MsSql2005
 		                      .ConnectionString(x => x.FromConnectionStringWithKey("testdb")))
 		        .Mappings(mappings => mappings.FluentMappings.AddFromAssemblyOf<Order>())
-		        .ExposeConfiguration(config =>
-		        {
-		            var schemaExport = new SchemaExport(config);
-		            schemaExport.Drop(false, true);
-		            schemaExport.Create(false, true);
-		        })
+                .ExposeConfiguration(config => new SchemaUpdate(config).Execute(false, true))
 		        .BuildSessionFactory();
 
             HRDomainFactory = Fluently.Configure()
                 .Database(MsSqlConfiguration.MsSql2005
                             .ConnectionString(x => x.FromConnectionStringWithKey("testdb")))
                 .Mappings(mappings => mappings.FluentMappings.AddFromAssemblyOf<Employee>())
-                .ExposeConfiguration(config =>
-                {
-                    var schemaExport = new SchemaExport(config);
-                    schemaExport.Drop(false, true);
-                    schemaExport.Create(false, true);
-                })
+                .ExposeConfiguration(config => new SchemaUpdate(config).Execute(false, true))
                 .BuildSessionFactory();
 
             UnitOfWorkFactory = new NHUnitOfWorkFactory();

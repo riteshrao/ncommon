@@ -190,6 +190,14 @@ namespace NCommon.Data.LinqToSql
                 _transaction.TransactionCommitted -= TransactionCommitted;
                 _transaction.TransactionRolledback -= TransactionRolledback;
                 _transaction.Dispose();
+
+                //Removing transaction references from all open sessions and closing connection
+                _openSessions.ForEach(session =>
+                {
+                    session.Value.Transaction = null;
+                    if (session.Value.Connection.State == ConnectionState.Open)
+                        session.Value.Connection.Close();
+                });
             }
             _transaction = null;
         }

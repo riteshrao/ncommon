@@ -103,7 +103,8 @@ namespace NCommon.Data.NHibernate.Tests
 		{
             using (var testData = new NHTestDataGenerator(OrdersDomainFactory.OpenSession()))
             {
-                testData.Batch(actions => actions.CreateCustomer());
+                Customer customer = null;
+                testData.Batch(actions => customer =  actions.CreateCustomer());
 
                 string oldCustomerName;
                 var newCustomerName = "NewCustomer" + new Random().Next(0, int.MaxValue);
@@ -124,14 +125,13 @@ namespace NCommon.Data.NHibernate.Tests
                 {
                     using (var firstUOW = new UnitOfWorkScope())
                     {
-                        var customer = new NHRepository<Customer>().First();
-                        oldCustomerName = customer.FirstName;
-                        customer.FirstName = "Changed";
+                        var oldCustomer = new NHRepository<Customer>().Where(x => x.CustomerID == customer.CustomerID).First();
+                        oldCustomerName = oldCustomer.FirstName;
+                        oldCustomer.FirstName = "Changed";
                     }  //Rollback
 
                     using (var secondUOW = new UnitOfWorkScope())
                     {
-                        
                         new NHRepository<Customer>().Add(newCustomer);
                         secondUOW.Commit();
                     }
@@ -140,10 +140,11 @@ namespace NCommon.Data.NHibernate.Tests
                 using (var scope = new UnitOfWorkScope())
                 {
                     var repository = new NHRepository<Customer>();
-                    Assert.That(repository.First().FirstName, Is.EqualTo(oldCustomerName));
-                    Assert.That(repository.Where(x => x.FirstName == newCustomerName).Count(), Is.GreaterThan(0));
-                    repository.Attach(newCustomer);
-                    repository.Delete(newCustomer);
+                    var oldCustomer = repository.Where(x => x.CustomerID == customer.CustomerID).First();
+                    var addedCustomer = repository.Where(x => x.CustomerID == newCustomer.CustomerID).First();
+                    Assert.That(oldCustomer.FirstName, Is.EqualTo(oldCustomerName));
+                    Assert.That(newCustomer, Is.Not.Null);
+                    repository.Delete(addedCustomer);
                     scope.Commit();
                 } 
             }

@@ -27,6 +27,7 @@ namespace NCommon.Data.NHibernate
     public class NHTransaction : ITransaction
     {
         bool _disposed;
+        bool _completed;
         readonly ICollection<global::NHibernate.ITransaction> _transactions = new HashSet<global::NHibernate.ITransaction>();
 
         /// <summary>
@@ -69,9 +70,12 @@ namespace NCommon.Data.NHibernate
         /// </summary>
         public void Commit()
         {
-            if (_disposed)
-                throw new ObjectDisposedException("NHTransaction", "Cannot commit a disposed transaction.");
+            Guard.Against<InvalidOperationException>(_completed,
+                                                     "Cannot commit the transaction. Transaction has already been comitted or rolledback.");
+            Guard.Against<ObjectDisposedException>(_disposed,
+                                                   "Cannot commit a disposed transaction.");
             _transactions.ForEach(tx => tx.Commit());
+            _completed = true;
             if (TransactionCommitted != null)
                 TransactionCommitted(this, EventArgs.Empty);
         }
@@ -81,10 +85,13 @@ namespace NCommon.Data.NHibernate
         /// </summary>
         public void Rollback()
         {
-            if (_disposed)
-                throw new ObjectDisposedException("NHTransaction", "Cannot rollback a disposed transaction.");
+            Guard.Against<InvalidOperationException>(_completed,
+                                                     "Cannot rollback the transaction. Transaction has already been comitted or rolledback.");
+            Guard.Against<ObjectDisposedException>(_disposed,
+                                                   "Cannot rollback a disposed transaction.");
 
             _transactions.ForEach(tx => tx.Rollback());
+            _completed = true;
             if (TransactionRolledback != null)
                 TransactionRolledback(this, EventArgs.Empty);
         }
@@ -113,7 +120,12 @@ namespace NCommon.Data.NHibernate
 
             if (_transactions.Count > 0)
             {
-                _transactions.ForEach(tx => tx.Dispose());
+                _transactions.ForEach(tx =>
+                {
+                    if (!_completed)
+                        tx.Rollback();
+                    tx.Dispose();
+                });
                 _transactions.Clear();
             }
             _disposed = true;

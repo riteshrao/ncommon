@@ -128,8 +128,9 @@ namespace NCommon.Data.NHibernate.Tests
                 {
                     var ordersRepository = new NHRepository<Order>();
                     var order = ordersRepository.First();
-                    Assert.That(order.OrderDate, Is.Not.EqualTo(changedOrderDate));
-                    Assert.That(order.ShipDate, Is.Not.EqualTo(changedShipDate));
+                    //NOTE: Not doing a time match here because time storage in DB is less precise than in memory.
+                    Assert.That(order.OrderDate.Date, Is.Not.EqualTo(changedOrderDate.Date));
+                    Assert.That(order.ShipDate.Date, Is.EqualTo(changedShipDate.Date));
                 }
             }
         }
@@ -445,6 +446,7 @@ namespace NCommon.Data.NHibernate.Tests
                 Assert.That(recordCheckResult, Is.Not.Null);
                 Assert.That(recordCheckResult.FirstName, Is.EqualTo(newCustomer.FirstName));
                 Assert.That(recordCheckResult.LastName, Is.EqualTo(newCustomer.LastName));
+                customerRepository.Delete(recordCheckResult);
                 scope.Commit();
             }
         }

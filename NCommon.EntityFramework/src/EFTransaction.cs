@@ -23,7 +23,8 @@ namespace NCommon.Data.EntityFramework
 {
     public class EFTransaction : ITransaction
     {
-        private bool _disposed;
+        bool _disposed;
+        bool _completed;
         readonly ICollection<IDbTransaction> _transactions = new HashSet<IDbTransaction>();
 
         /// <summary>
@@ -69,9 +70,12 @@ namespace NCommon.Data.EntityFramework
         /// <remarks>Implementors MUST raise the <see cref="ITransaction.TransactionCommitted"/> event.</remarks>
         public void Commit()
         {
-            if (_disposed)
-                throw new ObjectDisposedException("EFTransaction", "Cannot commit a disposed transaction.");
+            Guard.Against<InvalidOperationException>(_completed,
+                                                     "Cannot commit the transaction. Transaction has already been comitted or rolledback.");
+            Guard.Against<ObjectDisposedException>(_disposed,
+                                                   "Cannot commit a disposed transaction.");
             _transactions.ForEach(tx => tx.Commit());
+            _completed = true;
             if (TransactionCommitted != null)
                 TransactionCommitted(this, EventArgs.Empty);
         }
@@ -82,9 +86,11 @@ namespace NCommon.Data.EntityFramework
         /// <remarks>Implementors MUST raise the <see cref="ITransaction.TransactionRolledback"/> event.</remarks>
         public void Rollback()
         {
-            if (_disposed)
-                throw new ObjectDisposedException("EFTransaction", "Cannot rollback a disposed transaction.");
-
+            Guard.Against<InvalidOperationException>(_completed,
+                                                     "Cannot rollback the transaction. Transaction has already been comitted or rolledback.");
+            Guard.Against<ObjectDisposedException>(_disposed,
+                                                   "Cannot rollback a disposed transaction.");
+            _completed = true;
             _transactions.ForEach(tx => tx.Rollback());
             if (TransactionRolledback != null)
                 TransactionRolledback(this, EventArgs.Empty);
@@ -113,7 +119,12 @@ namespace NCommon.Data.EntityFramework
 
             if (_transactions.Count > 0)
             {
-                _transactions.ForEach(x => x.Dispose());
+                _transactions.ForEach(x =>
+                {
+                    if (!_completed)
+                        x.Rollback();
+                    x.Dispose();
+                });
                 _transactions.Clear();
             }
             _disposed = true;

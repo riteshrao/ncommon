@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading;
 using System.Transactions;
 using NCommon.Data.LinqToSql.Tests.HRDomain;
 using NCommon.Data.LinqToSql.Tests.OrdersDomain;
@@ -95,12 +96,13 @@ namespace NCommon.Data.LinqToSql.Tests
             }
         }
 
-        [Test, Ignore("Need to fix this test. Failing in console runner.")]
+        [Test]
         public void when_ambient_transaction_is_running_and_a_previous_scope_rollsback_new_scope_still_works()
         {
             using (var ordersData = new LinqToSqlDataGenerator(OrdersContextProvider()))
             {
-                ordersData.Batch(actions => actions.CreateCustomer());
+                Customer customer = null;
+                ordersData.Batch(actions => customer = actions.CreateCustomer());
 
                 string oldCustomerName;
                 var newCustomerName = "NewCustomer" + new Random().Next(0, int.MaxValue);
@@ -114,15 +116,14 @@ namespace NCommon.Data.LinqToSql.Tests
                     ZipCode = "00000"
                 };
 
-                using (new TransactionScope())
+                using (var scope = new TransactionScope())
                 {
                     using (new UnitOfWorkScope())
                     {
-                        var customer = new LinqToSqlRepository<Customer>().First();
-                        oldCustomerName = customer.FirstName;
-                        customer.FirstName = "Changed";
+                        var oldCustomer = new LinqToSqlRepository<Customer>().First();
+                        oldCustomerName = oldCustomer.FirstName;
+                        oldCustomer.FirstName = "Changed";
                     }  //Rollback
-
                     using (var secondUOW = new UnitOfWorkScope())
                     {
                         new LinqToSqlRepository<Customer>().Add(newCustomer);
@@ -133,15 +134,15 @@ namespace NCommon.Data.LinqToSql.Tests
                 using (var scope = new UnitOfWorkScope())
                 {
                     var repository = new LinqToSqlRepository<Customer>();
-                    Assert.That(repository.First().FirstName, Is.EqualTo(oldCustomerName));
-                    Assert.That(repository.Where(x => x.FirstName == newCustomerName).Count(), Is.GreaterThan(0));
-                    repository.Attach(newCustomer);
-                    repository.Delete(newCustomer);
+                    var oldCustomer = repository.Where(x => x.CustomerID == customer.CustomerID).First();
+                    var addedCustomer = repository.Where(x => x.CustomerID == newCustomer.CustomerID).First();
+                    Assert.That(oldCustomer.FirstName, Is.EqualTo(oldCustomerName));
+                    Assert.That(newCustomer, Is.Not.Null);
+                    repository.Delete(addedCustomer);
                     scope.Commit();
                 }
             }
         }
-
      
         [Test]
         public void rolling_back_scope_rollsback_everything_for_all_managed_sessions()

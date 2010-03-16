@@ -24,6 +24,7 @@ namespace NCommon.Data.LinqToSql
     public class LinqToSqlTransaction : ITransaction
     {
         bool _disposed;
+        bool _completed;
         readonly ICollection<IDbTransaction> _transactions = new HashSet<IDbTransaction>();
 
         /// <summary>
@@ -71,10 +72,13 @@ namespace NCommon.Data.LinqToSql
         /// <remarks>Implementors MUST raise the <see cref="ITransaction.TransactionCommitted"/> event.</remarks>
         public void Commit()
         {
-            if (_disposed)
-                throw new ObjectDisposedException("LinqToSqlTransaction", "Cannot commit a disposed transaction.");
+            Guard.Against<InvalidOperationException>(_completed,
+                                                     "Cannot commit the transaction. Transaction has already been comitted or rolledback.");
+            Guard.Against<ObjectDisposedException>(_disposed,
+                                                   "Cannot commit a disposed transaction.");
 
             _transactions.ForEach(tx => tx.Commit());
+            _completed = true;
             if (TransactionCommitted != null)
                 TransactionCommitted(this, EventArgs.Empty);
         }
@@ -85,10 +89,13 @@ namespace NCommon.Data.LinqToSql
         /// <remarks>Implementors MUST raise the <see cref="ITransaction.TransactionRolledback"/> event.</remarks>
         public void Rollback()
         {
-            if (_disposed)
-                throw new ObjectDisposedException("LinqToSqlTransaction", "Cannot rollback a disposed transaction.");
+            Guard.Against<InvalidOperationException>(_completed,
+                                                     "Cannot rollback the transaction. Transaction has already been comitted or rolledback.");
+            Guard.Against<ObjectDisposedException>(_disposed,
+                                                   "Cannot rollback a disposed transaction.");
 
             _transactions.ForEach(x => x.Rollback());
+            _completed = true;
             if (TransactionRolledback != null)
                 TransactionRolledback(this, EventArgs.Empty);
         }
@@ -114,7 +121,12 @@ namespace NCommon.Data.LinqToSql
 
             if (_transactions.Count > 0)
             {
-                _transactions.ForEach(tx => tx.Dispose());
+                _transactions.ForEach(tx =>
+                {
+                    if (!_completed)
+                        tx.Rollback(); //Rolling back the transaction.
+                    tx.Dispose();
+                });
                 _transactions.Clear();
             }
             _disposed = true;

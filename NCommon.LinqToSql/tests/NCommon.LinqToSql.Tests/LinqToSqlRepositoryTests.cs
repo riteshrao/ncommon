@@ -119,8 +119,9 @@ namespace NCommon.Data.LinqToSql.Tests
                 {
                     var ordersRepository = new LinqToSqlRepository<Order>();
                     var order = ordersRepository.First();
-                    Assert.That(order.OrderDate, Is.Not.EqualTo(changedOrderDate));
-                    Assert.That(order.ShipDate, Is.Not.EqualTo(changedShipDate));
+                    //NOTE: Not doing a time match here because time storage in DB is less precise than in memory.
+                    Assert.That(order.OrderDate.Value.Date, Is.Not.EqualTo(changedOrderDate.Date));
+                    Assert.That(order.ShipDate.Value.Date, Is.EqualTo(changedShipDate.Date));
                 }
             }
         }

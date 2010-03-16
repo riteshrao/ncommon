@@ -94,12 +94,13 @@ namespace NCommon.Data.EntityFramework.Tests
             }
         }
 
-        [Test, Ignore("Need to fix this test. Failing in console runner.")]
+        [Test]
         public void when_ambient_transaction_is_running_and_a_previous_scope_rollsback_new_scope_still_works()
         {
             using (var testData = new EFDataGenerator(OrdersContextProvider()))
             {
-                testData.Batch(actions => actions.CreateCustomer());
+                Customer customer = null;
+                testData.Batch(actions => customer = actions.CreateCustomer());
 
                 string oldCustomerName;
                 var newCustomerName = "NewCustomer" + new Random().Next(0, int.MaxValue);
@@ -117,15 +118,15 @@ namespace NCommon.Data.EntityFramework.Tests
                 {
                     using (var firstUOW = new UnitOfWorkScope())
                     {
-                        var customer = new EFRepository<Customer>().First();
-                        oldCustomerName = customer.FirstName;
-                        customer.FirstName = "Changed";
+                        var oldCustomer = new EFRepository<Customer>().Where(x => x.CustomerID == customer.CustomerID).First();
+                        oldCustomerName = oldCustomer.FirstName;
+                        oldCustomer.FirstName = "Changed";
                     }  //Rollback
 
                     using (var secondUOW = new UnitOfWorkScope())
                     {
-
-                        new EFRepository<Customer>().Add(newCustomer);
+                        var repository = new EFRepository<Customer>();
+                        repository.Add(newCustomer);
                         secondUOW.Commit();
                     }
                 }
@@ -133,10 +134,11 @@ namespace NCommon.Data.EntityFramework.Tests
                 using (var scope = new UnitOfWorkScope())
                 {
                     var repository = new EFRepository<Customer>();
-                    Assert.That(repository.First().FirstName, Is.EqualTo(oldCustomerName));
-                    Assert.That(repository.Where(x => x.FirstName == newCustomerName).Count(), Is.GreaterThan(0));
-                    repository.Attach(newCustomer);
-                    repository.Delete(newCustomer);
+                    var oldCustomer = repository.Where(x => x.CustomerID == customer.CustomerID).First();
+                    var addedCustomer = repository.Where(x => x.CustomerID == newCustomer.CustomerID).FirstOrDefault();
+                    Assert.That(oldCustomer.FirstName, Is.EqualTo(oldCustomerName));
+                    Assert.That(addedCustomer, Is.Not.Null);
+                    repository.Delete(addedCustomer);
                     scope.Commit();
                 }
             }

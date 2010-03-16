@@ -186,6 +186,13 @@ namespace NCommon.Data.EntityFramework
                 _transaction.TransactionCommitted -= TransactionCommitted;
                 _transaction.TransactionRolledback -= TransactionRolledback;
                 _transaction.Dispose();
+
+                //Closing all open connections accross all sessions
+                _openSessions.ForEach(session =>
+                {
+                    if (session.Value.Connection.State == ConnectionState.Open)
+                        session.Value.Connection.Close();
+                });
             }
             _transaction = null;
         }

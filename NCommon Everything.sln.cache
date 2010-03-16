@@ -9,6 +9,7 @@
     <_SolutionProjectProjects Include="NCommon.ContainerAdapters\NCommon.ContainerAdapter.NInject\NCommon.ContainerAdapter.NInject.csproj" />
     <_SolutionProjectProjects Include="NCommon.ContainerAdapters\NCommon.ContainerAdapter.StructureMap\NCommon.ContainerAdapter.StructureMap.csproj" />
     <_SolutionProjectProjects Include="NCommon.ContainerAdapters\NCommon.ContainerAdapter.Unity\NCommon.ContainerAdapter.Unity.csproj" />
+    <_SolutionProjectProjects Include="NCommon.ContainerAdapters\NCommon.ContainerAdapters.Tests\NCommon.ContainerAdapters.Tests.csproj" />
     <_SolutionProjectProjects Include="NCommon.Db4o\src\NCommon.Db4o.csproj" />
     <_SolutionProjectProjects Include="NCommon.Db4o\tests\NCommon.Db4o.Tests.csproj" />
     <_SolutionProjectProjects Include="NCommon.EntityFramework\src\NCommon.EntityFramework.csproj" />
@@ -87,6 +88,10 @@
       <Configuration>Debug</Configuration>
       <Platform>AnyCPU</Platform>
     </BuildLevel1>
+    <BuildLevel2 Include="NCommon.ContainerAdapters\NCommon.ContainerAdapters.Tests\NCommon.ContainerAdapters.Tests.csproj">
+      <Configuration>Debug</Configuration>
+      <Platform>AnyCPU</Platform>
+    </BuildLevel2>
     <BuildLevel2 Include="NCommon.Db4o\tests\NCommon.Db4o.Tests.csproj">
       <Configuration>Debug</Configuration>
       <Platform>AnyCPU</Platform>
@@ -169,6 +174,10 @@
       <Configuration>Release</Configuration>
       <Platform>AnyCPU</Platform>
     </BuildLevel1>
+    <BuildLevel2 Include="NCommon.ContainerAdapters\NCommon.ContainerAdapters.Tests\NCommon.ContainerAdapters.Tests.csproj">
+      <Configuration>Release</Configuration>
+      <Platform>AnyCPU</Platform>
+    </BuildLevel2>
     <BuildLevel2 Include="NCommon.Db4o\tests\NCommon.Db4o.Tests.csproj">
       <Configuration>Release</Configuration>
       <Platform>AnyCPU</Platform>
@@ -235,6 +244,7 @@
         <ProjectConfiguration Project="{A4E698A8-8E7F-401D-B0BA-CBA6CA58BBEE}">Debug|AnyCPU</ProjectConfiguration>
         <ProjectConfiguration Project="{3820B546-9673-493B-B69E-51E7274EF069}">Debug|AnyCPU</ProjectConfiguration>
         <ProjectConfiguration Project="{420EF34B-811B-48BD-9E2C-2E7A8DAA291F}">Debug|AnyCPU</ProjectConfiguration>
+        <ProjectConfiguration Project="{18946694-DC3F-4680-B0E4-E182DF4F10EF}">Debug|AnyCPU</ProjectConfiguration>
       </SolutionConfiguration>
     </CurrentSolutionConfigurationContents>
   </PropertyGroup>
@@ -261,6 +271,7 @@
         <ProjectConfiguration Project="{A4E698A8-8E7F-401D-B0BA-CBA6CA58BBEE}">Release|AnyCPU</ProjectConfiguration>
         <ProjectConfiguration Project="{3820B546-9673-493B-B69E-51E7274EF069}">Release|AnyCPU</ProjectConfiguration>
         <ProjectConfiguration Project="{420EF34B-811B-48BD-9E2C-2E7A8DAA291F}">Release|AnyCPU</ProjectConfiguration>
+        <ProjectConfiguration Project="{18946694-DC3F-4680-B0E4-E182DF4F10EF}">Release|AnyCPU</ProjectConfiguration>
       </SolutionConfiguration>
     </CurrentSolutionConfigurationContents>
   </PropertyGroup>
@@ -751,6 +762,30 @@
   <Target Name="tests\NCommon_EntityFramework\NCommon_EntityFramework_Tests_HRDomain:Publish" Condition="'$(CurrentSolutionConfigurationContents)' != ''">
     <MSBuild Projects="NCommon.EntityFramework\tests\NCommon.EntityFramework.Tests.HRDomain\NCommon.EntityFramework.Tests.HRDomain.csproj" Targets="Publish" Properties="Configuration=Debug; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Debug') and ('$(Platform)' == 'Any CPU') " />
     <MSBuild Projects="NCommon.EntityFramework\tests\NCommon.EntityFramework.Tests.HRDomain\NCommon.EntityFramework.Tests.HRDomain.csproj" Targets="Publish" Properties="Configuration=Release; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Release') and ('$(Platform)' == 'Any CPU') " />
+  </Target>
+  <Target Name="tests\NCommon_ContainerAdapters_Tests" DependsOnTargets="src\NCommon_EntityFramework;src\NCommon_LinqToSql;src\NCommon_NHibernate;src\NCommon;src\ContainerAdapters\NCommon_ContainerAdapter_CastleWindsor;src\ContainerAdapters\NCommon_ContainerAdapter_NInject;src\ContainerAdapters\NCommon_ContainerAdapter_StructureMap;src\ContainerAdapters\NCommon_ContainerAdapter_Unity" Condition="'$(CurrentSolutionConfigurationContents)' != ''" Outputs="@(NCommon_ContainerAdapters_TestsBuildOutput)">
+    <MSBuild Projects="NCommon.ContainerAdapters\NCommon.ContainerAdapters.Tests\NCommon.ContainerAdapters.Tests.csproj" Properties="Configuration=Debug; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Debug') and ('$(Platform)' == 'Any CPU') ">
+      <Output TaskParameter="TargetOutputs" ItemName="NCommon_ContainerAdapters_TestsBuildOutput" />
+    </MSBuild>
+    <MSBuild Projects="NCommon.ContainerAdapters\NCommon.ContainerAdapters.Tests\NCommon.ContainerAdapters.Tests.csproj" Properties="Configuration=Release; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Release') and ('$(Platform)' == 'Any CPU') ">
+      <Output TaskParameter="TargetOutputs" ItemName="NCommon_ContainerAdapters_TestsBuildOutput" />
+    </MSBuild>
+  </Target>
+  <Target Name="tests\NCommon_ContainerAdapters_Tests:Clean" DependsOnTargets="src\NCommon_EntityFramework:Clean;src\NCommon_LinqToSql:Clean;src\NCommon_NHibernate:Clean;src\NCommon:Clean;src\ContainerAdapters\NCommon_ContainerAdapter_CastleWindsor:Clean;src\ContainerAdapters\NCommon_ContainerAdapter_NInject:Clean;src\ContainerAdapters\NCommon_ContainerAdapter_StructureMap:Clean;src\ContainerAdapters\NCommon_ContainerAdapter_Unity:Clean" Condition="'$(CurrentSolutionConfigurationContents)' != ''">
+    <MSBuild Projects="NCommon.ContainerAdapters\NCommon.ContainerAdapters.Tests\NCommon.ContainerAdapters.Tests.csproj" Targets="Clean" Properties="Configuration=Debug; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Debug') and ('$(Platform)' == 'Any CPU') " />
+    <MSBuild Projects="NCommon.ContainerAdapters\NCommon.ContainerAdapters.Tests\NCommon.ContainerAdapters.Tests.csproj" Targets="Clean" Properties="Configuration=Release; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Release') and ('$(Platform)' == 'Any CPU') " />
+  </Target>
+  <Target Name="tests\NCommon_ContainerAdapters_Tests:Rebuild" DependsOnTargets="src\NCommon_EntityFramework:Rebuild;src\NCommon_LinqToSql:Rebuild;src\NCommon_NHibernate:Rebuild;src\NCommon:Rebuild;src\ContainerAdapters\NCommon_ContainerAdapter_CastleWindsor:Rebuild;src\ContainerAdapters\NCommon_ContainerAdapter_NInject:Rebuild;src\ContainerAdapters\NCommon_ContainerAdapter_StructureMap:Rebuild;src\ContainerAdapters\NCommon_ContainerAdapter_Unity:Rebuild" Condition="'$(CurrentSolutionConfigurationContents)' != ''" Outputs="@(NCommon_ContainerAdapters_TestsBuildOutput)">
+    <MSBuild Projects="NCommon.ContainerAdapters\NCommon.ContainerAdapters.Tests\NCommon.ContainerAdapters.Tests.csproj" Targets="Rebuild" Properties="Configuration=Debug; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Debug') and ('$(Platform)' == 'Any CPU') ">
+      <Output TaskParameter="TargetOutputs" ItemName="NCommon_ContainerAdapters_TestsBuildOutput" />
+    </MSBuild>
+    <MSBuild Projects="NCommon.ContainerAdapters\NCommon.ContainerAdapters.Tests\NCommon.ContainerAdapters.Tests.csproj" Targets="Rebuild" Properties="Configuration=Release; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Release') and ('$(Platform)' == 'Any CPU') ">
+      <Output TaskParameter="TargetOutputs" ItemName="NCommon_ContainerAdapters_TestsBuildOutput" />
+    </MSBuild>
+  </Target>
+  <Target Name="tests\NCommon_ContainerAdapters_Tests:Publish" DependsOnTargets="src\NCommon_EntityFramework:Publish;src\NCommon_LinqToSql:Publish;src\NCommon_NHibernate:Publish;src\NCommon:Publish;src\ContainerAdapters\NCommon_ContainerAdapter_CastleWindsor:Publish;src\ContainerAdapters\NCommon_ContainerAdapter_NInject:Publish;src\ContainerAdapters\NCommon_ContainerAdapter_StructureMap:Publish;src\ContainerAdapters\NCommon_ContainerAdapter_Unity:Publish" Condition="'$(CurrentSolutionConfigurationContents)' != ''">
+    <MSBuild Projects="NCommon.ContainerAdapters\NCommon.ContainerAdapters.Tests\NCommon.ContainerAdapters.Tests.csproj" Targets="Publish" Properties="Configuration=Debug; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Debug') and ('$(Platform)' == 'Any CPU') " />
+    <MSBuild Projects="NCommon.ContainerAdapters\NCommon.ContainerAdapters.Tests\NCommon.ContainerAdapters.Tests.csproj" Targets="Publish" Properties="Configuration=Release; Platform=AnyCPU; BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)" Condition=" ('$(Configuration)' == 'Release') and ('$(Platform)' == 'Any CPU') " />
   </Target>
   <Target Name="Build" Condition="'$(CurrentSolutionConfigurationContents)' != ''" Outputs="@(CollectedBuildOutput)">
     <MSBuild Condition="@(BuildLevel0) != ''" Projects="@(BuildLevel0)" Properties="Configuration=%(Configuration); Platform=%(Platform); BuildingSolutionFile=true; CurrentSolutionConfigurationContents=$(CurrentSolutionConfigurationContents); SolutionDir=$(SolutionDir); SolutionExt=$(SolutionExt); SolutionFileName=$(SolutionFileName); SolutionName=$(SolutionName); SolutionPath=$(SolutionPath)" ToolsVersion="$(ProjectToolsVersion)" BuildInParallel="true" UnloadProjectsOnCompletion="$(UnloadProjectsOnCompletion)" UseResultsCache="$(UseResultsCache)">

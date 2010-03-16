@@ -22,7 +22,13 @@ namespace NCommon.Data.Db4o
         /// </summary>
         public Db4oRepository()
         {
-            _privateContainer = ServiceLocator.Current.GetAllInstances<IObjectContainer>().FirstOrDefault();
+            if (ServiceLocator.Current != null)
+            {
+                var containers = ServiceLocator.Current.GetAllInstances<IObjectContainer>();
+                if (containers != null && containers.Count() > 0)
+                    _privateContainer = containers.FirstOrDefault();
+            }
+            
         }
 
         /// <summary>
