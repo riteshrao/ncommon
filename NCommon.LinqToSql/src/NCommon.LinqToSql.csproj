@@ -78,7 +78,6 @@
     <Compile Include="LinqToSqlConfiguration.cs" />
     <Compile Include="LinqToSqlRepository.cs" />
     <Compile Include="LinqToSqlSessionResolver.cs" />
-    <Compile Include="LinqToSqlTransaction.cs" />
     <Compile Include="LinqToSqlUnitOfWork.cs" />
     <Compile Include="LinqToSqlUnitOfWorkFactory.cs" />
     <Compile Include="LinqToSqlUnitOfWorkSettings.cs" />

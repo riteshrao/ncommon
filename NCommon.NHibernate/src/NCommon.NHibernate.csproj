@@ -82,7 +82,6 @@
     <Compile Include="NHConfiguration.cs" />
     <Compile Include="NHRepository.cs" />
     <Compile Include="NHSessionResolver.cs" />
-    <Compile Include="NHTransaction.cs" />
     <Compile Include="NHUnitOfWork.cs" />
     <Compile Include="NHUnitOfWorkFactory.cs" />
     <Compile Include="NHUnitOfWorkSettings.cs" />

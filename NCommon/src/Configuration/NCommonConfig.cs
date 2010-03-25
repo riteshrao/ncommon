@@ -16,6 +16,8 @@
 
 using System;
 using NCommon.Context;
+using NCommon.Data;
+using NCommon.Data.Impl;
 
 namespace NCommon.Configuration
 {
@@ -103,6 +105,19 @@ namespace NCommon.Configuration
             var dataConfiguration = (T) Activator.CreateInstance(typeof (T));
             actions(dataConfiguration);
             dataConfiguration.Configure(_containerAdapter);
+            return this;
+        }
+
+        ///<summary>
+        /// Configures default UnitOfWork settings for NCommon.
+        ///</summary>
+        ///<param name="actions"></param>
+        ///<returns></returns>
+        public INCommonConfig ConfigureUnitOfWork(Action<IUnitOfWorkConfiguration> actions)
+        {
+            var unitOfWorkConfiguration = new UnitOfWorkConfiguration();
+            actions(unitOfWorkConfiguration);
+            unitOfWorkConfiguration.Configure(_containerAdapter);
             return this;
         }
     }

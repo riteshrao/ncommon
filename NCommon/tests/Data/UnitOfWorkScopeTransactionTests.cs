@@ -11,7 +11,7 @@ namespace NCommon.Tests.Data
 		[Test]
 		public void GetTransactionForScope_throws_InvalidOperation_Exception_with_UseCompatible_and_CreateNew_Options()
 		{
-			var options = UnitOfWorkScopeTransactionOptions.UseCompatible | UnitOfWorkScopeTransactionOptions.CreateNew;
+			var options = UnitOfWorkScopeOptions.UseCompatible | UnitOfWorkScopeOptions.CreateNew;
 			Assert.Throws<InvalidOperationException>(() => UnitOfWorkScopeTransaction.GetTransactionForScope(null, IsolationLevel.Serializable, options));
 		}
 	}

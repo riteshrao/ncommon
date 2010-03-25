@@ -30,9 +30,8 @@ namespace NCommon.Data.NHibernate
     public class NHUnitOfWork : IUnitOfWork
     {
         bool _disposed;
-        NHTransaction _transaction;
         readonly NHUnitOfWorkSettings _settings;
-        readonly IDictionary<Guid, ISession> _openSessions = new Dictionary<Guid, ISession>();
+        IDictionary<Guid, ISession> _openSessions = new Dictionary<Guid, ISession>();
 
         /// <summary>
         /// Default Constructor.
@@ -45,15 +44,6 @@ namespace NCommon.Data.NHibernate
             Guard.Against<ArgumentNullException>(settings == null,
                                                  "Expected a non-null instance of NHUnitOfWorkSettings.");
             _settings = settings;
-        }
-
-        /// <summary>
-        /// Gets a boolean value indicating whether the current unit of work is running under
-        /// a transaction.
-        /// </summary>
-        public bool IsInTransaction
-        {
-            get { return _transaction != null; }
         }
 
         /// <summary>
@@ -72,39 +62,7 @@ namespace NCommon.Data.NHibernate
             //Opening a new session...
             var session = _settings.SessionResolver.OpenSessionFor<T>();
             _openSessions.Add(sessionKey, session);
-            if (IsInTransaction)
-                _transaction.RegisterTransaction(session.BeginTransaction(_transaction.IsolationLevel));
             return session;
-        }
-
-        /// <summary>
-        /// Instructs the <see cref="IUnitOfWork"/> instance to begin a new transaction.
-        /// </summary>
-        /// <returns></returns>
-        public ITransaction BeginTransaction()
-        {
-            return BeginTransaction(_settings.DefaultIsolation); 
-        }
-
-        /// <summary>
-        /// Instructs the <see cref="IUnitOfWork"/> instance to begin a new transaction
-        /// with the specified isolation level.
-        /// </summary>
-        /// <param name="isolationLevel">One of the values of <see cref="IsolationLevel"/>
-        /// that specifies the isolation level of the transaction.</param>
-        /// <returns></returns>
-        public ITransaction BeginTransaction(IsolationLevel isolationLevel)
-        {
-            Guard.Against<InvalidOperationException>(_transaction != null,
-                                                     "Cannot begin a new transaction while an existing transaction is still running. " + 
-                                                     "Please commit or rollback the existing transaction before starting a new one.");
-            _transaction = new NHTransaction(isolationLevel, _openSessions
-                .Select(session => session.Value.BeginTransaction(isolationLevel))
-                .ToArray());
-
-            _transaction.TransactionCommitted += TransactionCommitted;
-            _transaction.TransactionRolledback += TransactionRolledback;
-            return _transaction;
         }
 
         /// <summary>
@@ -113,75 +71,6 @@ namespace NCommon.Data.NHibernate
         public void Flush()
         {
             _openSessions.ForEach(session => session.Value.Flush());
-        }
-
-        /// <summary>
-        /// Flushes the changes made in the unit of work to the data store
-        /// within a transaction.
-        /// </summary>
-        public void TransactionalFlush()
-        {
-            TransactionalFlush(_settings.DefaultIsolation);
-        }
-
-        /// <summary>
-        /// Flushes the changes made in the unit of work to the data store
-        /// within a transaction with the specified isolation level.
-        /// </summary>
-        /// <param name="isolationLevel"></param>
-        public void TransactionalFlush(IsolationLevel isolationLevel)
-        {
-            // Start a transaction if one isn't already running.
-            if (!IsInTransaction)
-                BeginTransaction(isolationLevel);
-            try
-            {
-                Flush();
-                _transaction.Commit();
-            }
-            catch 
-            {
-                _transaction.Rollback();
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Handles the <see cref="ITransaction.TransactionRolledback"/> event.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TransactionRolledback(object sender, EventArgs e)
-        {
-            Guard.IsEqual<InvalidOperationException>(sender, _transaction,
-                        "Expected the sender of TransactionRolledback event to be the transaction that was created by the NHUnitOfWork instance.");
-            ReleaseCurrentTransaction();
-        }
-
-        /// <summary>
-        /// Handles the <see cref="ITransaction.TransactionCommitted"/> event.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TransactionCommitted(object sender, EventArgs e)
-        {
-            Guard.IsEqual<InvalidOperationException>(sender, _transaction,
-                "Expected the sender of TransactionComitted event to be the transaction that was created by the NHUnitOfWork instance.");
-            ReleaseCurrentTransaction();
-        }
-
-        /// <summary>
-        /// Releases the current transaction in the <see cref="NHUnitOfWork"/> instance.
-        /// </summary>
-        private void ReleaseCurrentTransaction()
-        {
-            if (_transaction != null)
-            {
-                _transaction.TransactionCommitted -= TransactionCommitted;
-                _transaction.TransactionRolledback -= TransactionRolledback;
-                _transaction.Dispose();
-            }
-            _transaction = null;
         }
 
         /// <summary>
@@ -200,19 +89,17 @@ namespace NCommon.Data.NHibernate
         /// <param name="disposing"></param>
         private void Dispose(bool disposing)
         {
-            if (!disposing) return;
             if (_disposed) return;
 
-            if (_transaction != null)
+            if (disposing)
             {
-                _transaction.Dispose();
-                _transaction = null;
+                if (_openSessions != null && _openSessions.Count > 0)
+                {
+                    _openSessions.ForEach(session => session.Value.Dispose());
+                    _openSessions.Clear();
+                } 
             }
-            if (_openSessions.Count > 0)
-            {
-                _openSessions.ForEach(session => session.Value.Dispose());
-                _openSessions.Clear();
-            }
+            _openSessions = null;
             _disposed = true;
         }
     }

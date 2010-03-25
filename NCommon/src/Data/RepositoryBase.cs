@@ -48,13 +48,15 @@ namespace NCommon.Data
         /// <returns></returns>
         protected virtual TUnitOfWork GetCurrentUnitOfWork<TUnitOfWork> () where TUnitOfWork : IUnitOfWork
         {
-            Guard.Against<InvalidOperationException>(!UnitOfWork.HasStarted,
-                                                    "No compatible UnitOfWork instance was found. Please start a compatible unit of work " +
-                                                    "before creating the repository or use the constructor overload to explicitly provide a ObjectContext.");
-            Guard.TypeOf<TUnitOfWork>(UnitOfWork.Current,
+            var currentScope = UnitOfWorkManager.CurrentUnitOfWork;
+            Guard.Against<InvalidOperationException>(currentScope == null,
+                                                     "No compatible UnitOfWork was found. Please start a compatible UnitOfWorkScope before " +
+                                                     "using the repository.");
+
+            Guard.TypeOf<TUnitOfWork>(currentScope,
                                               "The current UnitOfWork instance is not compatible with the repository. " +
                                               "Please start a compatible unit of work before using the repository.");
-            return ((TUnitOfWork)UnitOfWork.Current);
+            return ((TUnitOfWork)currentScope);
         }
 
         /// <summary>

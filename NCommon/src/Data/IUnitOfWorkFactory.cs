@@ -14,11 +14,12 @@
 //limitations under the License. 
 #endregion
 
+using System.Transactions;
 
 namespace NCommon.Data
 {
     /// <summary>
-    /// Factory interface that the <see cref="UnitOfWork"/> uses to create instances of
+    /// Factory interface that the <see cref="UnitOfWorkScope"/> uses to create instances of
     /// <see cref="IUnitOfWork"/>
     /// </summary>
     public interface IUnitOfWorkFactory

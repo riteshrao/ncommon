@@ -27,42 +27,8 @@ namespace NCommon.Data
     public interface IUnitOfWork : IDisposable
     {
         /// <summary>
-        /// Gets a boolean value indicating whether the current unit of work is running under
-        /// a transaction.
-        /// </summary>
-        bool IsInTransaction { get; }
-
-        /// <summary>
-        /// Instructs the <see cref="IUnitOfWork"/> instance to begin a new transaction.
-        /// </summary>
-        /// <returns></returns>
-        ITransaction BeginTransaction();
-
-        /// <summary>
-        /// Instructs the <see cref="IUnitOfWork"/> instance to begin a new transaction
-        /// with the specified isolation level.
-        /// </summary>
-        /// <param name="isolationLevel">One of the values of <see cref="IsolationLevel"/>
-        /// that specifies the isolation level of the transaction.</param>
-        /// <returns></returns>
-        ITransaction BeginTransaction(IsolationLevel isolationLevel);
-
-        /// <summary>
         /// Flushes the changes made in the unit of work to the data store.
         /// </summary>
         void Flush();
-
-        /// <summary>
-        /// Flushes the changes made in the unit of work to the data store
-        /// within a transaction.
-        /// </summary>
-        void TransactionalFlush();
-
-        /// <summary>
-        /// Flushes the changes made in the unit of work to the data store
-        /// within a transaction with the specified isolation level.
-        /// </summary>
-        /// <param name="isolationLevel"></param>
-        void TransactionalFlush(IsolationLevel isolationLevel);
     }
 }

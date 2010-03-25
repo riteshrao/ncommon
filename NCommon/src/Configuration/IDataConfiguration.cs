@@ -14,6 +14,8 @@
 //limitations under the License. 
 #endregion
 
+using System.Data;
+
 namespace NCommon.Configuration
 {
     /// <summary>

@@ -181,7 +181,7 @@ namespace NCommon.Data.NHibernate.Tests
                
                 using (var masterScope = new UnitOfWorkScope())
                 {
-                    using (var childScope = new UnitOfWorkScope(UnitOfWorkScopeTransactionOptions.CreateNew))
+                    using (var childScope = new UnitOfWorkScope(UnitOfWorkScopeOptions.CreateNew))
                     {
                         var customer = readCustomerFunc();
                         customer.FirstName = newCustomerName;

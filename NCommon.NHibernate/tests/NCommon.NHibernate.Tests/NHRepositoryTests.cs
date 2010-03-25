@@ -115,7 +115,7 @@ namespace NCommon.Data.NHibernate.Tests
                     var outerOrder = outerRepository.Where(x => x.OrderID == orderId).First();
                     outerOrder.OrderDate = changedOrderDate;
 
-                    using (var innerScope = new UnitOfWorkScope(UnitOfWorkScopeTransactionOptions.CreateNew))
+                    using (var innerScope = new UnitOfWorkScope(UnitOfWorkScopeOptions.CreateNew))
                     {
                         var innerRepository = new NHRepository<Order>();
                         var innerOrder = innerRepository.Where(x => x.OrderID == orderId).First();

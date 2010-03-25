@@ -27,7 +27,6 @@ namespace NCommon.Data.Db4o
     public class Db4oUnitOfWork : IUnitOfWork
     {
         bool _disposed;
-        Db4oTransaction _transaction;
 
         /// <summary>
         /// Default Constructor.
@@ -42,15 +41,6 @@ namespace NCommon.Data.Db4o
         }
 
         /// <summary>
-        /// Gets a boolean value indicating whether the current unit of work is running under
-        /// a transaction.
-        /// </summary>
-        public bool IsInTransaction
-        {
-            get { return _transaction != null; } 
-        }
-
-        /// <summary>
         /// Gets a <see cref="IObjectContainer"/> instance that can be used for querying and modifying
         /// the Db4o container.
         /// </summary>
@@ -58,110 +48,11 @@ namespace NCommon.Data.Db4o
         public IObjectContainer ObjectContainer { get; private set; }
 
         /// <summary>
-        /// Instructs the <see cref="IUnitOfWork"/> instance to begin a new transaction.
-        /// </summary>
-        /// <returns></returns>
-        public ITransaction BeginTransaction()
-        {
-            return BeginTransaction(IsolationLevel.Unspecified);
-        }
-
-        /// <summary>
-        /// Instructs the <see cref="IUnitOfWork"/> instance to begin a new transaction
-        /// with the specified isolation level.
-        /// </summary>
-        /// <param name="isolationLevel">One of the values of <see cref="IsolationLevel"/>
-        /// that specifies the isolation level of the transaction.</param>
-        /// <returns></returns>
-        public ITransaction BeginTransaction(IsolationLevel isolationLevel)
-        {
-            Guard.Against<InvalidOperationException>(_transaction != null,
-                                                     "Cannot begin a new transaction while an existing transaction is still running. " +
-                                                     "Please commit or rollback the existing transaction before starting a new one.");
-            _transaction = new Db4oTransaction(isolationLevel, ObjectContainer);
-            _transaction.TransactionCommitted += TransactionCommitted;
-            _transaction.TransactionRolledback += TransactionRolledback;
-            return _transaction;
-        }
-
-        /// <summary>
         /// Flushes the changes made in the unit of work to the data store.
         /// </summary>
         public void Flush()
         {
-            //If a transaction as not been started then perform a transactional flush.
-            //Otherwise the the transaction will take care of either calling a Commit / Rollback.
-            //[Added to support UnitOfWorkTransactionScope]
-            if (_transaction == null)
-                TransactionalFlush();
-        }
-
-        /// <summary>
-        /// Flushes the changes made in the unit of work to the data store
-        /// within a transaction.
-        /// </summary>
-        public void TransactionalFlush()
-        {
-            TransactionalFlush(IsolationLevel.Unspecified);
-        }
-
-        /// <summary>
-        /// Flushes the changes made in the unit of work to the data store
-        /// within a transaction with the specified isolation level.
-        /// </summary>
-        /// <param name="isolationLevel"></param>
-        public void TransactionalFlush(IsolationLevel isolationLevel)
-        {
-            if (!IsInTransaction)
-                BeginTransaction();
-
-            try
-            {
-                _transaction.Commit();
-            }
-            catch (Exception)
-            {
-                _transaction.Rollback();
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Handles the <see cref="ITransaction.TransactionRolledback"/> event.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TransactionRolledback(object sender, EventArgs e)
-        {
-            Guard.IsEqual<InvalidOperationException>(sender, _transaction,
-                        "Expected the sender of TransactionRolledback event to be the transaction that was created by the NHUnitOfWork instance.");
-            ReleaseCurrentTransaction();
-        }
-
-        /// <summary>
-        /// Handles the <see cref="ITransaction.TransactionCommitted"/> event.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void TransactionCommitted(object sender, EventArgs e)
-        {
-            Guard.IsEqual<InvalidOperationException>(sender, _transaction,
-                "Expected the sender of TransactionComitted event to be the transaction that was created by the NHUnitOfWork instance.");
-            ReleaseCurrentTransaction();
-        }
-
-        /// <summary>
-        /// Releases the current transaction in the <see cref="NHUnitOfWork"/> instance.
-        /// </summary>
-        private void ReleaseCurrentTransaction()
-        {
-            if (_transaction != null)
-            {
-                _transaction.TransactionCommitted -= TransactionCommitted;
-                _transaction.TransactionRolledback -= TransactionRolledback;
-                _transaction.Dispose();
-            }
-            _transaction = null;
+            ObjectContainer.Commit();
         }
 
         /// <summary>
@@ -180,22 +71,15 @@ namespace NCommon.Data.Db4o
         /// <param name="disposing"></param>
         private void Dispose(bool disposing)
         {
-            if (!disposing)
-                return;
             if (_disposed)
                 return;
 
-            if (_transaction != null)
+            if (disposing)
             {
-                _transaction.Dispose();
-                _transaction = null;
+                if (ObjectContainer != null)
+                    ObjectContainer.Dispose();
             }
-
-            if (ObjectContainer != null)
-            {
-                ObjectContainer.Dispose();
-                ObjectContainer = null;
-            }
+            ObjectContainer = null;
             _disposed = true;
         }
     }

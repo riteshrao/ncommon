@@ -26,7 +26,7 @@ using Rhino.Mocks;
 namespace NCommon.Tests
 {
     /// <summary>
-    /// Tests the <see cref="UnitOfWorkScope"/> class.
+    /// Tests the <see cref="UnitOfWork"/> class.
     /// </summary>
     [TestFixture]
     public class UnitOfWorkScopeTests
@@ -43,13 +43,13 @@ namespace NCommon.Tests
                 .Return(MockRepository.GenerateStub<ITransaction>());
             ServiceLocator.SetLocatorProvider(() => locator);
 
-            Assert.That(!UnitOfWorkScope.HasStarted);
-            Assert.That(UnitOfWorkScope.Current, Is.Null);
+            Assert.That(!UnitOfWork.HasStarted);
+            Assert.That(UnitOfWork.Current, Is.Null);
 
-            using (var scope = new UnitOfWorkScope())
+            using (var scope = new UnitOfWork())
             {
-                Assert.That(UnitOfWorkScope.HasStarted);
-                Assert.That(UnitOfWorkScope.Current, Is.EqualTo(scope));
+                Assert.That(UnitOfWork.HasStarted);
+                Assert.That(UnitOfWork.Current, Is.EqualTo(scope));
                 Assert.That(scope.UnitOfWork, Is.Not.Null);
                 Assert.That(scope.UnitOfWork, Is.SameAs(unitOfWork));
             }
@@ -68,12 +68,12 @@ namespace NCommon.Tests
             unitOfWork.Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted)).Return(transaction);
             ServiceLocator.SetLocatorProvider(() => locator);
             
-            using (new UnitOfWorkScope())
+            using (new UnitOfWork())
             {
-                Assert.That(UnitOfWorkScope.HasStarted);
+                Assert.That(UnitOfWork.HasStarted);
             }
 
-            Assert.That(!UnitOfWorkScope.HasStarted);
+            Assert.That(!UnitOfWork.HasStarted);
             unitOfWork.AssertWasCalled(x => x.Dispose());
             transaction.AssertWasCalled(x => x.Rollback());
             transaction.AssertWasCalled(x => x.Dispose());
@@ -91,13 +91,13 @@ namespace NCommon.Tests
             unitOfWork.Expect(x => x.BeginTransaction(IsolationLevel.ReadCommitted)).Return(transaction);
             ServiceLocator.SetLocatorProvider(() => locator);
 
-            using (var scope = new UnitOfWorkScope())
+            using (var scope = new UnitOfWork())
             {
-                Assert.That(UnitOfWorkScope.HasStarted);
+                Assert.That(UnitOfWork.HasStarted);
                 scope.Commit();
             }
 
-            Assert.That(!UnitOfWorkScope.HasStarted);
+            Assert.That(!UnitOfWork.HasStarted);
             unitOfWork.Expect(x => x.Flush());
             unitOfWork.Expect(x => x.Dispose());
             transaction.Expect(x => x.Commit());
@@ -125,16 +125,16 @@ namespace NCommon.Tests
                             .Repeat.Once();
             ServiceLocator.SetLocatorProvider(() => locator);
 
-            using (var parentScope = new UnitOfWorkScope())
+            using (var parentScope = new UnitOfWork())
             {
-                Assert.That(UnitOfWorkScope.HasStarted);
-                using (var childScope = new UnitOfWorkScope())
+                Assert.That(UnitOfWork.HasStarted);
+                using (var childScope = new UnitOfWork())
                 {
                     Assert.That(parentScope.UnitOfWork, Is.SameAs(childScope.UnitOfWork));
                 }
             }
 
-            Assert.That(!UnitOfWorkScope.HasStarted);
+            Assert.That(!UnitOfWork.HasStarted);
             factory.VerifyAllExpectations();
         }
 
@@ -157,16 +157,16 @@ namespace NCommon.Tests
                             })).Repeat.Twice();
             ServiceLocator.SetLocatorProvider(() => locator);
 
-            using (var parentScope = new UnitOfWorkScope(IsolationLevel.Chaos))
+            using (var parentScope = new UnitOfWork(IsolationLevel.Chaos))
             {
-                Assert.That(UnitOfWorkScope.HasStarted);
-                using (var childScope = new UnitOfWorkScope(IsolationLevel.ReadCommitted))
+                Assert.That(UnitOfWork.HasStarted);
+                using (var childScope = new UnitOfWork(IsolationLevel.ReadCommitted))
                 {
                     Assert.That(parentScope.UnitOfWork, Is.Not.SameAs(childScope.UnitOfWork));
                 }
             }
 
-            Assert.That(!UnitOfWorkScope.HasStarted);
+            Assert.That(!UnitOfWork.HasStarted);
             factory.VerifyAllExpectations();
         }
 
@@ -189,16 +189,16 @@ namespace NCommon.Tests
                             })).Repeat.Twice();
             ServiceLocator.SetLocatorProvider(() => locator);
 
-            using (var parentScope = new UnitOfWorkScope(IsolationLevel.ReadCommitted))
+            using (var parentScope = new UnitOfWork(IsolationLevel.ReadCommitted))
             {
-                Assert.That(UnitOfWorkScope.HasStarted);
-                using (var childScope = new UnitOfWorkScope(IsolationLevel.ReadCommitted, UnitOfWorkScopeTransactionOptions.CreateNew))
+                Assert.That(UnitOfWork.HasStarted);
+                using (var childScope = new UnitOfWork(IsolationLevel.ReadCommitted, UnitOfWorkScopeOptions.CreateNew))
                 {
                     Assert.That(parentScope.UnitOfWork, Is.Not.SameAs(childScope.UnitOfWork));
                 }
             }
 
-            Assert.That(!UnitOfWorkScope.HasStarted);
+            Assert.That(!UnitOfWork.HasStarted);
             factory.VerifyAllExpectations();
         }
 
@@ -221,12 +221,12 @@ namespace NCommon.Tests
                             })).Repeat.Once();
             ServiceLocator.SetLocatorProvider(() => locator);
            
-            using (new UnitOfWorkScope(IsolationLevel.ReadCommitted))
+            using (new UnitOfWork(IsolationLevel.ReadCommitted))
             {
-                Assert.That(UnitOfWorkScope.HasStarted);
-                using (new UnitOfWorkScope(IsolationLevel.ReadCommitted)){ }
+                Assert.That(UnitOfWork.HasStarted);
+                using (new UnitOfWork(IsolationLevel.ReadCommitted)){ }
             }
-            Assert.That(!UnitOfWorkScope.HasStarted);
+            Assert.That(!UnitOfWork.HasStarted);
             factory.VerifyAllExpectations();
         }
 
@@ -249,16 +249,16 @@ namespace NCommon.Tests
                             })).Repeat.Once();
             ServiceLocator.SetLocatorProvider(() => locator);
 
-            using (var parentScope = new UnitOfWorkScope(IsolationLevel.ReadCommitted))
+            using (var parentScope = new UnitOfWork(IsolationLevel.ReadCommitted))
             {
-                Assert.That(UnitOfWorkScope.HasStarted);
-                using (new UnitOfWorkScope(IsolationLevel.ReadCommitted))
+                Assert.That(UnitOfWork.HasStarted);
+                using (new UnitOfWork(IsolationLevel.ReadCommitted))
                 {
                     Assert.Throws<InvalidOperationException>(parentScope.Commit);
                 }
             }
 
-            Assert.That(!UnitOfWorkScope.HasStarted);
+            Assert.That(!UnitOfWork.HasStarted);
             factory.VerifyAllExpectations();
             unitOfWork.VerifyAllExpectations();
         }
@@ -282,14 +282,14 @@ namespace NCommon.Tests
                             })).Repeat.Once();
             ServiceLocator.SetLocatorProvider(() => locator);
 
-            using (var parentScope = new UnitOfWorkScope(IsolationLevel.ReadCommitted))
+            using (var parentScope = new UnitOfWork(IsolationLevel.ReadCommitted))
             {
-                Assert.That(UnitOfWorkScope.HasStarted);
-                using (new UnitOfWorkScope(IsolationLevel.ReadCommitted)) {}
+                Assert.That(UnitOfWork.HasStarted);
+                using (new UnitOfWork(IsolationLevel.ReadCommitted)) {}
                 Assert.Throws<InvalidOperationException>(parentScope.Commit);
             }
 
-            Assert.That(!UnitOfWorkScope.HasStarted);
+            Assert.That(!UnitOfWork.HasStarted);
             factory.VerifyAllExpectations();
             unitOfWork.VerifyAllExpectations();
         }
@@ -310,16 +310,16 @@ namespace NCommon.Tests
             mockTransaction.Expect(x => x.Rollback()).Repeat.Once();
 
             ServiceLocator.SetLocatorProvider(() => mockLocator);
-            using (new UnitOfWorkScope(IsolationLevel.ReadCommitted))
+            using (new UnitOfWork(IsolationLevel.ReadCommitted))
             {
-                Assert.That(UnitOfWorkScope.HasStarted);
-                using (var childScope = new UnitOfWorkScope(IsolationLevel.ReadCommitted)) 
+                Assert.That(UnitOfWork.HasStarted);
+                using (var childScope = new UnitOfWork(IsolationLevel.ReadCommitted)) 
                 {
                     childScope.Commit();
                 }
             }
 
-            Assert.That(!UnitOfWorkScope.HasStarted);
+            Assert.That(!UnitOfWork.HasStarted);
             mockUOWFactory.VerifyAllExpectations();
             mockUOW.VerifyAllExpectations();
             mockTransaction.VerifyAllExpectations();
@@ -343,17 +343,17 @@ namespace NCommon.Tests
 
 
             ServiceLocator.SetLocatorProvider(() => mockLocator);
-            using (var parentScope = new UnitOfWorkScope(IsolationLevel.ReadCommitted))
+            using (var parentScope = new UnitOfWork(IsolationLevel.ReadCommitted))
             {
-                Assert.That(UnitOfWorkScope.HasStarted);
-                using (var childScope = new UnitOfWorkScope(IsolationLevel.ReadCommitted))
+                Assert.That(UnitOfWork.HasStarted);
+                using (var childScope = new UnitOfWork(IsolationLevel.ReadCommitted))
                 {
                     childScope.Commit();
                 }
                 parentScope.Commit();
             }
 
-            Assert.That(!UnitOfWorkScope.HasStarted);
+            Assert.That(!UnitOfWork.HasStarted);
             mockUOWFactory.VerifyAllExpectations();
             mockUOW.VerifyAllExpectations();
             mockTransaction.VerifyAllExpectations();
@@ -375,16 +375,16 @@ namespace NCommon.Tests
             mockTransaction.Expect(x => x.Rollback()).Repeat.Once();
 
             ServiceLocator.SetLocatorProvider(() => mockLocator);
-            using (var parentScope = new UnitOfWorkScope(IsolationLevel.ReadCommitted))
+            using (var parentScope = new UnitOfWork(IsolationLevel.ReadCommitted))
             {
-                Assert.That(UnitOfWorkScope.HasStarted);
-                using (new UnitOfWorkScope(IsolationLevel.ReadCommitted))
+                Assert.That(UnitOfWork.HasStarted);
+                using (new UnitOfWork(IsolationLevel.ReadCommitted))
                 {
                     Assert.Throws<InvalidOperationException>(parentScope.Dispose);
                 }
             }
 
-            Assert.That(!UnitOfWorkScope.HasStarted);
+            Assert.That(!UnitOfWork.HasStarted);
             mockUOWFactory.VerifyAllExpectations();
             mockUOW.VerifyAllExpectations();
             mockTransaction.VerifyAllExpectations();
@@ -406,7 +406,7 @@ namespace NCommon.Tests
 			mockTransaction.Expect(x => x.Rollback()).Repeat.Never();
 
 			ServiceLocator.SetLocatorProvider(() => mockLocator);
-			using (var scope = new UnitOfWorkScope(IsolationLevel.ReadCommitted, UnitOfWorkScopeTransactionOptions.AutoComplete))
+			using (var scope = new UnitOfWork(IsolationLevel.ReadCommitted, UnitOfWorkScopeOptions.AutoComplete))
 			{
 				Assert.That(scope, Is.Not.Null);
 			}
@@ -435,7 +435,7 @@ namespace NCommon.Tests
 
 			try
 			{
-				using (var scope = new UnitOfWorkScope(IsolationLevel.ReadCommitted, UnitOfWorkScopeTransactionOptions.AutoComplete))
+				using (var scope = new UnitOfWork(IsolationLevel.ReadCommitted, UnitOfWorkScopeOptions.AutoComplete))
 				{
 					Assert.That(scope, Is.Not.Null);
 				}

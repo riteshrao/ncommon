@@ -104,7 +104,7 @@ namespace NCommon.Data.EntityFramework.Tests
                     var outerOrder = outerRepository.Where(x => x.OrderID == savedOrder.OrderID).First();
                     outerOrder.OrderDate = changedOrderDate;
 
-                    using (var innerScope = new UnitOfWorkScope(UnitOfWorkScopeTransactionOptions.CreateNew))
+                    using (var innerScope = new UnitOfWorkScope(UnitOfWorkScopeOptions.CreateNew))
                     {
                         var innerRepository = new EFRepository<Order>();
                         var innerOrder = innerRepository.Where(x => x.OrderID == savedOrder.OrderID).First();

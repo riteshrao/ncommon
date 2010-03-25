@@ -83,6 +83,7 @@
     <Compile Include="Configuration\DefaultStateConfiguration.cs" />
     <Compile Include="Configuration\INCommonConfig.cs" />
     <Compile Include="Configuration\IStateConfiguration.cs" />
+    <Compile Include="Configuration\IUnitOfWorkConfiguration.cs" />
     <Compile Include="Configure.cs" />
     <Compile Include="Context\IContext.cs" />
     <Compile Include="Context\IInstanceContext.cs" />
@@ -93,7 +94,13 @@
     <Compile Include="Context\IOperationContext.cs" />
     <Compile Include="Context\IServiceHost.cs" />
     <Compile Include="Data\IFetchingStrategy.cs" />
+    <Compile Include="Data\Impl\UnitOfWorkTransaction.cs" />
+    <Compile Include="Data\Impl\TransactionManager.cs" />
     <Compile Include="Data\InMemoryRepository.cs" />
+    <Compile Include="Data\Impl\TransactionScopeHelper.cs" />
+    <Compile Include="Data\Impl\UnitOfWorkConfiguration.cs" />
+    <Compile Include="Data\ITransactionManager.cs" />
+    <Compile Include="Data\UnitOfWorkManager.cs" />
     <Compile Include="Events\DomainEvent.cs" />
     <Compile Include="Events\Handles.cs" />
     <Compile Include="Events\IDomainEvent.cs" />
@@ -120,13 +127,9 @@
     <Compile Include="Rules\ValidationRule.cs" />
     <Compile Include="Specifications\ISpecification.cs" />
     <Compile Include="Specifications\Specification.cs" />
-    <Compile Include="Data\ITransaction.cs" />
     <Compile Include="Data\IUnitOfWork.cs" />
     <Compile Include="Data\IUnitOfWorkFactory.cs" />
-    <Compile Include="Data\UnitOfWork.cs" />
     <Compile Include="Data\UnitOfWorkScope.cs" />
-    <Compile Include="Data\UnitOfWorkScopeTransaction.cs" />
-    <Compile Include="Data\UnitOfWorkScopeTransactionOptions.cs" />
     <Compile Include="State\IApplicationState.cs" />
     <Compile Include="State\ICacheState.cs" />
     <Compile Include="State\ILocalState.cs" />

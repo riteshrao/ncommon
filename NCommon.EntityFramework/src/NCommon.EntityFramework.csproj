@@ -65,6 +65,7 @@
     <Reference Include="System.Data.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -78,7 +79,6 @@
     <Compile Include="EFConfiguration.cs" />
     <Compile Include="EFRepository.cs" />
     <Compile Include="EFSessionResolver.cs" />
-    <Compile Include="EFTransaction.cs" />
     <Compile Include="EFUnitOfWork.cs" />
     <Compile Include="EFUnitOfWorkFactory.cs" />
     <Compile Include="EFUnitOfWorkSettings.cs" />
