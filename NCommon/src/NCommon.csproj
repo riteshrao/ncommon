@@ -100,6 +100,7 @@
     <Compile Include="Data\Impl\TransactionScopeHelper.cs" />
     <Compile Include="Data\Impl\UnitOfWorkConfiguration.cs" />
     <Compile Include="Data\ITransactionManager.cs" />
+    <Compile Include="Data\IUnitOfWorkScope.cs" />
     <Compile Include="Data\UnitOfWorkManager.cs" />
     <Compile Include="Events\DomainEvent.cs" />
     <Compile Include="Events\Handles.cs" />

@@ -53,16 +53,6 @@ namespace NCommon.Data.Db4o
         }
 
         /// <summary>
-        /// Marks the entity instance to be saved to the store.
-        /// </summary>
-        /// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be saved
-        /// to the database.</param>
-        public override void Add(TEntity entity)
-        {
-            ObjectContainer.Store(entity);
-        }
-
-        /// <summary>
         /// Marks the changes of an existing entity to be saved to the store.
         /// </summary>
         /// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be

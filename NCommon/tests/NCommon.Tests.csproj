@@ -71,6 +71,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Xml.Linq">
@@ -83,11 +84,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CrossThreadTests.cs" />
     <Compile Include="Context\ContextTests.cs" />
-    <Compile Include="Data\FakeState.cs" />
+    <Compile Include="Data\TransactionManagerTests.cs" />
+    <Compile Include="Data\UnitOfWorkManagerTests.cs" />
+    <Compile Include="Data\UnitOfWorkTransactionTests.cs" />
+    <Compile Include="FakeState.cs" />
     <Compile Include="Data\InMemoryRepositoryTests.cs" />
-    <Compile Include="Data\UnitOfWorkScopeTransactionTests.cs" />
     <Compile Include="Events\DomainEventTests.cs" />
     <Compile Include="Expressions\MemberAccessPathVisitorTests.cs" />
     <Compile Include="Rules\BusinessRuleEvaluatorBaseTests.cs" />
@@ -97,15 +99,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Specifications\SpecificationRuleBaseTests.cs" />
     <Compile Include="Specifications\SpecificationTests.cs" />
-    <Compile Include="Data\UnitOfWorkScopeTests.cs" />
-    <Compile Include="Data\UnitOfWorkTests.cs" />
     <Compile Include="Rules\ValidationRuleTests.cs" />
     <Compile Include="State\ApplicationStateTests.cs" />
     <Compile Include="State\DefaultLocalStateSelectorTests.cs" />
     <Compile Include="State\DefaultSessionStateSelectorTests.cs" />
     <Compile Include="State\HtpRuntimeCacheTests.cs" />
     <Compile Include="State\HttpSessionStateTests.cs" />
-    <Compile Include="State\ThreadLocalStateTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ncommon.snk" />

@@ -13,17 +13,6 @@ namespace NCommon.Data.NHibernate
         readonly NHUnitOfWorkFactory _factory = new NHUnitOfWorkFactory();
 
         /// <summary>
-        /// Sets the default isolation level of <see cref="IUnitOfWork"/> instances.
-        /// </summary>
-        /// <param name="isolationLevel">The default <see cref="IsolationLevel"/>.</param>
-        /// <returns><see cref="NHConfiguration"/></returns>
-        public NHConfiguration WithDefaultIsolation(IsolationLevel isolationLevel)
-        {
-            _factory.DefaultIsolation = isolationLevel;
-            return this;
-        }
-
-        /// <summary>
         /// Registers a <see cref="Func{T}"/> of type <see cref="ISessionFactory"/> provider that can be
         /// used to get instances of <see cref="ISessionFactory"/>.
         /// </summary>

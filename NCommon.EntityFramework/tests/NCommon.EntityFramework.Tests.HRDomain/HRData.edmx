@@ -6,30 +6,36 @@
     <edmx:StorageModels>
     <Schema Namespace="DevelopmentDBModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
         <EntityContainer Name="DevelopmentDBModelStoreContainer">
-          <EntitySet Name="SalesTerritory" EntityType="DevelopmentDBModel.Store.SalesTerritory" store:Type="Tables" Schema="dbo" />
-        </EntityContainer>
-        <EntityType Name="SalesTerritory">
+          <EntitySet Name="SalesPerson" EntityType="DevelopmentDBModel.Store.SalesPerson" store:Type="Tables" Schema="dbo" />
+          </EntityContainer>
+        <EntityType Name="SalesPerson">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="nvarchar" MaxLength="255" />
-          <Property Name="Description" Type="nvarchar" MaxLength="255" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="255" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="255" />
+          <Property Name="SalesQuota" Type="real" />
+          <Property Name="SalesYTD" Type="decimal" Precision="19" Scale="5" />
+          <Property Name="DepartmentId" Type="int" />
+          <Property Name="TerritoryId" Type="int" StoreGeneratedPattern="Identity" />
         </EntityType>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="NCommon.Data.EntityFramework.Tests.HRDomain" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
         <EntityContainer Name="HREntities">
-          <EntitySet Name="SalesTerritories" EntityType="NCommon.Data.EntityFramework.Tests.HRDomain.SalesTerritory" />
+          <EntitySet Name="SalesPersons" EntityType="NCommon.Data.EntityFramework.Tests.HRDomain.SalesPerson" />
         </EntityContainer>
-        <EntityType Name="SalesTerritory">
+        <EntityType Name="SalesPerson">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
-          <Property Name="Description" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="String" Name="FirstName" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="String" Name="LastName" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Type="Single" Name="SalesQuota" />
+          <Property Type="Decimal" Name="SalesYTD" Precision="19" Scale="5" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -37,12 +43,18 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
         <EntityContainerMapping StorageEntityContainer="DevelopmentDBModelStoreContainer" CdmEntityContainer="HREntities">
-          <EntitySetMapping Name="SalesTerritories"><EntityTypeMapping TypeName="NCommon.Data.EntityFramework.Tests.HRDomain.SalesTerritory"><MappingFragment StoreEntitySet="SalesTerritory">
-            <ScalarProperty Name="Id" ColumnName="Id" />
-            <ScalarProperty Name="Name" ColumnName="Name" />
-            <ScalarProperty Name="Description" ColumnName="Description" />
-          </MappingFragment></EntityTypeMapping></EntitySetMapping>
-        </EntityContainerMapping>
+          <EntitySetMapping Name="SalesPersons">
+            <EntityTypeMapping TypeName="NCommon.Data.EntityFramework.Tests.HRDomain.SalesPerson">
+              <MappingFragment StoreEntitySet="SalesPerson">
+                <ScalarProperty Name="SalesYTD" ColumnName="SalesYTD" />
+                <ScalarProperty Name="SalesQuota" ColumnName="SalesQuota" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>
@@ -63,7 +75,7 @@
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram Name="HRData">
-        <EntityTypeShape EntityType="NCommon.Data.EntityFramework.Tests.HRDomain.SalesTerritory" Width="1.5" PointX="0.75" PointY="0.875" Height="1.787985026041667" IsExpanded="true" />
+        <EntityTypeShape EntityType="NCommon.Data.EntityFramework.Tests.HRDomain.SalesPerson" Width="1.5" PointX="3" PointY="1" Height="2.3648893229166656" />
       </Diagram>
     </Diagrams>
   </Designer>

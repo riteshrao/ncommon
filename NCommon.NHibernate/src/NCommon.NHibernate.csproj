@@ -84,7 +84,6 @@
     <Compile Include="NHSessionResolver.cs" />
     <Compile Include="NHUnitOfWork.cs" />
     <Compile Include="NHUnitOfWorkFactory.cs" />
-    <Compile Include="NHUnitOfWorkSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

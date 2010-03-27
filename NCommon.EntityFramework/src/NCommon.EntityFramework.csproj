@@ -81,7 +81,6 @@
     <Compile Include="EFSessionResolver.cs" />
     <Compile Include="EFUnitOfWork.cs" />
     <Compile Include="EFUnitOfWorkFactory.cs" />
-    <Compile Include="EFUnitOfWorkSettings.cs" />
     <Compile Include="IEFSessionResolver.cs" />
     <Compile Include="IEFSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

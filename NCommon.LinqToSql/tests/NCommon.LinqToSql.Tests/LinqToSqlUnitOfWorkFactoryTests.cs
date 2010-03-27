@@ -15,8 +15,11 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Data.Linq;
+using NCommon.Data.LinqToSql.Tests.OrdersDomain;
 using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace NCommon.Data.LinqToSql.Tests
 {
@@ -34,14 +37,14 @@ namespace NCommon.Data.LinqToSql.Tests
         }
 
         [Test]
-        public void Create_Returns_LinqToSqlUnitOfWork_Instance_When_DataContextProvider_Has_Been_Registered()
+        public void Create_Returns_NHUnitOfWork_Instance_When_DataContextProviderProvider_Has_Been_Set()
         {
             var factory = new LinqToSqlUnitOfWorkFactory();
-            factory.RegisterDataContextProvider(() => new DataContext(""));
+            factory.RegisterDataContextProvider(() => new OrdersDataDataContext());
             var uowInstance = factory.Create();
 
             Assert.That(uowInstance, Is.Not.Null);
-            Assert.That(uowInstance, Is.TypeOf(typeof (LinqToSqlUnitOfWork)));
+            Assert.That(uowInstance, Is.TypeOf(typeof(LinqToSqlUnitOfWork)));
         }
     }
 }

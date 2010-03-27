@@ -15,9 +15,11 @@
 #endregion
 
 using System;
+using System.Collections.Generic;
 using System.Data.Objects;
 using NCommon.Data.EntityFramework.Tests.OrdersDomain;
 using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace NCommon.Data.EntityFramework.Tests
 {
@@ -25,14 +27,14 @@ namespace NCommon.Data.EntityFramework.Tests
     public class EFUnitOfWorkFactoryTests
     {
         [Test]
-        public void Create_Throws_InvalidOperationException_When_No_ObjectContextProvider_Has_Been_Set()
+        public void Create_Throws_InvalidOperationException_When_No_SessionFactoryProvider_Has_Been_Set()
         {
             var factory = new EFUnitOfWorkFactory();
             Assert.Throws<InvalidOperationException>(() => factory.Create());
         }
 
         [Test]
-        public void Create_Returns_LinqToSqlUnitOfWork_Instance_When_ObjectContextProvider_Has_Been_Registered()
+        public void Create_Returns_NHUnitOfWork_Instance_When_SessionFactoryProvider_Has_Been_Set()
         {
             var factory = new EFUnitOfWorkFactory();
             factory.RegisterObjectContextProvider(() => new OrderEntities());

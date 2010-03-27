@@ -26,20 +26,7 @@ namespace NCommon.Data.NHibernate
     /// </summary>
     public class NHUnitOfWorkFactory : IUnitOfWorkFactory
     {
-        readonly NHUnitOfWorkSettings _settings = new NHUnitOfWorkSettings
-        {
-            DefaultIsolation = IsolationLevel.ReadCommitted,
-            SessionResolver = new NHSessionResolver()
-        };
-
-        /// <summary>
-        /// Sets the default isolation to be used when creating <see cref="IUnitOfWork"/> instances.
-        /// </summary>
-        public IsolationLevel DefaultIsolation 
-        {
-            get { return _settings.DefaultIsolation; }
-            set { _settings.DefaultIsolation = value; }
-        }
+        NHSessionResolver _sessionResolver = new NHSessionResolver();
 
         /// <summary>
         /// Registers a <see cref="Func{T}"/> of type <see cref="ISessionFactory"/> provider with the unit of work factory.
@@ -50,7 +37,7 @@ namespace NCommon.Data.NHibernate
             Guard.Against<ArgumentNullException>(factoryProvider == null,
                                                  "Invalid session factory provider registration. " +
                                                  "Expected a non-null Func<ISessionFactory> instance.");
-            _settings.SessionResolver.RegisterSessionFactoryProvider(factoryProvider);
+            _sessionResolver.RegisterSessionFactoryProvider(factoryProvider);
         }
         
         /// <summary>
@@ -60,11 +47,11 @@ namespace NCommon.Data.NHibernate
         public IUnitOfWork Create()
         {
             Guard.Against<InvalidOperationException>(
-                _settings.SessionResolver.SessionFactoriesRegistered == 0,
+                _sessionResolver.SessionFactoriesRegistered == 0,
                 "No session factory providers have been registered. You must register ISessionFactory providers using " +
                 "the RegisterSessionFactoryProvider method or use NCommon.Configure class to configure NCommon.NHibernate " +
                 "using the NHConfiguration class and register ISessionFactory instances using the WithSessionFactory method.");
-            return new NHUnitOfWork(_settings);
+            return new NHUnitOfWork(_sessionResolver);
         }
     }
 }

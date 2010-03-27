@@ -58,6 +58,8 @@ namespace NCommon.Data.NHibernate
         /// <param name="factoryProvider">A <see cref="Func{T}"/> of type <see cref="ISessionFactory"/>.</param>
         public void RegisterSessionFactoryProvider(Func<ISessionFactory> factoryProvider)
         {
+            Guard.Against<ArgumentNullException>(factoryProvider == null,
+                                                 "Expected a non-null Func<ISessionFactory> instance.");
             var key = Guid.NewGuid();
             _sessionFactories.Add(key, factoryProvider);
             //Getting the factory and initializing populating _sessionFactoryTypeCache.

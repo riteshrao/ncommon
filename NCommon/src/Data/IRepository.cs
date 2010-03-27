@@ -30,14 +30,6 @@ namespace NCommon.Data
     public interface IRepository<TEntity> : IQueryable<TEntity>
     {
         /// <summary>
-        /// Marks the entity instance to be saved to the store.
-        /// </summary>
-        /// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be saved
-        /// to the database.</param>
-        /// <remarks>Implementors of this method must handle the Insert scenario.</remarks>
-        void Add(TEntity entity);
-
-        /// <summary>
         /// Marks the changes of an existing entity to be saved to the store.
         /// </summary>
         /// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be

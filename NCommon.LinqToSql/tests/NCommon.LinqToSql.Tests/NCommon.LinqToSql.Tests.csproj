@@ -84,20 +84,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FakeState.cs" />
-    <Compile Include="LinqToSqlDataActions.cs" />
-    <Compile Include="LinqToSqlDataGenerator.cs" />
-    <Compile Include="LinqToSqlRepositoryTests.cs" />
-    <Compile Include="LinqToSqlTestBase.cs" />
-    <Compile Include="LinqToSqlTransactionTests.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="LinqToSqlRepositoryQueryTests.cs" />
+    <Compile Include="LinqToSqlRepositoryTransactionTests.cs" />
+    <Compile Include="LinqToSqlResolverTests.cs" />
+    <Compile Include="LinqToSqlTestDataActions.cs" />
+    <Compile Include="LinqToSqlTestData.cs" />
+    <Compile Include="LinqToSqlRepositoryTestBase.cs" />
     <Compile Include="LinqToSqlUnitOfWorkFactoryTests.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LinqToSqlUnitOfWorkTests.cs" />
-    <Compile Include="LinqToSqlUnitOfWorkTransactionTests.cs" />
-    <Compile Include="OrderItemsProductStrategy.cs" />
-    <Compile Include="OrderOrderItemsStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -64,6 +64,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libs\FluentNHibernate.dll</HintPath>
     </Reference>
+    <Reference Include="HibernatingRhinos.Profiler.Appender">
+      <HintPath>..\..\..\..\..\Tools\NHProf\HibernatingRhinos.Profiler.Appender.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libs\log4net.dll</HintPath>
@@ -108,23 +111,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CompositeUserTypeBaseTests.cs" />
-    <Compile Include="FakeState.cs" />
-    <Compile Include="NHRepositoryTests.cs" />
+    <Compile Include="..\..\..\NCommon\tests\FakeState.cs">
+      <Link>FakeState.cs</Link>
+    </Compile>
+    <Compile Include="NHRepositoryQueryTests.cs" />
+    <Compile Include="NHRepositoryTestBase.cs" />
+    <Compile Include="NHRepositoryTransactionTests.cs" />
     <Compile Include="NHSessionResolverTests.cs" />
-    <Compile Include="NHTestBase.cs" />
     <Compile Include="NHTestDataActions.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="NHTestDataGenerator.cs">
+    <Compile Include="NHTestData.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="NHTransactionTests.cs" />
     <Compile Include="NHUnitOfWorkFactoryTests.cs" />
     <Compile Include="NHUnitOfWorkTests.cs" />
-    <Compile Include="NHUnitOfWorkTransactionTests.cs" />
-    <Compile Include="OrderItemsProductStrategy.cs" />
-    <Compile Include="OrderOrderItemsStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

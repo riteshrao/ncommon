@@ -30,18 +30,12 @@ namespace NCommon.Data.LinqToSql.Tests.HRDomain
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
-    partial void InsertEmployee(Employee instance);
-    partial void UpdateEmployee(Employee instance);
-    partial void DeleteEmployee(Employee instance);
-    partial void InsertDepartment(Department instance);
-    partial void UpdateDepartment(Department instance);
-    partial void DeleteDepartment(Department instance);
-    partial void InsertSalesManager(SalesManager instance);
-    partial void UpdateSalesManager(SalesManager instance);
-    partial void DeleteSalesManager(SalesManager instance);
     partial void InsertSalesPerson(SalesPerson instance);
     partial void UpdateSalesPerson(SalesPerson instance);
     partial void DeleteSalesPerson(SalesPerson instance);
+    partial void InsertDepartment(Department instance);
+    partial void UpdateDepartment(Department instance);
+    partial void DeleteDepartment(Department instance);
     partial void InsertSalesTerritory(SalesTerritory instance);
     partial void UpdateSalesTerritory(SalesTerritory instance);
     partial void DeleteSalesTerritory(SalesTerritory instance);
@@ -77,11 +71,11 @@ namespace NCommon.Data.LinqToSql.Tests.HRDomain
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<Employee> Employees
+		public System.Data.Linq.Table<SalesPerson> SalesPersons
 		{
 			get
 			{
-				return this.GetTable<Employee>();
+				return this.GetTable<SalesPerson>();
 			}
 		}
 		
@@ -90,22 +84,6 @@ namespace NCommon.Data.LinqToSql.Tests.HRDomain
 			get
 			{
 				return this.GetTable<Department>();
-			}
-		}
-		
-		public System.Data.Linq.Table<SalesManager> SalesManagers
-		{
-			get
-			{
-				return this.GetTable<SalesManager>();
-			}
-		}
-		
-		public System.Data.Linq.Table<SalesPerson> SalesPersons
-		{
-			get
-			{
-				return this.GetTable<SalesPerson>();
 			}
 		}
 		
@@ -118,8 +96,8 @@ namespace NCommon.Data.LinqToSql.Tests.HRDomain
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Employees")]
-	public partial class Employee : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.SalesPerson")]
+	public partial class SalesPerson : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
@@ -130,21 +108,17 @@ namespace NCommon.Data.LinqToSql.Tests.HRDomain
 		
 		private string _LastName;
 		
-		private string _Type;
+		private System.Nullable<float> _SalesQuota;
+		
+		private System.Nullable<decimal> _SalesYTD;
 		
 		private System.Nullable<int> _DepartmentId;
 		
-		private System.Nullable<int> _ManagerId;
-		
-		private EntitySet<Employee> _Employees;
-		
-		private EntityRef<SalesManager> _SalesManager;
-		
-		private EntityRef<SalesPerson> _SalesPerson;
-		
-		private EntityRef<Employee> _Employee1;
+		private System.Nullable<int> _TerritoryId;
 		
 		private EntityRef<Department> _Department;
+		
+		private EntityRef<SalesTerritory> _SalesTerritory;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -156,21 +130,20 @@ namespace NCommon.Data.LinqToSql.Tests.HRDomain
     partial void OnFirstNameChanged();
     partial void OnLastNameChanging(string value);
     partial void OnLastNameChanged();
-    partial void OnTypeChanging(string value);
-    partial void OnTypeChanged();
+    partial void OnSalesQuotaChanging(System.Nullable<float> value);
+    partial void OnSalesQuotaChanged();
+    partial void OnSalesYTDChanging(System.Nullable<decimal> value);
+    partial void OnSalesYTDChanged();
     partial void OnDepartmentIdChanging(System.Nullable<int> value);
     partial void OnDepartmentIdChanged();
-    partial void OnManagerIdChanging(System.Nullable<int> value);
-    partial void OnManagerIdChanged();
+    partial void OnTerritoryIdChanging(System.Nullable<int> value);
+    partial void OnTerritoryIdChanged();
     #endregion
 		
-		public Employee()
+		public SalesPerson()
 		{
-			this._Employees = new EntitySet<Employee>(new Action<Employee>(this.attach_Employees), new Action<Employee>(this.detach_Employees));
-			this._SalesManager = default(EntityRef<SalesManager>);
-			this._SalesPerson = default(EntityRef<SalesPerson>);
-			this._Employee1 = default(EntityRef<Employee>);
 			this._Department = default(EntityRef<Department>);
+			this._SalesTerritory = default(EntityRef<SalesTerritory>);
 			OnCreated();
 		}
 		
@@ -234,526 +207,6 @@ namespace NCommon.Data.LinqToSql.Tests.HRDomain
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Type", DbType="NVarChar(255)")]
-		public string Type
-		{
-			get
-			{
-				return this._Type;
-			}
-			set
-			{
-				if ((this._Type != value))
-				{
-					this.OnTypeChanging(value);
-					this.SendPropertyChanging();
-					this._Type = value;
-					this.SendPropertyChanged("Type");
-					this.OnTypeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DepartmentId", DbType="Int")]
-		public System.Nullable<int> DepartmentId
-		{
-			get
-			{
-				return this._DepartmentId;
-			}
-			set
-			{
-				if ((this._DepartmentId != value))
-				{
-					if (this._Department.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnDepartmentIdChanging(value);
-					this.SendPropertyChanging();
-					this._DepartmentId = value;
-					this.SendPropertyChanged("DepartmentId");
-					this.OnDepartmentIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ManagerId", DbType="Int")]
-		public System.Nullable<int> ManagerId
-		{
-			get
-			{
-				return this._ManagerId;
-			}
-			set
-			{
-				if ((this._ManagerId != value))
-				{
-					if (this._Employee1.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnManagerIdChanging(value);
-					this.SendPropertyChanging();
-					this._ManagerId = value;
-					this.SendPropertyChanged("ManagerId");
-					this.OnManagerIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Employee_Employee", Storage="_Employees", ThisKey="Id", OtherKey="ManagerId")]
-		public EntitySet<Employee> Employees
-		{
-			get
-			{
-				return this._Employees;
-			}
-			set
-			{
-				this._Employees.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Employee_SalesManager", Storage="_SalesManager", ThisKey="Id", OtherKey="Employee_id", IsUnique=true, IsForeignKey=false)]
-		public SalesManager SalesManager
-		{
-			get
-			{
-				return this._SalesManager.Entity;
-			}
-			set
-			{
-				SalesManager previousValue = this._SalesManager.Entity;
-				if (((previousValue != value) 
-							|| (this._SalesManager.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._SalesManager.Entity = null;
-						previousValue.Employee = null;
-					}
-					this._SalesManager.Entity = value;
-					if ((value != null))
-					{
-						value.Employee = this;
-					}
-					this.SendPropertyChanged("SalesManager");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Employee_SalesPerson", Storage="_SalesPerson", ThisKey="Id", OtherKey="Employee_id", IsUnique=true, IsForeignKey=false)]
-		public SalesPerson SalesPerson
-		{
-			get
-			{
-				return this._SalesPerson.Entity;
-			}
-			set
-			{
-				SalesPerson previousValue = this._SalesPerson.Entity;
-				if (((previousValue != value) 
-							|| (this._SalesPerson.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._SalesPerson.Entity = null;
-						previousValue.Employee = null;
-					}
-					this._SalesPerson.Entity = value;
-					if ((value != null))
-					{
-						value.Employee = this;
-					}
-					this.SendPropertyChanged("SalesPerson");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Employee_Employee", Storage="_Employee1", ThisKey="ManagerId", OtherKey="Id", IsForeignKey=true)]
-		public Employee Employee1
-		{
-			get
-			{
-				return this._Employee1.Entity;
-			}
-			set
-			{
-				Employee previousValue = this._Employee1.Entity;
-				if (((previousValue != value) 
-							|| (this._Employee1.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Employee1.Entity = null;
-						previousValue.Employees.Remove(this);
-					}
-					this._Employee1.Entity = value;
-					if ((value != null))
-					{
-						value.Employees.Add(this);
-						this._ManagerId = value.Id;
-					}
-					else
-					{
-						this._ManagerId = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("Employee1");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Department_Employee", Storage="_Department", ThisKey="DepartmentId", OtherKey="Id", IsForeignKey=true)]
-		public Department Department
-		{
-			get
-			{
-				return this._Department.Entity;
-			}
-			set
-			{
-				Department previousValue = this._Department.Entity;
-				if (((previousValue != value) 
-							|| (this._Department.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Department.Entity = null;
-						previousValue.Employees.Remove(this);
-					}
-					this._Department.Entity = value;
-					if ((value != null))
-					{
-						value.Employees.Add(this);
-						this._DepartmentId = value.Id;
-					}
-					else
-					{
-						this._DepartmentId = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("Department");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_Employees(Employee entity)
-		{
-			this.SendPropertyChanging();
-			entity.Employee1 = this;
-		}
-		
-		private void detach_Employees(Employee entity)
-		{
-			this.SendPropertyChanging();
-			entity.Employee1 = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Departments")]
-	public partial class Department : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private string _Name;
-		
-		private EntitySet<Employee> _Employees;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    #endregion
-		
-		public Department()
-		{
-			this._Employees = new EntitySet<Employee>(new Action<Employee>(this.attach_Employees), new Action<Employee>(this.detach_Employees));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(255)")]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Department_Employee", Storage="_Employees", ThisKey="Id", OtherKey="DepartmentId")]
-		public EntitySet<Employee> Employees
-		{
-			get
-			{
-				return this._Employees;
-			}
-			set
-			{
-				this._Employees.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_Employees(Employee entity)
-		{
-			this.SendPropertyChanging();
-			entity.Department = this;
-		}
-		
-		private void detach_Employees(Employee entity)
-		{
-			this.SendPropertyChanging();
-			entity.Department = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.SalesManager")]
-	public partial class SalesManager : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Employee_id;
-		
-		private EntityRef<Employee> _Employee;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnEmployee_idChanging(int value);
-    partial void OnEmployee_idChanged();
-    #endregion
-		
-		public SalesManager()
-		{
-			this._Employee = default(EntityRef<Employee>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Employee_id", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int Employee_id
-		{
-			get
-			{
-				return this._Employee_id;
-			}
-			set
-			{
-				if ((this._Employee_id != value))
-				{
-					if (this._Employee.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnEmployee_idChanging(value);
-					this.SendPropertyChanging();
-					this._Employee_id = value;
-					this.SendPropertyChanged("Employee_id");
-					this.OnEmployee_idChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Employee_SalesManager", Storage="_Employee", ThisKey="Employee_id", OtherKey="Id", IsForeignKey=true)]
-		public Employee Employee
-		{
-			get
-			{
-				return this._Employee.Entity;
-			}
-			set
-			{
-				Employee previousValue = this._Employee.Entity;
-				if (((previousValue != value) 
-							|| (this._Employee.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Employee.Entity = null;
-						previousValue.SalesManager = null;
-					}
-					this._Employee.Entity = value;
-					if ((value != null))
-					{
-						value.SalesManager = this;
-						this._Employee_id = value.Id;
-					}
-					else
-					{
-						this._Employee_id = default(int);
-					}
-					this.SendPropertyChanged("Employee");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.SalesPerson")]
-	public partial class SalesPerson : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Employee_id;
-		
-		private System.Nullable<float> _SalesQuota;
-		
-		private System.Nullable<decimal> _SalesYTD;
-		
-		private System.Nullable<int> _TerritoryId;
-		
-		private EntityRef<Employee> _Employee;
-		
-		private EntityRef<SalesTerritory> _SalesTerritory;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnEmployee_idChanging(int value);
-    partial void OnEmployee_idChanged();
-    partial void OnSalesQuotaChanging(System.Nullable<float> value);
-    partial void OnSalesQuotaChanged();
-    partial void OnSalesYTDChanging(System.Nullable<decimal> value);
-    partial void OnSalesYTDChanged();
-    partial void OnTerritoryIdChanging(System.Nullable<int> value);
-    partial void OnTerritoryIdChanged();
-    #endregion
-		
-		public SalesPerson()
-		{
-			this._Employee = default(EntityRef<Employee>);
-			this._SalesTerritory = default(EntityRef<SalesTerritory>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Employee_id", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int Employee_id
-		{
-			get
-			{
-				return this._Employee_id;
-			}
-			set
-			{
-				if ((this._Employee_id != value))
-				{
-					if (this._Employee.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnEmployee_idChanging(value);
-					this.SendPropertyChanging();
-					this._Employee_id = value;
-					this.SendPropertyChanged("Employee_id");
-					this.OnEmployee_idChanged();
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SalesQuota", DbType="Real")]
 		public System.Nullable<float> SalesQuota
 		{
@@ -794,6 +247,30 @@ namespace NCommon.Data.LinqToSql.Tests.HRDomain
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DepartmentId", DbType="Int")]
+		public System.Nullable<int> DepartmentId
+		{
+			get
+			{
+				return this._DepartmentId;
+			}
+			set
+			{
+				if ((this._DepartmentId != value))
+				{
+					if (this._Department.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnDepartmentIdChanging(value);
+					this.SendPropertyChanging();
+					this._DepartmentId = value;
+					this.SendPropertyChanged("DepartmentId");
+					this.OnDepartmentIdChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TerritoryId", DbType="Int")]
 		public System.Nullable<int> TerritoryId
 		{
@@ -818,36 +295,36 @@ namespace NCommon.Data.LinqToSql.Tests.HRDomain
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Employee_SalesPerson", Storage="_Employee", ThisKey="Employee_id", OtherKey="Id", IsForeignKey=true)]
-		public Employee Employee
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Department_SalesPerson", Storage="_Department", ThisKey="DepartmentId", OtherKey="Id", IsForeignKey=true)]
+		public Department Department
 		{
 			get
 			{
-				return this._Employee.Entity;
+				return this._Department.Entity;
 			}
 			set
 			{
-				Employee previousValue = this._Employee.Entity;
+				Department previousValue = this._Department.Entity;
 				if (((previousValue != value) 
-							|| (this._Employee.HasLoadedOrAssignedValue == false)))
+							|| (this._Department.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if ((previousValue != null))
 					{
-						this._Employee.Entity = null;
-						previousValue.SalesPerson = null;
+						this._Department.Entity = null;
+						previousValue.SalesPersons.Remove(this);
 					}
-					this._Employee.Entity = value;
+					this._Department.Entity = value;
 					if ((value != null))
 					{
-						value.SalesPerson = this;
-						this._Employee_id = value.Id;
+						value.SalesPersons.Add(this);
+						this._DepartmentId = value.Id;
 					}
 					else
 					{
-						this._Employee_id = default(int);
+						this._DepartmentId = default(Nullable<int>);
 					}
-					this.SendPropertyChanged("Employee");
+					this.SendPropertyChanged("Department");
 				}
 			}
 		}
@@ -904,6 +381,120 @@ namespace NCommon.Data.LinqToSql.Tests.HRDomain
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Departments")]
+	public partial class Department : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _Name;
+		
+		private EntitySet<SalesPerson> _SalesPersons;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    #endregion
+		
+		public Department()
+		{
+			this._SalesPersons = new EntitySet<SalesPerson>(new Action<SalesPerson>(this.attach_SalesPersons), new Action<SalesPerson>(this.detach_SalesPersons));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(255)")]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Department_SalesPerson", Storage="_SalesPersons", ThisKey="Id", OtherKey="DepartmentId")]
+		public EntitySet<SalesPerson> SalesPersons
+		{
+			get
+			{
+				return this._SalesPersons;
+			}
+			set
+			{
+				this._SalesPersons.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_SalesPersons(SalesPerson entity)
+		{
+			this.SendPropertyChanging();
+			entity.Department = this;
+		}
+		
+		private void detach_SalesPersons(SalesPerson entity)
+		{
+			this.SendPropertyChanging();
+			entity.Department = null;
 		}
 	}
 	

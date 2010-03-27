@@ -14,7 +14,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("NCommon.Data.EntityFramework.Tests.OrdersDomain", "FK_Orders_OrderItems", "Orders", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(NCommon.Data.EntityFramework.Tests.OrdersDomain.Order), "OrderItems", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(NCommon.Data.EntityFramework.Tests.OrdersDomain.OrderItem))]
 
 // Original file name:
-// Generation date: 3/15/2010 10:58:13 PM
+// Generation date: 3/28/2010 8:02:16 PM
 namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
 {
     

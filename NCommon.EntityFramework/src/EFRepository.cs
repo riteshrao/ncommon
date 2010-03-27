@@ -120,16 +120,6 @@ namespace NCommon.Data.EntityFramework
         }
 
         /// <summary>
-        /// Marks the entity instance to be saved to the store.
-        /// </summary>
-        /// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be saved
-        /// to the database.</param>
-        public override void Add(TEntity entity)
-        {
-            Context.AddObject(this.EntitySetName, entity);
-        }
-
-        /// <summary>
         /// Marks the changes of an existing entity to be saved to the store.
         /// </summary>
         /// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be
@@ -137,7 +127,7 @@ namespace NCommon.Data.EntityFramework
         /// <remarks>Implementors of this method must handle the Update scneario. </remarks>
         public override void Save(TEntity entity)
         {
-            //Do nothing as Entity Framework uses change tracking to track changes.
+            Context.AddObject(this.EntitySetName, entity);
         }
 
         /// <summary>

@@ -29,17 +29,6 @@ namespace NCommon.Data.EntityFramework
         readonly EFUnitOfWorkFactory _factory = new EFUnitOfWorkFactory();
 
         /// <summary>
-        /// Specifies the default <see cref="IsolationLevel"/> of unit of work instances.
-        /// </summary>
-        /// <param name="isolationLevel"><see cref="IsolationLevel"/>. The default isolation level.</param>
-        /// <returns><see cref="EFConfiguration"/>.</returns>
-        public EFConfiguration WithDefaultIsolation(IsolationLevel isolationLevel)
-        {
-            _factory.DefaultIsolation = isolationLevel;
-            return this;
-        }
-
-        /// <summary>
         /// Configures unit of work instances to use the specified <see cref="ObjectContext"/>.
         /// </summary>
         /// <param name="objectContextProvider">A <see cref="Func{T}"/> of type <see cref="ObjectContext"/>

@@ -39,7 +39,7 @@ namespace NCommon.Rules.Tests
         #endregion
         
         [Test]
-        public void Validate_Returns_Two_ValidationErrors_When_Two_Validations_Fail ()
+        public void Validate_returns_two_validation_errors ()
         {
             ISpecification<object> failedSpec1 = MockRepository.GenerateStub<ISpecification<object>>();
             failedSpec1.Stub(x => x.IsSatisfiedBy(null)).IgnoreArguments().Return(false);

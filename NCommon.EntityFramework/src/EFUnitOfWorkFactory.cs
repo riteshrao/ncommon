@@ -26,24 +26,8 @@ namespace NCommon.Data.EntityFramework
     /// </summary>
     public class EFUnitOfWorkFactory : IUnitOfWorkFactory
     {
-        readonly EFUnitOfWorkSettings _settings = new EFUnitOfWorkSettings
-        {
-            DefaultIsolation = IsolationLevel.ReadCommitted,
-            SessionResolver = new EFSessionResolver()
-        };
+        EFSessionResolver _resolver = new EFSessionResolver();
         
-        /// <summary>
-        /// Gets or sets the default isolation level of <see cref="EFUnitOfWork"/> instances that the 
-        /// factory creates.
-        /// </summary>
-        /// <value>The default <see cref="IsolationLevel"/> of <see cref="EFUnitOfWork"/> instances.</value>
-        public IsolationLevel DefaultIsolation
-        {
-            get { return _settings.DefaultIsolation; }
-            set { _settings.DefaultIsolation = value; }
-        }
-
-        /// <summary>
         /// Registers a <see cref="Func{T}"/> of type <see cref="ObjectContext"/> provider that can be used
         /// to resolve instances of <see cref="ObjectContext"/>.
         /// </summary>
@@ -53,7 +37,7 @@ namespace NCommon.Data.EntityFramework
             Guard.Against<ArgumentNullException>(contextProvider == null,
                                                  "Invalid object context provider registration. " +
                                                  "Expected a non-null Func<ObjectContext> instance.");
-            _settings.SessionResolver.RegisterObjectContextProvider(contextProvider);
+            _resolver.RegisterObjectContextProvider(contextProvider);
         }
 
         /// <summary>
@@ -63,12 +47,12 @@ namespace NCommon.Data.EntityFramework
         public IUnitOfWork Create()
         {
             Guard.Against<InvalidOperationException>(
-               _settings.SessionResolver.ObjectContextsRegistered == 0,
+               _resolver.ObjectContextsRegistered == 0,
                "No ObjectContext providers have been registered. You must register ObjectContext providers using " +
                "the RegisterObjectContextProvider method or use NCommon.Configure class to configure NCommon.EntityFramework " +
                "using the EFConfiguration class and register ObjectContext instances using the WithObjectContext method.");
             
-            return new EFUnitOfWork(_settings);
+            return new EFUnitOfWork(_resolver);
         }
     }
 }

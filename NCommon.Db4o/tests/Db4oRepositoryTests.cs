@@ -8,6 +8,7 @@ using NCommon.Data.Db4o.Tests.Domain;
 using NCommon.Extensions;
 using NCommon.Specifications;
 using NCommon.State;
+using NCommon.Tests;
 using NUnit.Framework;
 using Rhino.Mocks;
 using IsolationLevel=System.Data.IsolationLevel;
@@ -79,7 +80,7 @@ namespace NCommon.Data.Db4o.Tests
                 var recordCheckResult = queryForCustomer(customerRepository);
                 Assert.That(recordCheckResult, Is.Null);
 
-                customerRepository.Add(newCustomer);
+                customerRepository.Save(newCustomer);
                 scope.Commit();
             }
 
@@ -103,7 +104,7 @@ namespace NCommon.Data.Db4o.Tests
         }
 
         [Test]
-        public void Nested_UnitOfWork_With_Different_Transaction_Compatibility_Works()
+        public void Nested_UnitOfWork_With_Different_Transaction_Works()
         {
             var changedShipDate = DateTime.Now.AddDays(1);
             var changedOrderDate = DateTime.Now.AddDays(2);
@@ -127,7 +128,7 @@ namespace NCommon.Data.Db4o.Tests
                     var outerOrder = outerRepository.Where(x => x.OrderID == orderId).First();
                     outerOrder.OrderDate = changedOrderDate;
 
-                    using (var innerScope = new UnitOfWorkScope(UnitOfWorkScopeOptions.CreateNew))
+                    using (var innerScope = new UnitOfWorkScope(true))
                     {
                         var innerRepository = new Db4oRepository<Order>();
                         var innerOrder = innerRepository.Where(x => x.OrderID == orderId).First();
@@ -258,7 +259,11 @@ namespace NCommon.Data.Db4o.Tests
         [Test]
         public void Query_With_No_UnitOfWork_Throws_InvalidOperationException()
         {
-            Assert.Throws<InvalidOperationException>(() => { new Db4oRepository<Customer> { new Customer() }; });
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                var repository = new Db4oRepository<Customer>();
+                repository.Save(new Customer());
+            });
         }
 
         [Test]
@@ -289,8 +294,7 @@ namespace NCommon.Data.Db4o.Tests
                                          select cust).FirstOrDefault();
                 Assert.That(recordCheckResult, Is.Null);
 
-                customerRepository.Add(newCustomer);
-                //DO NOT CALL COMMIT TO SIMMULATE A ROLLBACK.
+                customerRepository.Save(newCustomer);
             }
 
             //Starting a completely new unit of work and repository to check for existance.
@@ -337,7 +341,7 @@ namespace NCommon.Data.Db4o.Tests
                 var recordCheckResult = queryForCustomer(customerRepository);
                 Assert.That(recordCheckResult, Is.Null);
 
-                customerRepository.Add(newCustomer);
+                customerRepository.Save(newCustomer);
                 scope.Commit();
             }
 
@@ -390,7 +394,7 @@ namespace NCommon.Data.Db4o.Tests
             }
         }
 
-        [Test]
+        [Test, Ignore("Db4o does not auto enlist into ambient transactions.")]
         public void UnitOfWork_Rolledback_When_Containing_TransactionScope_Is_Rolledback()
         {
             using (var testData = new Db4oTestDataGenerator(_db4oServer.OpenClient()))
@@ -401,8 +405,7 @@ namespace NCommon.Data.Db4o.Tests
                 int orderId;
                 DateTime oldDate;
 
-                using (var txScope = new TransactionScope(TransactionScopeOption.Required))
-                using (var uowScope = new UnitOfWorkScope(IsolationLevel.Serializable))
+                using (var uowScope = new UnitOfWorkScope())
                 {
                     var ordersRepository = new Db4oRepository<Order>();
                     var order = (from o in ordersRepository

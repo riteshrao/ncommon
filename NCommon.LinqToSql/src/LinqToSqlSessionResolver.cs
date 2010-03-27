@@ -53,6 +53,8 @@ namespace NCommon.Data.LinqToSql
         /// <param name="contextProvider">A <see cref="Func{T}"/> of type <see cref="DataContext"/>.</param>
         public void RegisterDataContextProvider(Func<DataContext> contextProvider)
         {
+            Guard.Against<ArgumentNullException>(contextProvider == null,
+                                                 "Expected a non-null Func<DataContext> instance.");
             var key = Guid.NewGuid();
             _dataContextProviders.Add(key, contextProvider);
             //Getting the data context and populating the _dataContextTypeCache

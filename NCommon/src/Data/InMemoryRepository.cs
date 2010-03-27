@@ -52,17 +52,6 @@ namespace NCommon.Data
 		}
 
         /// <summary>
-        /// Marks the entity instance to be saved to the store.
-        /// </summary>
-        /// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be saved
-        /// to the database.</param>
-        /// <remarks>Implementors of this method must handle the Insert scenario.</remarks>
-		public override void Add(TEntity entity)
-		{
-			_internal.Add(entity);
-		}
-
-        /// <summary>
         /// Marks the changes of an existing entity to be saved to the store.
         /// </summary>
         /// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be

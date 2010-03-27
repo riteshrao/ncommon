@@ -26,21 +26,7 @@ namespace NCommon.Data.LinqToSql
     /// </summary>
     public class LinqToSqlUnitOfWorkFactory : IUnitOfWorkFactory
     {
-        readonly LinqToSqlUnitOfWorkSettings _settings = new LinqToSqlUnitOfWorkSettings
-        {
-            DefaultIsolation = IsolationLevel.ReadCommitted,
-            SessionResolver = new LinqToSqlSessionResolver()
-        };
-
-        /// <summary>
-        /// Gets or sets the default <see cref="IsolationLevel"/> of <see cref="IUnitOfWork"/> instances created by the factory.
-        /// </summary>
-        /// <value>The default <see cref="IsolationLevel"/> of <see cref="IUnitOfWork"/> instances.</value>
-        public IsolationLevel DefaultIsolation
-        {
-            get { return _settings.DefaultIsolation; }
-            set { _settings.DefaultIsolation = value; }
-        }
+        LinqToSqlSessionResolver _resolver = new LinqToSqlSessionResolver();
 
         /// <summary>
         /// Registers a <see cref="Func{T}"/> of type <see cref="DataContext"/> provider that can be used to 
@@ -51,7 +37,7 @@ namespace NCommon.Data.LinqToSql
         {
             Guard.Against<ArgumentNullException>(contextProvider == null,
                                                  "Cannot register a null Func<DataContext> provider with the factory.");
-            _settings.SessionResolver.RegisterDataContextProvider(contextProvider);
+            _resolver.RegisterDataContextProvider(contextProvider);
         }
 
         /// <summary>
@@ -61,11 +47,11 @@ namespace NCommon.Data.LinqToSql
         public IUnitOfWork Create()
         {
             Guard.Against<InvalidOperationException>(
-                 _settings.SessionResolver.DataContextsRegistered == 0,
+                 _resolver.DataContextsRegistered == 0,
                  "No DataContext providers have been registered. You must register DataContext providers using " +
                  "the RegisterDataContextProvider method or use NCommon.Configure class to configure NCommon.LinqToSql " +
                  "using the LinqToSqlConfiguration class and register DataContext instances using the WithDataContext method.");
-            return new LinqToSqlUnitOfWork(_settings);
+            return new LinqToSqlUnitOfWork(_resolver);
         }
     }
 }

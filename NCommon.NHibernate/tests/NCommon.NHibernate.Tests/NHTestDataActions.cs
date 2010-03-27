@@ -2,15 +2,17 @@
 using NCommon.Data.NHibernate.Tests.HRDomain.Domain;
 using NCommon.Data.NHibernate.Tests.OrdersDomain;
 using NCommon.NHibernate.Tests.Domain;
+using NHibernate.Criterion;
+using Order = NCommon.Data.NHibernate.Tests.OrdersDomain.Order;
 
 namespace NCommon.Data.NHibernate.Tests
 {
     public class NHTestDataActions
     {
-        readonly NHTestDataGenerator _generator;
+        readonly NHTestData _generator;
         readonly Random _random = new Random();
 
-        public NHTestDataActions(NHTestDataGenerator generator)
+        public NHTestDataActions(NHTestData generator)
         {
             _generator = generator;
         }
@@ -180,16 +182,52 @@ namespace NCommon.Data.NHibernate.Tests
                 LastName = "Doe" + RandomString(),
                 SalesQuota = 200,
                 SalesYTD = 45000,
-                Status = EmployeeStatus.PartTime
             };
             _generator.Session.Save(salesPerson);
             _generator.EntitiesPersisted.Add(salesPerson);
             return salesPerson;
         }
 
+        public Customer GetCustomerById(int customerId)
+        {
+            var customer = _generator.Session
+                .CreateCriteria<Customer>()
+                .Add(Restrictions.Eq("CustomerID", customerId))
+                .SetMaxResults(1)
+                .UniqueResult<Customer>();
+
+            if (customer != null)
+                _generator.EntitiesPersisted.Add(customer);
+            return customer;
+        }
+
         protected string RandomString()
         {
             return _random.Next(int.MaxValue).ToString();
+        }
+
+        public Order GetOrderById(int orderId)
+        {
+            var order = _generator.Session
+                .CreateCriteria<Order>()
+                .Add(Restrictions.Eq("OrderID", orderId))
+                .UniqueResult<Order>();
+
+            if (order != null)
+                _generator.EntitiesPersisted.Add(order);
+            return order;
+        }
+
+        public SalesPerson GetSalesPersonById(int id)
+        {
+            var salesPerson = _generator.Session
+                .CreateCriteria<SalesPerson>()
+                .Add(Restrictions.Eq("Id", id))
+                .UniqueResult<SalesPerson>();
+
+            if (salesPerson != null)
+                _generator.EntitiesPersisted.Add(salesPerson);
+            return salesPerson;
         }
     }
 }

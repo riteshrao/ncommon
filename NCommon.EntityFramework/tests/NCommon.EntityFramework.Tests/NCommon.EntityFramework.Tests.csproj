@@ -86,17 +86,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EFDataGenerator.cs" />
-    <Compile Include="EFDataGeneratorActions.cs" />
-    <Compile Include="EFRepositoryTests.cs" />
-    <Compile Include="EFTestBase.cs" />
-    <Compile Include="EFTransactionTests.cs" />
+    <Compile Include="EFRepositoryTransactionTests.cs" />
+    <Compile Include="EFTestData.cs" />
+    <Compile Include="EFTestDataActions.cs" />
+    <Compile Include="EFRepositoryQueryTests.cs" />
+    <Compile Include="EFRepositoryTestBase.cs" />
     <Compile Include="EFUnitOfWorkFactoryTests.cs" />
     <Compile Include="EFUnitOfWorkTests.cs" />
-    <Compile Include="EFUnitOfWorkTransactionTests.cs" />
     <Compile Include="FakeState.cs" />
-    <Compile Include="OrderItemsProductStrategy.cs" />
-    <Compile Include="OrderOrderItemsStrategy.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

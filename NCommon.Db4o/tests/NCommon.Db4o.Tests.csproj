@@ -87,19 +87,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\NCommon\tests\FakeState.cs">
+      <Link>FakeState.cs</Link>
+    </Compile>
     <Compile Include="Db4oRepositoryTests.cs" />
     <Compile Include="Db4oTestDataActions.cs" />
     <Compile Include="Db4oTestDataGenerator.cs" />
-    <Compile Include="Db4oTransactionTests.cs" />
     <Compile Include="Db4oUnitOfWorkFactoryTests.cs" />
-    <Compile Include="Db4oUnitOfWorkTests.cs" />
     <Compile Include="Domain\Address.cs" />
     <Compile Include="Domain\Customer.cs" />
     <Compile Include="Domain\Money.cs" />
     <Compile Include="Domain\Order.cs" />
     <Compile Include="Domain\OrderItem.cs" />
     <Compile Include="Domain\Product.cs" />
-    <Compile Include="FakeState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

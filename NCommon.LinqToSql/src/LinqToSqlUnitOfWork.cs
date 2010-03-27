@@ -31,7 +31,7 @@ namespace NCommon.Data.LinqToSql
     public class LinqToSqlUnitOfWork : IUnitOfWork
     {
         private bool _disposed;
-        readonly LinqToSqlUnitOfWorkSettings _settings;
+        readonly ILinqToSqlSessionResolver _resolver;
         IDictionary<Guid, ILinqToSqlSession> _openSessions = new Dictionary<Guid, ILinqToSqlSession>();
 
         /// <summary>
@@ -39,11 +39,11 @@ namespace NCommon.Data.LinqToSql
         /// Creates a new instance of the <see cref="LinqToSqlUnitOfWork"/> class that uses the specified data  context.
         /// </summary>
         /// <param name="context">The <see cref="DataContext"/> instance that the LinqToSqlUnitOfWork instance uses.</param>
-        public LinqToSqlUnitOfWork(LinqToSqlUnitOfWorkSettings settings) 
+        public LinqToSqlUnitOfWork(ILinqToSqlSessionResolver resolver) 
         {
-            Guard.Against<ArgumentNullException>(settings == null,
+            Guard.Against<ArgumentNullException>(resolver == null,
                                                  "Expected a non-null LinqToSqlUnitOfWorkSettings class.");
-            _settings = settings;
+            _resolver = resolver;
         }
 
         /// <summary>
@@ -53,12 +53,12 @@ namespace NCommon.Data.LinqToSql
         /// <returns>A <see cref="ILinqToSqlSession"/> instance that can be used to query and update the specified type.</returns>
         public ILinqToSqlSession GetSession<T>()
         {
-            var key = _settings.SessionResolver.GetSessionKeyFor<T>();
+            var key = _resolver.GetSessionKeyFor<T>();
             if (_openSessions.ContainsKey(key))
                 return _openSessions[key];
 
             //Opening a new session...
-            var session = _settings.SessionResolver.OpenSessionFor<T>();
+            var session = _resolver.OpenSessionFor<T>();
             _openSessions.Add(key, session);
             return session;
         }

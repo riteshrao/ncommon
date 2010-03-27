@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Practices.ServiceLocation;
-using NCommon.Data.Tests;
 using NCommon.Events;
 using NCommon.State;
 using NUnit.Framework;

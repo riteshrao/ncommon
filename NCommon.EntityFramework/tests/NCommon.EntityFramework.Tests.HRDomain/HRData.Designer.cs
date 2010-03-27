@@ -11,7 +11,7 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmSchemaAttribute()]
 
 // Original file name:
-// Generation date: 3/15/2010 10:16:15 PM
+// Generation date: 3/28/2010 8:06:46 PM
 namespace NCommon.Data.EntityFramework.Tests.HRDomain
 {
     
@@ -46,52 +46,52 @@ namespace NCommon.Data.EntityFramework.Tests.HRDomain
         }
         partial void OnContextCreated();
         /// <summary>
-        /// There are no comments for SalesTerritories in the schema.
+        /// There are no comments for SalesPersons in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public global::System.Data.Objects.ObjectQuery<SalesTerritory> SalesTerritories
+        public global::System.Data.Objects.ObjectQuery<SalesPerson> SalesPersons
         {
             get
             {
-                if ((this._SalesTerritories == null))
+                if ((this._SalesPersons == null))
                 {
-                    this._SalesTerritories = base.CreateQuery<SalesTerritory>("[SalesTerritories]");
+                    this._SalesPersons = base.CreateQuery<SalesPerson>("[SalesPersons]");
                 }
-                return this._SalesTerritories;
+                return this._SalesPersons;
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        private global::System.Data.Objects.ObjectQuery<SalesTerritory> _SalesTerritories;
+        private global::System.Data.Objects.ObjectQuery<SalesPerson> _SalesPersons;
         /// <summary>
-        /// There are no comments for SalesTerritories in the schema.
+        /// There are no comments for SalesPersons in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public void AddToSalesTerritories(SalesTerritory salesTerritory)
+        public void AddToSalesPersons(SalesPerson salesPerson)
         {
-            base.AddObject("SalesTerritories", salesTerritory);
+            base.AddObject("SalesPersons", salesPerson);
         }
     }
     /// <summary>
-    /// There are no comments for NCommon.Data.EntityFramework.Tests.HRDomain.SalesTerritory in the schema.
+    /// There are no comments for NCommon.Data.EntityFramework.Tests.HRDomain.SalesPerson in the schema.
     /// </summary>
     /// <KeyProperties>
     /// Id
     /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="NCommon.Data.EntityFramework.Tests.HRDomain", Name="SalesTerritory")]
+    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="NCommon.Data.EntityFramework.Tests.HRDomain", Name="SalesPerson")]
     [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
     [global::System.Serializable()]
-    public partial class SalesTerritory : global::System.Data.Objects.DataClasses.EntityObject
+    public partial class SalesPerson : global::System.Data.Objects.DataClasses.EntityObject
     {
         /// <summary>
-        /// Create a new SalesTerritory object.
+        /// Create a new SalesPerson object.
         /// </summary>
         /// <param name="id">Initial value of Id.</param>
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public static SalesTerritory CreateSalesTerritory(int id)
+        public static SalesPerson CreateSalesPerson(int id)
         {
-            SalesTerritory salesTerritory = new SalesTerritory();
-            salesTerritory.Id = id;
-            return salesTerritory;
+            SalesPerson salesPerson = new SalesPerson();
+            salesPerson.Id = id;
+            return salesPerson;
         }
         /// <summary>
         /// There are no comments for property Id in the schema.
@@ -121,58 +121,112 @@ namespace NCommon.Data.EntityFramework.Tests.HRDomain
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
         partial void OnIdChanged();
         /// <summary>
-        /// There are no comments for property Name in the schema.
+        /// There are no comments for property FirstName in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public string Name
+        public string FirstName
         {
             get
             {
-                return this._Name;
+                return this._FirstName;
             }
             set
             {
-                this.OnNameChanging(value);
-                this.ReportPropertyChanging("Name");
-                this._Name = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
-                this.ReportPropertyChanged("Name");
-                this.OnNameChanged();
+                this.OnFirstNameChanging(value);
+                this.ReportPropertyChanging("FirstName");
+                this._FirstName = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("FirstName");
+                this.OnFirstNameChanged();
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        private string _Name;
+        private string _FirstName;
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void OnNameChanging(string value);
+        partial void OnFirstNameChanging(string value);
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void OnNameChanged();
+        partial void OnFirstNameChanged();
         /// <summary>
-        /// There are no comments for property Description in the schema.
+        /// There are no comments for property LastName in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        public string Description
+        public string LastName
         {
             get
             {
-                return this._Description;
+                return this._LastName;
             }
             set
             {
-                this.OnDescriptionChanging(value);
-                this.ReportPropertyChanging("Description");
-                this._Description = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
-                this.ReportPropertyChanged("Description");
-                this.OnDescriptionChanged();
+                this.OnLastNameChanging(value);
+                this.ReportPropertyChanging("LastName");
+                this._LastName = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value, true);
+                this.ReportPropertyChanged("LastName");
+                this.OnLastNameChanged();
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        private string _Description;
+        private string _LastName;
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void OnDescriptionChanging(string value);
+        partial void OnLastNameChanging(string value);
         [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
-        partial void OnDescriptionChanged();
+        partial void OnLastNameChanged();
+        /// <summary>
+        /// There are no comments for property SalesQuota in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public global::System.Nullable<float> SalesQuota
+        {
+            get
+            {
+                return this._SalesQuota;
+            }
+            set
+            {
+                this.OnSalesQuotaChanging(value);
+                this.ReportPropertyChanging("SalesQuota");
+                this._SalesQuota = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("SalesQuota");
+                this.OnSalesQuotaChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private global::System.Nullable<float> _SalesQuota;
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnSalesQuotaChanging(global::System.Nullable<float> value);
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnSalesQuotaChanged();
+        /// <summary>
+        /// There are no comments for property SalesYTD in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        public global::System.Nullable<decimal> SalesYTD
+        {
+            get
+            {
+                return this._SalesYTD;
+            }
+            set
+            {
+                this.OnSalesYTDChanging(value);
+                this.ReportPropertyChanging("SalesYTD");
+                this._SalesYTD = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
+                this.ReportPropertyChanged("SalesYTD");
+                this.OnSalesYTDChanged();
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        private global::System.Nullable<decimal> _SalesYTD;
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnSalesYTDChanging(global::System.Nullable<decimal> value);
+        [global::System.CodeDom.Compiler.GeneratedCode("System.Data.Entity.Design.EntityClassGenerator", "4.0.0.0")]
+        partial void OnSalesYTDChanged();
     }
 }

@@ -28,20 +28,20 @@ namespace NCommon.Rules.Tests
     public class BusinessRuleTests
     {
         [Test]
-        public void Creating_New_BusinessRule_With_Null_Specification_Throws_ArgumentNullException ()
+        public void ArgumentNullException_is_thrown_when_created_with_null_specification ()
         {
             Assert.Throws<ArgumentNullException>(() => new BusinessRule<object>(null, null));
         }
 
         [Test]
-        public void Creating_New_BusinessRule_With_Null_Action_Throws_ArgumentNullException ()
+        public void ArgumentNullException_is_thrown_when_created_with_null_action ()
         {
             Assert.Throws<ArgumentNullException>(
                 () => new BusinessRule<object>(MockRepository.GenerateStub<ISpecification<object>>(), null));
         }
 
         [Test]
-        public void Evaluating_Specification_That_Returns_False_Performs_No_Action ()
+        public void no_action_is_performed_when_specification_returns_false ()
         {
             ISpecification<object> mockSpec = MockRepository.GenerateMock<ISpecification<object>>();
             mockSpec.Expect(x => x.IsSatisfiedBy(null))
@@ -57,7 +57,7 @@ namespace NCommon.Rules.Tests
         }
 
         [Test]
-        public void Evaluating_Specification_That_Returns_True_Performs_Action()
+        public void action_is_executed_when_specification_returns_true()
         {
             ISpecification<object> mockSpec = MockRepository.GenerateMock<ISpecification<object>>();
             mockSpec.Expect(x => x.IsSatisfiedBy(null))

@@ -59,15 +59,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\Department.cs" />
-    <Compile Include="Domain\Employee.cs" />
-    <Compile Include="Domain\EmployeeStatus.cs" />
-    <Compile Include="Domain\EmployeeType.cs" />
-    <Compile Include="Domain\SalesManager.cs" />
     <Compile Include="Domain\SalesPerson.cs" />
     <Compile Include="Domain\SalesTerritory.cs" />
     <Compile Include="Mappings\DepartmentMap.cs" />
-    <Compile Include="Mappings\EmployeeMap.cs" />
-    <Compile Include="Mappings\SalesManagerMap.cs" />
     <Compile Include="Mappings\SalesPersonMap.cs" />
     <Compile Include="Mappings\SalesTerritoryMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

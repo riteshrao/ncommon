@@ -13,17 +13,6 @@ namespace NCommon.Data.LinqToSql
         readonly LinqToSqlUnitOfWorkFactory _factory = new LinqToSqlUnitOfWorkFactory();
 
         /// <summary>
-        /// Sets the default isolation level of <see cref="IUnitOfWork"/> instances.
-        /// </summary>
-        /// <param name="isolationLevel">The default isolation level.</param>
-        /// <returns><see cref="LinqToSqlConfiguration"/></returns>
-        public LinqToSqlConfiguration WithDefaultIsolation(IsolationLevel isolationLevel)
-        {
-            _factory.DefaultIsolation = isolationLevel;
-            return this;
-        }
-
-        /// <summary>
         /// Registers a <see cref="DataContext"/> provider.
         /// </summary>
         /// <param name="contextProvider">A <see cref="Func{T}"/> of type <see cref="DataContext"/>.</param>

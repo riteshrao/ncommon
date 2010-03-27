@@ -80,7 +80,6 @@
     <Compile Include="LinqToSqlSessionResolver.cs" />
     <Compile Include="LinqToSqlUnitOfWork.cs" />
     <Compile Include="LinqToSqlUnitOfWorkFactory.cs" />
-    <Compile Include="LinqToSqlUnitOfWorkSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

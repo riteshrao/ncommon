@@ -35,21 +35,21 @@ namespace NCommon.Data
     /// 
     /// ]]>
     /// </summary>
-    public class UnitOfWorkScope : IDisposable
+    public class UnitOfWorkScope : IDisposable, IUnitOfWorkScope
     {
         bool _disposed;
         bool _commitAttempted;
-        bool _committed;
+        bool _completed;
 
         /// <summary>
-        /// 
+        /// Event fired when the scope is comitting.
         /// </summary>
-        public event Action<UnitOfWorkScope> ScopeComitting;
+        public event Action<IUnitOfWorkScope> ScopeComitting;
 
         /// <summary>
-        /// 
+        /// Event fired when the scope is rollingback.
         /// </summary>
-        public event Action<UnitOfWorkScope> ScopeRollingback;
+        public event Action<IUnitOfWorkScope> ScopeRollingback;
 
         /// <summary>
         /// Default Constuctor.
@@ -66,7 +66,7 @@ namespace NCommon.Data
         /// <see cref="UnitOfWorkScope"/> or <see cref="TransactionScope"/>, specify new, otherwise specify false.</param>
         public UnitOfWorkScope(bool newTransaction)
         {
-            UnitOfWorkManager.EnlistScope(this, newTransaction);
+            UnitOfWorkManager.CurrentTransactionManager.EnlistScope(this, newTransaction);
         }
 
         ///<summary>
@@ -76,11 +76,16 @@ namespace NCommon.Data
         {
             Guard.Against<ObjectDisposedException>(_disposed,
                                                    "Cannot commit a disposed UnitOfWorkScope instance.");
-            Guard.Against<InvalidOperationException>(_commitAttempted || _committed,
-                                                     "The UnitOfWorkScope has already been committed or has attempted to commit and failed. Cannot commit a UnitOfWorkScope");
+            Guard.Against<InvalidOperationException>(_completed,
+                                                     "This unit of work scope has been marked completed. A child scope participating in the " +
+                                                     "transaction has rolledback and the transaction aborted. The parent scope cannot be commit.");
             _commitAttempted = true;
             OnCommit();
-            _committed = true;
+        }
+
+        public void Complete()
+        {
+            _completed = true;
         }
 
         /// <summary>
@@ -123,7 +128,7 @@ namespace NCommon.Data
             {
                 try
                 {
-                    if (!_commitAttempted && !_committed && UnitOfWorkConfiguration.AutoCompleteScope)
+                    if (!_commitAttempted && !_completed && UnitOfWorkConfiguration.AutoCompleteScope)
                         OnCommit();
                     else
                         OnRollback();

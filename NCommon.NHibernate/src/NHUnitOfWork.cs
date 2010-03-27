@@ -30,7 +30,7 @@ namespace NCommon.Data.NHibernate
     public class NHUnitOfWork : IUnitOfWork
     {
         bool _disposed;
-        readonly NHUnitOfWorkSettings _settings;
+        readonly INHSessionResolver _sessionResolver;
         IDictionary<Guid, ISession> _openSessions = new Dictionary<Guid, ISession>();
 
         /// <summary>
@@ -38,12 +38,12 @@ namespace NCommon.Data.NHibernate
         /// Creates a new instance of the <see cref="NHUnitOfWork"/> that uses the provided
         /// NHibernate <see cref="ISession"/> instance.
         /// </summary>
-        /// <param name="settings">An instance of <see cref="NHUnitOfWorkSettings"/>.</param>
-        public NHUnitOfWork(NHUnitOfWorkSettings settings)
+        /// <param name="sessionResolver">An instance of <see cref="NHUnitOfWorkSettings"/>.</param>
+        public NHUnitOfWork(INHSessionResolver sessionResolver)
         {
-            Guard.Against<ArgumentNullException>(settings == null,
+            Guard.Against<ArgumentNullException>(sessionResolver == null,
                                                  "Expected a non-null instance of NHUnitOfWorkSettings.");
-            _settings = settings;
+            _sessionResolver = sessionResolver;
         }
 
         /// <summary>
@@ -55,12 +55,12 @@ namespace NCommon.Data.NHibernate
         /// instances of <typeparamref name="T"/></returns>
         public ISession GetSession<T>()
         {
-            var sessionKey = _settings.SessionResolver.GetSessionKeyFor<T>();
+            var sessionKey = _sessionResolver.GetSessionKeyFor<T>();
             if (_openSessions.ContainsKey(sessionKey))
                 return _openSessions[sessionKey];
 
             //Opening a new session...
-            var session = _settings.SessionResolver.OpenSessionFor<T>();
+            var session = _sessionResolver.OpenSessionFor<T>();
             _openSessions.Add(sessionKey, session);
             return session;
         }

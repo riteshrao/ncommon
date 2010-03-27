@@ -32,20 +32,20 @@ namespace NCommon.Data.EntityFramework
     public class EFUnitOfWork : IUnitOfWork
     {
         bool _disposed;
-        readonly EFUnitOfWorkSettings _settings;
+        readonly IEFSessionResolver _resolver;
         IDictionary<Guid, IEFSession> _openSessions = new Dictionary<Guid, IEFSession>();
 
         /// <summary>
         /// Default Constructor.
         /// Creates a new instance of the <see cref="EFUnitOfWork"/> class that uses the specified object context.
         /// </summary>
-        /// <param name="settings">An instance of <see cref="EFUnitOfWorkSettings"/> that contains settings for
+        /// <param name="resolver">An instance of <see cref="EFUnitOfWorkSettings"/> that contains settings for
         /// Entity Framework unit of work instances.</param>
-        public EFUnitOfWork(EFUnitOfWorkSettings settings)
+        public EFUnitOfWork(IEFSessionResolver resolver)
         {
-            Guard.Against<ArgumentNullException>(settings == null,
+            Guard.Against<ArgumentNullException>(resolver == null,
                                                  "Expected a non-null EFUnitOfWorkSettings instance.");
-            _settings = settings;
+            _resolver = resolver;
         }
 
         /// <summary>
@@ -59,12 +59,13 @@ namespace NCommon.Data.EntityFramework
                                                    "The current EFUnitOfWork instance has been disposed. " + 
                                                    "Cannot get sessions from a disposed UnitOfWork instance.");
 
-            var sessionKey = _settings.SessionResolver.GetSessionKeyFor<T>();
+            var sessionKey = _resolver.GetSessionKeyFor<T>();
             if (_openSessions.ContainsKey(sessionKey))
                 return _openSessions[sessionKey];
 
             //Opening a new session...
-            var session = _settings.SessionResolver.OpenSessionFor<T>();
+            var session = _resolver.OpenSessionFor<T>();
+            _openSessions.Add(sessionKey, session);
             return session;
         }
 

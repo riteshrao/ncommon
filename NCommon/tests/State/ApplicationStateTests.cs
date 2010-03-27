@@ -7,7 +7,7 @@ namespace NCommon.Tests.State
     public class ApplicationStateTests
     {
         [Test]
-        public void Can_put_and_get_state()
+        public void can_put_and_get_state()
         {
             var state = "test";
             var appState = new ApplicationState();
@@ -19,7 +19,7 @@ namespace NCommon.Tests.State
         }
 
         [Test]
-        public void Can_remove_state()
+        public void can_remove_state()
         {
             var state = "test";
             var appState = new ApplicationState();

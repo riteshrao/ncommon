@@ -12,7 +12,7 @@ namespace NCommon.Tests.Data
 	public class InMemoryRepositoryTests
 	{
         [Test]
-		public void Repository_returns_values_only_contained_in_internal_list ()
+		public void returns_values_only_contained_in_internal_list ()
 		{
 			var list = new List<string> {"Apple", "Ball", "Cat", "Dog"};
 			var repository = new InMemoryRepository<string>(list);
@@ -26,7 +26,7 @@ namespace NCommon.Tests.Data
 		}
 
         [Test]
-		public void Repository_adds_to_internal_list_on_save()
+		public void save_adds_to_internal_list()
 		{
 			var list = new List<string> { "Apple", "Ball", "Cat", "Dog" };
 			var repository = new InMemoryRepository<string>(list);
@@ -36,7 +36,7 @@ namespace NCommon.Tests.Data
 		}
 
         [Test]
-		public void Repository_removes_from_internal_list_on_delete()
+		public void delete_removes_from_internal_list()
 		{
 			var list = new List<string> { "Apple", "Ball", "Cat", "Dog" };
 			var repository = new InMemoryRepository<string>(list);

@@ -96,16 +96,6 @@ namespace NCommon.Data.NHibernate
         }
 
         /// <summary>
-        /// Marks the entity instance to be saved to the store.
-        /// </summary>
-        /// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be saved
-        /// to the database.</param>
-        public override void Add(TEntity entity)
-        {
-            Session.Save(entity);
-        }
-
-        /// <summary>
         /// Marks the changes of an existing entity to be saved to the store.
         /// </summary>
         /// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be
@@ -186,8 +176,8 @@ namespace NCommon.Data.NHibernate
                 var targetProperty = (from property in targetType.GetProperties()
                                       where matchesType.IsAssignableFrom(property.PropertyType)
                                       select property).FirstOrDefault();
-                if (targetProperty != null)
-                    pathExpression = string.Format("{0}.{1}", targetProperty.Name, pathExpression);
+                pathExpression = string.Format("{0}.{1}", 
+                    targetProperty != null ? targetProperty.Name : typeof(T).Name, pathExpression);
                 _expands.Add(pathExpression);
             }
         	return this;

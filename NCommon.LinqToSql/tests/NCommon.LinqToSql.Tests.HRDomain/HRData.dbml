@@ -1,41 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="DevelopmentDB" Class="HRDataDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=(local);Initial Catalog=DevelopmentDB;Integrated Security=True" SettingsObjectName="NCommon.Data.LinqToSql.Tests.HRDomain.Properties.Settings" SettingsPropertyName="DevelopmentDBConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.Employees" Member="Employees">
-    <Type Name="Employee">
+  <Table Name="dbo.SalesPerson" Member="SalesPersons">
+    <Type Name="SalesPerson">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="FirstName" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
       <Column Name="LastName" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Column Name="Type" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
+      <Column Name="SalesQuota" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Column Name="SalesYTD" Type="System.Decimal" DbType="Decimal(19,5)" CanBeNull="true" />
       <Column Name="DepartmentId" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="ManagerId" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Association Name="Employee_Employee" Member="Employees" ThisKey="Id" OtherKey="ManagerId" Type="Employee" />
-      <Association Name="Employee_SalesManager" Member="SalesManager" ThisKey="Id" OtherKey="Employee_id" Type="SalesManager" Cardinality="One" />
-      <Association Name="Employee_SalesPerson" Member="SalesPerson" ThisKey="Id" OtherKey="Employee_id" Type="SalesPerson" Cardinality="One" />
-      <Association Name="Employee_Employee" Member="Employee1" ThisKey="ManagerId" OtherKey="Id" Type="Employee" IsForeignKey="true" />
-      <Association Name="Department_Employee" Member="Department" ThisKey="DepartmentId" OtherKey="Id" Type="Department" IsForeignKey="true" />
+      <Column Name="TerritoryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Department_SalesPerson" Member="Department" ThisKey="DepartmentId" OtherKey="Id" Type="Department" IsForeignKey="true" />
+      <Association Name="SalesTerritory_SalesPerson" Member="SalesTerritory" ThisKey="TerritoryId" OtherKey="Id" Type="SalesTerritory" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Departments" Member="Departments">
     <Type Name="Department">
       <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="Name" Type="System.String" DbType="NVarChar(255)" CanBeNull="true" />
-      <Association Name="Department_Employee" Member="Employees" ThisKey="Id" OtherKey="DepartmentId" Type="Employee" />
-    </Type>
-  </Table>
-  <Table Name="dbo.SalesManager" Member="SalesManagers">
-    <Type Name="SalesManager">
-      <Column Name="Employee_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Association Name="Employee_SalesManager" Member="Employee" ThisKey="Employee_id" OtherKey="Id" Type="Employee" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.SalesPerson" Member="SalesPersons">
-    <Type Name="SalesPerson">
-      <Column Name="Employee_id" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="SalesQuota" Type="System.Single" DbType="Real" CanBeNull="true" />
-      <Column Name="SalesYTD" Type="System.Decimal" DbType="Decimal(19,5)" CanBeNull="true" />
-      <Column Name="TerritoryId" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Association Name="Employee_SalesPerson" Member="Employee" ThisKey="Employee_id" OtherKey="Id" Type="Employee" IsForeignKey="true" />
-      <Association Name="SalesTerritory_SalesPerson" Member="SalesTerritory" ThisKey="TerritoryId" OtherKey="Id" Type="SalesTerritory" IsForeignKey="true" />
+      <Association Name="Department_SalesPerson" Member="SalesPersons" ThisKey="Id" OtherKey="DepartmentId" Type="SalesPerson" />
     </Type>
   </Table>
   <Table Name="dbo.SalesTerritory" Member="SalesTerritories">
