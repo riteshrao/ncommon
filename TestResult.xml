@@ -1,100 +1,71 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--This file represents the results of running a test suite-->
-<test-results name="C:\Development\Personal\ncommon\build\\NCommon.NHibernate.Tests.dll" total="56" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2010-03-16" time="15:18:20">
+<test-results name="C:\Development\Personal\ncommon\build\\NCommon.NHibernate.Tests.dll" total="35" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2010-03-30" time="10:37:27">
   <environment nunit-version="2.5.3.9345" clr-version="2.0.50727.4927" os-version="Microsoft Windows NT 6.1.7600.0" platform="Win32NT" cwd="C:\Development\Personal\ncommon" machine-name="PHOENIX" user="Ritesh" user-domain="Phoenix" />
   <culture-info current-culture="en-US" current-uiculture="en-US" />
-  <test-suite name="C:\Development\Personal\ncommon\build\\NCommon.NHibernate.Tests.dll" executed="True" success="True" time="6.970" asserts="0">
+  <test-suite name="C:\Development\Personal\ncommon\build\\NCommon.NHibernate.Tests.dll" executed="True" success="True" time="9.086" asserts="0">
     <results>
-      <test-suite name="NCommon" executed="True" success="True" time="6.967" asserts="0">
+      <test-suite name="NCommon" executed="True" success="True" time="9.071" asserts="0">
         <results>
-          <test-suite name="Data" executed="True" success="True" time="6.966" asserts="0">
+          <test-suite name="Data" executed="True" success="True" time="9.071" asserts="0">
             <results>
-              <test-suite name="NHibernate" executed="True" success="True" time="6.966" asserts="0">
+              <test-suite name="NHibernate" executed="True" success="True" time="9.071" asserts="0">
                 <results>
-                  <test-suite name="Tests" executed="True" success="True" time="6.966" asserts="0">
+                  <test-suite name="Tests" executed="True" success="True" time="9.069" asserts="0">
                     <results>
-                      <test-suite name="CompositeUserTypeBaseTests" executed="True" success="True" time="5.062" asserts="0">
+                      <test-suite name="NHRepositoryQueryTests" executed="True" success="True" time="8.198" asserts="0">
                         <results>
-                          <test-case name="NCommon.Data.NHibernate.Tests.CompositeUserTypeBaseTests.Test_Can_Get_MonthlySalesSummary_With_Money_Type" executed="True" success="True" time="0.367" asserts="6" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.CompositeUserTypeBaseTests.Test_Can_Query_MonthlySalesSummary_Based_On_Currency" executed="True" success="True" time="0.016" asserts="6" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.CompositeUserTypeBaseTests.Test_Updating_Money_Amount_Updates_Amount_In_Store_And_Returns_Updated_Figure" executed="True" success="True" time="0.038" asserts="1" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryQueryTests.can_attach" executed="True" success="True" time="0.423" asserts="2" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryQueryTests.can_delete" executed="True" success="True" time="0.122" asserts="2" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryQueryTests.can_detach" executed="True" success="True" time="0.018" asserts="1" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryQueryTests.can_eager_fetch_using_fetching_strategy" executed="True" success="True" time="0.314" asserts="4" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryQueryTests.can_eager_fetch_using_with" executed="True" success="True" time="0.015" asserts="2" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryQueryTests.can_lazyload" executed="True" success="True" time="0.027" asserts="3" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryQueryTests.can_modify" executed="True" success="True" time="0.013" asserts="1" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryQueryTests.can_perform_simple_query" executed="True" success="True" time="0.008" asserts="2" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryQueryTests.can_query_multiple_databases" executed="True" success="True" time="2.099" asserts="2" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryQueryTests.can_query_using_specification" executed="True" success="True" time="0.103" asserts="2" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryQueryTests.can_save" executed="True" success="True" time="0.007" asserts="3" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryQueryTests.lazyloading_when_outside_scope_throws" executed="True" success="True" time="0.114" asserts="3" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryQueryTests.query_using_orderby_in_specification_works" executed="True" success="True" time="0.058" asserts="3" />
                         </results>
                       </test-suite>
-                      <test-suite name="NHRepositoryTests" executed="True" success="True" time="1.084" asserts="0">
+                      <test-suite name="NHRepositoryTransactionTests" executed="True" success="True" time="0.427" asserts="0">
                         <results>
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTests.can_query_multiple_data_sources" executed="True" success="True" time="0.076" asserts="2" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTests.Delete_Deletes_Record" executed="True" success="True" time="0.043" asserts="3" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTests.Nested_UnitOfWork_With_Different_Transaction_Compatibility_Works" executed="True" success="True" time="0.202" asserts="3" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTests.Query_Allows_Eger_Loading_Using_With" executed="True" success="True" time="0.025" asserts="1" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTests.Query_Allows_Lazy_Load_While_UnitOfWork_Still_Running" executed="True" success="True" time="0.015" asserts="2" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTests.Query_Allows_Projection_Using_Select_Projection" executed="True" success="True" time="0.034" asserts="2" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTests.Query_Throws_Exception_When_LazyLoading_After_UnitOfWork_Is_Finished" executed="True" success="True" time="0.062" asserts="3" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTests.Query_Using_OrderBy_With_QueryMethod_Returns_Matched_Records_Only" executed="True" success="True" time="0.065" asserts="2" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTests.Query_Using_QueryMethod_Returns_Matched_Records_Only" executed="True" success="True" time="0.050" asserts="2" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTests.Query_Using_Specifications_With_Closure_Works" executed="True" success="True" time="0.063" asserts="5" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTests.Query_With_Incompatible_UnitOfWork_Throws_InvalidOperationException" executed="True" success="True" time="0.026" asserts="1" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTests.Query_With_No_UnitOfWork_Throws_InvalidOperationException" executed="True" success="True" time="0.001" asserts="1" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTests.Repository_For_Uses_Registered_Fetching_Strategies" executed="True" success="True" time="0.058" asserts="30" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTests.Save_Does_Not_Save_New_Customer_When_UnitOfWork_Is_Aborted" executed="True" success="True" time="0.011" asserts="2" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTests.Save_New_Customer_Saves_Customer_When_UnitOfWork_Is_Committed" executed="True" success="True" time="0.013" asserts="4" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTests.Save_Updates_Existing_Order_Record" executed="True" success="True" time="0.015" asserts="6" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTests.UnitOfWork_Rolledback_When_Containing_TransactionScope_Is_Rolledback" executed="True" success="True" time="0.053" asserts="1" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTests.When_Calling_CalculateTotal_On_Order_Returns_Valid_When_Under_UnitOfWork" executed="True" success="True" time="0.036" asserts="1" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTests.When_Calling_CalculateTotal_On_Order_Returns_Valid_With_No_UnitOfWork_Throws" executed="True" success="True" time="0.042" asserts="1" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTests.When_No_FetchingStrategy_Registered_For_Makes_No_Changes" executed="True" success="True" time="0.011" asserts="1" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTransactionTests.can_commit" executed="True" success="True" time="0.019" asserts="2" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTransactionTests.can_commit_multiple_db_operations" executed="True" success="True" time="0.018" asserts="4" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTransactionTests.can_rollback" executed="True" success="True" time="0.009" asserts="1" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTransactionTests.can_rollback_multipe_db_operations" executed="True" success="True" time="0.008" asserts="2" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTransactionTests.commit_throws_when_child_scope_rollsback" executed="True" success="True" time="0.007" asserts="1" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTransactionTests.nested_commit_with_seperate_transaction_commits_when_wrapping_scope_rollsback" executed="True" success="True" time="0.016" asserts="3" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTransactionTests.nested_commit_works" executed="True" success="True" time="0.009" asserts="4" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHRepositoryTransactionTests.nested_rollback_works" executed="True" success="True" time="0.004" asserts="2" />
                         </results>
                       </test-suite>
-                      <test-suite name="NHSessionResolverTests" executed="True" success="True" time="0.131" asserts="0">
+                      <test-suite name="NHSessionResolverTests" executed="True" success="True" time="0.128" asserts="0">
                         <results>
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHSessionResolverTests.GetSessionFactoryFor_returns_hr_factory_when_requested_for_Employee" executed="True" success="True" time="0.001" asserts="2" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHSessionResolverTests.GetSessionFactoryFor_returns_orders_factory_when_requested_for_customer" executed="True" success="True" time="0.000" asserts="2" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHSessionResolverTests.GetSessionFactoryFor_returns_hr_factory_when_requested_for_Employee" executed="True" success="True" time="0.002" asserts="2" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHSessionResolverTests.GetSessionFactoryFor_returns_orders_factory_when_requested_for_customer" executed="True" success="True" time="0.001" asserts="2" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHSessionResolverTests.GetSessionKeyFor_returns_same_key_for_types_handled_by_the_same_factory" executed="True" success="True" time="0.001" asserts="1" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHSessionResolverTests.GetSessionKeyFor_throws_ArgumentException_when_no_factory_is_registered_to_handle_specified_type" executed="True" success="True" time="0.001" asserts="1" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHSessionResolverTests.RegisterSessionFactoryProvider_throws_ArgumentNullException_when_provider_is_null" executed="True" success="True" time="0.000" asserts="1" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHSessionResolverTests.SessionFactoriesRegistered_returns_correct_count" executed="True" success="True" time="0.001" asserts="1" />
                         </results>
                       </test-suite>
-                      <test-suite name="NHTransactionTests" executed="True" success="True" time="0.056" asserts="0">
+                      <test-suite name="NHUnitOfWorkFactoryTests" executed="True" success="True" time="0.106" asserts="0">
                         <results>
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHTransactionTests.Commit_commits_all_NHibernate_transactions_handled_by_NHTransaction" executed="True" success="True" time="0.048" asserts="0" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHTransactionTests.Commit_Raises_TransactionComitted_Event" executed="True" success="True" time="0.001" asserts="2" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHTransactionTests.Dispose_calls_dispose_on_all_NHibernate_transactions_handled_by_NHTransaction" executed="True" success="True" time="0.002" asserts="0" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHTransactionTests.Rollback_Raises_RollbackComitted_Event" executed="True" success="True" time="0.001" asserts="2" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHTransactionTests.Rollback_rollsback_all_NHibernate_transactions_handled_by_NHTransaction" executed="True" success="True" time="0.001" asserts="0" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkFactoryTests.Create_Returns_NHUnitOfWork_Instance_When_SessionFactoryProvider_Has_Been_Set" executed="True" success="True" time="0.105" asserts="2" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkFactoryTests.Create_Throws_InvalidOperationException_When_No_SessionFactoryProvider_Has_Been_Set" executed="True" success="True" time="0.001" asserts="1" />
                         </results>
                       </test-suite>
-                      <test-suite name="NHUnitOfWorkFactoryTests" executed="True" success="True" time="0.115" asserts="0">
+                      <test-suite name="NHUnitOfWorkTests" executed="True" success="True" time="0.201" asserts="0">
                         <results>
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkFactoryTests.Create_Returns_NHUnitOfWork_Instance_When_SessionFactoryProvider_Has_Been_Set" executed="True" success="True" time="0.113" asserts="2" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkFactoryTests.Create_Throws_InvalidOperationException_When_No_SessionFactoryProvider_Has_Been_Set" executed="True" success="True" time="0.000" asserts="1" />
-                        </results>
-                      </test-suite>
-                      <test-suite name="NHUnitOfWorkTests" executed="True" success="True" time="0.214" asserts="0">
-                        <results>
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTests.Begin_Transaction_Should_Start_A_New_Transaction_With_Default_IsolationLevel" executed="True" success="True" time="0.000" asserts="1" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTests.BeginTransaction_calls_BeginTransaction_on_sessions_already_opened" executed="True" success="True" time="0.157" asserts="0" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTests.BeginTransaction_Should_Start_A_New_Transaction_With_Specified_IsolatinLevel" executed="True" success="True" time="0.000" asserts="2" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTests.BeginTransaction_Throws_InvalidOperationException_When_Transaction_Already_Running" executed="True" success="True" time="0.000" asserts="1" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTests.Comitting_Transaction_Releases_Transaction_From_UnitOfWork" executed="True" success="True" time="0.003" asserts="1" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTests.Ctor_Throws_ArgumentNullException_When_Settings_Parameter_Is_Null" executed="True" success="True" time="0.001" asserts="1" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTests.disposing_NHUnitOfWork_disposes_off_open_transactions_and_open_sessions" executed="True" success="True" time="0.010" asserts="1" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTests.Flush_Calls_Underlying_ISession_Flush" executed="True" success="True" time="0.003" asserts="0" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTests.GetSession_calls_BeginSession_on_session_being_opened_if_transaction_has_already_started" executed="True" success="True" time="0.003" asserts="0" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTests.GetSession_returns_same_session_instance_once_opened" executed="True" success="True" time="0.004" asserts="3" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTests.GetSession_returns_seperate_session_instances_for_different_types" executed="True" success="True" time="0.003" asserts="3" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTests.GetSession_returns_session_from_session_resolver" executed="True" success="True" time="0.002" asserts="1" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTests.IsInTransaction_Should_Return_False_When_No_Transaction_Exists" executed="True" success="True" time="0.001" asserts="1" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTests.Rollback_Transaction_Releases_Transaction_From_UnitOfWork" executed="True" success="True" time="0.003" asserts="1" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTests.TransactionalFlush_Rollsback_Transaction_When_TransactionalFlush_Throws_Exception" executed="True" success="True" time="0.007" asserts="1" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTests.TransactionalFlush_Starts_A_Transaction_With_Default_Isolation_And_Commits_When_Flush_Succeeds" executed="True" success="True" time="0.003" asserts="0" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTests.TransactionalFlush_Starts_A_Transaction_With_Specified_IsolationLevel_And_Commits_When_Flush_Succeeds" executed="True" success="True" time="0.003" asserts="0" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTests.TransactionalFlush_Uses_Existing_Transaction_When_Transactional_AlreadyRunning" executed="True" success="True" time="0.004" asserts="0" />
-                        </results>
-                      </test-suite>
-                      <test-suite name="NHUnitOfWorkTransactionTests" executed="True" success="True" time="0.292" asserts="0">
-                        <results>
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTransactionTests.changes_are_not_persisted_when_ambient_transaction_rolls_back" executed="True" success="True" time="0.011" asserts="1" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTransactionTests.changes_are_persisted_when_ambient_scope_is_committed" executed="True" success="True" time="0.022" asserts="1" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTransactionTests.NHUOW_Issue_6_Replication" executed="True" success="True" time="0.018" asserts="1" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTransactionTests.rolling_back_scope_rollsback_everything_for_all_managed_sessions" executed="True" success="True" time="0.010" asserts="2" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTransactionTests.when_ambient_transaction_is_running_and_a_previous_scope_rollsback_new_scope_still_works" executed="True" success="True" time="0.025" asserts="2" />
-                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTransactionTests.when_ambient_transaction_is_running_multiple_scopes_work" executed="True" success="True" time="0.016" asserts="1" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTests.ctor_throws_ArgumentNullException_when_sessionResolver_parameter_is_null" executed="True" success="True" time="0.000" asserts="1" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTests.Dispose_disposes_all_open_ISession_instances" executed="True" success="True" time="0.182" asserts="0" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTests.Flush_calls_flush_on_all_open_ISession_instances" executed="True" success="True" time="0.005" asserts="0" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTests.GetSessionFor_returns_different_session_for_types_handled_by_different_factory" executed="True" success="True" time="0.006" asserts="1" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTests.GetSessionFor_returns_same_session_for_types_handled_by_same_factory" executed="True" success="True" time="0.004" asserts="1" />
+                          <test-case name="NCommon.Data.NHibernate.Tests.NHUnitOfWorkTests.GetSessionFor_returns_session_for_type" executed="True" success="True" time="0.001" asserts="1" />
                         </results>
                       </test-suite>
                     </results>

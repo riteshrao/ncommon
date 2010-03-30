@@ -6,6 +6,7 @@ using NCommon.Extensions;
 using NCommon.Specifications;
 using NHibernate;
 using NHibernate.Criterion;
+using NHibernate.Linq;
 using NUnit.Framework;
 using Rhino.Mocks;
 using Order = NCommon.Data.NHibernate.Tests.OrdersDomain.Order;
@@ -350,6 +351,34 @@ namespace NCommon.Data.NHibernate.Tests
 
                     Assert.That(savedCustomer, Is.Not.Null);
                     Assert.That(savedPerson, Is.Not.Null);
+                    scope.Commit();
+                }
+            }
+        }
+
+        [Test]
+        public void query_using_orderby_in_specification_works()
+        {
+            using (var testData = new NHTestData(OrdersDomainFactory.OpenSession()))
+            {
+                testData.Batch(actions =>
+                {
+                    actions.CreateOrdersForCustomers(actions.CreateCustomersInState("PA", 2));
+                    actions.CreateOrdersForCustomers(actions.CreateCustomersInState("DE", 5));
+                    actions.CreateOrdersForCustomers(actions.CreateCustomersInState("LA", 3));
+                });
+
+                var customersInPA = new Specification<Order>(x => x.Customer.Address.State == "PA");
+                using (var scope = new UnitOfWorkScope())
+                {
+                    var ordersRepository = new NHRepository<Order>();
+                    var results = from order in ordersRepository.Query(customersInPA)
+                                  orderby order.OrderDate
+                                  select order;
+
+                    Assert.That(results, Is.Not.Empty);
+                    Assert.That(results.Count(), Is.GreaterThan(0));
+                    Assert.That(results.Count(), Is.EqualTo(2));
                     scope.Commit();
                 }
             }

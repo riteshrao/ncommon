@@ -63,7 +63,6 @@ namespace NCommon.Data.NHibernate.Tests
             UnitOfWorkConfiguration.DefaultIsolation = IsolationLevel.ReadCommitted;
 
             ServiceLocator.SetLocatorProvider(() => Locator);
-            HibernatingRhinos.Profiler.Appender.NHibernate.NHibernateProfiler.Initialize();
         }
 
         [SetUp]

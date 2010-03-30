@@ -129,6 +129,7 @@ namespace NCommon.Data.EntityFramework.Tests
             var context = OrdersContextProvider() as OrderEntities;
             context.AddToCustomers(customer);
             context.SaveChanges(true);
+            context.Detach(customer);
             context.Dispose(); //Auto detach
 
             using (var scope = new UnitOfWorkScope())

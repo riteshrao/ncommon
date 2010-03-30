@@ -266,7 +266,7 @@ namespace NCommon.Data.Db4o.Tests
             });
         }
 
-        [Test]
+        [Test, Ignore("Db40 does not support ambient transactions yet.")]
         public void Save_Does_Not_Save_New_Customer_When_UnitOfWork_Is_Aborted()
         {
             var rnd = new Random();
