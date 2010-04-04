@@ -108,16 +108,33 @@ namespace NCommon.Configuration
             return this;
         }
 
-        ///<summary>
-        /// Configures default UnitOfWork settings for NCommon.
-        ///</summary>
-        ///<param name="actions"></param>
-        ///<returns></returns>
-        public INCommonConfig ConfigureUnitOfWork(Action<IUnitOfWorkConfiguration> actions)
+        /// <summary>
+        /// Configures NCommon unit of work settings.
+        /// </summary>
+        /// <typeparam name="T">A <see cref="IUnitOfWorkConfiguration"/> type that can be used to configure
+        /// unit of work settings.</typeparam>
+        /// <returns><see cref="INCommonConfig"/></returns>
+        public INCommonConfig ConfigureUnitOfWork<T> () where T : IUnitOfWorkConfiguration, new()
         {
-            var unitOfWorkConfiguration = new UnitOfWorkConfiguration();
-            actions(unitOfWorkConfiguration);
-            unitOfWorkConfiguration.Configure(_containerAdapter);
+            var uowConfiguration = (T) Activator.CreateInstance(typeof (T));
+            uowConfiguration.Configure(_containerAdapter);
+            return this;
+        }
+
+
+        ///<summary>
+        /// Configures NCommon unit of work settings.
+        ///</summary>
+        /// <typeparam name="T">A <see cref="INCommonConfig"/> type that can be used to configure
+        /// unit of work settings.</typeparam>
+        ///<param name="actions">An <see cref="Action{T}"/> delegate that can be used to perform
+        /// custom actions on the <see cref="IUnitOfWorkConfiguration"/> instance.</param>
+        ///<returns><see cref="INCommonConfig"/></returns>
+        public INCommonConfig ConfigureUnitOfWork<T>(Action<T> actions) where T : IUnitOfWorkConfiguration, new()
+        {
+            var uowConfiguration = (T) Activator.CreateInstance(typeof (T));
+            actions(uowConfiguration);
+            uowConfiguration.Configure(_containerAdapter);
             return this;
         }
     }

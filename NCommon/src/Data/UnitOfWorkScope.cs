@@ -128,7 +128,7 @@ namespace NCommon.Data
             {
                 try
                 {
-                    if (!_commitAttempted && !_completed && UnitOfWorkConfiguration.AutoCompleteScope)
+                    if (!_commitAttempted && !_completed && UnitOfWorkSettings.AutoCompleteScope)
                         OnCommit();
                     else
                         OnRollback();

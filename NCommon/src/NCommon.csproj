@@ -94,11 +94,12 @@
     <Compile Include="Context\IOperationContext.cs" />
     <Compile Include="Context\IServiceHost.cs" />
     <Compile Include="Data\IFetchingStrategy.cs" />
+    <Compile Include="Data\Impl\UnitOfWorkSettings.cs" />
     <Compile Include="Data\Impl\UnitOfWorkTransaction.cs" />
     <Compile Include="Data\Impl\TransactionManager.cs" />
     <Compile Include="Data\InMemoryRepository.cs" />
     <Compile Include="Data\Impl\TransactionScopeHelper.cs" />
-    <Compile Include="Data\Impl\UnitOfWorkConfiguration.cs" />
+    <Compile Include="Configuration\DefaultUnitOfWorkConfiguration.cs" />
     <Compile Include="Data\ITransactionManager.cs" />
     <Compile Include="Data\IUnitOfWorkScope.cs" />
     <Compile Include="Data\UnitOfWorkManager.cs" />

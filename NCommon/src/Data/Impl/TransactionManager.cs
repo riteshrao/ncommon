@@ -49,8 +49,8 @@ namespace NCommon.Data.Impl
             {
                 TransactionScope txScope = null;
                 txScope = newTransaction 
-                    ? TransactionScopeHelper.CreateNewScope(UnitOfWorkConfiguration.DefaultIsolation) 
-                    : TransactionScopeHelper.CreateScope(UnitOfWorkConfiguration.DefaultIsolation);
+                    ? TransactionScopeHelper.CreateNewScope(UnitOfWorkSettings.DefaultIsolation) 
+                    : TransactionScopeHelper.CreateScope(UnitOfWorkSettings.DefaultIsolation);
 
                 var unitOfWork = uowFactory.Create();
                 var transaction = new UnitOfWorkTransaction(unitOfWork, txScope);

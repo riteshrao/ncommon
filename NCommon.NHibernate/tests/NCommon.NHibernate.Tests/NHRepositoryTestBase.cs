@@ -60,7 +60,7 @@ namespace NCommon.Data.NHibernate.Tests
             Locator = MockRepository.GenerateStub<IServiceLocator>();
             Locator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(UnitOfWorkFactory);
             Locator.Stub(x => x.GetInstance<IState>()).Do(new Func<IState>(() => State));
-            UnitOfWorkConfiguration.DefaultIsolation = IsolationLevel.ReadCommitted;
+            UnitOfWorkSettings.DefaultIsolation = IsolationLevel.ReadCommitted;
 
             ServiceLocator.SetLocatorProvider(() => Locator);
         }
