@@ -30,6 +30,7 @@ namespace NCommon.State
         /// <param name="key">An object representing the unique key with which the data was stored.</param>
         /// <returns>An instance of <typeparamref name="T"/> or null if not found.</returns>
         T Get<T>(object key);
+
         /// <summary>
         /// Puts state data into the cache state with the specified key with no expiration.
         /// </summary>
@@ -37,6 +38,7 @@ namespace NCommon.State
         /// <param name="key">An object representing the unique key with which the data is stored.</param>
         /// <param name="instance">An instance of <typeparamref name="T"/> to store.</param>
         void Put<T>(object key, T instance);
+
         /// <summary>
         /// Puts state data into the cache state with the specified key with the specified absolute expiration.
         /// </summary>
@@ -45,6 +47,7 @@ namespace NCommon.State
         /// <param name="instance">An instance of <typeparamref name="T"/> to store.</param>
         /// <param name="absoluteExpiration">The date and time when the absolute data from the cache will be removed.</param>
         void Put<T>(object key, T instance, DateTime absoluteExpiration);
+
         /// <summary>
         /// Puts state data into the cache state with the specified key with the specified sliding expiration
         /// </summary>
@@ -53,6 +56,7 @@ namespace NCommon.State
         /// <param name="instance">An instance of <typeparamref name="T"/> to store.</param>
         /// <param name="slidingExpiration">A <see cref="TimeSpan"/> specifying the sliding expiration policy.</param>
         void Put<T>(object key, T instance, TimeSpan slidingExpiration);
+
         /// <summary>
         /// Removes state data stored in the cache state with the specified key.
         /// </summary>

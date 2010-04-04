@@ -30,7 +30,7 @@ namespace NCommon
         /// <param name="containerAdapter">The <see cref="IContainerAdapter"/> instance to use
         /// for component registration.</param>
         /// <returns>An instance of <see cref="INCommonConfig"/> that can be used to configure
-        /// NCommon configuration.</returns>
+        /// NCommon configuration.</returns> 
         public static INCommonConfig Using(IContainerAdapter containerAdapter)
         {
             Guard.Against<ArgumentNullException>(containerAdapter == null,

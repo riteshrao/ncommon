@@ -10,6 +10,9 @@ namespace NCommon.Configuration
     ///</summary>
     public class DefaultUnitOfWorkConfiguration : IUnitOfWorkConfiguration
     {
+        bool _autoCompleteScope = false;
+        IsolationLevel _defaultIsolation = IsolationLevel.ReadCommitted;
+
         /// <summary>
         /// Configures <see cref="UnitOfWorkScope"/> settings.
         /// </summary>
@@ -17,25 +20,27 @@ namespace NCommon.Configuration
         public void Configure(IContainerAdapter containerAdapter)
         {
             containerAdapter.Register<ITransactionManager, TransactionManager>();
+            UnitOfWorkSettings.AutoCompleteScope = _autoCompleteScope;
+            UnitOfWorkSettings.DefaultIsolation = _defaultIsolation;
         }
 
         /// <summary>
-        /// Gets or sets a boolean value indicating weather <see cref="UnitOfWorkScope"/>
-        /// instances should auto-complete the scope when disposing.
+        /// Sets <see cref="UnitOfWorkScope"/> instances to auto complete when disposed.
         /// </summary>
-        public bool AutoCompleteScope
+        public IUnitOfWorkConfiguration AutoCompleteScope()
         {
-            get { return UnitOfWorkSettings.AutoCompleteScope; }
-            set { UnitOfWorkSettings.AutoCompleteScope = value; }
+            _autoCompleteScope = true;
+            return this;
         }
 
         /// <summary>
-        /// Sets the default <see cref="IsolationLevel"/> that <see cref="UnitOfWorkScope"/> instances.
+        /// Sets the default isolation level used by <see cref="UnitOfWorkScope"/>.
         /// </summary>
-        public IsolationLevel DefaultIsolation
+        /// <param name="isolationLevel"></param>
+        public IUnitOfWorkConfiguration WithDefaultIsolation(IsolationLevel isolationLevel)
         {
-            get { return UnitOfWorkSettings.DefaultIsolation; }
-            set { UnitOfWorkSettings.DefaultIsolation = value; }
+            _defaultIsolation = isolationLevel;
+            return this;
         }
     }
 }
