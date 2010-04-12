@@ -98,23 +98,16 @@ namespace NCommon.Data
 			return;
 		}
 
-        /// <summary>
-        /// Instructs the repository to eager load a child entities. 
-        /// </summary>
-        /// <param name="path">The path of the child entities to eager load.</param>
-        public override IRepository<TEntity> With(Expression<Func<TEntity, object>> path)
-		{
-			return this;
-		}
 
         /// <summary>
-        /// Instructs the repository to eager load entities that may be in the repository's association path.
+        /// When overriden by inheriting classes, applies the fetching strategies on the repository.
         /// </summary>
-        /// <param name="path">The path of the child entities to eager load.</param>
-		public override IRepository<TEntity> With<T>(Expression<Func<T, object>> path)
-		{
-			return this;
-		}
+        /// <param name="paths">An array of <see cref="Expression"/> containing the paths to
+        /// eagerly fetch.</param>
+        protected override void ApplyFetchingStrategy(Expression[] paths)
+        {
+            return;
+        }
 
         /// <summary>
         /// Instructs the repository to cache the following query.

@@ -29,14 +29,15 @@ namespace NCommon.Expressions
     public class MemberAccessPathVisitor : ExpressionVisitor
     {
         //StringBuilder instance that will store the path.
-        private readonly Stack<string> _path = new Stack<string>();
+        private readonly LinkedList<string> _path = new LinkedList<string>();
 
         /// <summary>
         /// Gets the path analyzed by the visitor.
         /// </summary>
         public string Path
         {
-            get {
+            get 
+            {
                 var pathString = new StringBuilder();
                 foreach (string path in _path)
                 {
@@ -58,8 +59,8 @@ namespace NCommon.Expressions
         {
             if (methodExp.Member.MemberType != MemberTypes.Field && methodExp.Member.MemberType != MemberTypes.Property)
                 throw new NotSupportedException("MemberAccessPathVisitor does not support a member access of type " +
-                                                methodExp.Member.MemberType.ToString());
-            _path.Push(methodExp.Member.Name);
+                                                methodExp.Member.MemberType);
+            _path.AddFirst(methodExp.Member.Name);
             return base.VisitMemberAccess(methodExp);
         }
 

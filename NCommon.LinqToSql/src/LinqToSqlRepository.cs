@@ -18,6 +18,7 @@ using System;
 using System.Data.Linq;
 using System.Linq;
 using System.Linq.Expressions;
+using NCommon.Extensions;
 using Microsoft.Practices.ServiceLocation;
 
 namespace NCommon.Data.LinqToSql
@@ -137,28 +138,40 @@ namespace NCommon.Data.LinqToSql
             DataContext.Refresh(RefreshMode.OverwriteCurrentValues, entity);
         }
 
-        /// <summary>
-        /// Instructs the repository to eager load a child entities. 
-        /// </summary>
-        /// <param name="path">The path of the child entities to eager load.</param>
-        /// <remarks>Implementors should throw a <see cref="NotSupportedException"/> if the underling provider
-        /// does not support eager loading of entities</remarks>
-        public override IRepository<TEntity> With(Expression<Func<TEntity, object>> path)
-        {
-            return With<TEntity>(path);
-        }
+        ///// <summary>
+        ///// Instructs the repository to eager load a child entities. 
+        ///// </summary>
+        ///// <param name="path">The path of the child entities to eager load.</param>
+        ///// <remarks>Implementors should throw a <see cref="NotSupportedException"/> if the underling provider
+        ///// does not support eager loading of entities</remarks>
+        //public override IRepository<TEntity> With(Expression<Func<TEntity, object>> path)
+        //{
+        //    return With<TEntity>(path);
+        //}
 
-        /// <summary>
-        /// Instructs the repository to eager load entities that may be in the repository's association path.
-        /// </summary>
-        /// <param name="path">The path of the child entities to eager load.</param>
-        /// <remarks>Implementors should throw a <see cref="NotSupportedException"/> if the underling provider
-        /// does not support eager loading of entities</remarks>
-		public override IRepository<TEntity> With<T>(Expression<Func<T, object>> path)
+        ///// <summary>
+        ///// Instructs the repository to eager load entities that may be in the repository's association path.
+        ///// </summary>
+        ///// <param name="path">The path of the child entities to eager load.</param>
+        ///// <remarks>Implementors should throw a <see cref="NotSupportedException"/> if the underling provider
+        ///// does not support eager loading of entities</remarks>
+        //public override IRepository<TEntity> With<T>(Expression<Func<T, object>> path)
+        //{
+        //    Guard.Against<ArgumentNullException>(path == null, "Expected a non null valid path expression.");
+        //    _loadOptions.LoadWith(path);
+        //    return this;
+        //}
+
+        protected override void ApplyFetchingStrategy(Expression[] paths)
         {
-            Guard.Against<ArgumentNullException>(path == null, "Expected a non null valid path expression.");
-            _loadOptions.LoadWith(path);
-        	return this;
+            Guard.Against<ArgumentNullException>(paths == null || paths.Length == 0,
+                                                 "Expected a non-null and non-empty array of Expression instances " +
+                                                 "representing the paths to eagerly load.");
+
+            paths.ForEach(path =>
+            {
+                _loadOptions.LoadWith(path as LambdaExpression);
+            });
         }
 
 		/// <summary>

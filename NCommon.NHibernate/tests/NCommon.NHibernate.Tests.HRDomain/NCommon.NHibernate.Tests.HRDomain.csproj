@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{0CB980C0-269C-4A52-9E15-1226B343AD5E}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -31,23 +31,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core">
-      <HintPath>..\..\..\Libs\Castle.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Castle.DynamicProxy2">
-      <HintPath>..\..\..\Libs\Castle.DynamicProxy2.dll</HintPath>
-    </Reference>
     <Reference Include="FluentNHibernate">
-      <HintPath>..\NCommon.NHibernate.Tests\bin\Debug\FluentNHibernate.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation">
-      <HintPath>..\..\..\Libs\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <HintPath>..\..\..\Libs\NHibernate\2.1.2-GA\FluentNHibernate.dll</HintPath>
     </Reference>
     <Reference Include="NHibernate">
-      <HintPath>..\..\..\Libs\NHibernate.dll</HintPath>
-    </Reference>
-    <Reference Include="NHibernate.ByteCode.Castle">
-      <HintPath>..\..\..\Libs\NHibernate.ByteCode.Castle.dll</HintPath>
+      <HintPath>..\..\..\Libs\NHibernate\2.1.2-GA\NHibernate.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=2.5.3.9345, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
     <Reference Include="System" />

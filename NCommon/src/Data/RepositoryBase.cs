@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.Practices.ServiceLocation;
+using NCommon.Data.Language;
 using NCommon.Extensions;
 using NCommon.Specifications;
 
@@ -153,15 +154,44 @@ namespace NCommon.Data
         /// Instructs the repository to eager load a child entities. 
         /// </summary>
         /// <param name="path">The path of the child entities to eager load.</param>
-        public abstract IRepository<TEntity> With(Expression<Func<TEntity, object>> path);
+        public IRepository<TEntity> With(Expression<Func<TEntity, object>> path)
+        {
+            ApplyFetchingStrategy(new[]{path});
+            return this;
+        }
 
         /// <summary>
         /// Instructs the repository to eager load entities that may be in the repository's association path.
         /// </summary>
         /// <param name="path">The path of the child entities to eager load.</param>
-		public abstract IRepository<TEntity> With<T>(Expression<Func<T, object>> path);
+		public IRepository<TEntity> With<T>(Expression<Func<T, object>> path)
+        {
+            ApplyFetchingStrategy(new[] { path });
+            return this;    
+        }
 
-		/// <summary>
+        /// <summary>
+        /// Eagerly fetch associations on the entity.
+        /// </summary>
+        /// <param name="strategyActions">An <see cref="Action{RepositoryEagerFetchingStrategy}"/> delegate
+        /// that specifies the eager fetching paths.</param>
+        /// <returns>The <see cref="IRepository{TEntity}"/> instance.</returns>
+        public IRepository<TEntity> Eagerly(Action<RepositoryEagerFetchingStrategy<TEntity>> strategyActions)
+        {
+            var strategy = new RepositoryEagerFetchingStrategy<TEntity>();
+            strategyActions(strategy);
+            ApplyFetchingStrategy(strategy.Paths.ToArray());
+            return this;
+        }
+
+        /// <summary>
+        /// When overriden by inheriting classes, applies the fetching strategies on the repository.
+        /// </summary>
+        /// <param name="paths">An array of <see cref="Expression"/> containing the paths to
+        /// eagerly fetch.</param>
+        protected abstract void ApplyFetchingStrategy(Expression[] paths);
+
+        /// <summary>
 		/// Instructs the repository to cache the following query.
 		/// </summary>
 		/// <param name="cachedQueryName">string. The name to give to the cached query.</param>

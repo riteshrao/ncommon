@@ -98,28 +98,9 @@ namespace NCommon.Data.Db4o
             ObjectContainer.Ext().Refresh(entity, 0);
         }
 
-        /// <summary>
-        /// Instructs the repository to eager load a child entities. 
-        /// </summary>
-        /// <param name="path">The path of the child entities to eager load.</param>
-        /// <remarks>Implementors should throw a <see cref="NotSupportedException"/> if the underling provider
-        /// does not support eager loading of entities</remarks>
-        public override IRepository<TEntity> With(Expression<Func<TEntity, object>> path)
+        protected override void ApplyFetchingStrategy(Expression[] paths)
         {
-            //Not implemented.
-            return this;
-        }
-
-        /// <summary>
-        /// Instructs the repository to eager load entities that may be in the repository's association path.
-        /// </summary>
-        /// <param name="path">The path of the child entities to eager load.</param>
-        /// <remarks>Implementors should throw a <see cref="NotSupportedException"/> if the underling provider
-        /// does not support eager loading of entities</remarks>
-        public override IRepository<TEntity> With<T>(Expression<Func<T, object>> path)
-        {
-            //Not implemented.
-            return this;
+            return; //Do nothing.
         }
 
         /// <summary>

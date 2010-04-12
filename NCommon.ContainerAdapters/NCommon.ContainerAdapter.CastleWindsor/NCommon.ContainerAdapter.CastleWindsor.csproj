@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{27A25205-349C-425E-836F-C1EB160DC2C2}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -32,13 +32,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Castle.Core">
-      <HintPath>..\..\Libs\Castle.Core.dll</HintPath>
+      <HintPath>..\..\Libs\Castle\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="Castle.MicroKernel">
-      <HintPath>..\..\Libs\Castle.MicroKernel.dll</HintPath>
+      <HintPath>..\..\Libs\Castle\Castle.MicroKernel.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Windsor">
-      <HintPath>..\..\Libs\Castle.Windsor.dll</HintPath>
+      <HintPath>..\..\Libs\Castle\Castle.Windsor.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

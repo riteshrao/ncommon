@@ -102,6 +102,8 @@
     <Compile Include="Configuration\DefaultUnitOfWorkConfiguration.cs" />
     <Compile Include="Data\ITransactionManager.cs" />
     <Compile Include="Data\IUnitOfWorkScope.cs" />
+    <Compile Include="Data\Language\IEagerFetchingPath.cs" />
+    <Compile Include="Data\Language\RepositoryEagerFetchingStrategy.cs" />
     <Compile Include="Data\UnitOfWorkManager.cs" />
     <Compile Include="Events\DomainEvent.cs" />
     <Compile Include="Events\Handles.cs" />

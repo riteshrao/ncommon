@@ -23,6 +23,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.Practices.ServiceLocation;
 using NCommon.Expressions;
+using NCommon.Extensions;
 
 namespace NCommon.Data.EntityFramework
 {
@@ -173,47 +174,28 @@ namespace NCommon.Data.EntityFramework
         }
 
         /// <summary>
-        /// Instructs the repository to eager load a child entities. 
+        /// When overriden by inheriting classes, applies the fetching strategies on the repository.
         /// </summary>
-        /// <param name="path">The path of the child entities to eager load.</param>
-        /// <remarks>Implementors should throw a <see cref="NotSupportedException"/> if the underling provider
-        /// does not support eager loading of entities</remarks>
-		public override IRepository<TEntity> With(Expression<Func<TEntity, object>> path)
+        /// <param name="paths">An array of <see cref="RepositoryBase{TEntity}.Expression"/> containing the paths to
+        /// eagerly fetch.</param>
+        protected override void ApplyFetchingStrategy(Expression[] paths)
         {
-           return With<TEntity>(path);
+            Guard.Against<ArgumentNullException>(paths == null || paths.Length == 0,
+                                                 "Expected a non-null and non-empty array of Expression instances " +
+                                                 "representing the paths to eagerly load.");
+
+            var currentPath = string.Empty;
+            paths.ForEach(path =>
+            {
+                var visitor = new MemberAccessPathVisitor();
+                visitor.Visit(path);
+                currentPath = !string.IsNullOrEmpty(currentPath) ?
+                    currentPath + "." + visitor.Path : visitor.Path;
+                _includes.Add(currentPath);
+            });
         }
 
         /// <summary>
-        /// Instructs the repository to eager load entities that may be in the repository's association path.
-        /// </summary>
-        /// <param name="path">The path of the child entities to eager load.</param>
-        /// <remarks>Implementors should throw a <see cref="NotSupportedException"/> if the underling provider
-        /// does not support eager loading of entities</remarks>
-		public override IRepository<TEntity> With<T>(Expression<Func<T, object>> path)
-        {
-            Guard.Against<ArgumentNullException>(path == null, "Expected a non-null valid path expression.");
-            var visitor = new MemberAccessPathVisitor();
-            visitor.Visit(path);
-            if (typeof(T) == typeof(TEntity))
-                _includes.Add(visitor.Path);
-            else
-            {
-                //The path represents an collection association. Find the property on the target type that
-                //matches a IEnumerable<T> property.
-                var pathExpression = visitor.Path;
-                var targetType = typeof(TEntity);
-                var matchesType = typeof(IEnumerable<T>);
-                var targetProperty = (from property in targetType.GetProperties()
-                                      where matchesType.IsAssignableFrom(property.PropertyType)
-                                      select property).FirstOrDefault();
-                if (targetProperty != null)
-                    pathExpression = string.Format("{0}.{1}", targetProperty.Name, pathExpression);
-                _includes.Add(pathExpression);
-            }
-        	return this;
-        }
-
-		/// <summary>
 		/// Instructs the repository to cache the following query.
 		/// </summary>
 		/// <param name="cachedQueryName">string. The name to give to the cached query.</param>

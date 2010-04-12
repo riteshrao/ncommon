@@ -92,6 +92,7 @@ namespace NCommon.Data.Impl
                     _transactions.Clear();
                 }
             }
+            _disposed = true;
         }
     }
 }

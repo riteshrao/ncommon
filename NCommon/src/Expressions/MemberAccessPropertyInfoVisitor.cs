@@ -40,7 +40,7 @@ namespace NCommon.Expressions
         {
             if (methodExp.Member.MemberType != MemberTypes.Property)
                 throw new NotSupportedException("MemberAccessPathVisitor does not support a member access of type " +
-                                                methodExp.Member.MemberType.ToString());
+                                                methodExp.Member.MemberType);
             this.Property = (PropertyInfo) methodExp.Member;
             return base.VisitMemberAccess(methodExp);
         }

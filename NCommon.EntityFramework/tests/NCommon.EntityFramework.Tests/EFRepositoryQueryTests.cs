@@ -225,7 +225,44 @@ namespace NCommon.Data.EntityFramework.Tests
         }
 
         [Test]
-        public void can_eager_fetch_using_with()
+        public void can_eager_fetch_using_Eagerly()
+        {
+            using (var tesData = new EFTestData(OrdersContextProvider()))
+            {
+                Customer customer = null;
+                tesData.Batch(x =>
+                {
+                    var products = x.CreateProducts(10);
+                    var order = x.CreateOrderForProducts(products);
+                    customer = order.Customer = x.CreateCustomer();
+                });
+
+                Customer savedCustomer;
+                using (var scope = new UnitOfWorkScope())
+                {
+                    savedCustomer = new EFRepository<Customer>()
+                        .Eagerly(f => f.Fetch<Order>(x => x.Orders)
+                                        .And<OrderItem>(x => x.OrderItems)
+                                        .And<Product>(x => x.Product))
+                        .Where(x => x.CustomerID == customer.CustomerID)
+                        .First();
+                    scope.Commit();
+                }
+
+                Assert.That(savedCustomer, Is.Not.Null);
+                Assert.That(savedCustomer.Orders, Is.Not.Null);
+                Assert.That(savedCustomer.Orders.Count(), Is.EqualTo(1));
+                savedCustomer.Orders.ForEach(order =>
+                {
+                    Assert.That(order.OrderItems, Is.Not.Null);
+                    Assert.That(order.OrderItems.Count(), Is.GreaterThan(0));
+                    order.OrderItems.ForEach(item => Assert.That(item.Product, Is.Not.Null));
+                });
+            }
+        }
+
+        [Test]
+        public void can_eager_fetch_using_with()    
         {
             using (var tesData = new EFTestData(OrdersContextProvider()))
             {
@@ -251,8 +288,8 @@ namespace NCommon.Data.EntityFramework.Tests
         {
             public void Define(IRepository<Customer> repository)
             {
-                repository.With(x => x.Orders);
-                repository.With<Order>(x => x.OrderItems);
+                repository.Eagerly(f => f.Fetch<Order>(x => x.Orders)
+                                         .And<OrderItem>(x => x.OrderItems));
             }
         }
 

@@ -54,11 +54,11 @@
   <ItemGroup>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <HintPath>..\..\..\Libs\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.5.0.9096, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+    <Reference Include="nunit.framework, Version=2.5.3.9345, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libs\nunit.framework.dll</HintPath>
+      <HintPath>..\..\..\Libs\NUnit\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="Rhino.Mocks, Version=3.5.0.1337, Culture=neutral, PublicKeyToken=0b3305902db7183f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -123,7 +123,7 @@
     </ProjectReference>
     <ProjectReference Include="..\..\src\NCommon.EntityFramework.csproj">
       <Project>{98FB0800-6605-4FD9-9948-36D11C744881}</Project>
-      <Name>NCommon.EntityFramework</Name>
+      <Name>NCommon.EntityFramework %28src\NCommon.EntityFramework%29</Name>
     </ProjectReference>
     <ProjectReference Include="..\NCommon.EntityFramework.Tests.HRDomain\NCommon.EntityFramework.Tests.HRDomain.csproj">
       <Project>{420EF34B-811B-48BD-9E2C-2E7A8DAA291F}</Project>

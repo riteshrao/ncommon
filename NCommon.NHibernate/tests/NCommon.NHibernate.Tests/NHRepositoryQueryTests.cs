@@ -280,12 +280,47 @@ namespace NCommon.Data.NHibernate.Tests
             }
         }
 
+        [Test]
+        public void can_eager_fetch_using_Eagerly()
+        {
+            using (var tesData = new NHTestData(OrdersDomainFactory.OpenSession()))
+            {
+                Customer customer = null;
+                tesData.Batch(x =>
+                {
+                    var products = x.CreateProducts(10);
+                    var order = x.CreateOrderForProducts(products);
+                    customer = order.Customer = x.CreateCustomer();
+                });
+
+                Customer savedCustomer;
+                using (var scope = new UnitOfWorkScope())
+                {
+                    savedCustomer = new NHRepository<Customer>()
+                        .Eagerly(f => f.Fetch<Order>(x => x.Orders)
+                                        .And<OrderItem>(x => x.Items)
+                                        .And<Product>(x => x.Product))
+                        .Where(x => x.CustomerID == customer.CustomerID)
+                        .First();
+                    scope.Commit();
+                }
+
+                Assert.That(savedCustomer, Is.Not.Null);
+                Assert.That(NHibernateUtil.IsInitialized(savedCustomer.Orders));
+                savedCustomer.Orders.ForEach(order =>
+                {
+                    Assert.That(NHibernateUtil.IsInitialized(order.Items));
+                    order.Items.ForEach(item => Assert.That(NHibernateUtil.IsInitialized(item.Product)));
+                });
+            }
+        }
+
         public class FakeFetchingStrategy : IFetchingStrategy<Customer, NHRepositoryQueryTests>
         {
             public void Define(IRepository<Customer> repository)
             {
-                repository.With(x => x.Orders);
-                repository.With<Order>(x => x.Items);
+                repository.Eagerly(f => f.Fetch<Order>(x => x.Orders)
+                                         .And<OrderItem>(x => x.Items));
             }
         }
 

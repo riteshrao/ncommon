@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using NCommon.Data.Language;
 using NCommon.Specifications;
 
 namespace NCommon.Data
@@ -84,6 +85,7 @@ namespace NCommon.Data
         /// <param name="path">The path of the child entities to eager load.</param>
         /// <remarks>Implementors should throw a <see cref="NotSupportedException"/> if the underling provider
         /// does not support eager loading of entities</remarks>
+        [Obsolete("Consider using new eager loading method Eagerly on repository")]
         IRepository<TEntity> With(Expression<Func<TEntity, object>> path);
 
         /// <summary>
@@ -92,7 +94,16 @@ namespace NCommon.Data
         /// <param name="path">The path of the child entities to eager load.</param>
         /// <remarks>Implementors should throw a <see cref="NotSupportedException"/> if the underling provider
         /// does not support eager loading of entities</remarks>
+        [Obsolete("Consider using new eager loading method Eagerly on repository")]
         IRepository<TEntity> With<T>(Expression<Func<T, object>> path);
+
+        ///<summary>
+        /// Instructs to repository to eager load child entities.
+        ///</summary>
+        ///<param name="strategyActions">A <see cref="Action{RepositoryEagerFetchingStrategy}"/> that specifies
+        /// the paths to eagerly fetch.</param>
+        ///<returns>The <see cref="IRepository{TEntity}"/> instance.</returns>
+        IRepository<TEntity> Eagerly(Action<RepositoryEagerFetchingStrategy<TEntity>> strategyActions);
 
 		/// <summary>
 		/// Intructs the repository to cache the current 
