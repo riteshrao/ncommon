@@ -13,11 +13,20 @@ namespace NCommon.Data.Language
     {
         IList<Expression> _paths = new List<Expression>();
 
-        public Expression[] Paths
+        ///<summary>
+        /// An array of <see cref="Expression"/> containing the eager fetching paths.
+        ///</summary>
+        public IEnumerable<Expression> Paths
         {
             get { return _paths.ToArray();}
         }
 
+        ///<summary>
+        /// Specify the path to eagerly fetch.
+        ///</summary>
+        ///<param name="path"></param>
+        ///<typeparam name="TChild"></typeparam>
+        ///<returns></returns>
         public EagerFetchingPath<TChild> Fetch<TChild>(Expression<Func<T, object>> path)
         {
             _paths.Add(path);

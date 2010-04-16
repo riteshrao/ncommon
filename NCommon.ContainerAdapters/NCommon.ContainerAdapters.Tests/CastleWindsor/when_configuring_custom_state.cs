@@ -1,12 +1,9 @@
-using System;
 using Castle.Windsor;
 using NCommon.Configuration;
 using NCommon.ContainerAdapter.CastleWindsor;
 using NCommon.Context;
 using NCommon.State;
-using NCommon.State.Impl;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace NCommon.ContainerAdapters.Tests.CastleWindsor
 {

@@ -64,7 +64,17 @@ namespace NCommon.State.Impl
                 _state.Remove(key);
             }
 
+            /// <summary>
+            /// Enables an extension object to find out when it has been aggregated. Called when the extension is added to the <see cref="P:System.ServiceModel.IExtensibleObject`1.Extensions"/> property.
+            /// </summary>
+            /// <param name="owner">The extensible object that aggregates this extension.</param>
             public void Attach(OperationContext owner){}
+
+
+            /// <summary>
+            /// Enables an object to find out when it is no longer aggregated. Called when an extension is removed from the <see cref="P:System.ServiceModel.IExtensibleObject`1.Extensions"/> property.
+            /// </summary>
+            /// <param name="owner">The extensible object that aggregates this extension.</param>
             public void Detach(OperationContext owner){}
         }
 

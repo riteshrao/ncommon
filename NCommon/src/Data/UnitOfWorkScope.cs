@@ -83,6 +83,10 @@ namespace NCommon.Data
             OnCommit();
         }
 
+        /// <summary>
+        /// Marks the scope as completed.
+        /// Used for internally by NCommon and should not be used by consumers.
+        /// </summary>
         public void Complete()
         {
             _completed = true;
