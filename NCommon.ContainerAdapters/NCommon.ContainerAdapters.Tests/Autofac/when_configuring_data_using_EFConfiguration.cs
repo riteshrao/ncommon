@@ -1,38 +1,39 @@
-using Castle.Windsor;
+using Autofac;
 using Microsoft.Practices.ServiceLocation;
-using NCommon.ContainerAdapter.CastleWindsor;
+using NCommon.ContainerAdapters.Autofac;
 using NCommon.Data;
-using NCommon.Data.NHibernate;
+using NCommon.Data.EntityFramework;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace NCommon.ContainerAdapters.Tests.CastleWindsor
+namespace NCommon.ContainerAdapters.Tests.Autofac
 {
     [TestFixture]
-    public class when_configuring_data_using_NHConfiguration
+    public class when_configuring_data_using_EFConfiguration
     {
-        IWindsorContainer _container;
+        IContainer _container;
 
-        [TestFixtureSetUp()]
+        [TestFixtureSetUp]
         public void FixtureSetup()
         {
-            _container = new WindsorContainer();
+            var builder = new ContainerBuilder();
             NCommon.Configure
-                .Using(new WindsorContainerAdapter(_container))
-                .ConfigureData<NHConfiguration>();
+                .Using(new AutofacContainerAdapter(builder))
+                .ConfigureData<EFConfiguration>();
             ServiceLocator.SetLocatorProvider(() => MockRepository.GenerateStub<IServiceLocator>());
+            _container = builder.Build();
         }
 
         [Test]
-        public void verify_IUnitOfWorkFactory_is_NHUnitOfWorkFactory()
+        public void verify_instances_of_IUnitOfWorkFactory_is_EFUnitOfWorkFactory()
         {
             var factory = _container.Resolve<IUnitOfWorkFactory>();
             Assert.That(factory, Is.Not.Null);
-            Assert.That(factory, Is.TypeOf<NHUnitOfWorkFactory>());
+            Assert.That(factory, Is.TypeOf<EFUnitOfWorkFactory>());
         }
 
         [Test]
-        public void verify_NHUnitOfWorkFactory_is_registered_as_singleton()
+        public void verify_EFUnitOfWorkFactory_is_registered_as_singleton()
         {
             var factory1 = _container.Resolve<IUnitOfWorkFactory>();
             var factory2 = _container.Resolve<IUnitOfWorkFactory>();
@@ -46,7 +47,7 @@ namespace NCommon.ContainerAdapters.Tests.CastleWindsor
         {
             var repo = _container.Resolve<IRepository<string>>();
             Assert.That(repo, Is.Not.Null);
-            Assert.That(repo, Is.TypeOf(typeof (NHRepository<string>)));
+            Assert.That(repo, Is.TypeOf(typeof(EFRepository<string>)));
         }
     }
 }

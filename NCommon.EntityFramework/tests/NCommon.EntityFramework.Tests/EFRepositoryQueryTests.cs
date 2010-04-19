@@ -128,7 +128,11 @@ namespace NCommon.Data.EntityFramework.Tests
 
             var context = OrdersContextProvider() as OrderEntities;
             context.AddToCustomers(customer);
+#if NETv40
+            context.SaveChanges(SaveOptions.AcceptAllChangesAfterSave);
+#else
             context.SaveChanges(true);
+#endif
             context.Detach(customer);
             context.Dispose(); //Auto detach
 

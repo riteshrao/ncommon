@@ -15,13 +15,8 @@
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Transactions;
-using Microsoft.Practices.ServiceLocation;
 using NCommon.Data.Impl;
-using NCommon.State;
-using IsolationLevel=System.Data.IsolationLevel;
 
 namespace NCommon.Data
 {

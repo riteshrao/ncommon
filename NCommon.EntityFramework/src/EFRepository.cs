@@ -79,10 +79,11 @@ namespace NCommon.Data.EntityFramework
         /// <returns></returns>
         private void LoadObjectQueryPropertyAndEntitySetName(ObjectContext context)
         {
+            var matchingType = typeof (ObjectQuery<TEntity>);
             foreach (var property in context.GetType().GetProperties())
             {
                 if (property.PropertyType.IsGenericType &&
-                    property.PropertyType == typeof(ObjectQuery<TEntity>))
+                    matchingType.IsAssignableFrom(property.PropertyType))
                 {
                     _contextQueryProperty = property;
                     EntitySetName = property.Name;
@@ -100,8 +101,8 @@ namespace NCommon.Data.EntityFramework
         /// <returns></returns>
         private ObjectQuery<TEntity> GetQuery ()
         {
-            var currentContext = this.Context;
-            return (ObjectQuery<TEntity>) this._contextQueryProperty.GetValue(currentContext, null);
+            var currentContext = Context;
+            return (ObjectQuery<TEntity>) _contextQueryProperty.GetValue(currentContext, null);
         }
 
         /// <summary>
@@ -128,7 +129,7 @@ namespace NCommon.Data.EntityFramework
         /// <remarks>Implementors of this method must handle the Update scneario. </remarks>
         public override void Save(TEntity entity)
         {
-            Context.AddObject(this.EntitySetName, entity);
+            Context.AddObject(EntitySetName, entity);
         }
 
         /// <summary>

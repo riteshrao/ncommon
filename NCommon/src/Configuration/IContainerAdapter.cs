@@ -54,12 +54,27 @@ namespace NCommon.Configuration
         /// <summary>
         /// Registers a named implementation type for a service type.
         /// </summary>
-        /// <param name="service"><see cref="Type"/>. The type representing the service fow which the
+        /// <param name="service"><see cref="Type"/>. The type representing the service for which the
         /// implementation type if registered.</param>
         /// <param name="implementation"><see cref="Type"/>. The type representing the implementaton
         /// registered for the service.</param>
         /// <param name="named">string. The service name with which the implementation is registered.</param>
         void Register(Type service, Type implementation, string named);
+
+        ///<summary>
+        /// Registers a open generic implementation for a generic service type.
+        ///</summary>
+        ///<param name="service">The type representing the service for which the implementation type is registered.</param>
+        ///<param name="implementation">The type representing the implementation registered for the service.</param>
+        void RegisterGeneric(Type service, Type implementation);
+
+        ///<summary>
+        /// Registers a named open generic implementation for a generic service type.
+        ///</summary>
+        ///<param name="service">The type representing the service for which the implementation is registered.</param>
+        ///<param name="implementation">The type representing the implementation registered for the service.</param>
+        ///<param name="named">string. The service name with which the implementation is registerd.</param>
+        void RegisterGeneric(Type service, Type implementation, string named);
 
         /// <summary>
         /// Registers a default implementation type for a service type as a singleton.
@@ -106,7 +121,7 @@ namespace NCommon.Configuration
         /// the service for which the instance is registered.</typeparam>
         /// <param name="instance">An instance of type <typeparamref name="TService"/> that is
         /// registered as an instance for <typeparamref name="TService"/>.</param>
-        void RegisterInstance<TService>(TService instance);
+        void RegisterInstance<TService>(TService instance) where TService : class ;
 
         /// <summary>
         /// Registers an named instance as an implementation for a service type.
@@ -116,7 +131,7 @@ namespace NCommon.Configuration
         /// <param name="instance">An instance of type <typeparamref name="TService"/> that is
         /// registered as an instance for <typeparamref name="TService"/>.</param>
         /// <param name="named">string. The service name with which the implementation is registered.</param>
-        void RegisterInstance<TService>(TService instance, string named);
+        void RegisterInstance<TService>(TService instance, string named) where TService : class ;
 
         /// <summary>
         /// Registers an instance as an implementation for a service type.

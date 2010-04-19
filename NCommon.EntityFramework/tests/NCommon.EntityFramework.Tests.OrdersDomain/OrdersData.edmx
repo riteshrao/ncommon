@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
   <!-- EF Runtime content -->
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="OrdersDataModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
+      <Schema Namespace="OrdersDataModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="OrdersDataModelStoreContainer">
-          <EntitySet Name="Customers" EntityType="OrdersDataModel.Store.Customers" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="MonthlySalesSummary" EntityType="OrdersDataModel.Store.MonthlySalesSummary" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="OrderItems" EntityType="OrdersDataModel.Store.OrderItems" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Orders" EntityType="OrdersDataModel.Store.Orders" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Products" EntityType="OrdersDataModel.Store.Products" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Customers" EntityType="OrdersDataModel.Store.Customers" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="MonthlySalesSummary" EntityType="OrdersDataModel.Store.MonthlySalesSummary" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="OrderItems" EntityType="OrdersDataModel.Store.OrderItems" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Orders" EntityType="OrdersDataModel.Store.Orders" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Products" EntityType="OrdersDataModel.Store.Products" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
           <AssociationSet Name="FK_Customer_Orders" Association="OrdersDataModel.Store.FK_Customer_Orders">
             <End Role="Customers" EntitySet="Customers" />
             <End Role="Orders" EntitySet="Orders" />
@@ -119,7 +119,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="NCommon.Data.EntityFramework.Tests.OrdersDomain" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
+      <Schema Namespace="NCommon.Data.EntityFramework.Tests.OrdersDomain" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
         <EntityContainer Name="OrderEntities">
           <EntitySet Name="Customers" EntityType="NCommon.Data.EntityFramework.Tests.OrdersDomain.Customer" />
           <EntitySet Name="MonthlySalesSummaries" EntityType="NCommon.Data.EntityFramework.Tests.OrdersDomain.MonthlySalesSummary" />
@@ -143,7 +143,7 @@
           <Key>
             <PropertyRef Name="CustomerID" />
           </Key>
-          <Property Name="CustomerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Name="StreetAddress1" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
           <Property Name="StreetAddress2" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
           <Property Name="City" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
@@ -171,7 +171,7 @@
           <Key>
             <PropertyRef Name="OrderItemID" />
           </Key>
-          <Property Name="OrderItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Name="Price" Type="Decimal" Precision="19" Scale="5" />
           <Property Name="Quantity" Type="Int32" />
           <Property Name="Store" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
@@ -182,7 +182,7 @@
           <Key>
             <PropertyRef Name="OrderID" />
           </Key>
-          <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OrderID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Name="OrderDate" Type="DateTime" />
           <Property Name="ShipDate" Type="DateTime" />
           <NavigationProperty Name="Customer" Relationship="NCommon.Data.EntityFramework.Tests.OrdersDomain.FK_Customer_Orders" FromRole="Orders" ToRole="Customers" />
@@ -192,7 +192,7 @@
           <Key>
             <PropertyRef Name="ProductID" />
           </Key>
-          <Property Name="ProductID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Name="Name" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
           <Property Name="Description" Type="String" MaxLength="255" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="OrderItems" Relationship="NCommon.Data.EntityFramework.Tests.OrdersDomain.FK_OrderItems_Product" FromRole="Products" ToRole="OrderItems" />
@@ -213,7 +213,7 @@
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-      <Mapping Space="C-S" xmlns="urn:schemas-microsoft-com:windows:storage:mapping:CS">
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="OrdersDataModelStoreContainer" CdmEntityContainer="OrderEntities">
           <EntitySetMapping Name="Customers"><EntityTypeMapping TypeName="NCommon.Data.EntityFramework.Tests.OrdersDomain.Customer"><MappingFragment StoreEntitySet="Customers">
             <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
@@ -282,7 +282,7 @@
     </edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
-  <Designer xmlns="http://schemas.microsoft.com/ado/2007/06/edmx">
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
     <Connection>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />

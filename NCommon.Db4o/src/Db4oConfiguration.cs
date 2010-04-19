@@ -34,7 +34,7 @@ namespace NCommon.Data.Db4o
         public void Configure(IContainerAdapter containerAdapter)
         {
             containerAdapter.Register<IUnitOfWorkFactory, Db4oUnitOfWorkFactory>();
-            containerAdapter.Register(typeof (IRepository<>), typeof (Db4oRepository<>));
+            containerAdapter.RegisterGeneric(typeof (IRepository<>), typeof (Db4oRepository<>));
             Db4oUnitOfWorkFactory.SetContainerProvider(_containerProvider);
         }
     }

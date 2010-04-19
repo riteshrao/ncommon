@@ -1,26 +1,27 @@
-using Castle.Windsor;
+using Autofac;
 using Microsoft.Practices.ServiceLocation;
-using NCommon.ContainerAdapter.CastleWindsor;
+using NCommon.ContainerAdapters.Autofac;
 using NCommon.Data;
 using NCommon.Data.NHibernate;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace NCommon.ContainerAdapters.Tests.CastleWindsor
+namespace NCommon.ContainerAdapters.Tests.Autofac
 {
     [TestFixture]
     public class when_configuring_data_using_NHConfiguration
     {
-        IWindsorContainer _container;
+        IContainer _container;
 
         [TestFixtureSetUp()]
         public void FixtureSetup()
         {
-            _container = new WindsorContainer();
+            var builder = new ContainerBuilder();
             NCommon.Configure
-                .Using(new WindsorContainerAdapter(_container))
+                .Using(new AutofacContainerAdapter(builder))
                 .ConfigureData<NHConfiguration>();
             ServiceLocator.SetLocatorProvider(() => MockRepository.GenerateStub<IServiceLocator>());
+            _container = builder.Build();
         }
 
         [Test]
@@ -46,7 +47,7 @@ namespace NCommon.ContainerAdapters.Tests.CastleWindsor
         {
             var repo = _container.Resolve<IRepository<string>>();
             Assert.That(repo, Is.Not.Null);
-            Assert.That(repo, Is.TypeOf(typeof (NHRepository<string>)));
+            Assert.That(repo, Is.TypeOf(typeof(NHRepository<string>)));
         }
     }
 }

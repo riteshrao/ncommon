@@ -31,7 +31,7 @@ namespace NCommon.Data.LinqToSql
         public void Configure(IContainerAdapter containerAdapter)
         {
             containerAdapter.RegisterInstance<IUnitOfWorkFactory>(_factory);
-            containerAdapter.Register(typeof(IRepository<>), typeof(LinqToSqlRepository<>));
+            containerAdapter.RegisterGeneric(typeof(IRepository<>), typeof(LinqToSqlRepository<>));
         }
     }
 }

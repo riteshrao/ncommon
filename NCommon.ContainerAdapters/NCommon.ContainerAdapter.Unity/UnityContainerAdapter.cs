@@ -88,6 +88,27 @@ namespace NCommon.ContainerAdapter.Unity
             _container.RegisterType(service, implementation, named, new TransientLifetimeManager());
         }
 
+        ///<summary>
+        /// Registers a open generic implementation for a generic service type.
+        ///</summary>
+        ///<param name="service">The type representing the service for which the implementation type is registered.</param>
+        ///<param name="implementation">The type representing the implementation registered for the service.</param>
+        public void RegisterGeneric(Type service, Type implementation)
+        {
+            RegisterGeneric(service, implementation);
+        }
+
+        ///<summary>
+        /// Registers a named open generic implementation for a generic service type.
+        ///</summary>
+        ///<param name="service">The type representing the service for which the implementation is registered.</param>
+        ///<param name="implementation">The type representing the implementation registered for the service.</param>
+        ///<param name="named">string. The service name with which the implementation is registerd.</param>
+        public void RegisterGeneric(Type service, Type implementation, string named)
+        {
+            RegisterGeneric(service, implementation, named);
+        }
+
         /// <summary>
         /// Registers a default implementation type for a service type as a singleton.
         /// </summary>
@@ -145,7 +166,7 @@ namespace NCommon.ContainerAdapter.Unity
         /// the service for which the instance is registered.</typeparam>
         /// <param name="instance">An instance of type <typeparamref name="TService"/> that is
         /// registered as an instance for <typeparamref name="TService"/>.</param>
-        public void RegisterInstance<TService>(TService instance)
+        public void RegisterInstance<TService>(TService instance) where TService : class
         {
             RegisterInstance(typeof(TService), instance);
         }
@@ -158,7 +179,7 @@ namespace NCommon.ContainerAdapter.Unity
         /// <param name="instance">An instance of type <typeparamref name="TService"/> that is
         /// registered as an instance for <typeparamref name="TService"/>.</param>
         /// <param name="named">string. The service name with which the implementation is registered.</param>
-        public void RegisterInstance<TService>(TService instance, string named)
+        public void RegisterInstance<TService>(TService instance, string named) where TService : class
         {
             RegisterInstance(typeof(TService), instance, named);
         }

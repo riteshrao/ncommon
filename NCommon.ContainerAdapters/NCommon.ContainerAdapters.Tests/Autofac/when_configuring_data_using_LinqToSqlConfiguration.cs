@@ -1,34 +1,35 @@
-using Castle.Windsor;
+using Autofac;
 using Microsoft.Practices.ServiceLocation;
-using NCommon.ContainerAdapter.CastleWindsor;
+using NCommon.ContainerAdapters.Autofac;
 using NCommon.Data;
-using NCommon.Data.NHibernate;
+using NCommon.Data.LinqToSql;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace NCommon.ContainerAdapters.Tests.CastleWindsor
+namespace NCommon.ContainerAdapters.Tests.Autofac
 {
     [TestFixture]
-    public class when_configuring_data_using_NHConfiguration
+    public class when_configuring_data_using_LinqToSqlConfiguration
     {
-        IWindsorContainer _container;
+        IContainer _container;
 
         [TestFixtureSetUp()]
         public void FixtureSetup()
         {
-            _container = new WindsorContainer();
+            var builder = new ContainerBuilder();
             NCommon.Configure
-                .Using(new WindsorContainerAdapter(_container))
-                .ConfigureData<NHConfiguration>();
+                .Using(new AutofacContainerAdapter(builder))
+                .ConfigureData<LinqToSqlConfiguration>();
             ServiceLocator.SetLocatorProvider(() => MockRepository.GenerateStub<IServiceLocator>());
+            _container = builder.Build();
         }
 
         [Test]
-        public void verify_IUnitOfWorkFactory_is_NHUnitOfWorkFactory()
+        public void verify_IUnitOfWorkFactory_is_LinqToSqlUnitOfWorkFactory()
         {
             var factory = _container.Resolve<IUnitOfWorkFactory>();
             Assert.That(factory, Is.Not.Null);
-            Assert.That(factory, Is.TypeOf<NHUnitOfWorkFactory>());
+            Assert.That(factory, Is.TypeOf<LinqToSqlUnitOfWorkFactory>());
         }
 
         [Test]
@@ -46,7 +47,7 @@ namespace NCommon.ContainerAdapters.Tests.CastleWindsor
         {
             var repo = _container.Resolve<IRepository<string>>();
             Assert.That(repo, Is.Not.Null);
-            Assert.That(repo, Is.TypeOf(typeof (NHRepository<string>)));
+            Assert.That(repo, Is.TypeOf(typeof(LinqToSqlRepository<string>)));
         }
     }
 }

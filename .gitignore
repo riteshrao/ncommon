@@ -9,5 +9,6 @@ _ReSharper.*
 .svn
 *.suo
 *.user
+*.cache
 build
 output

@@ -90,7 +90,11 @@ namespace NCommon.Data.EntityFramework
         /// </summary>
         public void SaveChanges()
         {
+#if NETv40
+            _context.SaveChanges(SaveOptions.AcceptAllChangesAfterSave);
+#else
             _context.SaveChanges(true);
+#endif
         }
 
         /// <summary>

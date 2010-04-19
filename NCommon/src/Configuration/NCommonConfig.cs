@@ -121,7 +121,6 @@ namespace NCommon.Configuration
             return this;
         }
 
-
         ///<summary>
         /// Configures NCommon unit of work settings.
         ///</summary>
