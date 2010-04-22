@@ -5,6 +5,7 @@ using Microsoft.Practices.ServiceLocation;
 using NCommon.Data.LinqToSql.Tests.HRDomain;
 using NCommon.Data.LinqToSql.Tests.OrdersDomain;
 using NCommon.State;
+using NCommon.Testing;
 using NUnit.Framework;
 using Rhino.Mocks;
 

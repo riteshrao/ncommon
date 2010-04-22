@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{CB2938EE-A72C-49EA-9DFB-C648CC9C600E}</ProjectGuid>
+    <ProjectGuid>{AC96FD87-C53C-4833-8DD8-4774E36F0E4A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NCommon.ContainerAdapters.Autofac</RootNamespace>
-    <AssemblyName>NCommon.ContainerAdapters.Autofac</AssemblyName>
+    <RootNamespace>NCommon.Testing</RootNamespace>
+    <AssemblyName>NCommon.Testing</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\NCommon.Testing.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,30 +32,27 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac" Condition="'$(TargetFrameworkVersion)' == 'v4.0'">
-      <HintPath>..\..\Libs\Autofac\net4.0\Autofac.dll</HintPath>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\Libs\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CSharp" Condition="'$(TargetFrameworkVersion)' == 'v4.0'" />
-    <Reference Include="Autofac" Condition="'$(TargetFrameworkVersion)' == 'v3.5'">
-      <HintPath>..\..\Libs\Autofac\net3.5\Autofac.dll</HintPath>
-    </Reference>
-    <Reference Include="Autofac" Condition="'$(TargetFrameworkVersion)' == ''">
-      <HintPath>..\..\Libs\Autofac\net3.5\Autofac.dll</HintPath>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\Libs\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutofacContainerAdapter.cs" />
+    <Compile Include="Configure.cs" />
+    <Compile Include="FakeState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\NCommon\src\NCommon.csproj">
+    <ProjectReference Include="..\NCommon\src\NCommon.csproj">
       <Project>{C853736D-3576-468A-A716-ACEC1CD4FAC1}</Project>
       <Name>NCommon</Name>
     </ProjectReference>

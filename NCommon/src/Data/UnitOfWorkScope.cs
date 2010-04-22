@@ -30,7 +30,7 @@ namespace NCommon.Data
     /// 
     /// ]]>
     /// </summary>
-    public class UnitOfWorkScope : IDisposable, IUnitOfWorkScope
+    public class UnitOfWorkScope : IUnitOfWorkScope
     {
         bool _disposed;
         bool _commitAttempted;

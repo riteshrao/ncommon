@@ -2,8 +2,11 @@ using System;
 using System.Collections;
 using NCommon.State;
 
-namespace NCommon.Data.EntityFramework.Tests
+namespace NCommon.Testing
 {
+    ///<summary>
+    /// A fake <see cref="IState"/> implementation.
+    ///</summary>
     public class FakeState : IState
     {
         readonly State _app = new State();
@@ -37,12 +40,12 @@ namespace NCommon.Data.EntityFramework.Tests
 
             public T Get<T>(object key)
             {
-                return (T) _state[typeof (T).FullName + key];
+                return (T)_state[typeof(T).FullName + key];
             }
 
             public void Put<T>(object key, T instance)
             {
-                _state[typeof (T).FullName + key] = instance;
+                _state[typeof(T).FullName + key] = instance;
             }
 
             public void Put<T>(object key, T instance, DateTime absoluteExpiration)
@@ -57,7 +60,7 @@ namespace NCommon.Data.EntityFramework.Tests
 
             public void Remove<T>(object key)
             {
-                _state.Remove(typeof (T).FullName + key);
+                _state.Remove(typeof(T).FullName + key);
             }
         }
     }

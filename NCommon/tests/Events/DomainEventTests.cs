@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Practices.ServiceLocation;
 using NCommon.Events;
 using NCommon.State;
+using NCommon.Testing;
 using NUnit.Framework;
 using Rhino.Mocks;
 

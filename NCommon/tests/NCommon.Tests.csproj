@@ -89,7 +89,6 @@
     <Compile Include="Data\TransactionManagerTests.cs" />
     <Compile Include="Data\UnitOfWorkManagerTests.cs" />
     <Compile Include="Data\UnitOfWorkTransactionTests.cs" />
-    <Compile Include="FakeState.cs" />
     <Compile Include="Data\InMemoryRepositoryTests.cs" />
     <Compile Include="Events\DomainEventTests.cs" />
     <Compile Include="Expressions\MemberAccessPathVisitorTests.cs" />
@@ -128,6 +127,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\NCommon.Testing\NCommon.Testing.csproj">
+      <Project>{AC96FD87-C53C-4833-8DD8-4774E36F0E4A}</Project>
+      <Name>NCommon.Testing</Name>
+    </ProjectReference>
     <ProjectReference Include="..\src\NCommon.csproj">
       <Project>{C853736D-3576-468A-A716-ACEC1CD4FAC1}</Project>
       <Name>NCommon</Name>

@@ -4,6 +4,7 @@ using Microsoft.Practices.ServiceLocation;
 using NCommon.Data.EntityFramework.Tests.HRDomain;
 using NCommon.Data.EntityFramework.Tests.OrdersDomain;
 using NCommon.State;
+using NCommon.Testing;
 using NUnit.Framework;
 using Rhino.Mocks;
 

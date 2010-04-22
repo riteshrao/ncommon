@@ -1,17 +1,15 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Transactions;
 using Db4objects.Db4o;
 using Microsoft.Practices.ServiceLocation;
 using NCommon.Data.Db4o.Tests.Domain;
 using NCommon.Extensions;
 using NCommon.Specifications;
 using NCommon.State;
-using NCommon.Tests;
+using NCommon.Testing;
 using NUnit.Framework;
 using Rhino.Mocks;
-using IsolationLevel=System.Data.IsolationLevel;
 
 namespace NCommon.Data.Db4o.Tests
 {

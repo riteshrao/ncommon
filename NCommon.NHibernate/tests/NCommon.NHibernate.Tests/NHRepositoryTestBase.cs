@@ -7,7 +7,7 @@ using NCommon.Data.Impl;
 using NCommon.Data.NHibernate.Tests.HRDomain.Domain;
 using NCommon.Data.NHibernate.Tests.OrdersDomain;
 using NCommon.State;
-using NCommon.Tests;
+using NCommon.Testing;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
 using NUnit.Framework;
