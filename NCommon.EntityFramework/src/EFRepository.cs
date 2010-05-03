@@ -1,5 +1,5 @@
 ﻿#region license
-//Copyright 2008 Ritesh Rao 
+//Copyright 2010 Ritesh Rao 
 
 //Licensed under the Apache License, Version 2.0 (the "License"); 
 //you may not use this file except in compliance with the License. 
@@ -33,9 +33,9 @@ namespace NCommon.Data.EntityFramework
     /// </summary>
     public class EFRepository<TEntity> : RepositoryBase<TEntity>
     {
-        private ObjectContext _privateContext;
-        private PropertyInfo _contextQueryProperty;
-        private readonly List<string> _includes = new List<string>();
+        PropertyInfo _contextQueryProperty;
+        readonly List<string> _includes = new List<string>();
+        readonly ObjectContext _privateContext;
 
         /// <summary>
         /// Creates a new instance of the <see cref="EFRepository{TEntity}"/> class.

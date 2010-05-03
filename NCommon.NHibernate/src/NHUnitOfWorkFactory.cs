@@ -15,7 +15,6 @@
 #endregion
 
 using System;
-using System.Data;
 using NHibernate;
 
 namespace NCommon.Data.NHibernate

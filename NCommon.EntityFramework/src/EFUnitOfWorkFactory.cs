@@ -1,5 +1,5 @@
 ﻿#region license
-//Copyright 2008 Ritesh Rao 
+//Copyright 2010 Ritesh Rao 
 
 //Licensed under the Apache License, Version 2.0 (the "License"); 
 //you may not use this file except in compliance with the License. 
@@ -15,7 +15,6 @@
 #endregion
 
 using System;
-using System.Data;
 using System.Data.Objects;
 
 namespace NCommon.Data.EntityFramework

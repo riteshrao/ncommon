@@ -1,4 +1,3 @@
-using System;
 using System.Data.Objects;
 using System.Linq;
 using NCommon.Data.EntityFramework.Tests.HRDomain;
@@ -14,7 +13,7 @@ namespace NCommon.Data.EntityFramework.Tests
     public class EFRepositoryQueryTests : EFRepositoryTestBase
     {
         [Test]
-        public void can_perform_simple_query()
+        public void Can_perform_simple_query()
         {
             using (var testData = new EFTestData(OrdersContextProvider()))
             {
@@ -35,7 +34,7 @@ namespace NCommon.Data.EntityFramework.Tests
         }
 
         [Test]
-        public void can_save()
+        public void Can_save()
         {
             var customer = new Customer
             {
@@ -64,7 +63,7 @@ namespace NCommon.Data.EntityFramework.Tests
         }
 
         [Test]
-        public void can_modify()
+        public void Can_modify()
         {
             using (var testData = new EFTestData(OrdersContextProvider()))
             {
@@ -87,7 +86,7 @@ namespace NCommon.Data.EntityFramework.Tests
         }
 
         [Test]
-        public void can_delete()
+        public void Can_delete()
         {
             var customer = new Customer
             {
@@ -118,7 +117,7 @@ namespace NCommon.Data.EntityFramework.Tests
         }
 
         [Test]
-        public void can_attach()
+        public void Can_attach()
         {
             var customer = new Customer
             {
@@ -126,9 +125,9 @@ namespace NCommon.Data.EntityFramework.Tests
                 LastName = "Doe"
             };
 
-            var context = OrdersContextProvider() as OrderEntities;
+            var context = (OrderEntities) OrdersContextProvider();
             context.AddToCustomers(customer);
-#if NETv40
+#if net40
             context.SaveChanges(SaveOptions.AcceptAllChangesAfterSave);
 #else
             context.SaveChanges(true);
@@ -154,7 +153,7 @@ namespace NCommon.Data.EntityFramework.Tests
         }
 
         [Test]
-        public void can_query_using_specification()
+        public void Can_query_using_specification()
         {
             using (var testData = new EFTestData(OrdersContextProvider()))
             {
@@ -169,10 +168,10 @@ namespace NCommon.Data.EntityFramework.Tests
                 {
 
 
-                    var customersInPA = new Specification<Order>(x => x.Customer.State == "DE");
+                    var customersInPa = new Specification<Order>(x => x.Customer.State == "DE");
 
                     var ordersRepository = new EFRepository<Order>();
-                    var results = from order in ordersRepository.Query(customersInPA) select order;
+                    var results = from order in ordersRepository.Query(customersInPa) select order;
 
                     Assert.That(results.Count(), Is.GreaterThan(0));
                     Assert.That(results.Count(), Is.EqualTo(5));
@@ -181,7 +180,7 @@ namespace NCommon.Data.EntityFramework.Tests
         }
 
         [Test]
-        public void can_lazyload()
+        public void Can_lazyload()
         {
             using (var testData = new EFTestData(OrdersContextProvider()))
             {
@@ -208,14 +207,14 @@ namespace NCommon.Data.EntityFramework.Tests
         }
 
         [Test]
-        public void lazyloading_when_outside_scope_throws()
+        public void Lazyloading_when_outside_scope_throws()
         {
             using (var testData = new EFTestData(OrdersContextProvider()))
             {
                 Order order = null;
                 testData.Batch(x => order = x.CreateOrderForCustomer(x.CreateCustomer()));
 
-                Order savedOrder = null;
+                Order savedOrder;
                 using (var scope = new UnitOfWorkScope())
                 {
                     savedOrder = new EFRepository<Order>()
@@ -229,7 +228,7 @@ namespace NCommon.Data.EntityFramework.Tests
         }
 
         [Test]
-        public void can_eager_fetch_using_Eagerly()
+        public void Can_eager_fetch_using_eagerly()
         {
             using (var tesData = new EFTestData(OrdersContextProvider()))
             {
@@ -266,14 +265,14 @@ namespace NCommon.Data.EntityFramework.Tests
         }
 
         [Test]
-        public void can_eager_fetch_using_with()    
+        public void Can_eager_fetch_using_with()    
         {
             using (var tesData = new EFTestData(OrdersContextProvider()))
             {
                 Order order = null;
                 tesData.Batch(x => order = x.CreateOrderForCustomer(x.CreateCustomer()));
 
-                Order savedOrder = null;
+                Order savedOrder;
                 using (var scope = new UnitOfWorkScope())
                 {
                     savedOrder = new EFRepository<Order>()
@@ -288,7 +287,7 @@ namespace NCommon.Data.EntityFramework.Tests
             }
         }
 
-        public class FakeFetchingStrategy : IFetchingStrategy<Customer, EFRepositoryQueryTests>
+        class FakeFetchingStrategy : IFetchingStrategy<Customer, EFRepositoryQueryTests>
         {
             public void Define(IRepository<Customer> repository)
             {
@@ -298,7 +297,7 @@ namespace NCommon.Data.EntityFramework.Tests
         }
 
         [Test]
-        public void can_eager_fetch_using_fetching_strategy()
+        public void Can_eager_fetch_using_fetching_strategy()
         {
             using (var testData = new EFTestData(OrdersContextProvider()))
             {
@@ -315,7 +314,7 @@ namespace NCommon.Data.EntityFramework.Tests
                     order.Customer = customer;
                 });
 
-                Customer savedCustomer = null;
+                Customer savedCustomer;
                 using (var scope = new UnitOfWorkScope())
                 {
                     savedCustomer = new EFRepository<Customer>()
@@ -335,7 +334,7 @@ namespace NCommon.Data.EntityFramework.Tests
         }
 
         [Test]
-        public void can_query_multiple_databases()
+        public void Can_query_multiple_databases()
         {
             using (var ordersTestData = new EFTestData(OrdersContextProvider()))
             using (var hrTestData = new EFTestData(HRContextProvider()))
@@ -345,7 +344,8 @@ namespace NCommon.Data.EntityFramework.Tests
                 ordersTestData.Batch(x => customer = x.CreateCustomer());
                 hrTestData.Batch(x => salesPerson = x.CreateSalesPerson());
 
-                //NOTE: This will enlist a Distributed DTC tx.
+                //Suprisingly this does not enlist in a DTC transaction. EF is able to re-use the same connection
+                //since both ObjectContext connect to the same database instance.
                 using (var scope = new UnitOfWorkScope())
                 {
                     var savedCustomer = new EFRepository<Customer>()

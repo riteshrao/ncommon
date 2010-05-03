@@ -1,12 +1,29 @@
+#region license
+//Copyright 2010 Ritesh Rao 
+
+//Licensed under the Apache License, Version 2.0 (the "License"); 
+//you may not use this file except in compliance with the License. 
+//You may obtain a copy of the License at 
+
+//http://www.apache.org/licenses/LICENSE-2.0 
+
+//Unless required by applicable law or agreed to in writing, software 
+//distributed under the License is distributed on an "AS IS" BASIS, 
+//WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+//See the License for the specific language governing permissions and 
+//limitations under the License. 
+#endregion
+
 using System;
 using System.Collections.Generic;
 using System.Transactions;
+using Common.Logging;
 using NCommon.Extensions;
 
 namespace NCommon.Data.Impl
 {
     /// <summary>
-    /// Encapsutes a unit of work transaction.
+    /// Encapsulates a unit of work transaction.
     /// </summary>
     public class UnitOfWorkTransaction : IDisposable
     {
@@ -14,6 +31,10 @@ namespace NCommon.Data.Impl
         TransactionScope _transaction;
         IUnitOfWork _unitOfWork;
         IList<IUnitOfWorkScope> _attachedScopes = new List<IUnitOfWorkScope>();
+
+        readonly Guid _transactionId = Guid.NewGuid();
+        readonly ILog _logger = LogManager.GetLogger<UnitOfWorkTransaction>();
+        
 
         ///<summary>
         /// Raised when the transaction is disposing.
@@ -36,6 +57,16 @@ namespace NCommon.Data.Impl
                                                  "Expected a non-null TransactionScope instance.");
             _unitOfWork = unitOfWork;
             _transaction = transaction;
+            _logger.Info(x => x("New UnitOfWorkTransction created with Id {0}", _transactionId));
+        }
+
+        ///<summary>
+        /// Gets the unique transaction id of the <see cref="UnitOfWorkTransaction"/> instance.
+        ///</summary>
+        /// <value>A <see cref="Guid"/> representing the unique id of the <see cref="UnitOfWorkTransaction"/> instance.</value>
+        public Guid TransactionId
+        {
+            get { return _transactionId; }
         }
 
         /// <summary>
@@ -54,8 +85,9 @@ namespace NCommon.Data.Impl
         /// <param name="scope">The <see cref="UnitOfWorkScope"/> instance to attach.</param>
         public void EnlistScope(IUnitOfWorkScope scope)
         {
-            Guard.Against<ArgumentNullException>(scope == null,
-                                                 "Expected a non-null IUnitOfWorkScope instance.");
+            Guard.Against<ArgumentNullException>(scope == null, "Expected a non-null IUnitOfWorkScope instance.");
+
+            _logger.Info(x => x("Scope {1} enlisted with transaction {1}", scope.ScopeId, _transactionId));
             _attachedScopes.Add(scope);
             scope.ScopeComitting += OnScopeCommitting;
             scope.ScopeRollingback += OnScopeRollingBack;
@@ -68,6 +100,8 @@ namespace NCommon.Data.Impl
         {
             Guard.Against<ObjectDisposedException>(_disposed,
                                                    "The transaction attached to the scope has already been disposed.");
+
+            _logger.Info(x => x("Commit signalled by scope {0} on transaction {1}.", scope.ScopeId, _transactionId));
            if (!_attachedScopes.Contains(scope))
            {
                Dispose();
@@ -79,6 +113,7 @@ namespace NCommon.Data.Impl
             _attachedScopes.Remove(scope);
             if (_attachedScopes.Count == 0)
             {
+                _logger.Info(x => x("All scopes have signalled a commit on transaction {0}. Flushing unit of work and comitting attached TransactionScope.", _transactionId));
                 try
                 {
                     _unitOfWork.Flush();
@@ -86,7 +121,7 @@ namespace NCommon.Data.Impl
                 }
                 finally
                 {
-                    Dispose(); //Dispose the transaction after comitted.
+                    Dispose(); //Dispose the transaction after comitting.
                 }
             }
         }
@@ -98,6 +133,9 @@ namespace NCommon.Data.Impl
         {
             Guard.Against<ObjectDisposedException>(_disposed,
                                                    "The transaction attached to the scope has already been disposed.");
+            _logger.Info(x => x("Rollback signalled by scope {0} on transaction {1}.", scope.ScopeId, _transactionId));
+            _logger.Info(x => x("Detaching all scopes and disposing of attached TransactionScope on transaction {0}", _transactionId));
+
             scope.ScopeComitting -= OnScopeCommitting;
             scope.ScopeRollingback -= OnScopeRollingBack;
             _attachedScopes.Remove(scope);
@@ -121,6 +159,7 @@ namespace NCommon.Data.Impl
 
             if (disposing)
             {
+                _logger.Info(x => x("Disposing off transction {0}", _transactionId));
                 if (TransactionDisposing != null)
                     TransactionDisposing(this);
 

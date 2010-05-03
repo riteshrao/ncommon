@@ -1,6 +1,6 @@
 using Autofac;
 using Microsoft.Practices.ServiceLocation;
-using NCommon.ContainerAdapters.Autofac;
+using NCommon.ContainerAdapter.Autofac;
 using NCommon.Data;
 using NCommon.Data.NHibernate;
 using NUnit.Framework;

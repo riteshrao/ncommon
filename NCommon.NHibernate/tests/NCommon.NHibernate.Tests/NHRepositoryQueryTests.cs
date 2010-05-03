@@ -20,7 +20,7 @@ namespace NCommon.Data.NHibernate.Tests
     public class NHRepositoryQueryTests : NHRepositoryTestBase
     {
         [Test]
-        public void can_perform_simple_query()
+        public void Can_perform_simple_query()
         {
             using (var testData = new NHTestData(OrdersDomainFactory.OpenSession()))
             {
@@ -41,7 +41,7 @@ namespace NCommon.Data.NHibernate.Tests
         }
 
         [Test]
-        public void can_save()
+        public void Can_save()
         {
             var customer = new Customer
             {
@@ -73,7 +73,7 @@ namespace NCommon.Data.NHibernate.Tests
         }
 
         [Test]
-        public void can_modify()
+        public void Can_modify()
         {
             using (var testData = new NHTestData(OrdersDomainFactory.OpenSession()))
             {
@@ -96,7 +96,7 @@ namespace NCommon.Data.NHibernate.Tests
         }
 
         [Test]
-        public void can_delete()
+        public void Can_delete()
         {
             var customer = new Customer
             {
@@ -127,7 +127,7 @@ namespace NCommon.Data.NHibernate.Tests
         }
 
         [Test]
-        public void can_detach()
+        public void Can_detach()
         {
             using (var testData = new NHTestData(OrdersDomainFactory.OpenSession()))
             {
@@ -152,7 +152,7 @@ namespace NCommon.Data.NHibernate.Tests
         }
 
         [Test]
-        public void can_attach()
+        public void Can_attach()
         {
             var customer = new Customer
             {
@@ -182,7 +182,7 @@ namespace NCommon.Data.NHibernate.Tests
         }
 
         [Test]
-        public void can_query_using_specification()
+        public void Can_query_using_specification()
         {
             using (var testData = new NHTestData(OrdersDomainFactory.OpenSession()))
             {
@@ -197,10 +197,10 @@ namespace NCommon.Data.NHibernate.Tests
                 {
 
 
-                    var customersInPA = new Specification<Order>(x => x.Customer.Address.State == "DE");
+                    var customersInPa = new Specification<Order>(x => x.Customer.Address.State == "DE");
 
                     var ordersRepository = new NHRepository<Order>();
-                    var results = from order in ordersRepository.Query(customersInPA) select order;
+                    var results = from order in ordersRepository.Query(customersInPa) select order;
 
                     Assert.That(results.Count(), Is.GreaterThan(0));
                     Assert.That(results.Count(), Is.EqualTo(5));
@@ -209,7 +209,7 @@ namespace NCommon.Data.NHibernate.Tests
         }
 
         [Test]
-        public void can_lazyload()
+        public void Can_lazyload()
         {
             using (var testData = new NHTestData(OrdersDomainFactory.OpenSession()))
             {
@@ -235,14 +235,14 @@ namespace NCommon.Data.NHibernate.Tests
         }
 
         [Test]
-        public void lazyloading_when_outside_scope_throws()
+        public void Lazyloading_when_outside_scope_throws()
         {
             using (var testData = new NHTestData(OrdersDomainFactory.OpenSession()))
             {
                 Order order = null;
                 testData.Batch(x => order = x.CreateOrderForCustomer(x.CreateCustomer()));
 
-                Order savedOrder = null;
+                Order savedOrder;
                 using (var scope = new UnitOfWorkScope())
                 {
                     savedOrder = new NHRepository<Order>()
@@ -257,7 +257,7 @@ namespace NCommon.Data.NHibernate.Tests
         }
 
         [Test]
-        public void can_eager_fetch_using_with()
+        public void Can_eager_fetch_using_with()
         {
             using (var tesData = new NHTestData(OrdersDomainFactory.OpenSession()))
             {
@@ -281,7 +281,7 @@ namespace NCommon.Data.NHibernate.Tests
         }
 
         [Test]
-        public void can_eager_fetch_using_Eagerly()
+        public void Can_eager_fetch_using_eagerly()
         {
             using (var tesData = new NHTestData(OrdersDomainFactory.OpenSession()))
             {
@@ -315,7 +315,7 @@ namespace NCommon.Data.NHibernate.Tests
             }
         }
 
-        public class FakeFetchingStrategy : IFetchingStrategy<Customer, NHRepositoryQueryTests>
+        class FakeFetchingStrategy : IFetchingStrategy<Customer, NHRepositoryQueryTests>
         {
             public void Define(IRepository<Customer> repository)
             {
@@ -325,7 +325,7 @@ namespace NCommon.Data.NHibernate.Tests
         }
 
         [Test]
-        public void can_eager_fetch_using_fetching_strategy()
+        public void Can_eager_fetch_using_fetching_strategy()
         {
             using (var testData = new NHTestData(OrdersDomainFactory.OpenSession()))
             {
@@ -342,7 +342,7 @@ namespace NCommon.Data.NHibernate.Tests
                     order.Customer = customer;
                 });
 
-                Customer savedCustomer = null;
+                Customer savedCustomer;
                 using (var scope = new UnitOfWorkScope())
                 {
                     savedCustomer = new NHRepository<Customer>()
@@ -363,7 +363,7 @@ namespace NCommon.Data.NHibernate.Tests
         }
         
         [Test]
-        public void can_query_multiple_databases()
+        public void Can_query_multiple_databases()
         {
             using (var ordersTestData = new NHTestData(OrdersDomainFactory.OpenSession()))
             using (var hrTestData = new NHTestData(HRDomainFactory.OpenSession()))
@@ -392,7 +392,7 @@ namespace NCommon.Data.NHibernate.Tests
         }
 
         [Test]
-        public void query_using_orderby_in_specification_works()
+        public void Query_using_orderby_in_specification_works()
         {
             using (var testData = new NHTestData(OrdersDomainFactory.OpenSession()))
             {
@@ -403,11 +403,11 @@ namespace NCommon.Data.NHibernate.Tests
                     actions.CreateOrdersForCustomers(actions.CreateCustomersInState("LA", 3));
                 });
 
-                var customersInPA = new Specification<Order>(x => x.Customer.Address.State == "PA");
+                var customersInPa = new Specification<Order>(x => x.Customer.Address.State == "PA");
                 using (var scope = new UnitOfWorkScope())
                 {
                     var ordersRepository = new NHRepository<Order>();
-                    var results = from order in ordersRepository.Query(customersInPA)
+                    var results = from order in ordersRepository.Query(customersInPa)
                                   orderby order.OrderDate
                                   select order;
 

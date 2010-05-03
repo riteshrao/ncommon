@@ -40,13 +40,13 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants Condition="'$(TargetFrameworkVersion)' == 'v4.0'">TRACE;DEBUG;NETv40</DefineConstants>
-    <DefineConstants Condition="'$(TargetFrameworkVersion)' == ''">TRACE;DEBUG;</DefineConstants>
-    <DefineConstants Condition="'$(TargetFrameworkVersion)' == '3.5'">TRACE;DEBUG;</DefineConstants>
+    <DefineConstants Condition="'$(TargetFrameworkVersion)' == 'v4.0'">TRACE;DEBUG;NET40</DefineConstants>
+    <DefineConstants Condition="'$(TargetFrameworkVersion)' == 'v3.5'">TRACE;DEBUG</DefineConstants>
+    <DefineConstants Condition="'$(TargetFrameworkVersion)' == ''">TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-    <DefineConstants>TRACE;DEBUG;net40</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>

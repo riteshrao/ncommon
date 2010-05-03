@@ -145,6 +145,10 @@
       <Project>{C853736D-3576-468A-A716-ACEC1CD4FAC1}</Project>
       <Name>NCommon</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NCommon.ContainerAdapter.Autofac\NCommon.ContainerAdapter.Autofac.csproj">
+      <Project>{CB2938EE-A72C-49EA-9DFB-C648CC9C600E}</Project>
+      <Name>NCommon.ContainerAdapter.Autofac</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NCommon.ContainerAdapter.CastleWindsor\NCommon.ContainerAdapter.CastleWindsor.csproj">
       <Project>{27A25205-349C-425E-836F-C1EB160DC2C2}</Project>
       <Name>NCommon.ContainerAdapter.CastleWindsor</Name>
@@ -160,10 +164,6 @@
     <ProjectReference Include="..\NCommon.ContainerAdapter.Unity\NCommon.ContainerAdapter.Unity.csproj">
       <Project>{758EB68B-FE27-4AC8-8098-D4293F1CE4F9}</Project>
       <Name>NCommon.ContainerAdapter.Unity</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NCommon.ContainerAdapters.Autofac\NCommon.ContainerAdapters.Autofac.csproj">
-      <Project>{CB2938EE-A72C-49EA-9DFB-C648CC9C600E}</Project>
-      <Name>NCommon.ContainerAdapters.Autofac</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

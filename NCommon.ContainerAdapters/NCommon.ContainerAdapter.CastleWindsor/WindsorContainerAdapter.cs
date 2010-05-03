@@ -1,5 +1,5 @@
 #region license
-//Copyright 2008 Ritesh Rao 
+//Copyright 2010 Ritesh Rao 
 
 //Licensed under the Apache License, Version 2.0 (the "License"); 
 //you may not use this file except in compliance with the License. 
@@ -97,7 +97,7 @@ namespace NCommon.ContainerAdapter.CastleWindsor
         ///<param name="implementation">The type representing the implementation registered for the service.</param>
         public void RegisterGeneric(Type service, Type implementation)
         {
-            RegisterGeneric(service, implementation);
+            Register(service, implementation);
         }
 
         ///<summary>
@@ -108,7 +108,7 @@ namespace NCommon.ContainerAdapter.CastleWindsor
         ///<param name="named">string. The service name with which the implementation is registerd.</param>
         public void RegisterGeneric(Type service, Type implementation, string named)
         {
-            RegisterGeneric(service, implementation, named);
+            Register(service, implementation, named);
         }
 
         /// <summary>

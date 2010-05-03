@@ -1,5 +1,5 @@
 #region license
-//Copyright 2008 Ritesh Rao 
+//Copyright 2010 Ritesh Rao 
 
 //Licensed under the Apache License, Version 2.0 (the "License"); 
 //you may not use this file except in compliance with the License. 
@@ -26,10 +26,10 @@ namespace NCommon.Configuration
     /// </summary>
     public class DefaultStateConfiguration : IStateConfiguration
     {
-        Type _customCacheType = null;
-        Type _customSessionType = null;
-        Type _customLocalStateType = null;
-        Type _customApplicationStateType = null;
+        Type _customCacheType;
+        Type _customSessionType;
+        Type _customLocalStateType;
+        Type _customApplicationStateType;
 
         /// <summary>
         /// Instructs NCommon to use the custom <see cref="ICacheState"/> type as the cache storage.

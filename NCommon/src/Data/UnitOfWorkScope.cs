@@ -1,5 +1,5 @@
 ﻿#region license
-//Copyright 2008 Ritesh Rao 
+//Copyright 2010 Ritesh Rao 
 
 //Licensed under the Apache License, Version 2.0 (the "License"); 
 //you may not use this file except in compliance with the License. 
@@ -16,6 +16,7 @@
 
 using System;
 using System.Transactions;
+using Common.Logging;
 using NCommon.Data.Impl;
 
 namespace NCommon.Data
@@ -35,6 +36,8 @@ namespace NCommon.Data
         bool _disposed;
         bool _commitAttempted;
         bool _completed;
+        readonly Guid _scopeId = Guid.NewGuid();
+        readonly ILog _logger = LogManager.GetLogger<UnitOfWorkScope>();
 
         /// <summary>
         /// Event fired when the scope is comitting.
@@ -54,6 +57,15 @@ namespace NCommon.Data
         public UnitOfWorkScope() : this(false) { }
 
         /// <summary>
+        /// Gets the unique Id of the <see cref="UnitOfWorkScope"/>.
+        /// </summary>
+        /// <value>A <see cref="Guid"/> representing the unique Id of the scope.</value>
+        public Guid ScopeId
+        {
+            get { return _scopeId; }
+        }
+
+        /// <summary>
         /// Overloaded Constructor.
         /// Creates a new instance of the <see cref="UnitOfWorkScope"/> class.
         /// </summary>
@@ -61,6 +73,7 @@ namespace NCommon.Data
         /// <see cref="UnitOfWorkScope"/> or <see cref="TransactionScope"/>, specify new, otherwise specify false.</param>
         public UnitOfWorkScope(bool newTransaction)
         {
+            _logger.Info(x => x("New UnitOfWorkScope {0} started with newTransaction setting as : {1}", _scopeId, newTransaction));
             UnitOfWorkManager.CurrentTransactionManager.EnlistScope(this, newTransaction);
         }
 
@@ -74,6 +87,8 @@ namespace NCommon.Data
             Guard.Against<InvalidOperationException>(_completed,
                                                      "This unit of work scope has been marked completed. A child scope participating in the " +
                                                      "transaction has rolledback and the transaction aborted. The parent scope cannot be commit.");
+
+            
             _commitAttempted = true;
             OnCommit();
         }
@@ -92,6 +107,7 @@ namespace NCommon.Data
         /// </summary>
         void OnCommit()
         {
+            _logger.Info(x => x("UnitOfWorkScope {0} Comitting.", _scopeId));
             if (ScopeComitting != null)
                 ScopeComitting(this);
         }
@@ -101,6 +117,7 @@ namespace NCommon.Data
         /// </summary>
         void OnRollback()
         {
+            _logger.Info(x => x("UnitOfWorkScope {0} Rolling back.", _scopeId));
             if (ScopeRollingback != null)
                 ScopeRollingback(this);
         }

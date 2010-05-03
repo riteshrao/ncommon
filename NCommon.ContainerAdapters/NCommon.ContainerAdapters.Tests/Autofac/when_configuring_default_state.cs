@@ -1,6 +1,6 @@
 using Autofac;
 using NCommon.Configuration;
-using NCommon.ContainerAdapters.Autofac;
+using NCommon.ContainerAdapter.Autofac;
 using NCommon.Context;
 using NCommon.State;
 using NCommon.State.Impl;

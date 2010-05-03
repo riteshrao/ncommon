@@ -1,3 +1,5 @@
+using NCommon.Data.NHibernate;
+
 namespace NCommon.NHibernate.Tests.Domain
 {
     public class MoneyUserType : CompositeUserTypeBase<Money>
@@ -12,7 +14,6 @@ namespace NCommon.NHibernate.Tests.Domain
             MapProperty(prop => prop.Amount);
         }
         #endregion
-
         
         #region Overrides of CompositeUserTypeBase<Money>
         /// <summary>

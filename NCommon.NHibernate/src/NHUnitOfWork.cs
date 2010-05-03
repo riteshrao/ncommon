@@ -16,8 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using NCommon.Extensions;
 using NHibernate;
 

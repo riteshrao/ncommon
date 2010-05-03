@@ -66,9 +66,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCommon.EntityFramework.Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCommon.ContainerAdapters.Tests", "NCommon.ContainerAdapters\NCommon.ContainerAdapters.Tests\NCommon.ContainerAdapters.Tests.csproj", "{18946694-DC3F-4680-B0E4-E182DF4F10EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCommon.ContainerAdapters.Autofac", "NCommon.ContainerAdapters\NCommon.ContainerAdapters.Autofac\NCommon.ContainerAdapters.Autofac.csproj", "{CB2938EE-A72C-49EA-9DFB-C648CC9C600E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCommon.Testing", "NCommon.Testing\NCommon.Testing.csproj", "{AC96FD87-C53C-4833-8DD8-4774E36F0E4A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCommon.ContainerAdapter.Autofac", "NCommon.ContainerAdapters\NCommon.ContainerAdapter.Autofac\NCommon.ContainerAdapter.Autofac.csproj", "{CB2938EE-A72C-49EA-9DFB-C648CC9C600E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -160,14 +160,14 @@ Global
 		{18946694-DC3F-4680-B0E4-E182DF4F10EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18946694-DC3F-4680-B0E4-E182DF4F10EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18946694-DC3F-4680-B0E4-E182DF4F10EF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CB2938EE-A72C-49EA-9DFB-C648CC9C600E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CB2938EE-A72C-49EA-9DFB-C648CC9C600E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CB2938EE-A72C-49EA-9DFB-C648CC9C600E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CB2938EE-A72C-49EA-9DFB-C648CC9C600E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AC96FD87-C53C-4833-8DD8-4774E36F0E4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AC96FD87-C53C-4833-8DD8-4774E36F0E4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC96FD87-C53C-4833-8DD8-4774E36F0E4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC96FD87-C53C-4833-8DD8-4774E36F0E4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB2938EE-A72C-49EA-9DFB-C648CC9C600E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB2938EE-A72C-49EA-9DFB-C648CC9C600E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB2938EE-A72C-49EA-9DFB-C648CC9C600E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB2938EE-A72C-49EA-9DFB-C648CC9C600E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
