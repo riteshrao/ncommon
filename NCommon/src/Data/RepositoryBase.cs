@@ -117,7 +117,6 @@ namespace NCommon.Data
             get { return RepositoryQuery.Provider; }
         }
 
-
         /// <summary>
         /// Marks the changes of an existing entity to be saved to the store.
         /// </summary>

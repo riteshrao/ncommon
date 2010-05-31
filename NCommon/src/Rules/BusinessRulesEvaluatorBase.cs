@@ -35,7 +35,7 @@ namespace NCommon.Rules
         /// </summary>
         /// <param name="rule">The <see cref="IBusinessRule{TEntity}"/> instance to add.</param>
         /// <param name="ruleName">string. The unique name assigned to the business rule.</param>
-        protected void AddRule (string ruleName, IBusinessRule<TEntity> rule)
+        protected virtual void AddRule (string ruleName, IBusinessRule<TEntity> rule)
         {
             Guard.Against<ArgumentNullException>(rule == null,
                                                  "Cannot add a null rule instance. Expected a non null reference.");
@@ -51,7 +51,7 @@ namespace NCommon.Rules
         /// Removes a previously added rule, specified with the <paramref name="ruleName"/>, from the evaluator.
         /// </summary>
         /// <param name="ruleName">string. The name of the rule to remove.</param>
-        protected void RemoveRule (string ruleName)
+        protected virtual void RemoveRule (string ruleName)
         {
             Guard.Against<ArgumentNullException>(string.IsNullOrEmpty(ruleName), "Expected a non empty and non-null rule name.");
             _ruleSets.Remove(ruleName);
@@ -62,7 +62,7 @@ namespace NCommon.Rules
         /// </summary>
         /// <param name="entity">The <typeparamref name="TEntity"/> instance against which all 
         /// registered business rules are evauluated.</param>
-        public void Evauluate(TEntity entity)
+        public virtual void Evauluate(TEntity entity)
         {
             Guard.Against<ArgumentNullException>(entity == null,
                                                  "Cannot evaluate rules against a null reference. Expected a valid non-null entity instance.");

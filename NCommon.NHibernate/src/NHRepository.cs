@@ -23,6 +23,7 @@ using NCommon.Extensions;
 using NHibernate;
 using NHibernate.Linq;
 using System.Linq.Expressions;
+using NHibernate.Transform;
 
 namespace NCommon.Data.NHibernate
 {
@@ -32,11 +33,20 @@ namespace NCommon.Data.NHibernate
     /// </summary>
     public class NHRepository<TEntity> : RepositoryBase<TEntity>
     {
-    	private int _batchSize = -1;
-    	private readonly ISession _privateSession;
-    	private readonly List<string> _expands = new List<string>();
-    	private bool _enableCached;
-    	private string _cachedQueryName;
+    	public class WithDistinctRoot : NHRepository<TEntity>
+        {
+    	    public WithDistinctRoot()
+    	    {
+    	        _resultTransformers = new[] {new DistinctRootEntityResultTransformer()};
+    	    }
+        }
+
+        int _batchSize = -1;
+        readonly ISession _privateSession;
+        bool _enableCached;
+        string _cachedQueryName;
+        readonly List<string> _expands = new List<string>();
+        IResultTransformer[] _resultTransformers;
 
         /// <summary>
         /// Default Constructor.
@@ -79,6 +89,11 @@ namespace NCommon.Data.NHibernate
             	    Session.SetBatchSize(_batchSize); //Done before every query.
                 var query = Session.Linq<TEntity>();
             	var nhQuery = query as INHibernateQueryable;
+
+                if (_resultTransformers != null && _resultTransformers.Length > 0)
+                    _resultTransformers.ForEach(transformer => 
+                        nhQuery.QueryOptions.RegisterCustomAction(x => x.SetResultTransformer(transformer)));
+
                 if (_expands.Count > 0)
                     _expands.ForEach(x => nhQuery.QueryOptions.AddExpansion(x));
 

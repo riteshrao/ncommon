@@ -35,7 +35,7 @@ namespace NCommon.Rules
         /// </summary>
         /// <param name="rule">The <see cref="IValidationRule{TEntity}"/> instance to add.</param>
         /// <param name="ruleName">string. The unique name assigned to the validation rule.</param>
-        protected void AddValidation(string ruleName, IValidationRule<TEntity> rule)
+        protected virtual void AddValidation(string ruleName, IValidationRule<TEntity> rule)
         {
             Guard.Against<ArgumentNullException>(rule == null,
                                                  "Cannot add a null rule instance. Expected a non null reference.");
@@ -51,7 +51,7 @@ namespace NCommon.Rules
         /// Removes a previously added rule, specified with the <paramref name="ruleName"/>, from the evaluator.
         /// </summary>
         /// <param name="ruleName">string. The name of the rule to remove.</param>
-        protected void RemoveValidation(string ruleName)
+        protected virtual void RemoveValidation(string ruleName)
         {
             Guard.Against<ArgumentNullException>(string.IsNullOrEmpty(ruleName), "Expected a non empty and non-null rule name.");
             _validations.Remove(ruleName);
@@ -62,17 +62,31 @@ namespace NCommon.Rules
         /// </summary>
         /// <param name="entity">The <typeparamref name="TEntity"/> to validate.</param>
         /// <returns>A <see cref="ValidationResult"/> that contains the results of the validation.</returns>
-        public ValidationResult Validate(TEntity entity)
+        public virtual ValidationResult Validate(TEntity entity)
         {
-            ValidationResult result = new ValidationResult();
+            var result = new ValidationResult();
             _validations.Keys.ForEach(x =>
                                           {
-                                              IValidationRule<TEntity> rule = _validations[x];
+                                              var rule = _validations[x];
                                               if (!rule.Validate(entity))
                                                   result.AddError(new ValidationError(rule.ValidationMessage,
                                                                                         rule.ValidationProperty));
                                           });
             return result;
+        }
+
+        /// <summary>
+        /// Gets a <see cref="IValidationRule{TEntity}"/> that was added to the validator with the specified
+        /// rule name.
+        /// </summary>
+        /// <param name="ruleName">The name of the validation rule to retrieve.</param>
+        /// <returns>A <see cref="IValidationRule{TEntity}"/> instance, or null if no rule stored with the specified
+        /// rule name was found.</returns>
+        protected IValidationRule<TEntity> GetValidationRule(string ruleName)
+        {
+            IValidationRule<TEntity> rule;
+            _validations.TryGetValue(ruleName, out rule);
+            return rule;
         }
     }
 

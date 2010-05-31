@@ -76,9 +76,19 @@ namespace NCommon.Testing
                 _state[typeof(T).FullName + key] = instance;
             }
 
+            public void Put<T>(T instance, DateTime absoluteExpiration)
+            {
+                Put(instance);
+            }
+
             public void Put<T>(object key, T instance, DateTime absoluteExpiration)
             {
                 Put(key, instance);
+            }
+
+            public void Put<T>(T instance, TimeSpan slidingExpiration)
+            {
+                Put(instance);
             }
 
             public void Put<T>(object key, T instance, TimeSpan slidingExpiration)
@@ -89,6 +99,26 @@ namespace NCommon.Testing
             public void Remove<T>(object key)
             {
                 _state.Remove(typeof(T).FullName + key);
+            }
+
+            public T Get<T>()
+            {
+                return (T) _state[typeof (T).FullName];
+            }
+
+            public void Put<T>(T instance)
+            {
+                _state[typeof (T).FullName] = instance;
+            }
+
+            public void Remove<T>()
+            {
+                _state.Remove(typeof (T).FullName);
+            }
+
+            public void Clear()
+            {
+                _state.Clear();
             }
         }
     }

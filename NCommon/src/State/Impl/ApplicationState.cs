@@ -24,7 +24,18 @@ namespace NCommon.State.Impl
     ///</summary>
     public class ApplicationState : IApplicationState
     {
+        readonly static object _syncRoot = new object();
         readonly Hashtable _applicationState = new Hashtable();
+
+        /// <summary>
+        /// Gets state data stored with the default key.
+        /// </summary>
+        /// <typeparam name="T">The type of data to retrieve.</typeparam>
+        /// <returns>An instance of <typeparamref name="T"/> or null if not found.</returns>
+        public T Get<T>()
+        {
+            return Get<T>(null);
+        }
 
         /// <summary>
         /// Gets state data stored with the specified key.
@@ -34,11 +45,18 @@ namespace NCommon.State.Impl
         /// <returns>An instance of <typeparamref name="T"/> or null if not found.</returns>
         public T Get<T>(object key)
         {
-            Guard.Against<ArgumentNullException>(key == null,
-                                                 "Expected a non-null key identifying the " + typeof (T).FullName +
-                                                 " instance to retrieve.");
-            var fullKey = typeof (T).FullName + key;
-            return (T) _applicationState[fullKey];
+            lock(_syncRoot)
+                return (T) _applicationState[key.BuildFullKey<T>()];
+        }
+
+        ///<summary>
+        /// Puts state data into the application state using the type's name as the default key.
+        ///</summary>
+        ///<param name="instance">The instance of <typeparamref name="T"/></param>
+        ///<typeparam name="T"></typeparam>
+        public void Put<T>(T instance)
+        {
+            Put(null, instance);
         }
 
         /// <summary>
@@ -49,11 +67,17 @@ namespace NCommon.State.Impl
         /// <param name="instance">An instance of <typeparamref name="T"/> to store.</param>
         public void Put<T>(object key, T instance)
         {
-            Guard.Against<ArgumentNullException>(key == null,
-                                                 "Expected a non-null key identifying the " + typeof(T).FullName +
-                                                 " instance to retrieve.");
-            var fullKey = typeof (T).FullName + key;
-            _applicationState[fullKey] = instance;
+            lock (_syncRoot)
+                _applicationState[key.BuildFullKey<T>()] = instance;
+        }
+
+        /// <summary>
+        /// Removes state data stored in the application state with the default key.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        public void Remove<T>()
+        {
+            Remove<T>(null);
         }
 
         /// <summary>
@@ -63,11 +87,17 @@ namespace NCommon.State.Impl
         /// <param name="key">An object representing the unique key with which the data was stored.</param>
         public void Remove<T>(object key)
         {
-            Guard.Against<ArgumentNullException>(key == null,
-                                                 "Expected a non-null key identifying the " + typeof(T).FullName +
-                                                 " instance to retrieve.");
-            var fullKey = typeof (T).FullName + key;
-            _applicationState.Remove(fullKey);
+            lock(_syncRoot)
+                _applicationState.Remove(key.BuildFullKey<T>());
+        }
+
+        /// <summary>
+        /// Clears all state data stored in the application state.
+        /// </summary>
+        public void Clear()
+        {
+            lock(_syncRoot)
+                _applicationState.Clear();
         }
     }
 }

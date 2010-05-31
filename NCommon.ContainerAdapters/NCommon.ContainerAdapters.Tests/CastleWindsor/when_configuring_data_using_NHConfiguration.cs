@@ -48,5 +48,18 @@ namespace NCommon.ContainerAdapters.Tests.CastleWindsor
             Assert.That(repo, Is.Not.Null);
             Assert.That(repo, Is.TypeOf(typeof (NHRepository<string>)));
         }
+        
+        [Test]
+        public void verify_returns_distinct_configured_repository()
+        {
+            var container = new WindsorContainer();
+            NCommon.Configure
+                .Using(new WindsorContainerAdapter(container))
+                .ConfigureData<NHConfiguration>(x => x.WithDistinctResults());
+
+            var repo = container.Resolve<IRepository<string>>();
+            Assert.That(repo, Is.Not.Null);
+            Assert.That(repo, Is.TypeOf<NHRepository<string>.WithDistinctRoot>());
+        }
     }
 }

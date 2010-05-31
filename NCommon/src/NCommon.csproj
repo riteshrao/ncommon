@@ -153,6 +153,7 @@
     <Compile Include="State\Impl\SessionStateWrapper.cs" />
     <Compile Include="State\Impl\State.cs" />
     <Compile Include="State\Impl\ThreadLocalState.cs" />
+    <Compile Include="State\Impl\Utils.cs" />
     <Compile Include="State\Impl\WcfLocalState.cs" />
     <Compile Include="State\Impl\WcfSessionState.cs" />
     <Compile Include="State\ISessionState.cs" />

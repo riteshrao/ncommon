@@ -49,5 +49,18 @@ namespace NCommon.ContainerAdapters.Tests.NInject
             Assert.That(repo, Is.Not.Null);
             Assert.That(repo, Is.TypeOf(typeof (NHRepository<string>)));
         }
+
+        //[Test]
+        //public void verify_returns_distinct_configured_repository()
+        //{
+        //    var kernel = new StandardKernel();
+        //    NCommon.Configure
+        //        .Using(new NInjectContainerAdapter(kernel))
+        //        .ConfigureData<NHConfiguration>();
+
+        //    var repo = kernel.Get<IRepository<string>>();
+        //    Assert.That(repo, Is.Not.Null);
+        //    Assert.That(repo, Is.TypeOf<NHRepository<string>.WithDistinctRoot>());
+        //}
     }
 }

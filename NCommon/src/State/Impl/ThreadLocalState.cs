@@ -27,14 +27,24 @@ namespace NCommon.State.Impl
         [ThreadStatic]
         static Hashtable _state;
 
-        /// <summary>
-        /// Default Constructor.
-        /// Creates a new instance of the <see cref="ThreadLocalState"/> class.
-        /// </summary>
-        public ThreadLocalState()
+        public Hashtable State
         {
-            if (_state == null)
-                _state = new Hashtable();
+            get
+            {
+                if (_state == null)
+                    _state = new Hashtable();
+                return _state;
+            }
+        }
+
+        /// Gets state data stored with the default key.
+        /// </summary>
+        /// <typeparam name="T">The type of data to retrieve.</typeparam>
+        /// <returns>An isntance of <typeparamref name="T"/> or null if not found.</returns>
+        public T Get<T>()
+        {
+            var fullKey = typeof (T).FullName;
+            return (T) State[fullKey];
         }
 
         /// <summary>
@@ -46,7 +56,18 @@ namespace NCommon.State.Impl
         public T Get<T>(object key)
         {
             var fullKey = typeof (T).FullName + key;
-            return (T) _state[fullKey];
+            return (T) State[fullKey];
+        }
+
+        /// <summary>
+        /// Puts state data into the local state with the default key.
+        /// </summary>
+        /// <typeparam name="T">The type of data to put.</typeparam>
+        /// <param name="instance">An instance of <typeparamref name="T"/> to put.</param>
+        public void Put<T>(T instance)
+        {
+            var fullKey = typeof (T).FullName;
+            State[fullKey] = instance;
         }
 
         /// <summary>
@@ -58,7 +79,17 @@ namespace NCommon.State.Impl
         public void Put<T>(object key, T instance)
         {
             var fullKey = typeof (T).FullName + key;
-            _state[fullKey] = instance;
+            State[fullKey] = instance;
+        }
+
+        /// <summary>
+        /// Removes state data stored in the local state with the specified key.
+        /// </summary>
+        /// <typeparam name="T">The type of data to remove.</typeparam>
+        public void Remove<T>()
+        {
+            var fullKey = typeof (T).FullName;
+            State.Remove(fullKey);
         }
 
         /// <summary>
@@ -69,7 +100,15 @@ namespace NCommon.State.Impl
         public void Remove<T>(object key)
         {
             var fullKey = typeof (T).FullName + key;
-            _state.Remove(fullKey);
+            State.Remove(fullKey);
+        }
+
+        /// <summary>
+        /// Clears all state stored in local state.
+        /// </summary>
+        public void Clear()
+        {
+            State.Clear();
         }
     }
 }

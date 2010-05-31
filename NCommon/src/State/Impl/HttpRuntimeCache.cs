@@ -24,6 +24,16 @@ namespace NCommon.State.Impl
     /// </summary>
     public class HttpRuntimeCache : ICacheState
     {
+        ///<summary>
+        /// Gets state data stored with the default key.
+        ///</summary>
+        ///<typeparam name="T">The type of data to retrieve.</typeparam>
+        ///<returns>An instance of <typeparamref name="T"/> or null if not found.</returns>
+        public T Get<T>()
+        {
+            return Get<T>(null);
+        }
+
         /// <summary>
         /// Gets state data stored with the specified key.
         /// </summary>
@@ -32,11 +42,17 @@ namespace NCommon.State.Impl
         /// <returns>An instance of <typeparamref name="T"/> or null if not found.</returns>
         public T Get<T>(object key)
         {
-            Guard.Against<ArgumentNullException>(key == null,
-                                                 "Expected a non-null key identifying the " + typeof(T).FullName +
-                                                 " instance to retrieve.");
-            var fullKey = typeof (T).FullName + key;
-            return (T) HttpRuntime.Cache[fullKey];
+            return (T) HttpRuntime.Cache.Get(key.BuildFullKey<T>());
+        }
+
+        /// <summary>
+        /// Puts state data into the cache state with the specified key with no expiration.
+        /// </summary>
+        /// <typeparam name="T">The type of data to put.</typeparam>
+        /// <param name="instance">An instance of <typeparamref name="T"/> to store.</param>
+        public void Put<T>(T instance)
+        {
+            Put(null, instance);
         }
 
         /// <summary>
@@ -47,11 +63,18 @@ namespace NCommon.State.Impl
         /// <param name="instance">An instance of <typeparamref name="T"/> to store.</param>
         public void Put<T>(object key, T instance)
         {
-            Guard.Against<ArgumentNullException>(key == null,
-                                                 "Expected a non-null key identifying the " + typeof(T).FullName +
-                                                 " instance to put.");
-            var fullKey = typeof (T).FullName + key;
-            HttpRuntime.Cache.Insert(fullKey, instance);
+            HttpRuntime.Cache.Insert(key.BuildFullKey<T>(), instance);
+        }
+
+        /// <summary>
+        /// Puts state data into the cache state with the default key and absolute expiration policy.
+        /// </summary>
+        /// <typeparam name="T">The type of data to put.</typeparam>
+        /// <param name="instance">An instance of <typeparamref name="T"/> to store.</param>
+        /// <param name="absoluteExpiration">The date and time when the data from the cache will be removed.</param>
+        public void Put<T>(T instance, DateTime absoluteExpiration)
+        {
+            Put(null, instance, absoluteExpiration);
         }
 
         /// <summary>
@@ -63,11 +86,19 @@ namespace NCommon.State.Impl
         /// <param name="absoluteExpiration">The date and time when the absolute data from the cache will be removed.</param>
         public void Put<T>(object key, T instance, DateTime absoluteExpiration)
         {
-            Guard.Against<ArgumentNullException>(key == null,
-                                                 "Expected a non-null key identifying the " + typeof(T).FullName +
-                                                 " instance to put.");
-            var fullKey = typeof (T).FullName + key;
-            HttpRuntime.Cache.Insert(fullKey, instance, null, absoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration);
+            HttpRuntime.Cache.Insert(key.BuildFullKey<T>(), instance, null, absoluteExpiration,
+                                     System.Web.Caching.Cache.NoSlidingExpiration);
+        }
+
+        /// <summary>
+        /// Puts state data into the cache state with the default key and sliding expiration policy.
+        /// </summary>
+        /// <typeparam name="T">The type of data to put.</typeparam>
+        /// <param name="instance">An instance of <typeparamref name="T"/> to store.</param>
+        /// <param name="slidingExpiration">A time span representing the sliding expiration policy.</param>
+        public void Put<T>(T instance, TimeSpan slidingExpiration)
+        {
+            Put(null, instance, slidingExpiration);
         }
 
         /// <summary>
@@ -79,11 +110,17 @@ namespace NCommon.State.Impl
         /// <param name="slidingExpiration">A <see cref="TimeSpan"/> specifying the sliding expiration policy.</param>
         public void Put<T>(object key, T instance, TimeSpan slidingExpiration)
         {
-            Guard.Against<ArgumentNullException>(key == null,
-                                                 "Expected a non-null key identifying the " + typeof(T).FullName +
-                                                 " instance to put.");
-            var fullKey = typeof (T).FullName + key;
-            HttpRuntime.Cache.Insert(fullKey, instance, null, System.Web.Caching.Cache.NoAbsoluteExpiration, slidingExpiration);
+            HttpRuntime.Cache.Insert(key.BuildFullKey<T>(), instance, null,
+                                     System.Web.Caching.Cache.NoAbsoluteExpiration, slidingExpiration);
+        }
+
+        /// <summary>
+        /// Removes state data stored in the cache with the default key.
+        /// </summary>
+        /// <typeparam name="T">The type of data to remove.</typeparam>
+        public void Remove<T>()
+        {
+            Remove<T>(null);
         }
 
         /// <summary>
@@ -93,11 +130,15 @@ namespace NCommon.State.Impl
         /// <param name="key">An object representing the unique key with which the data was stored.</param>
         public void Remove<T>(object key)
         {
-            Guard.Against<ArgumentNullException>(key == null,
-                                                 "Expected a non-null key identifying the " + typeof(T).FullName +
-                                                 " instance to remove.");
-            var fullKey = typeof (T).FullName + key;
-            HttpRuntime.Cache.Remove(fullKey);
+            HttpRuntime.Cache.Remove(key.BuildFullKey<T>());
+        }
+
+        /// <summary>
+        /// Clears all state stored in the cache.
+        /// </summary>
+        public void Clear()
+        {
+            //There's no elegant way to clear the HttpRuntime cache yet... So we ignore this call. Noop.
         }
     }
 }

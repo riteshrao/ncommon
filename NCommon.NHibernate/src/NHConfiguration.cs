@@ -25,6 +25,7 @@ namespace NCommon.Data.NHibernate
     /// </summary>
     public class NHConfiguration : IDataConfiguration
     {
+        Type _defaultRepositoryType = typeof (NHRepository<>);
         readonly NHUnitOfWorkFactory _factory = new NHUnitOfWorkFactory();
 
         /// <summary>
@@ -42,6 +43,16 @@ namespace NCommon.Data.NHibernate
         }
 
         /// <summary>
+        /// Sets the repository to always return distinct results for the entity type being queried.
+        /// </summary>
+        /// <returns><see cref="NHConfiguration"/></returns>
+        public NHConfiguration WithDistinctResults()
+        {
+            _defaultRepositoryType = typeof (NHRepository<>.WithDistinctRoot);
+            return this;
+        }
+
+        /// <summary>
         /// Called by NCommon <see cref="Configure"/> to configure data providers.
         /// </summary>
         /// <param name="containerAdapter">The <see cref="IContainerAdapter"/> instance that allows
@@ -49,7 +60,7 @@ namespace NCommon.Data.NHibernate
         public void Configure(IContainerAdapter containerAdapter)
         {
             containerAdapter.RegisterInstance<IUnitOfWorkFactory>(_factory);
-            containerAdapter.RegisterGeneric(typeof(IRepository<>), typeof(NHRepository<>));
+            containerAdapter.RegisterGeneric(typeof(IRepository<>), _defaultRepositoryType);
         }
     }
 }

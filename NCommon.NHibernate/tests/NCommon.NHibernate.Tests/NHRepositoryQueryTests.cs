@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using NCommon.Data.NHibernate.Tests.HRDomain.Domain;
 using NCommon.Data.NHibernate.Tests.OrdersDomain;
@@ -416,6 +417,35 @@ namespace NCommon.Data.NHibernate.Tests
                     Assert.That(results.Count(), Is.EqualTo(2));
                     scope.Commit();
                 }
+            }
+        }
+
+        [Test]
+        public void Query_using_distinct_repository_works()
+        {
+            using (var testData = new NHTestData(OrdersDomainFactory.OpenSession()))
+            {
+                var customerId = 0;
+                testData.Batch(actions =>
+                {
+                    var customer = actions.CreateCustomer();
+                    actions.CreateOrderForCustomer(customer);
+                    actions.CreateOrderForCustomer(customer);
+                    customerId = customer.CustomerID;
+                });
+
+                IEnumerable<Customer> results; 
+                using (var scope = new UnitOfWorkScope())
+                {
+                    var repository = new NHRepository<Customer>.WithDistinctRoot();
+                    results = repository
+                        .Eagerly(x => x.Fetch<Order>(c => c.Orders))
+                        .Where(x => x.CustomerID == customerId)
+                        .ToList();
+
+                }
+                Assert.That(results.Count(), Is.EqualTo(1));
+                Assert.That(results.First().Orders.Count, Is.EqualTo(2));
             }
         }
     }

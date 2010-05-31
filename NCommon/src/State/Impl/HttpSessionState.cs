@@ -14,7 +14,9 @@
 //limitations under the License. 
 #endregion
 
+using System;
 using System.Collections;
+using Common.Logging;
 using NCommon.Context;
 
 namespace NCommon.State.Impl
@@ -24,7 +26,8 @@ namespace NCommon.State.Impl
     /// </summary>
     public class HttpSessionState : ISessionState
     {
-        readonly Hashtable _state;
+        readonly IContext _context;
+        ILog _logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// Default Constructor.
@@ -33,16 +36,17 @@ namespace NCommon.State.Impl
         /// <param name="context">An instance of <see cref="IContext"/>.</param>
         public HttpSessionState(IContext context)
         {
-            _state = context.HttpContext.Session[typeof (HttpSessionState).AssemblyQualifiedName] as Hashtable;
-            if (_state == null)
-            {
-                lock(context.HttpContext.Session.SyncRoot)
-                {
-                    _state = context.HttpContext.Session[typeof(HttpSessionState).AssemblyQualifiedName] as Hashtable;
-                    if (_state == null)
-                        context.HttpContext.Session[typeof(HttpSessionState).AssemblyQualifiedName] = (_state = new Hashtable());
-                }
-            }
+            _context = context;
+        }
+
+        /// <summary>
+        /// Gets state data stored with the default key.
+        /// </summary>
+        /// <typeparam name="T">The type of data to retrieve.</typeparam>
+        /// <returns>An instance of <typeparamref name="T"/> or null if not found.</returns>
+        public T Get<T>()
+        {
+            return Get<T>(null);
         }
 
         /// <summary>
@@ -53,9 +57,21 @@ namespace NCommon.State.Impl
         /// <returns>An instance of <typeparamref name="T"/> or null if not found.</returns>
         public T Get<T>(object key)
         {
-            var fullKey = typeof (T).FullName + key;
-            lock (_state.SyncRoot)
-                return (T) _state[fullKey];
+            var fullKey = key.BuildFullKey<T>();
+            _logger.Debug(x => x("Attempting to get {0} from session state for session {1}", 
+                fullKey, _context.HttpContext.Session.SessionID));
+            lock (_context.HttpContext.Session.SyncRoot)
+                return (T) _context.HttpContext.Session[fullKey];
+        }
+
+        /// <summary>
+        /// Puts state data into the session state with the default key.
+        /// </summary>
+        /// <typeparam name="T">The type of data to put.</typeparam>
+        /// <param name="instance">An instance of <typeparamref name="T"/> to store.</param>
+        public void Put<T>(T instance)
+        {
+            Put(null, instance);
         }
 
         /// <summary>
@@ -66,10 +82,22 @@ namespace NCommon.State.Impl
         /// <param name="instance">An instance of <typeparamref name="T"/> to store.</param>
         public void Put<T>(object key, T instance)
         {
-            var fullKey = typeof (T).FullName + key;
-            lock (_state.SyncRoot)
-                _state[fullKey] = instance;
+            var fullKey = key.BuildFullKey<T>();
+            _logger.Debug(x => x("Attempting to put {0} to session state for session {1}",
+                fullKey, _context.HttpContext.Session.SessionID));
+            lock (_context.HttpContext.Session.SyncRoot)
+                _context.HttpContext.Session[fullKey] = instance;
         }
+
+        /// <summary>
+        /// Removes state data stored in the session state with the default key.
+        /// </summary>
+        /// <typeparam name="T">The type of data to remove.</typeparam>
+        public void Remove<T>()
+        {
+            Remove<T>(null);
+        }
+
         /// <summary>
         /// Removes state data stored in the session state with the specified key.
         /// </summary>
@@ -77,9 +105,20 @@ namespace NCommon.State.Impl
         /// <param name="key">An object representing the unique key with which the data was stored.</param>
         public void Remove<T>(object key)
         {
-            var fullKey = typeof (T).FullName + key;
-            lock (_state.SyncRoot)
-                _state.Remove(fullKey);
+            var fullKey = key.BuildFullKey<T>();
+            _logger.Debug(x => x("Attempting to remove {0} from session state for session {1}",
+                fullKey, _context.HttpContext.Session.SessionID));
+            lock (_context.HttpContext.Session.SyncRoot)
+                _context.HttpContext.Session.Remove(fullKey);
+        }
+
+        /// <summary>
+        /// Clears all state data stored in the session.
+        /// </summary>
+        public void Clear()
+        {
+            _logger.Debug(x => x("Attempting to clear session state for session {1}",_context.HttpContext.Session.SessionID));
+            _context.HttpContext.Session.Clear();
         }
     }
 }

@@ -38,6 +38,16 @@ namespace NCommon.State.Impl
         }
 
         /// <summary>
+        /// Gets state data stored with the default key.
+        /// </summary>
+        /// <typeparam name="T">The type of data to retrieve.</typeparam>
+        /// <returns>An isntance of <typeparamref name="T"/> or null if not found.</returns>
+        public T Get<T>()
+        {
+            return Get<T>(null);
+        }
+
+        /// <summary>
         /// Gets state data stored with the specified key.
         /// </summary>
         /// <typeparam name="T">The type of data to retrieve.</typeparam>
@@ -45,10 +55,17 @@ namespace NCommon.State.Impl
         /// <returns>An instance of <typeparamref name="T"/> or null if not found.</returns>
         public T Get<T>(object key)
         {
-            Guard.Against<ArgumentNullException>(key == null,
-                                                 "Expected a non-null key identifying the " + typeof(T).FullName +
-                                                 " instance to retrieve.");
             return _state.Get<T>(key);
+        }
+
+        /// <summary>
+        /// Puts state data into the local state with the default key.
+        /// </summary>
+        /// <typeparam name="T">The type of data to put.</typeparam>
+        /// <param name="instance">An instance of <typeparamref name="T"/> to put.</param>
+        public void Put<T>(T instance)
+        {
+            Put(null, instance);
         }
 
         /// <summary>
@@ -59,10 +76,16 @@ namespace NCommon.State.Impl
         /// <param name="instance">An instance of <typeparamref name="T"/> to store.</param>
         public void Put<T>(object key, T instance)
         {
-            Guard.Against<ArgumentNullException>(key == null,
-                                                 "Expected a non-null key identifying the " + typeof(T).FullName +
-                                                 " instance to store.");
             _state.Put(key, instance);
+        }
+
+        /// <summary>
+        /// Removes state data stored in the local state with the specified key.
+        /// </summary>
+        /// <typeparam name="T">The type of data to remove.</typeparam>
+        public void Remove<T>()
+        {
+            Remove<T>(null);
         }
 
         /// <summary>
@@ -72,10 +95,15 @@ namespace NCommon.State.Impl
         /// <param name="key">An object representing the unique key with which the data was stored.</param>
         public void Remove<T>(object key)
         {
-            Guard.Against<ArgumentNullException>(key == null,
-                                                 "Expected a non-null key identifying the " + typeof(T).FullName +
-                                                 " instance to remove.");
             _state.Remove<T>(key);
+        }
+
+        /// <summary>
+        /// Clears all state stored in local state.
+        /// </summary>
+        public void Clear()
+        {
+            _state.Clear();
         }
     }
 }
