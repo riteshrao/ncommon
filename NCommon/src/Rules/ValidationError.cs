@@ -22,6 +22,7 @@ namespace NCommon.Rules
     /// Represents a validation error from a <see cref="IEntityValidator{TEntity}.Validate"/> method
     /// call.
     /// </summary>
+    [Serializable]
     public class ValidationError
     {
 		///<summary>

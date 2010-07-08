@@ -14,6 +14,7 @@
 //limitations under the License. 
 #endregion
 
+using System;
 using System.Collections.Generic;
 
 namespace NCommon.Rules
@@ -21,6 +22,7 @@ namespace NCommon.Rules
     /// <summary>
     /// Contains the result of a <see cref="IEntityValidator{TEntity}.Validate"/> method call.
     /// </summary>
+    [Serializable]
     public class ValidationResult
     {
         private readonly List<ValidationError> _errors = new List<ValidationError>();

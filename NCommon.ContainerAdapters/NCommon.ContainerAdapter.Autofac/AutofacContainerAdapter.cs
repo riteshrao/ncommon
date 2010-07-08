@@ -1,41 +1,21 @@
-#region license
-//Copyright 2010 Ritesh Rao 
-
-//Licensed under the Apache License, Version 2.0 (the "License"); 
-//you may not use this file except in compliance with the License. 
-//You may obtain a copy of the License at 
-
-//http://www.apache.org/licenses/LICENSE-2.0 
-
-//Unless required by applicable law or agreed to in writing, software 
-//distributed under the License is distributed on an "AS IS" BASIS, 
-//WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-//See the License for the specific language governing permissions and 
-//limitations under the License. 
-#endregion
-
 using System;
+using Autofac;
 using NCommon.Configuration;
-using StructureMap;
 
-namespace NCommon.ContainerAdapter.StructureMap
+namespace NCommon.ContainerAdapter.Autofac
 {
-    /// <summary>
-    /// <see cref="IContainerAdapter"/> implementation for StructureMap
-    /// </summary>
-    public class StructureMapContainerAdapter : IContainerAdapter
+    public class AutofacContainerAdapter : IContainerAdapter
     {
-        readonly IContainer _container;
+        ContainerBuilder _builder;
 
         /// <summary>
         /// Default Constructor.
-        /// Creates a new instance of <see cref="StructureMapContainerAdapter"/> class.
+        /// Creates a new instance of the <see cref="AutofacContainerAdapter"/> class.
         /// </summary>
-        /// <param name="container">An instance of structure map <see cref="IContainer"/>
-        /// that is used to register components.</param>
-        public StructureMapContainerAdapter(IContainer container)
+        /// <param name="builder"></param>
+        public AutofacContainerAdapter(ContainerBuilder builder)
         {
-            _container = container;
+            _builder = builder;
         }
 
         /// <summary>
@@ -47,7 +27,7 @@ namespace NCommon.ContainerAdapter.StructureMap
         /// the implementation registered for the <typeparamref name="TService"/></typeparam>
         public void Register<TService, TImplementation>() where TImplementation : TService
         {
-            Register(typeof(TService), typeof(TImplementation));
+            _builder.RegisterType<TImplementation>().As<TService>();
         }
 
         /// <summary>
@@ -60,7 +40,7 @@ namespace NCommon.ContainerAdapter.StructureMap
         /// <param name="named">string. The service name with which the implementation is registered.</param>
         public void Register<TService, TImplementation>(string named) where TImplementation : TService
         {
-            Register(typeof(TService), typeof(TImplementation), named);
+            _builder.RegisterType<TImplementation>().Named<TService>(named);
         }
 
         /// <summary>
@@ -72,22 +52,20 @@ namespace NCommon.ContainerAdapter.StructureMap
         /// registered for the service type.</param>
         public void Register(Type service, Type implementation)
         {
-            _container.Configure(config => config.For(service).Use(implementation));
+            _builder.RegisterType(implementation).As(service);
         }
 
         /// <summary>
         /// Registers a named implementation type for a service type.
         /// </summary>
-        /// <param name="service"><see cref="Type"/>. The type representing the service fow which the
+        /// <param name="service"><see cref="Type"/>. The type representing the service for which the
         /// implementation type if registered.</param>
         /// <param name="implementation"><see cref="Type"/>. The type representing the implementaton
         /// registered for the service.</param>
         /// <param name="named">string. The service name with which the implementation is registered.</param>
         public void Register(Type service, Type implementation, string named)
         {
-            _container.Configure(config => config.For(service)
-                .Use(implementation)
-                .Named(named));
+            _builder.RegisterType(implementation).Named(named, service);
         }
 
         ///<summary>
@@ -97,7 +75,7 @@ namespace NCommon.ContainerAdapter.StructureMap
         ///<param name="implementation">The type representing the implementation registered for the service.</param>
         public void RegisterGeneric(Type service, Type implementation)
         {
-            Register(service, implementation);
+            _builder.RegisterGeneric(implementation).As(service);
         }
 
         ///<summary>
@@ -108,7 +86,7 @@ namespace NCommon.ContainerAdapter.StructureMap
         ///<param name="named">string. The service name with which the implementation is registerd.</param>
         public void RegisterGeneric(Type service, Type implementation, string named)
         {
-            Register(service, implementation, named);
+            _builder.RegisterGeneric(service).Named(named, service);
         }
 
         /// <summary>
@@ -120,7 +98,7 @@ namespace NCommon.ContainerAdapter.StructureMap
         /// the implementation that is registered as a singleton for the service type.</typeparam>
         public void RegisterSingleton<TService, TImplementation>() where TImplementation : TService
         {
-            RegisterSingleton(typeof(TService), typeof(TImplementation));
+            _builder.RegisterType<TImplementation>().As<TService>().SingleInstance();
         }
 
         /// <summary>
@@ -133,7 +111,7 @@ namespace NCommon.ContainerAdapter.StructureMap
         /// <param name="named">string. The service name with which the implementation is registerd.</param>
         public void RegisterSingleton<TService, TImplementation>(string named) where TImplementation : TService
         {
-            RegisterSingleton(typeof(TService), typeof(TImplementation), named);
+            _builder.RegisterType<TImplementation>().Named<TService>(named).SingleInstance();
         }
 
         /// <summary>
@@ -145,9 +123,7 @@ namespace NCommon.ContainerAdapter.StructureMap
         /// the implementation that is registered as a singleton for the service type.</param>
         public void RegisterSingleton(Type service, Type implementation)
         {
-            _container.Configure(config => config.For(service)
-                .Singleton()
-                .Use(implementation));
+            _builder.RegisterType(implementation).As(service).SingleInstance();
         }
 
         /// <summary>
@@ -160,10 +136,7 @@ namespace NCommon.ContainerAdapter.StructureMap
         /// <param name="named">string. The service name with which the implementation is registered.</param>
         public void RegisterSingleton(Type service, Type implementation, string named)
         {
-            _container.Configure(config => config.For(service)
-                .Singleton()
-                .Use(implementation)
-                .Named(named));
+            _builder.RegisterType(implementation).Named(named, service).SingleInstance();
         }
 
         /// <summary>
@@ -175,7 +148,7 @@ namespace NCommon.ContainerAdapter.StructureMap
         /// registered as an instance for <typeparamref name="TService"/>.</param>
         public void RegisterInstance<TService>(TService instance) where TService : class
         {
-            RegisterInstance(typeof(TService), instance);
+            _builder.RegisterInstance(instance).As<TService>();
         }
 
         /// <summary>
@@ -188,7 +161,7 @@ namespace NCommon.ContainerAdapter.StructureMap
         /// <param name="named">string. The service name with which the implementation is registered.</param>
         public void RegisterInstance<TService>(TService instance, string named) where TService : class
         {
-            RegisterInstance(typeof (TService), instance, named);
+            _builder.RegisterInstance(instance).Named<TService>(named);
         }
 
         /// <summary>
@@ -200,7 +173,7 @@ namespace NCommon.ContainerAdapter.StructureMap
         /// registered as an instance for the service.</param>
         public void RegisterInstance(Type service, object instance)
         {
-            _container.Configure(config => config.For(service).Use(instance));
+            _builder.RegisterInstance(instance).As(service);
         }
 
         /// <summary>
@@ -213,7 +186,7 @@ namespace NCommon.ContainerAdapter.StructureMap
         /// <param name="named">string. The service name with which the implementation is registered.</param>
         public void RegisterInstance(Type service, object instance, string named)
         {
-            _container.Configure(config => config.For(service).Use(instance).Named(named)); 
+            _builder.RegisterInstance(instance).Named(named, service);
         }
     }
 }

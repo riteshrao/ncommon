@@ -37,7 +37,7 @@ namespace NCommon.Data.NHibernate
         {
     	    public WithDistinctRoot()
     	    {
-    	        _resultTransformers = new[] {new DistinctRootEntityResultTransformer()};
+    	        _resultTransformers = new[] {Transformers.DistinctRootEntity};
     	    }
         }
 
