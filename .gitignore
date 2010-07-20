@@ -12,3 +12,4 @@ _ReSharper.*
 *.cache
 build
 output
+*.vs10x

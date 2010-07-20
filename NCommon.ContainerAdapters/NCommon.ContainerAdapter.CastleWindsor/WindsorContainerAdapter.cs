@@ -87,7 +87,10 @@ namespace NCommon.ContainerAdapter.CastleWindsor
         /// <param name="named">string. The service name with which the implementation is registered.</param>
         public void Register(Type service, Type implementation, string named)
         {
-            _container.Register(Component.For(service).ImplementedBy(implementation).Named(named));
+            _container.Register(Component.For(service)
+                .ImplementedBy(implementation)
+                .LifeStyle.Is(LifestyleType.Transient)
+                .Named(named));
         }
 
         ///<summary>

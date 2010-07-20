@@ -37,6 +37,7 @@ namespace NCommon.State.Impl
             }
         }
 
+        /// <summary>
         /// Gets state data stored with the default key.
         /// </summary>
         /// <typeparam name="T">The type of data to retrieve.</typeparam>

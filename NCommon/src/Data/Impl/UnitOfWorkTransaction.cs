@@ -160,14 +160,14 @@ namespace NCommon.Data.Impl
             if (disposing)
             {
                 _logger.Info(x => x("Disposing off transction {0}", _transactionId));
-                if (TransactionDisposing != null)
-                    TransactionDisposing(this);
-
                 if (_unitOfWork != null)
                     _unitOfWork.Dispose();
 
                 if (_transaction != null)
                     _transaction.Dispose();
+
+                if (TransactionDisposing != null)
+                    TransactionDisposing(this);
 
                 if (_attachedScopes != null && _attachedScopes.Count > 0)
                 {
