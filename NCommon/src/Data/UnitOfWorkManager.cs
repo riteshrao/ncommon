@@ -40,13 +40,13 @@ namespace NCommon.Data
             _provider = () =>
             {
                 _logger.Debug(x => x("Using default UnitOfWorkManager provider to resolve current transaction manager."));
-                var state = ServiceLocator.Current.GetInstance<IState>();
-                var transactionManager = state.Local.Get<ITransactionManager>(LocalTransactionManagerKey);
+                var state = ServiceLocator.Current.GetInstance<ILocalState>();
+                var transactionManager = state.Get<ITransactionManager>(LocalTransactionManagerKey);
                 if (transactionManager == null)
                 {
                     _logger.Debug(x => x("No valid ITransactionManager found in Local state. Creating a new TransactionManager."));
                     transactionManager = new TransactionManager();
-                    state.Local.Put(LocalTransactionManagerKey, transactionManager);
+                    state.Put(LocalTransactionManagerKey, transactionManager);
                 }
                 return transactionManager;
             };

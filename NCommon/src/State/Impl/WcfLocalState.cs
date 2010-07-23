@@ -34,7 +34,7 @@ namespace NCommon.State.Impl
         /// </summary>
         public class WcfLocalStateExtension : IExtension<OperationContext>
         {
-            readonly Hashtable _state = new Hashtable();
+            Hashtable _state = new Hashtable();
             
             /// <summary>
             /// Adds state data with the given key.
@@ -76,7 +76,11 @@ namespace NCommon.State.Impl
             /// Enables an object to find out when it is no longer aggregated. Called when an extension is removed from the <see cref="P:System.ServiceModel.IExtensibleObject`1.Extensions"/> property.
             /// </summary>
             /// <param name="owner">The extensible object that aggregates this extension.</param>
-            public void Detach(OperationContext owner){}
+            public void Detach(OperationContext owner)
+            {
+                _state.Clear();
+                _state = null;
+            }
 
             ///<summary>
             /// Clears all stored state.

@@ -32,7 +32,7 @@ namespace NCommon.State.Impl
         /// </summary>
         class WcfSessionStatExtension : IExtension<InstanceContext>
         {
-            readonly Hashtable _state = new Hashtable();
+            Hashtable _state = new Hashtable();
             /// <summary>
             /// Adds state data with the given key.
             /// </summary>
@@ -76,7 +76,11 @@ namespace NCommon.State.Impl
 
             public void Attach(InstanceContext owner) {}
 
-            public void Detach(InstanceContext owner) {}
+            public void Detach(InstanceContext owner)
+            {
+                _state.Clear();
+                _state = null;
+            }
         }
 
         readonly WcfSessionStatExtension _state;
@@ -91,7 +95,7 @@ namespace NCommon.State.Impl
             _state = context.OperationContext.InstanceContext.Extensions.Find<WcfSessionStatExtension>();
             if (_state == null)
             {
-                lock(context.OperationContext.InstanceContext.SynchronizationContext)
+                lock(context.OperationContext.InstanceContext)
                 {
                     _state = context.OperationContext.InstanceContext.Extensions.Find<WcfSessionStatExtension>();
                     if (_state == null)
