@@ -54,7 +54,31 @@ namespace NCommon.Data
         /// Creates a new <see cref="UnitOfWorkScope"/> with the <see cref="System.Data.IsolationLevel.Serializable"/> 
         /// transaction isolation level.
         /// </summary>
-        public UnitOfWorkScope() : this(false) { }
+        public UnitOfWorkScope() : this(TransactionMode.Default) { }
+
+        /// <summary>
+        /// Overloaded Constructor.
+        /// Creates a new instance of the <see cref="UnitOfWorkScope"/> class.
+        /// </summary>
+        /// <param name="newTransaction">To create a new scope that does not enlist in an existing ambient 
+        /// <see cref="UnitOfWorkScope"/> or <see cref="TransactionScope"/>, specify new, otherwise specify false.</param>
+        [Obsolete("Use UnitOfWorkScope(TransactionMode) constructor instead. This will be removed in final 1.1 release.")]
+        public UnitOfWorkScope(bool newTransaction)
+        {
+            _logger.Info(x => x("New UnitOfWorkScope {0} started with newTransaction setting as : {1}", _scopeId, newTransaction));
+            UnitOfWorkManager.CurrentTransactionManager.EnlistScope(this, TransactionMode.New);
+        }
+
+        /// <summary>
+        /// Overloaded Constructor.
+        /// Creates a new instance of the <see cref="UnitOfWorkScope"/> class.
+        /// </summary>
+        /// <param name="mode">A <see cref="TransactionMode"/> enum specifying the transation mode
+        /// of the unit of work.</param>
+        public UnitOfWorkScope(TransactionMode mode)
+        {
+            UnitOfWorkManager.CurrentTransactionManager.EnlistScope(this, mode);
+        }
 
         /// <summary>
         /// Gets the unique Id of the <see cref="UnitOfWorkScope"/>.
@@ -66,15 +90,22 @@ namespace NCommon.Data
         }
 
         /// <summary>
-        /// Overloaded Constructor.
-        /// Creates a new instance of the <see cref="UnitOfWorkScope"/> class.
+        /// Gets the current unit of work that the scope participates in.
         /// </summary>
-        /// <param name="newTransaction">To create a new scope that does not enlist in an existing ambient 
-        /// <see cref="UnitOfWorkScope"/> or <see cref="TransactionScope"/>, specify new, otherwise specify false.</param>
-        public UnitOfWorkScope(bool newTransaction)
+        /// <typeparam name="T">The type of <see cref="IUnitOfWork"/> to retrieve.</typeparam>
+        /// <returns>A <see cref="IUnitOfWork"/> instance of type <typeparamref name="T"/> that
+        /// the scope participates in.</returns>
+        public T CurrentUnitOfWork<T>()
         {
-            _logger.Info(x => x("New UnitOfWorkScope {0} started with newTransaction setting as : {1}", _scopeId, newTransaction));
-            UnitOfWorkManager.CurrentTransactionManager.EnlistScope(this, newTransaction);
+            var currentUow = UnitOfWorkManager.CurrentUnitOfWork;
+            Guard.Against<InvalidOperationException>(currentUow == null,
+                                                     "No compatible UnitOfWork was found. Please start a compatible UnitOfWorkScope before " +
+                                                     "using the repository.");
+
+            Guard.TypeOf<T>(currentUow,
+                            "The current unit of work is not compatible with expected type" + typeof(T).FullName +
+                            ", instead the current unit of work is of type " + currentUow.GetType().FullName + ".");
+            return (T) currentUow;
         }
 
         ///<summary>
@@ -144,9 +175,20 @@ namespace NCommon.Data
             {
                 try
                 {
-                    if (!_commitAttempted && !_completed && UnitOfWorkSettings.AutoCompleteScope)
-                        OnCommit();
+                    if (_completed)
+                    {
+                        //Scope is marked as completed. Nothing to do here...
+                        _disposed = true;
+                        return;
+                    }
+
+                    if (!_commitAttempted && UnitOfWorkSettings.AutoCompleteScope)
+                        //Scope did not try to commit before, and auto complete is switched on. Trying to commit.
+                        //If an exception occurs here, the finally block will clean things up for us.
+                        OnCommit(); 
                     else
+                        //Scope either tried a commit before or auto complete is turned off. Trying to rollback.
+                        //If an exception occurs here, the finally block will clean things up for us.
                         OnRollback();
                 }
                 finally

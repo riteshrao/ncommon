@@ -126,7 +126,7 @@ namespace NCommon.Data.Db4o.Tests
                     var outerOrder = outerRepository.Where(x => x.OrderID == orderId).First();
                     outerOrder.OrderDate = changedOrderDate;
 
-                    using (var innerScope = new UnitOfWorkScope(true))
+                    using (var innerScope = new UnitOfWorkScope(TransactionMode.New))
                     {
                         var innerRepository = new Db4oRepository<Order>();
                         var innerOrder = innerRepository.Where(x => x.OrderID == orderId).First();

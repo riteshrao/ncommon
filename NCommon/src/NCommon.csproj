@@ -110,6 +110,7 @@
     <Compile Include="Data\Language\IEagerFetchingPath.cs" />
     <Compile Include="Data\Language\RepositoryEagerFetchingStrategy.cs" />
     <Compile Include="Data\UnitOfWorkManager.cs" />
+    <Compile Include="Data\TransactionMode.cs" />
     <Compile Include="Events\DomainEvent.cs" />
     <Compile Include="Events\Handles.cs" />
     <Compile Include="Events\IDomainEvent.cs" />

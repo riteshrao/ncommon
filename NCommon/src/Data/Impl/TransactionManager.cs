@@ -64,23 +64,26 @@ namespace NCommon.Data.Impl
         }
 
         /// <summary>
-        /// Enlists a <see cref="UnitOfWorkScope"/> instance with the transaction manager.
+        /// Enlists a <see cref="UnitOfWorkScope"/> instance with the transaction manager,
+        /// with the specified transaction mode.
         /// </summary>
-        /// <param name="scope">bool. True if the scope should be enlisted in a new transaction, else
-        /// false if the scope should participate in the existing transaction</param>
-        /// <param name="newTransaction"></param>
-        public void EnlistScope(IUnitOfWorkScope scope, bool newTransaction)
+        /// <param name="scope">The <see cref="IUnitOfWorkScope"/> to register.</param>
+        /// <param name="mode">A <see cref="TransactionMode"/> enum specifying the transaciton
+        /// mode of the unit of work.</param>
+        public void EnlistScope(IUnitOfWorkScope scope, TransactionMode mode)
         {
-            _logger.Info(x => x("Enlisting scope {0} with transaction manager {1}.", scope.ScopeId, _transactionManagerId, newTransaction));
+            _logger.Info(x => x("Enlisting scope {0} with transaction manager {1} with transaction mode {2}",
+                                scope.ScopeId,
+                                _transactionManagerId,
+                                mode));
 
             var uowFactory = ServiceLocator.Current.GetInstance<IUnitOfWorkFactory>();
-            if (newTransaction || _transactions.Count == 0)
+            if (_transactions.Count == 0 || 
+                mode == TransactionMode.New ||
+                mode == TransactionMode.Supress)
             {
-                _logger.Debug("Either UnitOfWorkScope started as a newTransaction, or no existing transactions started. Creating a new transaction...");
-                var txScope = newTransaction 
-                                               ? TransactionScopeHelper.CreateNewScope(UnitOfWorkSettings.DefaultIsolation) 
-                                               : TransactionScopeHelper.CreateScope(UnitOfWorkSettings.DefaultIsolation);
-
+                _logger.Debug(x => x("Enlisting scope {0} with mode {1} requires a new TransactionScope to be created.", scope.ScopeId, mode));
+                var txScope = TransactionScopeHelper.CreateScope(UnitOfWorkSettings.DefaultIsolation, mode);
                 var unitOfWork = uowFactory.Create();
                 var transaction = new UnitOfWorkTransaction(unitOfWork, txScope);
                 transaction.TransactionDisposing += OnTransactionDisposing;
@@ -91,6 +94,10 @@ namespace NCommon.Data.Impl
             CurrentTransaction.EnlistScope(scope);
         }
 
+        /// <summary>
+        /// Handles a Dispose signal from a transaction.
+        /// </summary>
+        /// <param name="transaction"></param>
         void OnTransactionDisposing(UnitOfWorkTransaction transaction)
         {
             _logger.Info(x => x("UnitOfWorkTransaction {0} signalled a disposed. Unregistering transaction from TransactionManager {1}",
@@ -112,6 +119,10 @@ namespace NCommon.Data.Impl
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Internal dispose.
+        /// </summary>
+        /// <param name="disposing"></param>
         void Dispose(bool disposing)
         {
             if (_disposed)

@@ -97,7 +97,7 @@ namespace NCommon.Data.NHibernate.Tests
             using (var scope = new UnitOfWorkScope())
             {
                 new NHRepository<Customer>().Save(customer);
-                using (var scope2 = new UnitOfWorkScope(true))
+                using (var scope2 = new UnitOfWorkScope(TransactionMode.New))
                 {
                     new NHRepository<Order>().Save(order);
                     scope2.Commit();
@@ -216,6 +216,36 @@ namespace NCommon.Data.NHibernate.Tests
 
                 Assert.That(savedCustomer, Is.Null);
                 Assert.That(savedSalesPerson, Is.Null);
+            }
+        }
+
+        [Test]
+        public void rollback_does_not_rollback_supressed_scope()
+        {
+            var customer = new Customer { FirstName = "Joe", LastName = "Data" };
+            var order = new Order { OrderDate = DateTime.Now, ShipDate = DateTime.Now };
+            using (var scope = new UnitOfWorkScope())
+            {
+                new NHRepository<Customer>().Save(customer);
+                using (var scope2 = new UnitOfWorkScope(TransactionMode.Supress))
+                {
+                    new NHRepository<Order>().Save(order);
+                    scope2.Commit();
+                }
+            } //Rollback.
+
+            using (var testData = new NHTestData(OrdersDomainFactory.OpenSession()))
+            {
+                Customer savedCustomer = null;
+                Order savedOrder = null;
+                testData.Batch(actions =>
+                {
+                    savedCustomer = actions.GetCustomerById(customer.CustomerID);
+                    savedOrder = actions.GetOrderById(order.OrderID);
+                });
+
+                Assert.That(savedCustomer, Is.Null);
+                Assert.That(savedOrder, Is.Not.Null);
             }
         }
     }

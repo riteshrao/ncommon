@@ -27,7 +27,7 @@ namespace NCommon.State.Impl
         [ThreadStatic]
         static Hashtable _state;
 
-        public Hashtable State
+        static Hashtable State
         {
             get
             {

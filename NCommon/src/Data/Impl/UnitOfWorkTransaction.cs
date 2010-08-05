@@ -138,6 +138,7 @@ namespace NCommon.Data.Impl
 
             scope.ScopeComitting -= OnScopeCommitting;
             scope.ScopeRollingback -= OnScopeRollingBack;
+            scope.Complete();
             _attachedScopes.Remove(scope);
             Dispose();
         }

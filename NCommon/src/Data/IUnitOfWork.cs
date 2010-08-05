@@ -19,9 +19,7 @@ using System;
 namespace NCommon.Data
 {
     /// <summary>
-    /// A unit of work contract that that commits / flushes changes to the store
-    /// within a single transaction. The commit / flush should be called when the
-    /// implementation is disposed.
+    /// A unit of work contract that that encapsulates the Unit of Work pattern.
     /// </summary>
     public interface IUnitOfWork : IDisposable
     {

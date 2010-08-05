@@ -51,7 +51,7 @@ namespace NCommon.Data.Db4o
         /// </summary>
         public IObjectContainer ObjectContainer
         {
-            get { return _privateContainer ?? GetCurrentUnitOfWork<Db4oUnitOfWork>().ObjectContainer; }
+            get { return _privateContainer ?? UnitOfWork<Db4oUnitOfWork>().ObjectContainer; }
         }
 
         /// <summary>

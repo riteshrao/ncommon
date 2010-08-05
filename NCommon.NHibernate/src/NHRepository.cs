@@ -69,7 +69,7 @@ namespace NCommon.Data.NHibernate
         {
             get
             {
-                return _privateSession ?? GetCurrentUnitOfWork<NHUnitOfWork>().GetSession<TEntity>();
+                return _privateSession ?? UnitOfWork<NHUnitOfWork>().GetSession<TEntity>();
             }
         }
 
@@ -79,7 +79,7 @@ namespace NCommon.Data.NHibernate
         /// </summary>
         /// <value>A <see cref="IQueryable{TEntity}"/> instance.</value>
         /// <remarks>
-        /// Inheritos of this base class should return a valid non-null <see cref="IQueryable{TEntity}"/> instance.
+        /// Inheritors of this base class should return a valid non-null <see cref="IQueryable{TEntity}"/> instance.
         /// </remarks>
         protected override IQueryable<TEntity> RepositoryQuery
         {

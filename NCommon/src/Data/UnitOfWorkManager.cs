@@ -27,9 +27,22 @@ namespace NCommon.Data
     ///</summary>
     public static class UnitOfWorkManager
     {
-        const string LocalTransactionManagerKey = "UnitOfWorkManager.LocalTransactionManager";
         static Func<ITransactionManager> _provider;
-        static ILog _logger = LogManager.GetLogger(typeof(UnitOfWorkManager));
+        static readonly ILog Logger = LogManager.GetLogger(typeof(UnitOfWorkManager));
+        private const string LocalTransactionManagerKey = "UnitOfWorkManager.LocalTransactionManager";
+        static readonly Func<ITransactionManager> DefaultTransactionManager = () =>
+        {
+            Logger.Debug(x => x("Using default UnitOfWorkManager provider to resolve current transaction manager."));
+            var state = ServiceLocator.Current.GetInstance<IState>();
+            var transactionManager = state.Local.Get<ITransactionManager>(LocalTransactionManagerKey);
+            if (transactionManager == null)
+            {
+                Logger.Debug(x => x("No valid ITransactionManager found in Local state. Creating a new TransactionManager."));
+                transactionManager = new TransactionManager();
+                state.Local.Put(LocalTransactionManagerKey, transactionManager);
+            }
+            return transactionManager;
+        };
 
         /// <summary>
         /// Default Constructor.
@@ -37,19 +50,7 @@ namespace NCommon.Data
         /// </summary>
         static UnitOfWorkManager()
         {
-            _provider = () =>
-            {
-                _logger.Debug(x => x("Using default UnitOfWorkManager provider to resolve current transaction manager."));
-                var state = ServiceLocator.Current.GetInstance<ILocalState>();
-                var transactionManager = state.Get<ITransactionManager>(LocalTransactionManagerKey);
-                if (transactionManager == null)
-                {
-                    _logger.Debug(x => x("No valid ITransactionManager found in Local state. Creating a new TransactionManager."));
-                    transactionManager = new TransactionManager();
-                    state.Put(LocalTransactionManagerKey, transactionManager);
-                }
-                return transactionManager;
-            };
+            _provider = DefaultTransactionManager;
         }
 
         ///<summary>
@@ -59,10 +60,15 @@ namespace NCommon.Data
         ///<param name="provider"></param>
         public static void SetTransactionManagerProvider(Func<ITransactionManager> provider)
         {
-            Guard.Against<ArgumentNullException>(provider == null,
-                                                 "Expected a non-null Func<ITransactionManager> instance.");
-
-            _logger.Debug(x => x("Default transaction manager overriden for UnitOfWorkTransactionManager."));
+            if (provider == null)
+            {
+                Logger.Debug(x => x("The transaction manager provide is being set to null. Using " +
+                                    " the transaction manager to the default transaction manager provider."));
+                _provider = DefaultTransactionManager;
+                return;
+            }
+            Logger.Debug(x => x("The transaction manager provider is being overriden. Using supplied" +
+                                " trasaction manager provider."));
             _provider = provider;
         }
 

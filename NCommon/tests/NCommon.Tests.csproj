@@ -88,6 +88,7 @@
     <Compile Include="Context\ContextTests.cs" />
     <Compile Include="Data\TransactionManagerTests.cs" />
     <Compile Include="Data\UnitOfWorkManagerTests.cs" />
+    <Compile Include="Data\UnitOfWorkScopeTests.cs" />
     <Compile Include="Data\UnitOfWorkTransactionTests.cs" />
     <Compile Include="Data\InMemoryRepositoryTests.cs" />
     <Compile Include="Events\DomainEventTests.cs" />

@@ -59,7 +59,7 @@ namespace NCommon.Data.EntityFramework
             {
                 if (_privateContext != null)
                     return _privateContext;
-                var unitOfWork = GetCurrentUnitOfWork<EFUnitOfWork>();
+                var unitOfWork = UnitOfWork<EFUnitOfWork>();
                 if (_contextQueryProperty == null)
                     LoadObjectQueryPropertyAndEntitySetName(unitOfWork.GetSession<TEntity>().Context);
                 return unitOfWork.GetSession<TEntity>().Context;

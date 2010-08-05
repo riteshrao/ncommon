@@ -43,24 +43,6 @@ namespace NCommon.Data
         protected abstract IQueryable<TEntity> RepositoryQuery { get; }
 
         /// <summary>
-        /// Gets the <see cref="IUnitOfWork"/> that the repository should use.
-        /// </summary>
-        /// <typeparam name="TUnitOfWork">A compatible unit of work instance.</typeparam>
-        /// <returns></returns>
-        protected virtual TUnitOfWork GetCurrentUnitOfWork<TUnitOfWork> () where TUnitOfWork : IUnitOfWork
-        {
-            var currentScope = UnitOfWorkManager.CurrentUnitOfWork;
-            Guard.Against<InvalidOperationException>(currentScope == null,
-                                                     "No compatible UnitOfWork was found. Please start a compatible UnitOfWorkScope before " +
-                                                     "using the repository.");
-
-            Guard.TypeOf<TUnitOfWork>(currentScope,
-                                              "The current UnitOfWork instance is not compatible with the repository. " +
-                                              "Please start a compatible unit of work before using the repository.");
-            return ((TUnitOfWork)currentScope);
-        }
-
-        /// <summary>
         /// Returns an enumerator that iterates through the collection.
         /// </summary>
         /// <returns>
@@ -115,6 +97,25 @@ namespace NCommon.Data
         public IQueryProvider Provider
         {
             get { return RepositoryQuery.Provider; }
+        }
+
+        /// <summary>
+        /// Gets the a <see cref="IUnitOfWork"/> of <typeparamref name="T"/> that
+        /// the repository will use to query the underlying store.
+        /// </summary>
+        /// <typeparam name="T">The type of <see cref="IUnitOfWork"/> implementation to retrieve.</typeparam>
+        /// <returns>The <see cref="IUnitOfWork"/> implementation.</returns>
+        public virtual T UnitOfWork<T>() where T : IUnitOfWork
+        {
+            var currentScope = UnitOfWorkManager.CurrentUnitOfWork;
+            Guard.Against<InvalidOperationException>(currentScope == null,
+                                                     "No compatible UnitOfWork was found. Please start a compatible UnitOfWorkScope before " +
+                                                     "using the repository.");
+            
+            Guard.TypeOf<T>(currentScope,
+                                              "The current UnitOfWork instance is not compatible with the repository. " +
+                                              "Please start a compatible unit of work before using the repository.");
+            return ((T)currentScope);
         }
 
         /// <summary>
