@@ -43,9 +43,17 @@ namespace NCommon.Data
 		/// </summary>
 		/// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be
 		/// updated in the database.</param>
+		[Obsolete("Use the Add method to persist transient instances instead.")]
 		void Save(TEntity entity);
 
-		/// <summary>
+	    /// <summary>
+	    /// Adds a transient instance of <typeparamref cref="TEntity"/> to be tracked
+	    /// and persisted by the repository.
+	    /// </summary>
+	    /// <param name="entity"></param>
+	    void Add(TEntity entity);
+
+	    /// <summary>
 		/// Marks the changes of an existing entity to be saved to the store.
 		/// </summary>
 		/// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be
@@ -53,7 +61,7 @@ namespace NCommon.Data
 		/// <remarks>Implementors of this method must handle the Update scneario. </remarks>
 		void Delete(TEntity entity);
 
-		/// <summary>
+	    /// <summary>
 		/// Querries the repository based on the provided specification and returns results that
 		/// are only satisfied by the specification.
 		/// </summary>

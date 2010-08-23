@@ -127,6 +127,13 @@ namespace NCommon.Data
         public abstract void Save(TEntity entity);
 
         /// <summary>
+        /// Adds a transient instance of <typeparamref cref="TEntity"/> to be tracked
+        /// and persisted by the repository.
+        /// </summary>
+        /// <param name="entity"></param>
+        public abstract void Add(TEntity entity);
+
+        /// <summary>
         /// Marks the entity instance to be deleted from the store.
         /// </summary>
         /// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be deleted.</param>
@@ -164,7 +171,7 @@ namespace NCommon.Data
         /// Instructs the repository to eager load entities that may be in the repository's association path.
         /// </summary>
         /// <param name="path">The path of the child entities to eager load.</param>
-		public IRepository<TEntity> With<T>(Expression<Func<T, object>> path)
+        public IRepository<TEntity> With<T>(Expression<Func<T, object>> path)
         {
             ApplyFetchingStrategy(new[] { path });
             return this;    
@@ -192,16 +199,16 @@ namespace NCommon.Data
         protected abstract void ApplyFetchingStrategy(Expression[] paths);
 
         /// <summary>
-		/// Instructs the repository to cache the following query.
-		/// </summary>
-		/// <param name="cachedQueryName">string. The name to give to the cached query.</param>
-    	public abstract IRepository<TEntity> Cached(string cachedQueryName);
+        /// Instructs the repository to cache the following query.
+        /// </summary>
+        /// <param name="cachedQueryName">string. The name to give to the cached query.</param>
+        public abstract IRepository<TEntity> Cached(string cachedQueryName);
 
         /// <summary>
-    	/// Sets the batch size on the repository
-    	/// </summary>
-    	/// <param name="size">int. The batch size.</param>
-    	public abstract IRepository<TEntity> SetBatchSize(int size);
+        /// Sets the batch size on the repository
+        /// </summary>
+        /// <param name="size">int. The batch size.</param>
+        public abstract IRepository<TEntity> SetBatchSize(int size);
 
         /// <summary>
         /// Defines the service context under which the repository will execute.

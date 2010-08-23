@@ -30,7 +30,7 @@ namespace NCommon.Data.EntityFramework.Tests
         {
             var dataActions = new EFTestDataActions(this);
             action(dataActions);
-            _context.SaveChanges();
+            _context.SaveChanges(SaveOptions.AcceptAllChangesAfterSave);
         }
 
         public void Dispose()

@@ -45,7 +45,7 @@ namespace NCommon.Data.EntityFramework
         /// <returns>A <see cref="Guid"/> representing the unique object context key.</returns>
         public Guid GetSessionKeyFor<T>()
         {
-            var typeName = typeof (T).FullName;
+            var typeName = typeof (T).Name;
             Guid key;
             if (!_objectContextTypeCache.TryGetValue(typeName, out key))
                 throw new ArgumentException("No ObjectContext has been registered for the specified type.");
@@ -70,7 +70,7 @@ namespace NCommon.Data.EntityFramework
         /// <returns>An <see cref="ObjectContext"/> that can be used to query and update the given type.</returns>
         public ObjectContext GetObjectContextFor<T>()
         {
-            var typeName = typeof(T).FullName;
+            var typeName = typeof(T).Name;
             Guid key;
             if (!_objectContextTypeCache.TryGetValue(typeName, out key))
                 throw new ArgumentException("No ObjectContext has been registered for the specified type.");
@@ -88,7 +88,7 @@ namespace NCommon.Data.EntityFramework
             //Getting the object context and populating the _objectContextTypeCache.
             var context = contextProvider();
             var entities = context.MetadataWorkspace.GetItems<EntityType>(DataSpace.CSpace);
-            entities.ForEach(entity => _objectContextTypeCache.Add(entity.FullName, key));
+            entities.ForEach(entity => _objectContextTypeCache.Add(entity.Name, key));
         }
     }
 }

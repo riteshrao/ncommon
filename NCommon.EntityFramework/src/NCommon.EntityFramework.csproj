@@ -85,6 +85,7 @@
   <ItemGroup>
     <Compile Include="EFConfiguration.cs" />
     <Compile Include="EFRepository.cs" />
+    <Compile Include="EFSession.cs" />
     <Compile Include="EFSessionResolver.cs" />
     <Compile Include="EFUnitOfWork.cs" />
     <Compile Include="EFUnitOfWorkFactory.cs" />

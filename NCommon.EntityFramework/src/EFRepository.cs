@@ -31,11 +31,10 @@ namespace NCommon.Data.EntityFramework
     /// Inherits from the <see cref="RepositoryBase{TEntity}"/> class to provide an implementation of a
     /// Repository that uses Entity Framework.
     /// </summary>
-    public class EFRepository<TEntity> : RepositoryBase<TEntity>
+    public class EFRepository<TEntity> : RepositoryBase<TEntity> where TEntity : class
     {
-        PropertyInfo _contextQueryProperty;
+        readonly IEFSession _privateSession;
         readonly List<string> _includes = new List<string>();
-        readonly ObjectContext _privateContext;
 
         /// <summary>
         /// Creates a new instance of the <see cref="EFRepository{TEntity}"/> class.
@@ -47,62 +46,22 @@ namespace NCommon.Data.EntityFramework
 
             var objectContexts = ServiceLocator.Current.GetAllInstances<ObjectContext>();
             if (objectContexts != null && objectContexts.Count() > 0)
-                _privateContext = objectContexts.FirstOrDefault();
+                _privateSession = new EFSession(objectContexts.First());
         }
 
         /// <summary>
         /// Gets the <see cref="ObjectContext"/> to be used by the repository.
         /// </summary>
-        private ObjectContext Context
+        private IEFSession Session
         {
             get
             {
-                if (_privateContext != null)
-                    return _privateContext;
+                if (_privateSession != null)
+                    return _privateSession;
                 var unitOfWork = UnitOfWork<EFUnitOfWork>();
-                if (_contextQueryProperty == null)
-                    LoadObjectQueryPropertyAndEntitySetName(unitOfWork.GetSession<TEntity>().Context);
-                return unitOfWork.GetSession<TEntity>().Context;
+                return unitOfWork.GetSession<TEntity>();
+
             }
-        }
-
-        /// <summary>
-        /// Gets or sets the entity set name defined for the entity in the <see cref="Context"/> instance.
-        /// </summary>
-        private string EntitySetName { get; set; }
-
-        /// <summary>
-        /// Loads the <see cref="PropertyInfo"/> that can be invoked to get a <see cref="ObjectQuery{T}"/> 
-        /// for the entity from the current ObjectContext instnace.
-        /// </summary>
-        /// <param name="context">The <see cref="ObjectContext"/> to use.</param>
-        /// <returns></returns>
-        private void LoadObjectQueryPropertyAndEntitySetName(ObjectContext context)
-        {
-            var matchingType = typeof (ObjectQuery<TEntity>);
-            foreach (var property in context.GetType().GetProperties())
-            {
-                if (property.PropertyType.IsGenericType &&
-                    matchingType.IsAssignableFrom(property.PropertyType))
-                {
-                    _contextQueryProperty = property;
-                    EntitySetName = property.Name;
-                    return;
-                }
-            }
-            throw new InvalidOperationException("The repository could not find a ObjectQuery for entity type " +
-                                                typeof (TEntity).FullName);
-        }
-
-        /// <summary>
-        /// Gets a <see cref="ObjectQuery{TEntity}"/> instance that can be used to query the underlying
-        /// data store.
-        /// </summary>
-        /// <returns></returns>
-        private ObjectQuery<TEntity> GetQuery ()
-        {
-            var currentContext = Context;
-            return (ObjectQuery<TEntity>) _contextQueryProperty.GetValue(currentContext, null);
         }
 
         /// <summary>
@@ -114,7 +73,7 @@ namespace NCommon.Data.EntityFramework
         {
             get
             {
-                var query = GetQuery();
+                var query = Session.CreateQuery<TEntity>();
                 if (_includes.Count > 0)
                     _includes.ForEach(x => query = query.Include(x));
                 return query;
@@ -129,7 +88,17 @@ namespace NCommon.Data.EntityFramework
         /// <remarks>Implementors of this method must handle the Update scneario. </remarks>
         public override void Save(TEntity entity)
         {
-            Context.AddObject(EntitySetName, entity);
+            Add(entity);
+        }
+
+        /// <summary>
+        /// Adds a transient instance of <typeparamref cref="TEntity"/> to be tracked
+        /// and persisted by the repository.
+        /// </summary>
+        /// <param name="entity"></param>
+        public override void Add(TEntity entity)
+        {
+            Session.Add(entity);
         }
 
         /// <summary>
@@ -138,7 +107,7 @@ namespace NCommon.Data.EntityFramework
         /// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be deleted.</param>
         public override void Delete(TEntity entity)
         {
-            Context.DeleteObject(entity);
+            Session.Delete(entity);
         }
 
         /// <summary>
@@ -149,7 +118,7 @@ namespace NCommon.Data.EntityFramework
         /// entities is not supported.</exception>
         public override void Detach(TEntity entity)
         {
-            Context.Detach(entity);
+            Session.Detach(entity);
         }
 
         /// <summary>
@@ -160,7 +129,7 @@ namespace NCommon.Data.EntityFramework
         /// entities is not supported.</exception>
         public override void Attach(TEntity entity)
         {
-            Context.Attach(entity as IEntityWithKey);
+            Session.Attach(entity);
         }
 
         /// <summary>
@@ -171,7 +140,7 @@ namespace NCommon.Data.EntityFramework
         /// entities is not supported.</exception>
         public override void Refresh(TEntity entity)
         {
-            Context.Refresh(RefreshMode.StoreWins, entity);
+            Session.Refresh(entity);
         }
 
         /// <summary>
@@ -197,22 +166,22 @@ namespace NCommon.Data.EntityFramework
         }
 
         /// <summary>
-		/// Instructs the repository to cache the following query.
-		/// </summary>
-		/// <param name="cachedQueryName">string. The name to give to the cached query.</param>
-    	public override IRepository<TEntity> Cached(string cachedQueryName)
-    	{
-    		return this;
-    	}
+        /// Instructs the repository to cache the following query.
+        /// </summary>
+        /// <param name="cachedQueryName">string. The name to give to the cached query.</param>
+        public override IRepository<TEntity> Cached(string cachedQueryName)
+        {
+            return this;
+        }
 
         /// <summary>
         /// Sets a batch size on the repository.
         /// </summary>
         /// <param name="size">int. A positive integer representing the batch size.</param>
         /// <remarks>Use this property when persisteing large amounts of data to batch insert statements.</remarks>
-    	public override IRepository<TEntity> SetBatchSize(int size)
-    	{
-    		return this; //Does nothing.
-    	}
+        public override IRepository<TEntity> SetBatchSize(int size)
+        {
+            return this; //Does nothing.
+        }
     }
 }

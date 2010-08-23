@@ -25,15 +25,15 @@ namespace NCommon.Rules
     [Serializable]
     public class ValidationError
     {
-		///<summary>
-		/// The message that describes this validation error.
-		///</summary>
-		public string Message { get; set; }
+        ///<summary>
+        /// The message that describes this validation error.
+        ///</summary>
+        public string Message { get; set; }
 
-		///<summary>
-		/// The property that this validation error is associated with.
-		///</summary>
-		public string Property { get; set;}
+        ///<summary>
+        /// The property that this validation error is associated with.
+        ///</summary>
+        public string Property { get; set;}
 
         /// <summary>
         /// Default Constructor.

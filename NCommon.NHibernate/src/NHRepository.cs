@@ -33,20 +33,20 @@ namespace NCommon.Data.NHibernate
     /// </summary>
     public class NHRepository<TEntity> : RepositoryBase<TEntity>
     {
-    	public class WithDistinctRoot : NHRepository<TEntity>
+        public class WithDistinctRoot : NHRepository<TEntity>
         {
-    	    public WithDistinctRoot()
-    	    {
-    	        _resultTransformers = new[] {Transformers.DistinctRootEntity};
-    	    }
+            public WithDistinctRoot()
+            {
+                _resultTransformers = new[] {Transformers.DistinctRootEntity};
+            }
         }
 
         int _batchSize = -1;
-        readonly ISession _privateSession;
         bool _enableCached;
         string _cachedQueryName;
-        readonly List<string> _expands = new List<string>();
+        readonly ISession _privateSession;
         IResultTransformer[] _resultTransformers;
+        readonly List<string> _expands = new List<string>();
 
         /// <summary>
         /// Default Constructor.
@@ -86,9 +86,9 @@ namespace NCommon.Data.NHibernate
             get
             {
                 if (_batchSize > -1)
-            	    Session.SetBatchSize(_batchSize); //Done before every query.
+                    Session.SetBatchSize(_batchSize); //Done before every query.
                 var query = Session.Linq<TEntity>();
-            	var nhQuery = query as INHibernateQueryable;
+                var nhQuery = query as INHibernateQueryable;
 
                 if (_resultTransformers != null && _resultTransformers.Length > 0)
                     _resultTransformers.ForEach(transformer => 
@@ -97,16 +97,16 @@ namespace NCommon.Data.NHibernate
                 if (_expands.Count > 0)
                     _expands.ForEach(x => nhQuery.QueryOptions.AddExpansion(x));
 
-				if (_enableCached)
-				{
-					nhQuery.QueryOptions.SetCachable(true);
-					nhQuery.QueryOptions.SetCacheMode(CacheMode.Normal);
-					nhQuery.QueryOptions.SetCacheRegion(_cachedQueryName);
-				}
+                if (_enableCached)
+                {
+                    nhQuery.QueryOptions.SetCachable(true);
+                    nhQuery.QueryOptions.SetCacheMode(CacheMode.Normal);
+                    nhQuery.QueryOptions.SetCacheRegion(_cachedQueryName);
+                }
 
-				//Resetting cache variables once IQueryable has been built.
-            	_enableCached = false;
-            	_cachedQueryName = null;
+                //Resetting cache variables once IQueryable has been built.
+                _enableCached = false;
+                _cachedQueryName = null;
                 return query;
             }
         }
@@ -118,7 +118,21 @@ namespace NCommon.Data.NHibernate
         /// updated in the database.</param>
         public override void Save(TEntity entity)
         {
-			Session.SaveOrUpdate(entity);
+            Add(entity);
+        }
+
+        /// <summary>
+        /// Adds a transient instance of <see cref="TEntity"/> to be tracked
+        /// and persisted by the repository.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <remarks>
+        /// The Add method replaces the existing <see cref="RepositoryBase{TEntity}.Save"/> method, which will
+        /// eventually be removed from the public API.
+        /// </remarks>
+        public override void Add(TEntity entity)
+        {
+            Session.SaveOrUpdate(entity);
         }
 
         /// <summary>
@@ -179,28 +193,28 @@ namespace NCommon.Data.NHibernate
             });
         }
 
-		/// <summary>
-		/// Instructs the repository to cache the following query.
-		/// </summary>
-		/// <param name="cachedQueryName">string. The name of the cached query.</param>
-		/// <returns></returns>
-    	public override IRepository<TEntity> Cached(string cachedQueryName)
-    	{
-			_enableCached = true;
-			_cachedQueryName = cachedQueryName;
-			return this;
-    	}
+        /// <summary>
+        /// Instructs the repository to cache the following query.
+        /// </summary>
+        /// <param name="cachedQueryName">string. The name of the cached query.</param>
+        /// <returns></returns>
+        public override IRepository<TEntity> Cached(string cachedQueryName)
+        {
+            _enableCached = true;
+            _cachedQueryName = cachedQueryName;
+            return this;
+        }
 
         /// <summary>
         /// Sets a batch size on the repository.
         /// </summary>
         /// <param name="size">int. A positive integer representing the batch size.</param>
         /// <remarks>Use this property when persisteing large amounts of data to batch insert statements.</remarks>
-    	public override IRepository<TEntity> SetBatchSize(int size)
-    	{
-    		Guard.Against<ArgumentOutOfRangeException>(size < 0, "BatchSize cannot be set to a value lesser than 0.");
-    		_batchSize = size;
-    		return this;
-    	}
+        public override IRepository<TEntity> SetBatchSize(int size)
+        {
+            Guard.Against<ArgumentOutOfRangeException>(size < 0, "BatchSize cannot be set to a value lesser than 0.");
+            _batchSize = size;
+            return this;
+        }
     }
 }

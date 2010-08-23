@@ -92,6 +92,20 @@ namespace NCommon.Data.LinqToSql
         /// updated in the database.</param>
         public override void Save(TEntity entity)
         {
+            Add(entity);
+        }
+
+        /// <summary>
+        /// Adds a transient instance of <see cref="TEntity"/> to be tracked
+        /// and persisted by the repository.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <remarks>
+        /// The Add method replaces the existing <see cref="RepositoryBase{TEntity}.Save"/> method, which will
+        /// eventually be removed from the public API.
+        /// </remarks>
+        public override void Add(TEntity entity)
+        {
             Table.InsertOnSubmit(entity);
         }
 
@@ -174,18 +188,18 @@ namespace NCommon.Data.LinqToSql
             });
         }
 
-		/// <summary>
-		/// Instructs the repository to cache the following query.
-		/// </summary>
-		/// <param name="cachedQueryName">string. The name to give to the cached query.</param>
-    	public override IRepository<TEntity> Cached(string cachedQueryName)
-    	{
-			return this;
-    	}
+        /// <summary>
+        /// Instructs the repository to cache the following query.
+        /// </summary>
+        /// <param name="cachedQueryName">string. The name to give to the cached query.</param>
+        public override IRepository<TEntity> Cached(string cachedQueryName)
+        {
+            return this;
+        }
 
-    	public override IRepository<TEntity> SetBatchSize(int size)
-    	{
-    		return this; //Does nothing.
-    	}
+        public override IRepository<TEntity> SetBatchSize(int size)
+        {
+            return this; //Does nothing.
+        }
     }
 }

@@ -27,29 +27,29 @@ namespace NCommon.Data
     /// </summary>
     /// <typeparam name="TEntity">The entity type for which this repository was created.</typeparam>
     /// <remarks>This class can be used in Unit tests to represent an in memory repository.</remarks>
-	public class InMemoryRepository<TEntity> : RepositoryBase<TEntity>
-	{
-		readonly IList<TEntity> _internal;
+    public class InMemoryRepository<TEntity> : RepositoryBase<TEntity>
+    {
+        readonly IList<TEntity> _internal;
 
         /// <summary>
         /// Default Constructor.
         /// Creats a new instance of the <see cref="InMemoryRepository{TEntity}"/> class.
         /// </summary>
         /// <param name="list">An optional list pre-populated with entities.</param>
-		public InMemoryRepository(IList<TEntity> list)
-		{
-			_internal = list ?? new List<TEntity>() ;
-		}
+        public InMemoryRepository(IList<TEntity> list)
+        {
+            _internal = list ?? new List<TEntity>() ;
+        }
 
         /// <summary>
         /// Gets the <see cref="IQueryable{TEntity}"/> used by the <see cref="RepositoryBase{TEntity}"/> 
         /// to execute Linq queries.
         /// </summary>
         /// <value>A <see cref="IQueryable{TEntity}"/> instance.</value>
-		protected override IQueryable<TEntity> RepositoryQuery
-		{
-			get { return _internal.AsQueryable(); }
-		}
+        protected override IQueryable<TEntity> RepositoryQuery
+        {
+            get { return _internal.AsQueryable(); }
+        }
 
         /// <summary>
         /// Marks the changes of an existing entity to be saved to the store.
@@ -57,46 +57,51 @@ namespace NCommon.Data
         /// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be
         /// updated in the database.</param>
         /// <remarks>Implementors of this method must handle the Update scneario. </remarks>
-		public override void Save(TEntity entity)
-		{
-			_internal.Add(entity);
-		}
+        public override void Save(TEntity entity)
+        {
+            Add(entity);
+        }
+
+        public override void Add(TEntity entity)
+        {
+            _internal.Add(entity);
+        }
 
         /// <summary>
         /// Marks the entity instance to be deleted from the store.
         /// </summary>
         /// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be deleted.</param>
-		public override void Delete(TEntity entity)
-		{
-			_internal.Remove(entity);
-		}
+        public override void Delete(TEntity entity)
+        {
+            _internal.Remove(entity);
+        }
 
         /// <summary>
         /// Detaches a instance from the repository.
         /// </summary>
         /// <param name="entity">The entity instance, currently being tracked via the repository, to detach.</param>
-		public override void Detach(TEntity entity)
-		{
-			return;
-		}
+        public override void Detach(TEntity entity)
+        {
+            return;
+        }
 
         /// <summary>
         /// Attaches a detached entity, previously detached via the <see cref="IRepository{TEntity}.Detach"/> method.
         /// </summary>
         /// <param name="entity">The entity instance to attach back to the repository.</param>
-		public override void Attach(TEntity entity)
-		{
-			return;
-		}
+        public override void Attach(TEntity entity)
+        {
+            return;
+        }
 
         /// <summary>
         /// Refreshes a entity instance.
         /// </summary>
         /// <param name="entity">The entity to refresh.</param>
-		public override void Refresh(TEntity entity)
-		{
-			return;
-		}
+        public override void Refresh(TEntity entity)
+        {
+            return;
+        }
 
 
         /// <summary>
@@ -113,18 +118,18 @@ namespace NCommon.Data
         /// Instructs the repository to cache the following query.
         /// </summary>
         /// <param name="cachedQueryName">string. The name to give to the cached query.</param>
-		public override IRepository<TEntity> Cached(string cachedQueryName)
-		{
-			return this;
-		}
+        public override IRepository<TEntity> Cached(string cachedQueryName)
+        {
+            return this;
+        }
 
         /// <summary>
         /// Sets the batch size on the repository
         /// </summary>
         /// <param name="size">int. The batch size.</param>
-		public override IRepository<TEntity> SetBatchSize(int size)
-		{
-			return this;
-		}
-	}
+        public override IRepository<TEntity> SetBatchSize(int size)
+        {
+            return this;
+        }
+    }
 }

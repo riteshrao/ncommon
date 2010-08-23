@@ -74,6 +74,11 @@ namespace NCommon.Data.Db4o
         /// updated in the database.</param>
         public override void Save(TEntity entity)
         {
+            Add(entity);
+        }
+
+        public override void Add(TEntity entity)
+        {
             ObjectContainer.Store(entity);
         }
 

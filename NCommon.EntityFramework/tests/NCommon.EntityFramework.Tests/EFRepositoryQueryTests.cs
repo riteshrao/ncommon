@@ -127,10 +127,10 @@ namespace NCommon.Data.EntityFramework.Tests
 
             var context = (OrderEntities) OrdersContextProvider();
             context.AddToCustomers(customer);
-#if net40
-            context.SaveChanges(SaveOptions.AcceptAllChangesAfterSave);
-#else
+#if EF_1_0
             context.SaveChanges(true);
+#else
+            context.SaveChanges(SaveOptions.AcceptAllChangesAfterSave);
 #endif
             context.Detach(customer);
             context.Dispose(); //Auto detach
