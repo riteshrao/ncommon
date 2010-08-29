@@ -12,9 +12,11 @@ namespace NCommon.EntityFramework4.Tests.POCO
 
         public PocoContext(string connectionString) : base(connectionString)
         {
-            _customers = CreateObjectSet<Customer>();
-            _orders = CreateObjectSet<Order>();
-            _products = CreateObjectSet<Product>();
+            DefaultContainerName = "Entities";
+            _customers = CreateObjectSet<Customer>("Customers");
+            _orders = CreateObjectSet<Order>("Orders");
+            _products = CreateObjectSet<Product>("Products");
+            ContextOptions.LazyLoadingEnabled = true;
         }
 
         public ObjectSet<Customer> Customers

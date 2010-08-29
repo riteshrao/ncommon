@@ -184,7 +184,7 @@ namespace NCommon.Data.EntityFramework
             }
 
             GetObjectSet<T>().Attach(entity);
-            _context.DetectChanges(); //Required for POCO entities
+            //_context.DetectChanges(); //Required for POCO entities
         }
 
         /// <summary>

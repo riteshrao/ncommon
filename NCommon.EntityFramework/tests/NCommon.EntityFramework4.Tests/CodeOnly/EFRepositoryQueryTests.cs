@@ -1,6 +1,7 @@
 using System;
-using System.Configuration;
+using System.Data.Objects;
 using System.Linq;
+using System.Data.Entity.Infrastructure;
 using Microsoft.Practices.ServiceLocation;
 using NCommon.Data;
 using NCommon.Data.EntityFramework;
@@ -12,24 +13,30 @@ using NCommon.Testing;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace NCommon.EntityFramework4.Tests.POCO
+namespace NCommon.EntityFramework4.Tests.CodeOnly
 {
     [TestFixture]
     public class EFRepositoryQueryTests
     {
         private IState _state;
-        private string _connectionString;
         private IServiceLocator _locator;
-        private PocoContext _context;
+        private ObjectContext _context;
         private EFUnitOfWorkFactory _unitOfWorkFactory;
 
+        public class NullInitializer : IDatabaseInitializer<CodeOnlyContext>
+        {
+            public void InitializeDatabase(CodeOnlyContext context)
+            {
+                
+            }
+        }
 
         [TestFixtureSetUp]
         public virtual void FixtureSetup()
         {
             _unitOfWorkFactory = new EFUnitOfWorkFactory();
-            _connectionString = ConfigurationManager.ConnectionStrings["Sandbox"].ConnectionString;
-            _unitOfWorkFactory.RegisterObjectContextProvider(() => new PocoContext(_connectionString));
+            Database.SetInitializer(new NullInitializer());
+            _unitOfWorkFactory.RegisterObjectContextProvider(() => new CodeOnlyContext("SandboxCodeOnly").Context);
 
             _locator = MockRepository.GenerateStub<IServiceLocator>();
             _locator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(_unitOfWorkFactory);
@@ -41,17 +48,17 @@ namespace NCommon.EntityFramework4.Tests.POCO
         public virtual void TestSetup()
         {
             _state = new FakeState();
-            _context = new PocoContext(_connectionString);
+            _context = new CodeOnlyContext("SandboxCodeOnly").Context;
         }
 
         [TearDown]
         public void TestTeardown()
         {
-            _context = new PocoContext(_connectionString);
             _context.ExecuteStoreCommand("DELETE OrderItems");
             _context.ExecuteStoreCommand("DELETE Products");
             _context.ExecuteStoreCommand("DELETE Orders");
             _context.ExecuteStoreCommand("DELETE Customers");
+            _context.Dispose();
         }
 
         [Test]
@@ -147,7 +154,7 @@ namespace NCommon.EntityFramework4.Tests.POCO
                 scope.Commit();
             }
 
-            _context = new PocoContext(_connectionString);
+            _context = new CodeOnlyContext("SandboxCodeOnly").Context;
             testData = new EFTestData(_context);
             customer = testData.Get<Customer>(x => x.CustomerID == customer.CustomerID);
             Assert.That(customer.FirstName, Is.EqualTo("Changed"));
@@ -163,7 +170,7 @@ namespace NCommon.EntityFramework4.Tests.POCO
                 x.CreateCustomer(customer => customer.State = "CA");
                 x.CreateCustomer(customer => customer.State = "PA");
             });
-            
+
             using (var scope = new UnitOfWorkScope())
             {
                 var specification = new Specification<Customer>(x => x.State == "CA");
