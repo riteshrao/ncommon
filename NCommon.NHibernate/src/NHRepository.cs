@@ -159,7 +159,7 @@ namespace NCommon.Data.NHibernate
         /// <param name="entity">The entity instance to attach back to the repository.</param>
         public override void Attach(TEntity entity)
         {
-            Session.Lock(entity, LockMode.None);
+            Session.Update(entity);
         }
 
         /// <summary>

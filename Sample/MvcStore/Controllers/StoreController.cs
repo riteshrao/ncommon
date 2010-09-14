@@ -1,14 +1,16 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using MvcStore.Models;
+using MvcStore.Services;
 using MvcStore.ViewModels;
-using MvcStoreModels.Services;
 using NCommon.Data;
+using Product = MvcStore.Models.Product;
 
 namespace MvcStore.Controllers
 {
-    public class StoreController : Controller
+    public class StoreController : ControllerBase
     {
         readonly IProductCatalog _productCatalog;
         readonly IShoppingCartLocator _shoppingCartLocator;
@@ -19,45 +21,65 @@ namespace MvcStore.Controllers
             _shoppingCartLocator = shoppingCartLocator;
         }
 
+        [UnitOfWork]
         public ActionResult Index()
         {
-            var viewModel = new StoreViewModel();
-            using (var scope = new UnitOfWorkScope())
-            {
-                var categories = _productCatalog.GetAllCategories();
-                var selectedCategory = categories.First();
-                var products = _productCatalog.GetProductsForCategory(selectedCategory.Id);
-
-                viewModel.CurrentCategory = selectedCategory.Name;
-                viewModel.Categories = categories.Select(x => x.Name).ToList();
-                viewModel.Products = products.Select(x => new ProductSummary
-                {
-                    Id = x.Id,
-                    Name = x.Name
-                }).ToArray();
-                scope.Commit();
-            }
-            return View("catalog", viewModel);
+            var cart = _shoppingCartLocator.GetCart();
+            return View(new CatalogViewModel(cart, _productCatalog.GetCategoryNames(), new Product[] {}));
         }
 
-        public ActionResult ShowCategoryProducts(string category)
+        [UnitOfWork]
+        public ActionResult DisplayCategory(string categoryName)
         {
-            var viewModel = new StoreViewModel();
-            using (var scope = new UnitOfWorkScope())
-            {
-                var categories = _productCatalog.GetAllCategories();
-                var selectedCategory = categories.Where(x => x.Name.Equals(category)).First();
-                var products = _productCatalog.GetProductsForCategory(selectedCategory.Id);
-                viewModel.CurrentCategory = selectedCategory.Name;
-                viewModel.Categories = categories.Select(x => x.Name).ToList();
-                viewModel.Products = products.Select(x => new ProductSummary
-                {
-                    Id = x.Id,
-                    Name = x.Name
-                }).ToArray();
-                scope.Commit();
-            }
-            return View("catalog", viewModel);
+            return View(new CatalogViewModel(
+                            _shoppingCartLocator.GetCart(),
+                            _productCatalog.GetCategoryNames(),
+                            _productCatalog.GetProductsForCategory(categoryName)));
+        }
+
+        [UnitOfWork]
+        public ActionResult AddToCart(string category, string productCode)
+        {
+            var cart = _shoppingCartLocator.GetCart();
+            var product = _productCatalog.GetProduct(category, productCode);
+            cart.AddToCart(product);
+
+            return View(new CatalogViewModel(
+                     cart,
+                     _productCatalog.GetCategoryNames(),
+                     _productCatalog.GetProductsForCategory(category)));
+        }
+
+        [UnitOfWork]
+        public ActionResult ViewCart()
+        {
+            return View(new ShoppingCartViewModel(
+                            _shoppingCartLocator.GetCart(),
+                            _productCatalog.GetCategoryNames()));
+        }
+
+        [UnitOfWork]
+        public ActionResult ShowCart()
+        {
+            return View(new ShoppingCartViewModel(
+                _shoppingCartLocator.GetCart(),
+                _productCatalog.GetCategoryNames()));
+        }
+
+        [UnitOfWork]
+        public ActionResult RemoveCartItem(Guid itemId)
+        {
+            var cart = _shoppingCartLocator.GetCart();
+            cart.RemoveFromCart(itemId);
+            return View(new ShoppingCartViewModel(cart, _productCatalog.GetCategoryNames()));
+        }
+
+        [UnitOfWork]
+        public ActionResult UpdateCart(List<ShoppingCartItemViewModel> items)
+        {
+            var cart = _shoppingCartLocator.GetCart();
+            items.ForEach(item => cart.SetQuantity(item.Id, item.Quantity));
+            return View(new ShoppingCartViewModel(cart, _productCatalog.GetCategoryNames()));
         }
     }
 }

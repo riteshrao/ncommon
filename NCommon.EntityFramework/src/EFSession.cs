@@ -176,15 +176,12 @@ namespace NCommon.Data.EntityFramework
             //instead of the set's Attach. Getting an exception 
             //"Mapping and metadata information could not be found for EntityType 'System.Data.Objects.DataClasses.IEntityWithKey"
             //when using set's Attach.
-            var entityWithKey = typeof (IEntityWithKey);
-            if (entityWithKey.IsAssignableFrom(entity.GetType()))
-            {
-                _context.Attach((IEntityWithKey)entity);
-                return;
-            }
-
-            GetObjectSet<T>().Attach(entity);
-            //_context.DetectChanges(); //Required for POCO entities
+            var entityWithKey = entity as IEntityWithKey;
+            if (entityWithKey != null)
+                _context.Attach(entityWithKey);
+            else
+                GetObjectSet<T>().Attach(entity);
+            _context.ObjectStateManager.ChangeObjectState(entity, EntityState.Modified);
         }
 
         /// <summary>

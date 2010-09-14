@@ -33,7 +33,44 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\..\Libs\NHibernate\2.1.2-GA\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core">
+      <HintPath>..\..\Libs\Castle\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.DynamicProxy2">
+      <HintPath>..\..\Libs\Castle\Castle.DynamicProxy2.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.MicroKernel">
+      <HintPath>..\..\Libs\Castle\Castle.MicroKernel.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor">
+      <HintPath>..\..\Libs\Castle\Castle.Windsor.dll</HintPath>
+    </Reference>
+    <Reference Include="CommonServiceLocator.WindsorAdapter">
+      <HintPath>..\..\Libs\Castle\CommonServiceLocator.WindsorAdapter.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentNHibernate">
+      <HintPath>..\..\Libs\NHibernate\2.1.2-GA\FluentNHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\..\Libs\NHibernate\2.1.2-GA\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\Libs\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="NHibernate">
+      <HintPath>..\..\Libs\NHibernate\2.1.2-GA\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate.ByteCode.Castle">
+      <HintPath>..\..\Libs\NHibernate\2.1.2-GA\NHibernate.ByteCode.Castle.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate.Linq">
+      <HintPath>..\..\Libs\NHibernate\2.1.2-GA\NHibernate.Linq.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -65,19 +102,41 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ControllerBase.cs" />
     <Compile Include="Controllers\StoreController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Mappings\CategoryMap.cs" />
+    <Compile Include="Mappings\EntityMap.cs" />
+    <Compile Include="Mappings\ProductMap.cs" />
+    <Compile Include="Mappings\ShoppingCartItemMap.cs" />
+    <Compile Include="Mappings\ShoppingCartMap.cs" />
     <Compile Include="Models\Category.cs" />
-    <Compile Include="Models\ProductSummary.cs" />
+    <Compile Include="Models\Entity.cs" />
+    <Compile Include="Services\Impl\ProductCatalog.cs" />
+    <Compile Include="Services\Impl\ShppingCartLocator.cs" />
+    <Compile Include="Services\Impl\StoreInitializer.cs" />
+    <Compile Include="Services\IProductCatalog.cs" />
+    <Compile Include="Services\IShoppingCartLocator.cs" />
+    <Compile Include="Models\Product.cs" />
+    <Compile Include="Models\ShoppingCart.cs" />
+    <Compile Include="Models\ShoppingCartItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\StoreViewModel.cs" />
+    <Compile Include="Services\IStoreInitializer.cs" />
+    <Compile Include="ViewModels\CatalogViewModel.cs" />
+    <Compile Include="ViewModels\ProductViewModel.cs" />
+    <Compile Include="ViewModels\ShoppingCartViewModel.cs" />
+    <Compile Include="ViewModels\ShoppingCartItemViewModel.cs" />
+    <Compile Include="WindsorControllerFactory.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\store.mdf" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\includes.js" />
+    <Content Include="Views\Shared\DisplayTemplates\Product.ascx" />
     <Content Include="Views\Store\catalog.aspx" />
+    <Content Include="Views\Store\shoppingcart.aspx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -101,18 +160,22 @@
     <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Content\images\" />
+    <Folder Include="Content\productimages\" />
     <Folder Include="Scripts\Views\Store\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\NCommon.ContainerAdapters\NCommon.ContainerAdapter.CastleWindsor\NCommon.ContainerAdapter.CastleWindsor.csproj">
+      <Project>{27A25205-349C-425E-836F-C1EB160DC2C2}</Project>
+      <Name>NCommon.ContainerAdapter.CastleWindsor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NCommon.NHibernate\src\NCommon.NHibernate.csproj">
+      <Project>{01A6D2F9-C34E-4D87-BE7A-4F36A78BED66}</Project>
+      <Name>NCommon.NHibernate %28src\NCommon.NHibernate%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\NCommon\src\NCommon.csproj">
       <Project>{C853736D-3576-468A-A716-ACEC1CD4FAC1}</Project>
       <Name>NCommon</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MvcStore.Models\MvcStore.Models.csproj">
-      <Project>{E2D358E5-91EC-428D-A80F-B17CCA35700A}</Project>
-      <Name>MvcStore.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

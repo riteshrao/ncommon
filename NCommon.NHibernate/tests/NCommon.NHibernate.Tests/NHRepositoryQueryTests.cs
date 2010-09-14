@@ -183,6 +183,36 @@ namespace NCommon.Data.NHibernate.Tests
         }
 
         [Test]
+        public void Can_attach_modified_entity()
+        {
+            var customer = new Customer
+            {
+                FirstName = "Jane",
+                LastName = "Doe"
+            };
+            var session = OrdersDomainFactory.OpenSession();
+            session.Save(customer);
+            session.Evict(customer); //Detching from owning session
+            session.Dispose(); //Auto flush
+
+            using (var scope = new UnitOfWorkScope())
+            {
+                customer.LastName = "Changed";
+                var repository = new NHRepository<Customer>();
+                repository.Attach(customer);
+                scope.Commit(); //Should change since the customer was attached to repository.
+            }
+
+            using (var testData = new NHTestData(OrdersDomainFactory.OpenSession()))
+            {
+                Customer savedCustomer = null;
+                testData.Batch(x => savedCustomer = x.GetCustomerById(customer.CustomerID));
+                Assert.That(savedCustomer, Is.Not.Null);
+                Assert.That(savedCustomer.LastName, Is.EqualTo("Changed"));
+            }
+        }
+
+        [Test]
         public void Can_query_using_specification()
         {
             using (var testData = new NHTestData(OrdersDomainFactory.OpenSession()))

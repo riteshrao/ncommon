@@ -154,6 +154,29 @@ namespace NCommon.EntityFramework4.Tests.POCO
         }
 
         [Test]
+        public void Can_attach_modified_entity()
+        {
+            Customer customer = null;
+            var testData = new EFTestData(_context);
+            testData.Batch(x => customer = x.CreateCustomer());
+            _context.Detach(customer);
+            _context.Dispose();
+
+            using (var scope = new UnitOfWorkScope())
+            {
+                customer.LastName = "Changed";
+                var repository = new EFRepository<Customer>();
+                repository.Attach(customer);
+                scope.Commit();
+            }
+
+            _context = new PocoContext(_connectionString);
+            testData = new EFTestData(_context);
+            customer = testData.Get<Customer>(x => x.CustomerID == customer.CustomerID);
+            Assert.That(customer.LastName, Is.EqualTo("Changed"));
+        }
+
+        [Test]
         public void Can_query_using_specification()
         {
             var testData = new EFTestData(_context);

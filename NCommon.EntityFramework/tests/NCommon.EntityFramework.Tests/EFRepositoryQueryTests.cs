@@ -153,6 +153,42 @@ namespace NCommon.Data.EntityFramework.Tests
         }
 
         [Test]
+        public void Can_attach_modified_entity()
+        {
+            var customer = new Customer
+            {
+                FirstName = "John",
+                LastName = "Doe"
+            };
+
+            var context = (OrderEntities) OrdersContextProvider();
+            context.AddToCustomers(customer);
+#if EF_1_0
+            context.SaveChanges(true);
+#else
+            context.SaveChanges(SaveOptions.AcceptAllChangesAfterSave);
+#endif
+            context.Detach(customer);
+            context.Dispose();
+
+            using (var scope = new UnitOfWorkScope())
+            {
+                customer.LastName = "Changed";
+                var repository = new EFRepository<Customer>();
+                repository.Attach(customer);
+                scope.Commit();
+            }
+
+            using (var testData = new EFTestData(OrdersContextProvider()))
+            {
+                Customer savedCustomer = null;
+                testData.Batch(x => savedCustomer = x.GetCustomerById(customer.CustomerID));
+                Assert.That(savedCustomer, Is.Not.Null);
+                Assert.That(savedCustomer.LastName, Is.EqualTo("Changed"));
+            }
+        }
+
+        [Test]
         public void Can_query_using_specification()
         {
             using (var testData = new EFTestData(OrdersContextProvider()))
