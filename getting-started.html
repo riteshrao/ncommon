@@ -1,0 +1,135 @@
+<html>
+<head>
+	<title>NCommon - Getting Started</title>
+	<link type="text/css" rel="stylesheet" href="default.css"/>
+	<link type="text/css" rel="stylesheet" href="docs.css"/>
+</head>
+<body>
+	<div class="title">
+		<h1><a href="#">NCommon Documentation</a></h1>
+	</div>
+	<br/>
+	<div id="container">
+		<h2>Getting Started Guide</h2>
+		<ul class="toc">
+			<li class="title">Contents</li>
+			<li>
+				<ol>
+					<li><a href="#intro">Introduction</a></li>
+					<li><a href="#download">Downloading NCommon</a></li>
+					<li><a href="#source">Building NCommon from source</a></li>
+					<li><a href="#addreference">Referencing NCommon</a></li>
+					<li><a href="#configintro">NCommon configuration basics</a></li>
+					<li><a href="#features">NCommon features overview</a></li>
+				<ol>
+			</li>
+		</ul>
+		<div class="content">
+			<h3 id="intro">Introduction</h3>
+			<p>
+				NCommon is a light weight framework that provides implementations of various concepts and patterns commonly
+				used when building .Net applications and websites. NCommon also provides a foundation for building
+				applications using a domain driven design approach by providing implementations of common patterns in
+				Domain Driven Design such as Unit Of Work and Repositories.
+			</p>
+			<p>
+				One of the key features on NCommon is a ORM agnostic repository implementation. What this means is NCommon 
+				provides the ability to abstract away your data access framework of choice, be it NHibernate, Entity Framework
+				or Linq-To-SQL, it allows you to focus on the concept of working with your domain models and LINQ queries
+				and abstracts away any knowledge of the underlying data access infrastructure from your application.
+			</p>
+			
+			<h3 id="download">Downloading NCommon</h3>
+			<p>
+				You can download NCommon in binary form from the releases section of the <a href="#">main page</a>. Or you can download the binaries
+				directly from the GitHub repository <a href="#">here</a>.
+			</p>
+			
+			<h3 id="source">Building NCommon from source</h3>
+			<p>
+				Source for NCommon is maintained at GitHub here. For downloading and building NCommon from source, see the Building from source section
+				in the main page.
+			</p>
+			
+			<h3 id="addreference">Referencing NCommon</h3>
+			<p>
+				NCommon binaries are split into three categories:
+				<ul>
+					<li>NCommon Core</li>
+					<li>NCommon Data Adapters</li>
+					<li>NCommon Container Adapters</li>
+				</ul> 
+			</p>
+			<p>
+				NCommon core is contained in the <strong>NCommon.dll</strong> assembly. This assembly contains the configuration API to configure and
+				bootstrap NCommon in your application.
+			</p>
+			<p>
+				NCommon depends on Dependency Injection and a IoC container heavily. If you are unfamiliar with Dependency Injection or IoC containers
+				it's highly advisable you take some time to read through these two topics before going forward. Since there are many IoC container
+				frameworks, and everyone has their own favorite one, NCommon provides adapters for various IoC container implementations so
+				that it can work with your IoC container choice.
+				
+				Out of the box, NCommon provides implementations for the following container adapters (in no order of preference):
+				<ul>
+					<li>Autofac (NCommon.ContainerAdapter.Autofac.dll)</li>
+					<li>Castle Windsor (NCommon.ContainerAdapter.CastleWindsor.dll)</li>
+					<li>NInject (NCommon.ContianerAdapter.NInject.dll)</li>
+					<li>StructureMap (NCommon.ContainerAdapter.StructureMap)</li>
+					<li>Unit (NCommon.ContainerAdapter.Unity)</li>
+				</ul>
+				To make NCommon work with the container of your choice, reference the appropriate assembly in your project.
+			</p>
+			<p>
+				NCommon provides a way to abstract your data access infrastructure by providing implementations of Unit Of Work
+				and Repository pattern that work in a ORM agnostic manner. Out of the box, NCommon provides data access adapters
+				for the following ORM frameworks:
+				<ul>
+					<li>NHibernate (NCommon.NHibernate.dll)</li>
+					<li>Entity Framework (NCommon.EntityFramework.dll)</li>
+					<li>Linq To SQL (NCommon.LinqToSql.dll)</li>
+					<li>Db4o (NCommon.Db4o.dll)</li>
+				</ul>
+				Reference the appropriate data adapter assembly in your project to allow NCommon to work with your ORM / Data Access
+				framework of choice.
+			</p>
+			
+			<h3 id="configintro">NCommon configuration basics</h3>
+			<p>
+				NCommon provides a fluent configuration API to boot strap and configure NCommon in your application. Once you have referenced
+				the appropriate NCommon assemblies listed above, you can use this fluent API to configure NCommon. 
+			</p>
+			<p>
+				Below is a sample sample configuration using defaults. The snippet below is using Castle Windsor and
+				NHibernate as it's container and data adapter respectively, but the same can be used for any container adapter and data
+				adapter.
+				<div class="block">
+					<div style="font-family: monospace; font-size: 10pt; color: black;"><p style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">var</span> adapter = <span style="color: blue;">new</span> <span style="color: #2b91af;">WindsorContainerAdapter</span>(_container);</p><p style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; NCommon.<span style="color: #2b91af;">Configure</span>.Using(adapter)</p><p style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; .ConfigureState&lt;<span style="color: #2b91af;">DefaultStateConfiguration</span>&gt;()</p><p style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; .ConfigureData&lt;<span style="color: #2b91af;">NHConfiguration</span>&gt;(config =&gt; config.WithSessionFactory(() =&gt; _sessionFactory))</p><p style="margin: 0px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; .ConfigureUnitOfWork&lt;<span style="color: #2b91af;">DefaultUnitOfWorkConfiguration</span>&gt;(config =&gt; config.AutoCompleteScope());</p></div>
+				</div>
+			</p>
+			<p>
+				NCommon provides a single static class <strong>Configure</strong> that provides the main entry point to the configuration API
+				and contains one single static method Using which takes in the container adapter that NCommon will use to boot strap itself.
+			</p>
+			<p>
+				There are three main configuration parts of NCommon; State, Data Adapter and Unit Of Work configuration. Each part is configured
+				using a configurator implementation and NCommon provides default configurators but you can create your own. 
+			</p>
+			<h4>State Configuration</h4>
+			<p>
+				<span class="todo">TODO: Overview of State storage providers and state configuration.</span> 
+			</p>
+			
+			<h4>Data Adapter Configuration<h4>
+			<p>
+				<span class="todo">TODO: Overview of Data Adatapters and configuration.</span>
+			</p>
+			
+			<h4>Unit Of Work Configuration<h4>
+			<p>
+				<span class="todo">TODO: Overview of Unit Of Work configuration.</span>
+			</p>
+		</div>
+	</div>
+</body>
+</html>

@@ -5,76 +5,58 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-	<title>riteshrao/ncommon @ GitHub</title>
-	
-	<style type="text/css">
-		body {
-  		margin-top: 1.0em;
-  		background-color: #3a3654;
-		  font-family: "Helvetica,Arial,FreeSans";
-  		color: #ffffff;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-		h1 { font-size: 3.8em; color: #c5c9ab; margin-bottom: 3px; }
-		h1 .small { font-size: 0.4em; }
-		h1 a { text-decoration: none }
-		h2 { font-size: 1.5em; color: #c5c9ab; }
-    h3 { text-align: center; color: #c5c9ab; }
-    a { color: #c5c9ab; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-		pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
+	<title>NCommon Project</title>
+	<link type="text/css" rel="Stylesheet" href="default.css">
+	<style>
+		.description { 
+			font-size: 1.2em; 
+			margin-bottom: 30px; 
+			margin-top: 30px; 
+			font-style: italic;
+		}
 	</style>
-	
 </head>
 
 <body>
-  <a href="http://github.com/riteshrao/ncommon"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+  	<a href="http://github.com/riteshrao/ncommon">
+		<img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" />
+	</a>
+  	<div id="container">
 
-  <div id="container">
+    	<h1><a href="http://github.com/riteshrao/ncommon">NCommon</a></h1>
 
-    <div class="download">
-      <a href="http://github.com/riteshrao/ncommon/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/riteshrao/ncommon/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
-    </div>
-
-    <h1><a href="http://github.com/riteshrao/ncommon">ncommon</a>
-      <span class="small">by <a href="http://github.com/riteshrao">riteshrao</a></span></h1>
-
-    <div class="description">
-      A framework for implementing commonly used design patterns when using Domain Driven Design
-    </div>
-
-    <h2>Authors</h2>
-<p>Ritesh Rao (rao.ritesh@gmail.com)<br/>RITESH RAO (riteshrao@oden.home)<br/><br/>      </p>
-<h2>Contact</h2>
-<p> (rao.ritesh@gmail.com)<br/>      </p>
-
-
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="http://github.com/riteshrao/ncommon/zipball/master">zip</a> or
-      <a href="http://github.com/riteshrao/ncommon/tarball/master">tar</a> formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/riteshrao/ncommon</pre>
-    </p>
-
-    <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/riteshrao/ncommon">riteshrao/ncommon</a>
-    </div>
-
-  </div>
-
-  
+    	<div class="description">
+			A light weight framework for building applications in .Net
+    	</div>
+		<p>
+			NCommon is a framework that provides a base for building applications using a Domain Driven Design approach and provides base
+			implementations of common patterns. <span class="todo">TODO - Complete This</span>
+			<br/><br/>
+			You can get the latest release of NCommon below in the releases section below. You can also get the latest source 
+			of NCommon from Github and build from source. See the building from source section below for more information.
+			<br/><br/>
+			Visit the <a href="#">Getting started guide</a> to get an overview of what NCommon is and what it can do for you, or visit
+			the <a href="#">Documentation</a> section for full documentation on the various features of NCommon.
+		</p>
+		<h2>Current Release</h2>
+		<p>
+			Current release version of NCommon is 1.1. Download binaries of this release using the links below:
+			<div class="block">
+				<a href="#">NCommon 1.1 (net4.0)</a><br/>
+				<a href="#">NCommon 1.1 (net3.5)</a>
+			</div>
+		<p>
+		<h2>Getting and building from source</h2>
+		<p>
+			NCommon's source is hosted at Github <a href="http://github.com/riteshrao/ncommon">here</a>. 
+			To build from source you must have Powershell 2.0 installed  as NCommon uses a psake build file for building binaries. 
+			Once you have cloned NCommon's repository from Github locally, you can build from source by executing the following commands
+			in a Powershell window.
+		</p>
+		<pre class="margin:0px;padding:0px;">
+			Import-module .\psake <br/>
+			Invoke-psake .\default
+		</pre> 	
+	</div>
 </body>
 </html>

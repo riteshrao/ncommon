@@ -1,0 +1,22 @@
+body {
+	margin-top: 12px;
+	background-color: #FAF5F8;
+  	font-family: "Georgia";
+	color:#262626;
+	font-size:15px;
+}
+h1 { font-size: 26px; color: #096AC9; margin-bottom: 3px; }
+h1 a { text-decoration: none; color: #096AC9; }
+h1 a:hover {color: #096AC9; }
+h1 a:visited {color: #096AC9; }
+h1 a:hover {color: #096AC9; }
+h2 { font-size: 20px; }
+h3 { font-size: 18px; }
+pre { background: #000; color: #fff; padding-top: 15px; font-family: monospace; }
+hr { border: 0; width: 80%; border-bottom: 1px solid #aaa }
+
+#container { margin: 0 auto; width: 860px; display:block ;}
+.todo {	font-style: Italic; font-size: 0.9em; color: #993B25; font-weight: bold; }
+.footer { text-align: center; padding-top: 30px; font-style: italic; }
+.block{	margin: 0px; padding: 0px; border: 1px solid #2B2B2B; background-color: #FFFFEF; }
+.block p {margin-left:10px; }
