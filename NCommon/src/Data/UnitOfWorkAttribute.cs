@@ -1,12 +1,15 @@
+using System;
 using System.Web.Mvc;
+using Common.Logging;
 
 namespace NCommon.Data
 {
     public class UnitOfWorkAttribute : ActionFilterAttribute
     {
-        UnitOfWorkScope _unitOfWork;
         FilterScope _filterScope = FilterScope.Action;
         TransactionMode _transactionMode = TransactionMode.Default;
+        readonly static ILog Log = LogManager.GetCurrentClassLogger();
+        public static readonly string ContextUnitOfWorkKey = "UnitOfWorkAttribute_Request_UnitOfWork";
 
         public FilterScope Scope
         {
@@ -22,8 +25,7 @@ namespace NCommon.Data
 
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            //Starts a unit of work when the action starts executing.
-            _unitOfWork = new UnitOfWorkScope(_transactionMode);
+            Start(filterContext);
         }
 
         public override void OnActionExecuted(ActionExecutedContext filterContext)
@@ -32,30 +34,49 @@ namespace NCommon.Data
             if (filterContext.Exception != null)
             {
                 //Rollback...
-                ReleaseUnitOfWork();
+                CurrentUnitOfWork(filterContext).Dispose();
                 return;
             }
 
             if (_filterScope != FilterScope.Action) 
                 return;
 
-            _unitOfWork.Commit();
-            ReleaseUnitOfWork();
+            CurrentUnitOfWork(filterContext).Commit();
+            CurrentUnitOfWork(filterContext).Dispose();
         }
 
         public override void OnResultExecuted(ResultExecutedContext filterContext)
         {
-            //Commits the unit of work if the filter scope is Result and no errors have occured.
             if (_filterScope != FilterScope.Result)
                 return;
-            _unitOfWork.Commit();
-            ReleaseUnitOfWork();
+
+            if (filterContext.Exception != null)
+            {
+                //Rollback
+                CurrentUnitOfWork(filterContext).Dispose();
+                return;
+            }
+
+            //Commits the unit of work if the filter scope is Result and no errors have occured.
+            CurrentUnitOfWork(filterContext).Commit();
+            CurrentUnitOfWork(filterContext).Dispose();
         }
 
-        void ReleaseUnitOfWork()
+        public void Start(ControllerContext filterContext)
         {
-            _unitOfWork.Dispose();
-            _unitOfWork = null;
+            var unitOfWork = new UnitOfWorkScope(_transactionMode);
+            filterContext.HttpContext.Items[ContextUnitOfWorkKey] = unitOfWork;
+        }
+
+        public IUnitOfWorkScope CurrentUnitOfWork(ControllerContext filterContext)
+        {
+            var currentUnitOfWork = filterContext.HttpContext.Items[ContextUnitOfWorkKey] as IUnitOfWorkScope;
+            if (currentUnitOfWork == null)
+            {
+                throw new InvalidOperationException("No unit of work scope was found for the current action." +
+                                                    "This might indicate a possible bug in NCommon UnitOfWorkAttribute action filter.");
+            }
+            return currentUnitOfWork;
         }
 
         /// <summary>

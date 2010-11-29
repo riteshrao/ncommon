@@ -75,6 +75,7 @@
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -86,8 +87,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\ContextTests.cs" />
+    <Compile Include="Data\FakeTransactionManager.cs" />
     <Compile Include="Data\TransactionManagerTests.cs" />
     <Compile Include="Data\UnitOfWorkManagerTests.cs" />
+    <Compile Include="Data\UnitOfWorkScopeAttributeTests.cs" />
     <Compile Include="Data\UnitOfWorkScopeTests.cs" />
     <Compile Include="Data\UnitOfWorkTransactionTests.cs" />
     <Compile Include="Data\InMemoryRepositoryTests.cs" />
