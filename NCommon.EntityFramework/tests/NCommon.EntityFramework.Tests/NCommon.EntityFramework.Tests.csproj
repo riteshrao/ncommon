@@ -86,6 +86,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EFRepositoryEagerFetchingTests.cs" />
+    <Compile Include="EFRepositoryExtensionsTests.cs" />
     <Compile Include="EFRepositoryTransactionTests.cs" />
     <Compile Include="EFTestData.cs" />
     <Compile Include="EFTestDataActions.cs" />

@@ -21,8 +21,20 @@ namespace NCommon.Data.EntityFramework.Tests
         [TestFixtureSetUp()]
         public virtual void FixtureSetup()
         {
-            OrdersContextProvider = () => new OrderEntities();
-            HRContextProvider = () => new HREntities();
+            OrdersContextProvider = () =>
+            {
+                var orderEntities = new OrderEntities();
+                orderEntities.ContextOptions.LazyLoadingEnabled = true;
+                return orderEntities;
+            };
+
+            HRContextProvider = () =>
+            {
+                var hrEntities = new HREntities();
+                hrEntities.ContextOptions.LazyLoadingEnabled = true;
+                return hrEntities;
+            };
+
             UnitOfWorkFactory = new EFUnitOfWorkFactory();
             UnitOfWorkFactory.RegisterObjectContextProvider(HRContextProvider);
             UnitOfWorkFactory.RegisterObjectContextProvider(OrdersContextProvider);

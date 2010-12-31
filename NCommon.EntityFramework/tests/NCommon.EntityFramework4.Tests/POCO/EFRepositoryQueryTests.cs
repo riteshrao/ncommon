@@ -15,49 +15,12 @@ using Rhino.Mocks;
 namespace NCommon.EntityFramework4.Tests.POCO
 {
     [TestFixture]
-    public class EFRepositoryQueryTests
+    public class EFRepositoryQueryTests : EFRepositoryQueryTestsBase
     {
-        private IState _state;
-        private string _connectionString;
-        private IServiceLocator _locator;
-        private PocoContext _context;
-        private EFUnitOfWorkFactory _unitOfWorkFactory;
-
-
-        [TestFixtureSetUp]
-        public virtual void FixtureSetup()
-        {
-            _unitOfWorkFactory = new EFUnitOfWorkFactory();
-            _connectionString = ConfigurationManager.ConnectionStrings["Sandbox"].ConnectionString;
-            _unitOfWorkFactory.RegisterObjectContextProvider(() => new PocoContext(_connectionString));
-
-            _locator = MockRepository.GenerateStub<IServiceLocator>();
-            _locator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(_unitOfWorkFactory);
-            _locator.Stub(x => x.GetInstance<IState>()).Do(new Func<IState>(() => _state));
-            ServiceLocator.SetLocatorProvider(() => _locator);
-        }
-
-        [SetUp]
-        public virtual void TestSetup()
-        {
-            _state = new FakeState();
-            _context = new PocoContext(_connectionString);
-        }
-
-        [TearDown]
-        public void TestTeardown()
-        {
-            _context = new PocoContext(_connectionString);
-            _context.ExecuteStoreCommand("DELETE OrderItems");
-            _context.ExecuteStoreCommand("DELETE Products");
-            _context.ExecuteStoreCommand("DELETE Orders");
-            _context.ExecuteStoreCommand("DELETE Customers");
-        }
-
         [Test]
         public void Can_perform_simple_query()
         {
-            var testData = new EFTestData(_context);
+            var testData = new EFTestData(Context);
             Customer customer = null;
             testData.Batch(x => customer = x.CreateCustomer());
             using (var scope = new UnitOfWorkScope())
@@ -85,7 +48,7 @@ namespace NCommon.EntityFramework4.Tests.POCO
                 scope.Commit();
                 customerId = customer.CustomerID;
             }
-            var savedCustomer = new EFTestData(_context)
+            var savedCustomer = new EFTestData(Context)
                 .Get<Customer>(x => x.CustomerID == customerId);
             Assert.That(savedCustomer, Is.Not.Null);
         }
@@ -94,7 +57,7 @@ namespace NCommon.EntityFramework4.Tests.POCO
         public void Can_modify()
         {
             Customer customer = null;
-            var testData = new EFTestData(_context);
+            var testData = new EFTestData(Context);
             testData.Batch(x => customer = x.CreateCustomer());
             using (var scope = new UnitOfWorkScope())
             {
@@ -112,7 +75,7 @@ namespace NCommon.EntityFramework4.Tests.POCO
         public void Can_delete()
         {
             Customer customer = null;
-            var testData = new EFTestData(_context);
+            var testData = new EFTestData(Context);
             testData.Batch(x => customer = x.CreateCustomer());
             using (var scope = new UnitOfWorkScope())
             {
@@ -134,10 +97,10 @@ namespace NCommon.EntityFramework4.Tests.POCO
         public void Can_attach()
         {
             Customer customer = null;
-            var testData = new EFTestData(_context);
+            var testData = new EFTestData(Context);
             testData.Batch(x => customer = x.CreateCustomer());
-            _context.Detach(customer);
-            _context.Dispose();
+            Context.Detach(customer);
+            Context.Dispose();
 
             using (var scope = new UnitOfWorkScope())
             {
@@ -147,8 +110,8 @@ namespace NCommon.EntityFramework4.Tests.POCO
                 scope.Commit();
             }
 
-            _context = new PocoContext(_connectionString);
-            testData = new EFTestData(_context);
+            Context = new PocoContext(ConnectionString);
+            testData = new EFTestData(Context);
             customer = testData.Get<Customer>(x => x.CustomerID == customer.CustomerID);
             Assert.That(customer.FirstName, Is.EqualTo("Changed"));
         }
@@ -157,10 +120,10 @@ namespace NCommon.EntityFramework4.Tests.POCO
         public void Can_attach_modified_entity()
         {
             Customer customer = null;
-            var testData = new EFTestData(_context);
+            var testData = new EFTestData(Context);
             testData.Batch(x => customer = x.CreateCustomer());
-            _context.Detach(customer);
-            _context.Dispose();
+            Context.Detach(customer);
+            Context.Dispose();
 
             using (var scope = new UnitOfWorkScope())
             {
@@ -170,8 +133,8 @@ namespace NCommon.EntityFramework4.Tests.POCO
                 scope.Commit();
             }
 
-            _context = new PocoContext(_connectionString);
-            testData = new EFTestData(_context);
+            Context = new PocoContext(ConnectionString);
+            testData = new EFTestData(Context);
             customer = testData.Get<Customer>(x => x.CustomerID == customer.CustomerID);
             Assert.That(customer.LastName, Is.EqualTo("Changed"));
         }
@@ -179,7 +142,7 @@ namespace NCommon.EntityFramework4.Tests.POCO
         [Test]
         public void Can_query_using_specification()
         {
-            var testData = new EFTestData(_context);
+            var testData = new EFTestData(Context);
             testData.Batch(x =>
             {
                 x.CreateCustomer(customer => customer.State = "CA");
@@ -201,7 +164,7 @@ namespace NCommon.EntityFramework4.Tests.POCO
         public void Can_lazyload()
         {
             Customer customer = null;
-            var testData = new EFTestData(_context);
+            var testData = new EFTestData(Context);
             testData.Batch(x =>
             {
                 customer = x.CreateCustomer();
@@ -222,7 +185,7 @@ namespace NCommon.EntityFramework4.Tests.POCO
         public void throws_when_lazyloading_outside_of_scope()
         {
             Order order = null;
-            var testData = new EFTestData(_context);
+            var testData = new EFTestData(Context);
             testData.Batch(x =>
                 order = x.CreateOrderForCustomer(x.CreateCustomer()));
 

@@ -11,6 +11,7 @@ namespace NCommon.EntityFramework4.Tests.Models
         public EFTestData(ObjectContext context)
         {
             _context = context;
+            _context.ContextOptions.LazyLoadingEnabled = true;
         }
 
         public ObjectContext Context

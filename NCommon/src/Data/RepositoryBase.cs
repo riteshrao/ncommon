@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Microsoft.Practices.ServiceLocation;
-using NCommon.Data.Language;
 using NCommon.Extensions;
 using NCommon.Specifications;
 
@@ -160,6 +159,27 @@ namespace NCommon.Data
         public IEnumerable<TEntity> Query(ISpecification<TEntity> specification)
         {
             return RepositoryQuery.Where(specification.Predicate).AsQueryable();
+        }
+
+        /// <summary>
+        /// Defines the service context under which the repository will execute.
+        /// </summary>
+        /// <typeparam name="TService">The service type that defines the context of the repository.</typeparam>
+        /// <returns>The same <see cref="IRepository{TEntity}"/> instance.</returns>
+        /// <remarks>
+        /// Implementors should perform context specific actions within this method call and return
+        /// the exact same instance.
+        /// </remarks>
+        public IRepository<TEntity> For<TService>()
+        {
+            var strategy = ServiceLocator
+                .Current
+                .GetAllInstances<IFetchingStrategy<TEntity, TService>>()
+                .FirstOrDefault();
+
+            if (strategy != null)
+                return strategy.Define(this);
+            return this;
         }
     }
 }

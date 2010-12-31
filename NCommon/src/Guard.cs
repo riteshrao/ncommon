@@ -21,7 +21,7 @@ namespace NCommon
     /// <summary>
     /// Provides utility methods to guard parameter and local variables.
     /// </summary>
-    public class Guard
+    public static class Guard
     {
         /// <summary>
         /// Throws an exception of type <typeparamref name="TException"/> with the specified message

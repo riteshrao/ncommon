@@ -85,11 +85,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EFConfiguration.cs" />
+    <Compile Include="EFFetchingRepository.cs" />
     <Compile Include="EFRepository.cs" />
+    <Compile Include="EFRepositoryExtensions.cs" />
     <Compile Include="EFSession.cs" />
     <Compile Include="EFSessionResolver.cs" />
     <Compile Include="EFUnitOfWork.cs" />
     <Compile Include="EFUnitOfWorkFactory.cs" />
+    <Compile Include="IEFFetchingRepository.cs" />
     <Compile Include="IEFSessionResolver.cs" />
     <Compile Include="IEFSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -107,9 +107,7 @@
     <Compile Include="Configuration\DefaultUnitOfWorkConfiguration.cs" />
     <Compile Include="Data\ITransactionManager.cs" />
     <Compile Include="Data\IUnitOfWorkScope.cs" />
-    <Compile Include="Data\Language\EagerFetchingPath.cs" />
-    <Compile Include="Data\Language\IEagerFetchingPath.cs" />
-    <Compile Include="Data\Language\RepositoryEagerFetchingStrategy.cs" />
+    <Compile Include="Data\RepositoryWrapperBase.cs" />
     <Compile Include="Data\UnitOfWorkAttribute.cs" />
     <Compile Include="Data\UnitOfWorkManager.cs" />
     <Compile Include="Data\TransactionMode.cs" />

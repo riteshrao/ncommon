@@ -57,14 +57,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeOnly\CodeOnlyContext.cs" />
+    <Compile Include="CodeOnly\EFRepositoryEagerFetchingTests.cs" />
     <Compile Include="CodeOnly\EFRepositoryQueryTests.cs" />
+    <Compile Include="CodeOnly\EFRepositoryQueryTestsBase.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\EFTestData.cs" />
     <Compile Include="Models\EFTestDataActions.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\OrderItem.cs" />
     <Compile Include="Models\Product.cs" />
+    <Compile Include="POCO\EFRepositoryEagerFetchingTests.cs" />
     <Compile Include="POCO\EFRepositoryQueryTests.cs" />
+    <Compile Include="POCO\EFRepositoryQueryTestsBase.cs" />
     <Compile Include="POCO\PocoContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

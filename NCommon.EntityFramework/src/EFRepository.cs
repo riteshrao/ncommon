@@ -131,5 +131,10 @@ namespace NCommon.Data.EntityFramework
         {
             Session.Refresh(entity);
         }
+
+        internal void AddInclude(string includePath)
+        {
+            _includes.Add(includePath);
+        }
     }
 }

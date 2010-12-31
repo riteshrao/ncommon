@@ -25,6 +25,6 @@ namespace NCommon.Data
         /// Instructs the instance to define the fetching strategy on the repository instance.
         ///</summary>
         ///<param name="repository"></param>
-        void Define(IRepository<TEntity> repository);
+        IRepository<TEntity> Define(IRepository<TEntity> repository);
     }
 }

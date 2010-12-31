@@ -1,11 +1,10 @@
+using System;
 using System.Data.Objects;
 using System.Linq;
 using NCommon.Data.EntityFramework.Tests.HRDomain;
 using NCommon.Data.EntityFramework.Tests.OrdersDomain;
-using NCommon.Extensions;
 using NCommon.Specifications;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace NCommon.Data.EntityFramework.Tests
 {
@@ -239,6 +238,27 @@ namespace NCommon.Data.EntityFramework.Tests
                     Assert.That(savedCustomer.Orders.Count, Is.GreaterThan(0));
                     scope.Commit();
                 }
+            }
+        }
+
+        [Test]
+        public void Lazyloading_when_outside_scope_throws()
+        {
+            using (var testData = new EFTestData(OrdersContextProvider()))
+            {
+                Order order = null;
+                testData.Batch(x => order = x.CreateOrderForCustomer(x.CreateCustomer()));
+
+                Order savedOrder;
+                using (var scope = new UnitOfWorkScope())
+                {
+                    savedOrder = new EFRepository<Order>()
+                        .Where(x => x.OrderID == order.OrderID)
+                        .First();
+                    scope.Commit();
+                }
+                Assert.That(savedOrder, Is.Not.Null);
+                Assert.Throws<ObjectDisposedException>(() => { var customer = savedOrder.Customer; });
             }
         }
 
