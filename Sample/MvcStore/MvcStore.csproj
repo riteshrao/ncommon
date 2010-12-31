@@ -37,19 +37,19 @@
       <HintPath>..\..\Libs\NHibernate\2.1.2-GA\Antlr3.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Core">
-      <HintPath>..\..\Libs\Castle\Castle.Core.dll</HintPath>
+      <HintPath>..\..\Libs\Castle\1.2\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="Castle.DynamicProxy2">
-      <HintPath>..\..\Libs\Castle\Castle.DynamicProxy2.dll</HintPath>
+      <HintPath>..\..\Libs\Castle\1.2\Castle.DynamicProxy2.dll</HintPath>
     </Reference>
     <Reference Include="Castle.MicroKernel">
-      <HintPath>..\..\Libs\Castle\Castle.MicroKernel.dll</HintPath>
+      <HintPath>..\..\Libs\Castle\1.2\Castle.MicroKernel.dll</HintPath>
     </Reference>
     <Reference Include="Castle.Windsor">
-      <HintPath>..\..\Libs\Castle\Castle.Windsor.dll</HintPath>
+      <HintPath>..\..\Libs\Castle\1.2\Castle.Windsor.dll</HintPath>
     </Reference>
     <Reference Include="CommonServiceLocator.WindsorAdapter">
-      <HintPath>..\..\Libs\Castle\CommonServiceLocator.WindsorAdapter.dll</HintPath>
+      <HintPath>..\..\Libs\Castle\1.2\CommonServiceLocator.WindsorAdapter.dll</HintPath>
     </Reference>
     <Reference Include="FluentNHibernate">
       <HintPath>..\..\Libs\NHibernate\2.1.2-GA\FluentNHibernate.dll</HintPath>
@@ -58,7 +58,7 @@
       <HintPath>..\..\Libs\NHibernate\2.1.2-GA\Iesi.Collections.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\..\Libs\log4net.dll</HintPath>
+      <HintPath>..\..\Libs\log4net\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">

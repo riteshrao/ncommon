@@ -91,34 +91,5 @@ namespace NCommon.Data
         {
             return;
         }
-
-
-        /// <summary>
-        /// When overriden by inheriting classes, applies the fetching strategies on the repository.
-        /// </summary>
-        /// <param name="paths">An array of <see cref="Expression"/> containing the paths to
-        /// eagerly fetch.</param>
-        protected override void ApplyFetchingStrategy(Expression[] paths)
-        {
-            return;
-        }
-
-        /// <summary>
-        /// Instructs the repository to cache the following query.
-        /// </summary>
-        /// <param name="cachedQueryName">string. The name to give to the cached query.</param>
-        public override IRepository<TEntity> Cached(string cachedQueryName)
-        {
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the batch size on the repository
-        /// </summary>
-        /// <param name="size">int. The batch size.</param>
-        public override IRepository<TEntity> SetBatchSize(int size)
-        {
-            return this;
-        }
     }
 }

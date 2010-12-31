@@ -237,39 +237,5 @@ namespace NCommon.EntityFramework4.Tests.POCO
             Assert.That(savedOrder, Is.Not.Null);
             Assert.Throws<ObjectDisposedException>(() => { var fname = savedOrder.Customer.FirstName; });
         }
-
-        [Test]
-        public void Can_eger_fetch_using_eagerly()
-        {
-            Customer customer = null;
-            var testData = new EFTestData(_context);
-            testData.Batch(x =>
-            {
-                customer = x.CreateCustomer();
-                x.CreateOrderForCustomer(customer);
-                x.CreateOrderForCustomer(customer);
-            });
-
-            Customer savedCustomer;
-            using (var scope = new UnitOfWorkScope())
-            {
-                savedCustomer = new EFRepository<Customer>()
-                    .Eagerly(f => f.Fetch<Order>(x => x.Orders)
-                                      .And<OrderItem>(x => x.OrderItems)
-                                      .And<Product>(x => x.Product))
-                    .First(x => x.CustomerID == customer.CustomerID);
-                scope.Commit();
-            }
-
-            Assert.That(savedCustomer, Is.Not.Null);
-            Assert.That(savedCustomer.Orders, Is.Not.Null);
-            Assert.That(savedCustomer.Orders.Count(), Is.EqualTo(2));
-            savedCustomer.Orders.ForEach(order =>
-            {
-                Assert.That(order.OrderItems, Is.Not.Null);
-                Assert.That(order.OrderItems.Count(), Is.GreaterThan(0));
-                order.OrderItems.ForEach(item => Assert.That(item.Product, Is.Not.Null));
-            });
-        }
     }
 }

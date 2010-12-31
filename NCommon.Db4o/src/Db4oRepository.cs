@@ -107,32 +107,5 @@ namespace NCommon.Data.Db4o
         {
             ObjectContainer.Ext().Refresh(entity, 0);
         }
-
-        protected override void ApplyFetchingStrategy(Expression[] paths)
-        {
-            return; //Do nothing.
-        }
-
-        /// <summary>
-        /// Instructs the repository to cache the following query.
-        /// </summary>
-        /// <param name="cachedQueryName">string. The name of the cached query.</param>
-        /// <returns></returns>
-        public override IRepository<TEntity> Cached(string cachedQueryName)
-        {
-            //Not implemented.
-            return this;
-        }
-
-        /// <summary>
-        /// Sets a batch size on the repository.
-        /// </summary>
-        /// <param name="size">int. A positive integer representing the batch size.</param>
-        /// <remarks>Use this property when persisteing large amounts of data to batch insert statements.</remarks>
-        public override IRepository<TEntity> SetBatchSize(int size)
-        {
-            //Not implemented.
-            return this;
-        }
     }
 }

@@ -131,46 +131,5 @@ namespace NCommon.Data.EntityFramework
         {
             Session.Refresh(entity);
         }
-
-        /// <summary>
-        /// When overriden by inheriting classes, applies the fetching strategies on the repository.
-        /// </summary>
-        /// <param name="paths">An array of <see cref="RepositoryBase{TEntity}.Expression"/> containing the paths to
-        /// eagerly fetch.</param>
-        protected override void ApplyFetchingStrategy(Expression[] paths)
-        {
-            Guard.Against<ArgumentNullException>(paths == null || paths.Length == 0,
-                                                 "Expected a non-null and non-empty array of Expression instances " +
-                                                 "representing the paths to eagerly load.");
-
-            var currentPath = string.Empty;
-            paths.ForEach(path =>
-            {
-                var visitor = new MemberAccessPathVisitor();
-                visitor.Visit(path);
-                currentPath = !string.IsNullOrEmpty(currentPath) ?
-                    currentPath + "." + visitor.Path : visitor.Path;
-                _includes.Add(currentPath);
-            });
-        }
-
-        /// <summary>
-        /// Instructs the repository to cache the following query.
-        /// </summary>
-        /// <param name="cachedQueryName">string. The name to give to the cached query.</param>
-        public override IRepository<TEntity> Cached(string cachedQueryName)
-        {
-            return this;
-        }
-
-        /// <summary>
-        /// Sets a batch size on the repository.
-        /// </summary>
-        /// <param name="size">int. A positive integer representing the batch size.</param>
-        /// <remarks>Use this property when persisteing large amounts of data to batch insert statements.</remarks>
-        public override IRepository<TEntity> SetBatchSize(int size)
-        {
-            return this; //Does nothing.
-        }
     }
 }

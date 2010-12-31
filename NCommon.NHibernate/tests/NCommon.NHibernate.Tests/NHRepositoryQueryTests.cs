@@ -1,15 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using NCommon.Data.NHibernate.Tests.HRDomain.Domain;
 using NCommon.Data.NHibernate.Tests.OrdersDomain;
-using NCommon.Extensions;
 using NCommon.Specifications;
 using NHibernate;
-using NHibernate.Criterion;
-using NHibernate.Linq;
 using NUnit.Framework;
-using Rhino.Mocks;
 using Order = NCommon.Data.NHibernate.Tests.OrdersDomain.Order;
 
 namespace NCommon.Data.NHibernate.Tests
@@ -288,112 +283,6 @@ namespace NCommon.Data.NHibernate.Tests
         }
 
         [Test]
-        public void Can_eager_fetch_using_with()
-        {
-            using (var tesData = new NHTestData(OrdersDomainFactory.OpenSession()))
-            {
-                Order order = null;
-                tesData.Batch(x => order = x.CreateOrderForCustomer(x.CreateCustomer()));
-
-                Order savedOrder = null;
-                using (var scope = new UnitOfWorkScope())
-                {
-                    savedOrder = new NHRepository<Order>()
-                        .With(x => x.Customer)
-                        .Where(x => x.OrderID == order.OrderID)
-                        .First();
-                    scope.Commit();
-                }
-
-                Assert.That(savedOrder, Is.Not.Null);
-                Assert.That(NHibernateUtil.IsInitialized(savedOrder.Customer));
-                Assert.DoesNotThrow(() => { var firstName = savedOrder.Customer.FirstName; });
-            }
-        }
-
-        [Test]
-        public void Can_eager_fetch_using_eagerly()
-        {
-            using (var tesData = new NHTestData(OrdersDomainFactory.OpenSession()))
-            {
-                Customer customer = null;
-                tesData.Batch(x =>
-                {
-                    var products = x.CreateProducts(10);
-                    var order = x.CreateOrderForProducts(products);
-                    customer = order.Customer = x.CreateCustomer();
-                });
-
-                Customer savedCustomer;
-                using (var scope = new UnitOfWorkScope())
-                {
-                    savedCustomer = new NHRepository<Customer>()
-                        .Eagerly(f => f.Fetch<Order>(x => x.Orders)
-                                        .And<OrderItem>(x => x.Items)
-                                        .And<Product>(x => x.Product))
-                        .Where(x => x.CustomerID == customer.CustomerID)
-                        .First();
-                    scope.Commit();
-                }
-
-                Assert.That(savedCustomer, Is.Not.Null);
-                Assert.That(NHibernateUtil.IsInitialized(savedCustomer.Orders));
-                savedCustomer.Orders.ForEach(order =>
-                {
-                    Assert.That(NHibernateUtil.IsInitialized(order.Items));
-                    order.Items.ForEach(item => Assert.That(NHibernateUtil.IsInitialized(item.Product)));
-                });
-            }
-        }
-
-        class FakeFetchingStrategy : IFetchingStrategy<Customer, NHRepositoryQueryTests>
-        {
-            public void Define(IRepository<Customer> repository)
-            {
-                repository.Eagerly(f => f.Fetch<Order>(x => x.Orders)
-                                         .And<OrderItem>(x => x.Items));
-            }
-        }
-
-        [Test]
-        public void Can_eager_fetch_using_fetching_strategy()
-        {
-            using (var testData = new NHTestData(OrdersDomainFactory.OpenSession()))
-            {
-                Locator.Stub(x => x
-                    .GetAllInstances<IFetchingStrategy<Customer, NHRepositoryQueryTests>>())
-                    .Return(new[] {new FakeFetchingStrategy()});
-
-                Customer customer = null;
-                testData.Batch(x =>
-                {
-                    var products = x.CreateProducts(3);
-                    var order = x.CreateOrderForProducts(products);
-                    customer = x.CreateCustomer();
-                    order.Customer = customer;
-                });
-
-                Customer savedCustomer;
-                using (var scope = new UnitOfWorkScope())
-                {
-                    savedCustomer = new NHRepository<Customer>()
-                        .For<NHRepositoryQueryTests>()
-                        .Where(x => x.CustomerID == customer.CustomerID)
-                        .First();
-                    scope.Commit();
-                }
-
-                Assert.That(savedCustomer, Is.Not.Null);
-                Assert.That(NHibernateUtil.IsInitialized(savedCustomer.Orders));
-                savedCustomer.Orders.ForEach(order =>
-                {
-                    Assert.That(NHibernateUtil.IsInitialized(order.Customer));
-                    Assert.That(NHibernateUtil.IsInitialized(order.Items));
-                });
-            }
-        }
-        
-        [Test]
         public void Can_query_multiple_databases()
         {
             using (var ordersTestData = new NHTestData(OrdersDomainFactory.OpenSession()))
@@ -447,35 +336,6 @@ namespace NCommon.Data.NHibernate.Tests
                     Assert.That(results.Count(), Is.EqualTo(2));
                     scope.Commit();
                 }
-            }
-        }
-
-        [Test]
-        public void Query_using_distinct_repository_works()
-        {
-            using (var testData = new NHTestData(OrdersDomainFactory.OpenSession()))
-            {
-                var customerId = 0;
-                testData.Batch(actions =>
-                {
-                    var customer = actions.CreateCustomer();
-                    actions.CreateOrderForCustomer(customer);
-                    actions.CreateOrderForCustomer(customer);
-                    customerId = customer.CustomerID;
-                });
-
-                IEnumerable<Customer> results; 
-                using (var scope = new UnitOfWorkScope())
-                {
-                    var repository = new NHRepository<Customer>.WithDistinctRoot();
-                    results = repository
-                        .Eagerly(x => x.Fetch<Order>(c => c.Orders))
-                        .Where(x => x.CustomerID == customerId)
-                        .ToList();
-
-                }
-                Assert.That(results.Count(), Is.EqualTo(1));
-                Assert.That(results.First().Orders.Count, Is.EqualTo(2));
             }
         }
     }

@@ -220,41 +220,6 @@ namespace NCommon.Data.Db4o.Tests
         }
 
         [Test]
-        public void Query_Using_Specifications_With_Closure_Works()
-        {
-            //This test demonstrates how closures can be used to modify a pre-defined specification using
-            //parameters. The specification in this test searches for all customers in the state specified by
-            //the queryState local variable. The test then proceeds to build a query using the specification
-            //and enumerates over the states array and executes the query by changing the queryState parameter.
-
-            var states = new[] { "PA", "LA" };
-            var queryState = string.Empty;
-
-            var spec = new Specification<Order>((order) => order.Customer.Address.State == queryState);
-            var repository = new Db4oRepository<Order>();
-
-            using (var testData = new Db4oTestDataGenerator(_db4oServer.OpenClient()))
-            using (new UnitOfWorkScope())
-            {
-                testData.Batch(actions =>
-                {
-                    actions.CreateOrdersForCustomers(actions.CreateCustomersInState("PA", 2));
-                    actions.CreateOrdersForCustomers(actions.CreateCustomersInState("DE", 5));
-                    actions.CreateOrdersForCustomers(actions.CreateCustomersInState("LA", 3));
-                });
-
-                var query = repository.With(x => x.Customer).Query(spec);
-                states.ForEach(testState =>
-                {
-                    queryState = testState;
-                    var results = query.ToArray();
-                    results.ForEach(result =>
-                                    Assert.That(result.Customer.Address.State, Is.EqualTo(testState)));
-                });
-            }
-        }
-
-        [Test]
         public void Query_With_No_UnitOfWork_Throws_InvalidOperationException()
         {
             Assert.Throws<InvalidOperationException>(() =>

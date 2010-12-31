@@ -86,59 +86,5 @@ namespace NCommon.Data
 		/// <exception cref="NotSupportedException">Implementors should throw the NotImplementedException if Refreshing
 		/// entities is not supported.</exception>
 		void Refresh(TEntity entity);
-
-		/// <summary>
-		/// Instructs the repository to eager load a child entities. 
-		/// </summary>
-		/// <param name="path">The path of the child entities to eager load.</param>
-		/// <remarks>Implementors should throw a <see cref="NotSupportedException"/> if the underling provider
-		/// does not support eager loading of entities</remarks>
-		[Obsolete("Consider using new eager loading method Eagerly on repository")]
-		IRepository<TEntity> With(Expression<Func<TEntity, object>> path);
-
-		/// <summary>
-		/// Instructs the repository to eager load entities that may be in the repository's association path.
-		/// </summary>
-		/// <param name="path">The path of the child entities to eager load.</param>
-		/// <remarks>Implementors should throw a <see cref="NotSupportedException"/> if the underling provider
-		/// does not support eager loading of entities</remarks>
-		[Obsolete("Consider using new eager loading method Eagerly on repository")]
-		IRepository<TEntity> With<T>(Expression<Func<T, object>> path);
-
-		///<summary>
-		/// Instructs to repository to eager load child entities.
-		///</summary>
-		///<param name="strategyActions">A <see cref="Action{RepositoryEagerFetchingStrategy}"/> that specifies
-		/// the paths to eagerly fetch.</param>
-		///<returns>The <see cref="IRepository{TEntity}"/> instance.</returns>
-		IRepository<TEntity> Eagerly(Action<RepositoryEagerFetchingStrategy<TEntity>> strategyActions);
-
-		/// <summary>
-		/// Gets the <see cref="IQueryable{TEntity}"/> used by the <see cref="RepositoryBase{TEntity}"/> 
-		/// to execute Linq queries.
-		/// </summary>
-		/// <value>A <see cref="IQueryable{TEntity}"/> instance.</value>
-		/// <remarks>
-		/// Inheritors of this base class should return a valid non-null <see cref="IQueryable{TEntity}"/> instance.
-		/// </remarks>
-		IRepository<TEntity> Cached(string cachedQueryName);
-
-		/// <summary>
-		/// Defines the service context under which the repository will execute.
-		/// </summary>
-		/// <typeparam name="TService">The service type that defines the context of the repository.</typeparam>
-		/// <returns>The same <see cref="IRepository{TEntity}"/> instance.</returns>
-		/// <remarks>
-		/// Implementors should perform context specific actions within this method call and return
-		/// the exact same instance.
-		/// </remarks>
-		IRepository<TEntity> For<TService>();
-
-		/// <summary>
-		/// Sets a batch size on the repository.
-		/// </summary>
-		/// <param name="size">int. A positive integer representing the batch size.</param>
-		/// <remarks>Use this property when persisteing large amounts of data to batch insert statements.</remarks>
-		IRepository<TEntity> SetBatchSize(int size);
 	}
 }
