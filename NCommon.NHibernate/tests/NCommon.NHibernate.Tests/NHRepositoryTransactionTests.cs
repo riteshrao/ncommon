@@ -20,7 +20,7 @@ namespace NCommon.Data.NHibernate.Tests
             using (var scope = new UnitOfWorkScope())
             {
                 new NHRepository<Customer>()
-                    .Save(customer);
+                    .Add(customer);
                 scope.Commit();
             }
 
@@ -63,10 +63,10 @@ namespace NCommon.Data.NHibernate.Tests
             var order = new Order {OrderDate = DateTime.Now, ShipDate = DateTime.Now};
             using (var scope = new UnitOfWorkScope())
             {
-                new NHRepository<Customer>().Save(customer);
+                new NHRepository<Customer>().Add(customer);
                 using (var scope2 = new UnitOfWorkScope())
                 {
-                    new NHRepository<Order>().Save(order);
+                    new NHRepository<Order>().Add(order);
                     scope2.Commit();
                 }
                 scope.Commit();
@@ -96,10 +96,10 @@ namespace NCommon.Data.NHibernate.Tests
             var order = new Order { OrderDate = DateTime.Now, ShipDate = DateTime.Now };
             using (var scope = new UnitOfWorkScope())
             {
-                new NHRepository<Customer>().Save(customer);
+                new NHRepository<Customer>().Add(customer);
                 using (var scope2 = new UnitOfWorkScope(TransactionMode.New))
                 {
-                    new NHRepository<Order>().Save(order);
+                    new NHRepository<Order>().Add(order);
                     scope2.Commit();
                 }
             } //Rollback
@@ -127,10 +127,10 @@ namespace NCommon.Data.NHibernate.Tests
             var order = new Order { OrderDate = DateTime.Now, ShipDate = DateTime.Now };
             using (var scope = new UnitOfWorkScope())
             {
-                new NHRepository<Customer>().Save(customer);
+                new NHRepository<Customer>().Add(customer);
                 using (var scope2 = new UnitOfWorkScope())
                 {
-                    new NHRepository<Order>().Save(order);
+                    new NHRepository<Order>().Add(order);
                     scope2.Commit();
                 } 
             } //Rollback.
@@ -157,10 +157,10 @@ namespace NCommon.Data.NHibernate.Tests
             var order = new Order { OrderDate = DateTime.Now, ShipDate = DateTime.Now };
             using (var scope = new UnitOfWorkScope())
             {
-                new NHRepository<Customer>().Save(customer);
+                new NHRepository<Customer>().Add(customer);
                 using (var scope2 = new UnitOfWorkScope())
                 {
-                    new NHRepository<Order>().Save(order);
+                    new NHRepository<Order>().Add(order);
                 } //child scope rollback.
                 Assert.Throws<InvalidOperationException>(scope.Commit);
             } 
@@ -174,8 +174,8 @@ namespace NCommon.Data.NHibernate.Tests
 
             using (var scope = new UnitOfWorkScope())
             {
-                new NHRepository<Customer>().Save(customer);
-                new NHRepository<SalesPerson>().Save(salesPerson);
+                new NHRepository<Customer>().Add(customer);
+                new NHRepository<SalesPerson>().Add(salesPerson);
                 scope.Commit();
             }
 
@@ -202,8 +202,8 @@ namespace NCommon.Data.NHibernate.Tests
 
             using (var scope = new UnitOfWorkScope())
             {
-                new NHRepository<Customer>().Save(customer);
-                new NHRepository<SalesPerson>().Save(salesPerson);
+                new NHRepository<Customer>().Add(customer);
+                new NHRepository<SalesPerson>().Add(salesPerson);
             }// Rolllback
 
             using (var ordersTestData = new NHTestData(OrdersDomainFactory.OpenSession()))
@@ -226,10 +226,10 @@ namespace NCommon.Data.NHibernate.Tests
             var order = new Order { OrderDate = DateTime.Now, ShipDate = DateTime.Now };
             using (var scope = new UnitOfWorkScope())
             {
-                new NHRepository<Customer>().Save(customer);
+                new NHRepository<Customer>().Add(customer);
                 using (var scope2 = new UnitOfWorkScope(TransactionMode.Supress))
                 {
-                    new NHRepository<Order>().Save(order);
+                    new NHRepository<Order>().Add(order);
                     scope2.Commit();
                 }
             } //Rollback.

@@ -78,7 +78,7 @@ namespace NCommon.Data.Db4o.Tests
                 var recordCheckResult = queryForCustomer(customerRepository);
                 Assert.That(recordCheckResult, Is.Null);
 
-                customerRepository.Save(newCustomer);
+                customerRepository.Add(newCustomer);
                 scope.Commit();
             }
 
@@ -260,7 +260,7 @@ namespace NCommon.Data.Db4o.Tests
             Assert.Throws<InvalidOperationException>(() =>
             {
                 var repository = new Db4oRepository<Customer>();
-                repository.Save(new Customer());
+                repository.Add(new Customer());
             });
         }
 
@@ -292,7 +292,7 @@ namespace NCommon.Data.Db4o.Tests
                                          select cust).FirstOrDefault();
                 Assert.That(recordCheckResult, Is.Null);
 
-                customerRepository.Save(newCustomer);
+                customerRepository.Add(newCustomer);
             }
 
             //Starting a completely new unit of work and repository to check for existance.
@@ -339,7 +339,7 @@ namespace NCommon.Data.Db4o.Tests
                 var recordCheckResult = queryForCustomer(customerRepository);
                 Assert.That(recordCheckResult, Is.Null);
 
-                customerRepository.Save(newCustomer);
+                customerRepository.Add(newCustomer);
                 scope.Commit();
             }
 
@@ -372,7 +372,7 @@ namespace NCommon.Data.Db4o.Tests
                     Assert.That(order, Is.Not.Null);
                     orderId = order.OrderID;
                     order.OrderDate = updatedDate;
-                    orderRepository.Save(order); //Db4o does not do change tracking!
+                    orderRepository.Add(order); //Db4o does not do change tracking!
                     scope.Commit();
                 }
 

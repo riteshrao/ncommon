@@ -26,12 +26,12 @@ namespace NCommon.Tests.Data
 		}
 
         [Test]
-		public void save_adds_to_internal_list()
+		public void Add_adds_to_internal_list()
 		{
 			var list = new List<string> { "Apple", "Ball", "Cat", "Dog" };
 			var repository = new InMemoryRepository<string>(list);
 
-			repository.Save("DoDo");
+			repository.Add("DoDo");
 			Assert.That(list.Contains("DoDo"));
 		}
 

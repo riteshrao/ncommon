@@ -21,7 +21,7 @@ namespace NCommon.Data.LinqToSql.Tests
             using (var scope = new UnitOfWorkScope())
             {
                 new LinqToSqlRepository<Customer>()
-                    .Save(customer);
+                    .Add(customer);
                 scope.Commit();
             }
 
@@ -64,10 +64,10 @@ namespace NCommon.Data.LinqToSql.Tests
             var order = new Order { OrderDate = DateTime.Now, ShipDate = DateTime.Now };
             using (var scope = new UnitOfWorkScope())
             {
-                new LinqToSqlRepository<Customer>().Save(customer);
+                new LinqToSqlRepository<Customer>().Add(customer);
                 using (var scope2 = new UnitOfWorkScope())
                 {
-                    new LinqToSqlRepository<Order>().Save(order);
+                    new LinqToSqlRepository<Order>().Add(order);
                     scope2.Commit();
                 }
                 scope.Commit();
@@ -97,10 +97,10 @@ namespace NCommon.Data.LinqToSql.Tests
             var order = new Order { OrderDate = DateTime.Now, ShipDate = DateTime.Now };
             using (var scope = new UnitOfWorkScope())
             {
-                new LinqToSqlRepository<Customer>().Save(customer);
+                new LinqToSqlRepository<Customer>().Add(customer);
                 using (var scope2 = new UnitOfWorkScope(TransactionMode.New))
                 {
-                    new LinqToSqlRepository<Order>().Save(order);
+                    new LinqToSqlRepository<Order>().Add(order);
                     scope2.Commit();
                 }
             } //Rollback
@@ -128,10 +128,10 @@ namespace NCommon.Data.LinqToSql.Tests
             var order = new Order { OrderDate = DateTime.Now, ShipDate = DateTime.Now };
             using (var scope = new UnitOfWorkScope())
             {
-                new LinqToSqlRepository<Customer>().Save(customer);
+                new LinqToSqlRepository<Customer>().Add(customer);
                 using (var scope2 = new UnitOfWorkScope())
                 {
-                    new LinqToSqlRepository<Order>().Save(order);
+                    new LinqToSqlRepository<Order>().Add(order);
                     scope2.Commit();
                 }
             } //Rollback.
@@ -158,10 +158,10 @@ namespace NCommon.Data.LinqToSql.Tests
             var order = new Order { OrderDate = DateTime.Now, ShipDate = DateTime.Now };
             using (var scope = new UnitOfWorkScope())
             {
-                new LinqToSqlRepository<Customer>().Save(customer);
+                new LinqToSqlRepository<Customer>().Add(customer);
                 using (var scope2 = new UnitOfWorkScope())
                 {
-                    new LinqToSqlRepository<Order>().Save(order);
+                    new LinqToSqlRepository<Order>().Add(order);
                 } //child scope rollback.
                 Assert.Throws<InvalidOperationException>(scope.Commit);
             }
@@ -175,8 +175,8 @@ namespace NCommon.Data.LinqToSql.Tests
 
             using (var scope = new UnitOfWorkScope())
             {
-                new LinqToSqlRepository<Customer>().Save(customer);
-                new LinqToSqlRepository<SalesPerson>().Save(salesPerson);
+                new LinqToSqlRepository<Customer>().Add(customer);
+                new LinqToSqlRepository<SalesPerson>().Add(salesPerson);
                 scope.Commit();
             }
 
@@ -203,8 +203,8 @@ namespace NCommon.Data.LinqToSql.Tests
 
             using (var scope = new UnitOfWorkScope())
             {
-                new LinqToSqlRepository<Customer>().Save(customer);
-                new LinqToSqlRepository<SalesPerson>().Save(salesPerson);
+                new LinqToSqlRepository<Customer>().Add(customer);
+                new LinqToSqlRepository<SalesPerson>().Add(salesPerson);
             }// Rolllback
 
             using (var ordersTestData = new LinqToSqlTestData(OrdersContextProvider()))
@@ -227,10 +227,10 @@ namespace NCommon.Data.LinqToSql.Tests
             var order = new Order { OrderDate = DateTime.Now, ShipDate = DateTime.Now };
             using (var scope = new UnitOfWorkScope())
             {
-                new LinqToSqlRepository<Customer>().Save(customer);
+                new LinqToSqlRepository<Customer>().Add(customer);
                 using (var scope2 = new UnitOfWorkScope(TransactionMode.Supress))
                 {
-                    new LinqToSqlRepository<Order>().Save(order);
+                    new LinqToSqlRepository<Order>().Add(order);
                     scope2.Commit();
                 }
             } //Rollback.

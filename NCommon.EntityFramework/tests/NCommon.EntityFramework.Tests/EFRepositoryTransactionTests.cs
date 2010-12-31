@@ -21,7 +21,7 @@ namespace NCommon.Data.EntityFramework.Tests
             using (var scope = new UnitOfWorkScope())
             {
                 new EFRepository<Customer>()
-                    .Save(customer);
+                    .Add(customer);
                 scope.Commit();
             }
 
@@ -64,10 +64,10 @@ namespace NCommon.Data.EntityFramework.Tests
             var order = new Order { OrderDate = DateTime.Now, ShipDate = DateTime.Now };
             using (var scope = new UnitOfWorkScope())
             {
-                new EFRepository<Customer>().Save(customer);
+                new EFRepository<Customer>().Add(customer);
                 using (var scope2 = new UnitOfWorkScope())
                 {
-                    new EFRepository<Order>().Save(order);
+                    new EFRepository<Order>().Add(order);
                     scope2.Commit();
                 }
                 scope.Commit();
@@ -97,10 +97,10 @@ namespace NCommon.Data.EntityFramework.Tests
             var order = new Order { OrderDate = DateTime.Now, ShipDate = DateTime.Now };
             using (var scope = new UnitOfWorkScope())
             {
-                new EFRepository<Customer>().Save(customer);
+                new EFRepository<Customer>().Add(customer);
                 using (var scope2 = new UnitOfWorkScope(TransactionMode.New))
                 {
-                    new EFRepository<Order>().Save(order);
+                    new EFRepository<Order>().Add(order);
                     scope2.Commit();
                 }
             } //Rollback
@@ -128,10 +128,10 @@ namespace NCommon.Data.EntityFramework.Tests
             var order = new Order { OrderDate = DateTime.Now, ShipDate = DateTime.Now };
             using (var scope = new UnitOfWorkScope())
             {
-                new EFRepository<Customer>().Save(customer);
+                new EFRepository<Customer>().Add(customer);
                 using (var scope2 = new UnitOfWorkScope())
                 {
-                    new EFRepository<Order>().Save(order);
+                    new EFRepository<Order>().Add(order);
                     scope2.Commit();
                 }
             } //Rollback.
@@ -158,10 +158,10 @@ namespace NCommon.Data.EntityFramework.Tests
             var order = new Order { OrderDate = DateTime.Now, ShipDate = DateTime.Now };
             using (var scope = new UnitOfWorkScope())
             {
-                new EFRepository<Customer>().Save(customer);
+                new EFRepository<Customer>().Add(customer);
                 using (var scope2 = new UnitOfWorkScope())
                 {
-                    new EFRepository<Order>().Save(order);
+                    new EFRepository<Order>().Add(order);
                 } //child scope rollback.
                 Assert.Throws<InvalidOperationException>(scope.Commit);
             }
@@ -175,8 +175,8 @@ namespace NCommon.Data.EntityFramework.Tests
 
             using (var scope = new UnitOfWorkScope())
             {
-                new EFRepository<Customer>().Save(customer);
-                new EFRepository<SalesPerson>().Save(salesPerson);
+                new EFRepository<Customer>().Add(customer);
+                new EFRepository<SalesPerson>().Add(salesPerson);
                 scope.Commit();
             }
 
@@ -203,8 +203,8 @@ namespace NCommon.Data.EntityFramework.Tests
 
             using (var scope = new UnitOfWorkScope())
             {
-                new EFRepository<Customer>().Save(customer);
-                new EFRepository<SalesPerson>().Save(salesPerson);
+                new EFRepository<Customer>().Add(customer);
+                new EFRepository<SalesPerson>().Add(salesPerson);
             }// Rolllback
 
             using (var ordersTestData = new EFTestData(OrdersContextProvider()))
@@ -227,10 +227,10 @@ namespace NCommon.Data.EntityFramework.Tests
             var order = new Order { OrderDate = DateTime.Now, ShipDate = DateTime.Now };
             using (var scope = new UnitOfWorkScope())
             {
-                new EFRepository<Customer>().Save(customer);
+                new EFRepository<Customer>().Add(customer);
                 using (var scope2 = new UnitOfWorkScope(TransactionMode.Supress))
                 {
-                    new EFRepository<Order>().Save(order);
+                    new EFRepository<Order>().Add(order);
                     scope2.Commit();
                 }
             } //Rollback.

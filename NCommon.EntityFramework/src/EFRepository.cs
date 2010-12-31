@@ -81,17 +81,6 @@ namespace NCommon.Data.EntityFramework
         }
 
         /// <summary>
-        /// Marks the changes of an existing entity to be saved to the store.
-        /// </summary>
-        /// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be
-        /// updated in the database.</param>
-        /// <remarks>Implementors of this method must handle the Update scneario. </remarks>
-        public override void Save(TEntity entity)
-        {
-            Add(entity);
-        }
-
-        /// <summary>
         /// Adds a transient instance of <typeparamref cref="TEntity"/> to be tracked
         /// and persisted by the repository.
         /// </summary>

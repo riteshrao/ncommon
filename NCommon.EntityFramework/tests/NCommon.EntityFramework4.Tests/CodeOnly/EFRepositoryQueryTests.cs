@@ -88,7 +88,7 @@ namespace NCommon.EntityFramework4.Tests.CodeOnly
                     LastName = "Doe",
                     StreetAddress1 = "123 Main St.",
                 };
-                new EFRepository<Customer>().Save(customer);
+                new EFRepository<Customer>().Add(customer);
                 scope.Commit();
                 customerId = customer.CustomerID;
             }

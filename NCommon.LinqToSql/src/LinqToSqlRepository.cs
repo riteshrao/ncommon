@@ -86,16 +86,6 @@ namespace NCommon.Data.LinqToSql
         }
 
         /// <summary>
-        /// Marks the changes of an existing entity to be saved to the store.
-        /// </summary>
-        /// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be
-        /// updated in the database.</param>
-        public override void Save(TEntity entity)
-        {
-            Add(entity);
-        }
-
-        /// <summary>
         /// Adds a transient instance of <see cref="TEntity"/> to be tracked
         /// and persisted by the repository.
         /// </summary>

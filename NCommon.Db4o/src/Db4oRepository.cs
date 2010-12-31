@@ -67,16 +67,6 @@ namespace NCommon.Data.Db4o
             get { return ObjectContainer.Cast<TEntity>().AsQueryable(); }
         }
 
-        /// <summary>
-        /// Marks the changes of an existing entity to be saved to the store.
-        /// </summary>
-        /// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be
-        /// updated in the database.</param>
-        public override void Save(TEntity entity)
-        {
-            Add(entity);
-        }
-
         public override void Add(TEntity entity)
         {
             ObjectContainer.Store(entity);

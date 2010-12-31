@@ -49,7 +49,7 @@ namespace NCommon.Data.EntityFramework.Tests
             using (var scope = new UnitOfWorkScope())
             {
                 var repository = new EFRepository<Customer>();
-                repository.Save(customer);
+                repository.Add(customer);
                 scope.Commit();
             }
             Assert.That(customer.CustomerID, Is.GreaterThan(0));
@@ -95,7 +95,7 @@ namespace NCommon.Data.EntityFramework.Tests
             };
             using (var scope = new UnitOfWorkScope())
             {
-                new EFRepository<Customer>().Save(customer);
+                new EFRepository<Customer>().Add(customer);
                 scope.Commit();
             }
             Assert.That(customer.CustomerID, Is.GreaterThan(0));

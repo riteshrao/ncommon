@@ -60,7 +60,7 @@ namespace NCommon.Data.NHibernate.Tests
             using (var scope = new UnitOfWorkScope())
             {
                 var repository = new NHRepository<Customer>();
-                repository.Save(customer);
+                repository.Add(customer);
                 scope.Commit();
             }
             Assert.That(customer.CustomerID, Is.GreaterThan(0));
@@ -106,7 +106,7 @@ namespace NCommon.Data.NHibernate.Tests
             };
             using (var scope = new UnitOfWorkScope())
             {
-                new NHRepository<Customer>().Save(customer);
+                new NHRepository<Customer>().Add(customer);
                 scope.Commit();
             }
             Assert.That(customer.CustomerID, Is.GreaterThan(0));

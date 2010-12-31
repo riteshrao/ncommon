@@ -38,14 +38,6 @@ namespace NCommon.Data
 		/// <returns>The <see cref="IUnitOfWork"/> implementation.</returns>
 		T UnitOfWork<T>() where T : IUnitOfWork;
 
-		/// <summary>
-		/// Marks the changes of an existing entity to be saved to the store.
-		/// </summary>
-		/// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be
-		/// updated in the database.</param>
-		[Obsolete("Use the Add method to persist transient instances instead.")]
-		void Save(TEntity entity);
-
 	    /// <summary>
 	    /// Adds a transient instance of <typeparamref cref="TEntity"/> to be tracked
 	    /// and persisted by the repository.

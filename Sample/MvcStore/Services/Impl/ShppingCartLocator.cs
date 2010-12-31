@@ -38,7 +38,7 @@ namespace MvcStore.Services.Impl
         ShoppingCart CreateCart()
         {
             var cart = new ShoppingCart();
-            _shoppingCartRepository.Save(cart);
+            _shoppingCartRepository.Add(cart);
             return cart;
         }
 

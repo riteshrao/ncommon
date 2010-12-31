@@ -50,7 +50,7 @@ namespace NCommon.Data.LinqToSql.Tests
             using (var scope = new UnitOfWorkScope())
             {
                 var repository = new LinqToSqlRepository<Customer>();
-                repository.Save(customer);
+                repository.Add(customer);
                 scope.Commit();
             }
             Assert.That(customer.CustomerID, Is.GreaterThan(0));
@@ -96,7 +96,7 @@ namespace NCommon.Data.LinqToSql.Tests
             };
             using (var scope = new UnitOfWorkScope())
             {
-                new LinqToSqlRepository<Customer>().Save(customer);
+                new LinqToSqlRepository<Customer>().Add(customer);
                 scope.Commit();
             }
             Assert.That(customer.CustomerID, Is.GreaterThan(0));
