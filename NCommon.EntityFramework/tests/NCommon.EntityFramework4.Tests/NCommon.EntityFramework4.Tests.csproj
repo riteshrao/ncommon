@@ -31,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Data.Entity.CTP">
-      <HintPath>..\..\..\Libs\Microsoft.Data.Entity.CTP.dll</HintPath>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\..\Libs\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>..\..\..\Libs\Microsoft.Practices.ServiceLocation.dll</HintPath>

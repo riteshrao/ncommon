@@ -1,4 +1,5 @@
 using System;
+using System.Data.Entity.Database;
 using System.Data.Objects;
 using System.Linq;
 using System.Data.Entity.Infrastructure;
@@ -35,7 +36,7 @@ namespace NCommon.EntityFramework4.Tests.CodeOnly
         public virtual void FixtureSetup()
         {
             _unitOfWorkFactory = new EFUnitOfWorkFactory();
-            Database.SetInitializer(new NullInitializer());
+            DbDatabase.SetInitializer(new NullInitializer());
             _unitOfWorkFactory.RegisterObjectContextProvider(() => new CodeOnlyContext("SandboxCodeOnly").Context);
 
             _locator = MockRepository.GenerateStub<IServiceLocator>();
