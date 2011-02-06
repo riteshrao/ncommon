@@ -140,8 +140,9 @@ namespace NCommon.Data.NHibernate
         /// <param name="cmd"></param>
         /// <param name="value"></param>
         /// <param name="index"></param>
+        /// <param name="settable"></param>
         /// <param name="session"></param>
-        public void NullSafeSet(IDbCommand cmd, object value, int index, ISessionImplementor session)
+        public void NullSafeSet(IDbCommand cmd, object value, int index, bool[] settable, ISessionImplementor session)
         {
             if (value == null)
                 return;
@@ -149,6 +150,9 @@ namespace NCommon.Data.NHibernate
             var propIndex = index;
             for (var i = 0; i < _properties.Count; i++)
             {
+                if (!settable[i]) 
+                    continue;
+
                 var property = _properties[i];
                 var propValue = property.GetValue(value, null);
                 NHibernateUtil.GuessType(property.PropertyType).NullSafeSet(cmd, propValue, propIndex, session);
