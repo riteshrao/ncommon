@@ -26,7 +26,7 @@ namespace NCommon.Data.Db4o
     public class Db4oConfiguration : IDataConfiguration
     {
         Func<IObjectContainer> _containerProvider;
-
+        
         /// <summary>
         /// Registers a <see cref="Func{T}"/> of <see cref="IObjectContainer"/> type that
         /// can be used to create <see cref="IObjectContainer"/> instances.

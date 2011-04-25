@@ -13,8 +13,8 @@ namespace NCommon.Data.LinqToSql
             var linqToSqlRepository = repository as LinqToSqlRepository<TEntity>;
             Guard.Against<InvalidOperationException>(repository == null,
                  "Cannot use Linq to Sql's FetchMany extension on the underlying repository. The repository " +
-                "does not inherit or is not a LinqToRepository<> instance. The Linq to Sql's fetching extensions can " +
-                "only be used by Linq to Sql's repository LinqToRepository<>.");
+                "does not inherit from or is not a LinqToSqlRepository<> instance. The Linq to Sql's fetching extensions can " +
+                "only be used by Linq to Sql's repository LinqToSqlRepository<>.");
 
             linqToSqlRepository.ApplyLoadWith(selector);
             return (ILinqToSqlFetchingRepository<TEntity, TRelated>)

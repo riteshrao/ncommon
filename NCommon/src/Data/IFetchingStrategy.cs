@@ -14,6 +14,8 @@
 //limitations under the License. 
 #endregion
 
+using System.Linq;
+
 namespace NCommon.Data
 {
     ///<summary>
@@ -25,6 +27,6 @@ namespace NCommon.Data
         /// Instructs the instance to define the fetching strategy on the repository instance.
         ///</summary>
         ///<param name="repository"></param>
-        IRepository<TEntity> Define(IRepository<TEntity> repository);
+        IQueryable<TEntity> Define(IRepository<TEntity> repository);
     }
 }

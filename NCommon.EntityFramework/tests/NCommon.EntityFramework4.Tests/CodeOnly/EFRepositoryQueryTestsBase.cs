@@ -1,5 +1,5 @@
 using System;
-using System.Data.Entity.Database;
+using System.Data.Entity;
 using System.Data.Objects;
 using Microsoft.Practices.ServiceLocation;
 using NCommon.Data;
@@ -18,19 +18,10 @@ namespace NCommon.EntityFramework4.Tests.CodeOnly
         protected ObjectContext Context;
         EFUnitOfWorkFactory _unitOfWorkFactory;
 
-        public class NullInitializer : IDatabaseInitializer<CodeOnlyContext>
-        {
-            public void InitializeDatabase(CodeOnlyContext context)
-            {
-                
-            }
-        }
-
         [TestFixtureSetUp]
         public virtual void FixtureSetup()
         {
             _unitOfWorkFactory = new EFUnitOfWorkFactory();
-            DbDatabase.SetInitializer(new NullInitializer());
             _unitOfWorkFactory.RegisterObjectContextProvider(() => new CodeOnlyContext("SandboxCodeOnly").Context);
 
             Locator = MockRepository.GenerateStub<IServiceLocator>();

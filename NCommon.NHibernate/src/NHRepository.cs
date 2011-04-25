@@ -82,30 +82,7 @@ namespace NCommon.Data.NHibernate
         {
             get
             {
-                //if (_batchSize > -1)
-                //    Session.SetBatchSize(_batchSize); //Done before every query.
-                //var query = Session.Linq<TEntity>();
-                //var nhQuery = query as INHibernateQueryable;
-
-                //if (_resultTransformers != null && _resultTransformers.Length > 0)
-                //    _resultTransformers.ForEach(transformer => 
-                //        nhQuery.QueryOptions.RegisterCustomAction(x => x.SetResultTransformer(transformer)));
-
-                //if (_expands.Count > 0)
-                //    _expands.ForEach(x => nhQuery.QueryOptions.AddExpansion(x));
-
-                //if (_enableCached)
-                //{
-                //    nhQuery.QueryOptions.SetCachable(true);
-                //    nhQuery.QueryOptions.SetCacheMode(CacheMode.Normal);
-                //    nhQuery.QueryOptions.SetCacheRegion(_cachedQueryName);
-                //}
-
-                ////Resetting cache variables once IQueryable has been built.
-                //_enableCached = false;
-                //_cachedQueryName = null;
-                //return query;
-                return null;
+                return Session.Query<TEntity>();
             }
         }
 

@@ -174,7 +174,7 @@ namespace NCommon.Data
         /// Implementors should perform context specific actions within this method call and return
         /// the exact same instance.
         /// </remarks>
-        public IRepository<TEntity> For<TService>()
+        public IQueryable<TEntity> For<TService>()
         {
             return _rootRootRepository.For<TService>();
         }

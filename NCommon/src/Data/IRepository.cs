@@ -95,6 +95,6 @@ namespace NCommon.Data
         /// Implementors should perform context specific actions within this method call and return
         /// the exact same instance.
         /// </remarks>
-        IRepository<TEntity> For<TService>();
+        IQueryable<TEntity> For<TService>();
     }
 }

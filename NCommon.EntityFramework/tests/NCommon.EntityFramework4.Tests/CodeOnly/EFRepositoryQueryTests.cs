@@ -1,18 +1,10 @@
 using System;
-using System.Data.Entity.Database;
-using System.Data.Objects;
 using System.Linq;
-using System.Data.Entity.Infrastructure;
-using Microsoft.Practices.ServiceLocation;
 using NCommon.Data;
 using NCommon.Data.EntityFramework;
 using NCommon.EntityFramework4.Tests.Models;
-using NCommon.Extensions;
 using NCommon.Specifications;
-using NCommon.State;
-using NCommon.Testing;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace NCommon.EntityFramework4.Tests.CodeOnly
 {

@@ -111,7 +111,7 @@ namespace NCommon.Data.LinqToSql.Tests
 
         class FetchingStrategy : IFetchingStrategy<Customer, LinqToSqlRepositoryEagerFetchingTests>
         {
-            public IRepository<Customer> Define(IRepository<Customer> repository)
+            public IQueryable<Customer> Define(IRepository<Customer> repository)
             {
                 return repository.FetchMany(x => x.Orders)
                     .ThenFetchMany(x => x.OrderItems)

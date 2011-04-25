@@ -1,7 +1,5 @@
-using System;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using System.Data.Entity.ModelConfiguration;
 using System.Data.Objects;
 using NCommon.EntityFramework4.Tests.Models;
 
@@ -17,7 +15,7 @@ namespace NCommon.EntityFramework4.Tests.CodeOnly
         public DbSet<Order> Orders { get; set; }
         public DbSet<Product> Products { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Customer>().HasEntitySetName("Customers");
             modelBuilder.Entity<Order>().HasEntitySetName("Orders");

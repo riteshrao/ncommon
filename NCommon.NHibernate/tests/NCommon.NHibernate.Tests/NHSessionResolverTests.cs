@@ -3,7 +3,6 @@ using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NCommon.Data.NHibernate.Tests.OrdersDomain;
 using NCommon.Data.NHibernate.Tests.HRDomain.Domain;
-using NCommon.Util;
 using NHibernate;
 using NHibernate.ByteCode.Castle;
 using NUnit.Framework;

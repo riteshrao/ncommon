@@ -6,6 +6,7 @@
 <head runat="server">
     <title>NCommon MVC Sample Site</title>
     <link rel="stylesheet" href="/Content/Site.css" type="text/css" />
+    <script type="text/javascript" src="../../Scripts/jquery-1.4.1.min.js" />
 </head>
 <body>
     <div id="container">

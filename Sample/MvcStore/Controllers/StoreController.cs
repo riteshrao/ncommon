@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
-using MvcStore.Models;
 using MvcStore.Services;
 using MvcStore.ViewModels;
 using NCommon.Data;
@@ -28,7 +26,7 @@ namespace MvcStore.Controllers
             return View(new CatalogViewModel(cart, _productCatalog.GetCategoryNames(), new Product[] {}));
         }
 
-        [UnitOfWork]
+        [UnitOfWork(Scope = UnitOfWorkAttribute.FilterScope.Result)]
         public ActionResult DisplayCategory(string categoryName)
         {
             return View(new CatalogViewModel(

@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using NCommon.Data.EntityFramework.Tests.OrdersDomain;
 using NCommon.Extensions;
@@ -112,7 +111,7 @@ namespace NCommon.Data.EntityFramework.Tests
 
         class FetchingStrategy : IFetchingStrategy<Customer, EFRepositoryEagerFetchingTests>
         {
-            public IRepository<Customer> Define(IRepository<Customer> repository)
+            public IQueryable<Customer> Define(IRepository<Customer> repository)
             {
                 return repository.FetchMany(x => x.Orders)
                     .ThenFetchMany(x => x.OrderItems)

@@ -110,7 +110,7 @@ namespace NCommon.EntityFramework4.Tests.POCO
 
         class FetchingStrategy : IFetchingStrategy<Customer, EFRepositoryEagerFetchingTests>
         {
-            public IRepository<Customer> Define(IRepository<Customer> repository)
+            public IQueryable<Customer> Define(IRepository<Customer> repository)
             {
                 return repository.FetchMany(x => x.Orders)
                     .ThenFetchMany(x => x.OrderItems)
