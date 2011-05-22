@@ -74,7 +74,7 @@ namespace NCommon.ContainerAdapter.CastleWindsor
         /// registered for the service type.</param>
         public void Register(Type service, Type implementation)
         {
-            _container.Register(Component.For(service).ImplementedBy(implementation));
+            _container.Register(Component.For(service).ImplementedBy(implementation).LifeStyle.Is(LifestyleType.Transient));
         }
 
         /// <summary>
