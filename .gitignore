@@ -13,3 +13,4 @@ _ReSharper.*
 build
 output
 *.vs10x
+*.docstates
