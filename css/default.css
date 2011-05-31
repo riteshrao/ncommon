@@ -14,7 +14,7 @@ h2 { font-size: 20px; }
 h3 { font-size: 18px; }
 pre { background: #000; color: #fff; padding-top: 15px; font-family: monospace; }
 hr { border: 0; width: 80%; border-bottom: 1px solid #aaa }
-
+.description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
 #container { margin: 0 auto; width: 860px; display:block ;}
 .todo {	font-style: Italic; font-size: 0.9em; color: #993B25; font-weight: bold; }
 .footer { text-align: center; padding-top: 30px; font-style: italic; }
