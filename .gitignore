@@ -14,3 +14,4 @@ build
 output
 *.vs10x
 *.docstates
+.idea*
