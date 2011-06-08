@@ -95,7 +95,7 @@ namespace NCommon.ContainerAdapter.NInject
         ///<param name="implementation">The type representing the implementation registered for the service.</param>
         public void RegisterGeneric(Type service, Type implementation)
         {
-            RegisterGeneric(service, implementation);
+            Register(service, implementation);
         }
 
         ///<summary>
@@ -106,7 +106,7 @@ namespace NCommon.ContainerAdapter.NInject
         ///<param name="named">string. The service name with which the implementation is registerd.</param>
         public void RegisterGeneric(Type service, Type implementation, string named)
         {
-            RegisterGeneric(service, implementation, named);
+            Register(service, implementation, named);
         }
 
         /// <summary>

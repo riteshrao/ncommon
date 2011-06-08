@@ -123,6 +123,7 @@
     <Compile Include="NInject\when_configuring_data_using_LinqToSqlConfiguration.cs" />
     <Compile Include="NInject\when_configuring_data_using_NHConfiguration.cs" />
     <Compile Include="NInject\when_configuring_default_state.cs" />
+    <Compile Include="NInject\when_registering_generic_types.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StructureMap\when_configuring_custom_state.cs" />
     <Compile Include="StructureMap\when_configuring_data_using_EFConfiguration.cs" />
