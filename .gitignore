@@ -3,8 +3,8 @@
 *.resharper 
 _ReSharper* 
 _ReSharper.*
-*obj*
-*bin*
+bin*
+obj*
 *.svn
 .svn
 *.suo
