@@ -29,7 +29,7 @@ namespace NCommon.Data.LinqToSql
     /// </summary>
     public class LinqToSqlRepository<TEntity> : RepositoryBase<TEntity> where TEntity : class
     {
-        readonly DataContext _privateDataContext;
+        readonly ILinqToSqlSession _privateSession;
         readonly DataLoadOptions _loadOptions = new DataLoadOptions();
 
         /// <summary>
@@ -41,19 +41,19 @@ namespace NCommon.Data.LinqToSql
             if (ServiceLocator.Current == null)
                 return;
 
-            var contexts = ServiceLocator.Current.GetAllInstances<DataContext>();
-            if (contexts != null && contexts.Count() > 0)
-                _privateDataContext = contexts.FirstOrDefault();
+            var sessions = ServiceLocator.Current.GetAllInstances<ILinqToSqlSession>();
+            if (sessions != null && sessions.Count() > 0)
+                _privateSession = sessions.FirstOrDefault();
         }
 
         /// <summary>
         /// Gets the <see cref="DataContext"/> instnace that is used by the repository.
         /// </summary>
-        private DataContext DataContext
+        private ILinqToSqlSession DataContext
         {
             get
             {
-                return _privateDataContext ?? UnitOfWork<LinqToSqlUnitOfWork>().GetSession<TEntity>().Context;
+                return _privateSession ?? UnitOfWork<LinqToSqlUnitOfWork>().GetSession<TEntity>();
             }   
         }
 
@@ -64,7 +64,7 @@ namespace NCommon.Data.LinqToSql
         {
             get
             {
-                return DataContext.GetTable<TEntity>();
+                return DataContext.Context.GetTable<TEntity>();
             }
         }
 
@@ -80,7 +80,7 @@ namespace NCommon.Data.LinqToSql
         {
             get
             {
-                DataContext.LoadOptions = _loadOptions;
+                DataContext.Context.LoadOptions = _loadOptions;
                 return Table;
             }
         }
@@ -139,7 +139,7 @@ namespace NCommon.Data.LinqToSql
         /// entities is not supported.</exception>
         public override void Refresh(TEntity entity)
         {
-            DataContext.Refresh(RefreshMode.OverwriteCurrentValues, entity);
+            DataContext.Context.Refresh(RefreshMode.OverwriteCurrentValues, entity);
         }
 
         internal void ApplyLoadWith<TEntity, TReleated>(Expression<Func<TEntity, TReleated>> selector)

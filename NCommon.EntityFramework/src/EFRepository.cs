@@ -44,9 +44,9 @@ namespace NCommon.Data.EntityFramework
             if (ServiceLocator.Current == null) 
                 return;
 
-            var objectContexts = ServiceLocator.Current.GetAllInstances<ObjectContext>();
-            if (objectContexts != null && objectContexts.Count() > 0)
-                _privateSession = new EFSession(objectContexts.First());
+            var sessions = ServiceLocator.Current.GetAllInstances<IEFSession>();
+            if (sessions != null && sessions.Count() > 0)
+                _privateSession = sessions.First();
         }
 
         /// <summary>
