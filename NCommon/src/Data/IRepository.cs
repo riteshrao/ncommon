@@ -38,10 +38,10 @@ namespace NCommon.Data
         T UnitOfWork<T>() where T : IUnitOfWork;
 
         /// <summary>
-        /// Adds a transient instance of <typeparamref cref="TEntity"/> to be tracked
+        /// Adds a transient instance of <paramref name="entity"/> to be tracked
         /// and persisted by the repository.
         /// </summary>
-        /// <param name="entity"></param>
+        /// <param name="entity">An instance of <typeparamref name="TEntity"/> to be persisted.</param>
         void Add(TEntity entity);
 
         /// <summary>

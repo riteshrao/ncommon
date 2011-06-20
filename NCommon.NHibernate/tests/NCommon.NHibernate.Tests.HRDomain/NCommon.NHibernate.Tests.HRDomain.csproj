@@ -58,6 +58,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Domain\Department.cs" />
     <Compile Include="Domain\SalesPerson.cs" />
     <Compile Include="Domain\SalesTerritory.cs" />
@@ -70,6 +73,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\NCommon\src\NCommon.csproj">
+      <Project>{C853736D-3576-468A-A716-ACEC1CD4FAC1}</Project>
+      <Name>NCommon</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\src\NCommon.NHibernate.csproj">
       <Project>{01A6D2F9-C34E-4D87-BE7A-4F36A78BED66}</Project>
       <Name>NCommon.NHibernate %28src\NCommon.NHibernate%29</Name>

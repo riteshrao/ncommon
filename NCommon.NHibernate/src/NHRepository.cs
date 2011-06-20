@@ -30,20 +30,10 @@ namespace NCommon.Data.NHibernate
     /// </summary>
     public class NHRepository<TEntity> : RepositoryBase<TEntity>
     {
-        public class WithDistinctRoot : NHRepository<TEntity>
-        {
-            public WithDistinctRoot()
-            {
-                _resultTransformers = new[] {Transformers.DistinctRootEntity};
-            }
-        }
-
-        int _batchSize = -1;
-        bool _enableCached;
-        string _cachedQueryName;
+        //int _batchSize = -1;
+        //bool _enableCached;
+        //string _cachedQueryName;
         readonly ISession _privateSession;
-        IResultTransformer[] _resultTransformers;
-        readonly List<string> _expands = new List<string>();
 
         /// <summary>
         /// Default Constructor.

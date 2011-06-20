@@ -53,8 +53,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\FluentNHibernate.1.2.0.712\lib\FluentNHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="Glimpse.Net">
-      <HintPath>..\..\packages\Glimpse.0.79\lib\net40\Glimpse.Net.dll</HintPath>
+    <Reference Include="Glimpse.Core">
+      <HintPath>..\..\packages\Glimpse.0.82\lib\net40\Glimpse.Core.dll</HintPath>
     </Reference>
     <Reference Include="Iesi.Collections, Version=1.0.1.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Iesi.Collections.3.1.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
@@ -139,7 +139,6 @@
     <Content Include="App_Data\store_log.LDF">
       <DependentUpon>store.mdf</DependentUpon>
     </Content>
-    <Content Include="App_Readme\glimpse.readme.txt" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\includes.js" />
     <Content Include="Views\Shared\DisplayTemplates\Product.ascx" />

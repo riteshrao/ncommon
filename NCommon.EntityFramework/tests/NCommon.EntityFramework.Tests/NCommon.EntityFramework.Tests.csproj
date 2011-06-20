@@ -91,6 +91,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\..\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="EFRepositoryEagerFetchingTests.cs" />
     <Compile Include="EFRepositoryExtensionsTests.cs" />
     <Compile Include="EFRepositoryTransactionTests.cs" />

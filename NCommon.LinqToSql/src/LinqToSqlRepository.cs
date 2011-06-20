@@ -142,7 +142,7 @@ namespace NCommon.Data.LinqToSql
             DataContext.Context.Refresh(RefreshMode.OverwriteCurrentValues, entity);
         }
 
-        internal void ApplyLoadWith<TEntity, TReleated>(Expression<Func<TEntity, TReleated>> selector)
+        internal void ApplyLoadWith<T, TReleated>(Expression<Func<T, TReleated>> selector)
         {
             _loadOptions.LoadWith(selector);
         }

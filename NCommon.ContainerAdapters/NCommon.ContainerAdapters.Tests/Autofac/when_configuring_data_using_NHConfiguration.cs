@@ -49,19 +49,5 @@ namespace NCommon.ContainerAdapters.Tests.Autofac
             Assert.That(repo, Is.Not.Null);
             Assert.That(repo, Is.TypeOf(typeof(NHRepository<string>)));
         }
-
-        [Test]
-        public void verify_returns_distinct_configured_repository()
-        {
-            var builder = new ContainerBuilder();
-            NCommon.Configure
-                .Using(new AutofacContainerAdapter(builder))
-                .ConfigureData<NHConfiguration>(x => x.WithDistinctResults());
-            var container = builder.Build();
-
-            var repo = container.Resolve<IRepository<string>>();
-            Assert.That(repo, Is.Not.Null);
-            Assert.That(repo, Is.TypeOf<NHRepository<string>.WithDistinctRoot>());
-        }
     }
 }

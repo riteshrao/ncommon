@@ -51,6 +51,10 @@ namespace NCommon.Data
             get { return _internal.AsQueryable(); }
         }
 
+        /// <summary>
+        /// Adds the entity instance to the in-memory collection.
+        /// </summary>
+        /// <param name="entity"></param>
         public override void Add(TEntity entity)
         {
             _internal.Add(entity);

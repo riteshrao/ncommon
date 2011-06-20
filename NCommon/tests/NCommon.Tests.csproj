@@ -89,11 +89,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Context\ContextTests.cs" />
     <Compile Include="Data\FakeTransactionManager.cs" />
     <Compile Include="Data\TransactionManagerTests.cs" />
     <Compile Include="Data\UnitOfWorkManagerTests.cs" />
-    <Compile Include="Data\UnitOfWorkScopeAttributeTests.cs" />
     <Compile Include="Data\UnitOfWorkScopeTests.cs" />
     <Compile Include="Data\UnitOfWorkTransactionTests.cs" />
     <Compile Include="Data\InMemoryRepositoryTests.cs" />

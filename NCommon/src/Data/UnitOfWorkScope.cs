@@ -60,19 +60,6 @@ namespace NCommon.Data
         /// Overloaded Constructor.
         /// Creates a new instance of the <see cref="UnitOfWorkScope"/> class.
         /// </summary>
-        /// <param name="newTransaction">To create a new scope that does not enlist in an existing ambient 
-        /// <see cref="UnitOfWorkScope"/> or <see cref="TransactionScope"/>, specify new, otherwise specify false.</param>
-        [Obsolete("Use UnitOfWorkScope(TransactionMode) constructor instead. This will be removed in final 1.1 release.")]
-        public UnitOfWorkScope(bool newTransaction)
-        {
-            _logger.Info(x => x("New UnitOfWorkScope {0} started with newTransaction setting as : {1}", _scopeId, newTransaction));
-            UnitOfWorkManager.CurrentTransactionManager.EnlistScope(this, TransactionMode.New);
-        }
-
-        /// <summary>
-        /// Overloaded Constructor.
-        /// Creates a new instance of the <see cref="UnitOfWorkScope"/> class.
-        /// </summary>
         /// <param name="mode">A <see cref="TransactionMode"/> enum specifying the transation mode
         /// of the unit of work.</param>
         public UnitOfWorkScope(TransactionMode mode)

@@ -41,17 +41,7 @@ namespace NCommon.Data.NHibernate
             _factory.RegisterSessionFactoryProvider(factoryProvider);
             return this;
         }
-
-        /// <summary>
-        /// Sets the repository to always return distinct results for the entity type being queried.
-        /// </summary>
-        /// <returns><see cref="NHConfiguration"/></returns>
-        public NHConfiguration WithDistinctResults()
-        {
-            _defaultRepositoryType = typeof (NHRepository<>.WithDistinctRoot);
-            return this;
-        }
-
+      
         /// <summary>
         /// Called by NCommon <see cref="Configure"/> to configure data providers.
         /// </summary>

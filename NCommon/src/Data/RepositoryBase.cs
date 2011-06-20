@@ -118,16 +118,16 @@ namespace NCommon.Data
         }
 
         /// <summary>
-        /// Adds a transient instance of <typeparamref cref="TEntity"/> to be tracked
+        /// Adds a transient instance of <paramref name="entity"/> to be tracked
         /// and persisted by the repository.
         /// </summary>
-        /// <param name="entity"></param>
+        /// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be added.</param>
         public abstract void Add(TEntity entity);
 
         /// <summary>
         /// Marks the entity instance to be deleted from the store.
         /// </summary>
-        /// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be deleted.</param>
+        /// <param name="entity">An instance of <paramref name="entity"/> that should be deleted.</param>
         public abstract void Delete(TEntity entity);
 
         /// <summary>

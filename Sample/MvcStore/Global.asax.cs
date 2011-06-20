@@ -71,7 +71,7 @@ namespace MvcStore
                         c.LifeStyle.Is(LifestyleType.Transient);
                     })
                 );
-            _serviceLocator = new WindsorServiceLocator(_container);
+            _serviceLocator = (IServiceLocator) new WindsorServiceLocator(_container);
             ServiceLocator.SetLocatorProvider(() => _serviceLocator);
         }
 

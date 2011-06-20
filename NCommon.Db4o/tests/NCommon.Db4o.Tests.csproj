@@ -98,6 +98,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="Db4oRepositoryTests.cs" />
     <Compile Include="Db4oTestDataActions.cs" />
     <Compile Include="Db4oTestDataGenerator.cs" />

@@ -7,6 +7,11 @@ using NCommon.Specifications;
 
 namespace NCommon.Data
 {
+    /// <summary>
+    /// Fetching strategy wrapper for a IRepository implemenation.
+    /// </summary>
+    /// <typeparam name="TRepository">The type of repository to wrap.</typeparam>
+    /// <typeparam name="TEntity">The entity type of the repository.</typeparam>
     public abstract class RepositoryWrapperBase<TRepository, TEntity> : IRepository<TEntity> where TRepository : IRepository<TEntity>
     {
         readonly TRepository _rootRootRepository;
@@ -99,7 +104,7 @@ namespace NCommon.Data
         }
 
         /// <summary>
-        /// Adds a transient instance of <typeparamref cref="TEntity"/> to be tracked
+        /// Adds a transient instance of <paramref name="entity"/> to be tracked
         /// and persisted by the repository.
         /// </summary>
         /// <param name="entity"></param>

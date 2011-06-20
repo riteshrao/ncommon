@@ -20,15 +20,15 @@ namespace NCommon.Data.NHibernate.Tests
         {
             _ordersFactory = Fluently.Configure()
                 .Database(MsSqlConfiguration.MsSql2005
-                              .ConnectionString(connection => connection.FromConnectionStringWithKey("testdb"))
-                              .ProxyFactoryFactory(typeof (ProxyFactoryFactory)))
+                              .ConnectionString(connection => connection.FromConnectionStringWithKey("testdb")))
+                .ProxyFactoryFactory<ProxyFactoryFactory>()
                 .Mappings(mappings => mappings.FluentMappings.AddFromAssembly(typeof (Order).Assembly))
                 .BuildSessionFactory();
 
             _hrFactory = Fluently.Configure()
                 .Database(MsSqlConfiguration.MsSql2005
-                              .ConnectionString(connection => connection.FromConnectionStringWithKey("testdb"))
-                              .ProxyFactoryFactory(typeof(ProxyFactoryFactory)))
+                              .ConnectionString(connection => connection.FromConnectionStringWithKey("testdb")))
+                .ProxyFactoryFactory<ProxyFactoryFactory>()
                 .Mappings(mappings => mappings.FluentMappings.AddFromAssembly(typeof(SalesPerson).Assembly))
                 .BuildSessionFactory();
         }

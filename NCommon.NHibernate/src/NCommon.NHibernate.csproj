@@ -80,6 +80,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\CommonAssemblyInfo.cs">
+      <Link>CommonAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="CompositeUserTypeBase.cs" />
     <Compile Include="INHSessionResolver.cs" />
     <Compile Include="NHConfiguration.cs" />
