@@ -17,3 +17,4 @@ output
 .idea*
 packages/*
 Sample/*/packages/*
+*.LDF
