@@ -1,20 +1,45 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="Tools\MSBuild.Community.Tasks.targets"/>
-  <PropertyGroup>
-    <OutputDir Condition="$(OutputDir)==''">Build</OutputDir>
-    <Config Condition="$(Config)==''">Debug</Config>
+  <!--<PropertyGroup Condition="$(TargetFrameworkVersion)=='v3.5'">
+    <OutDir>$(OutputDir)\Net35\</OutDir>
   </PropertyGroup>
+  <PropertyGroup Condition="$(TargetFrameworkVersion)=='v4.0'">
+    <OutDir>$(OutputDir)\Net40\</OutDir>
+  </PropertyGroup>-->
   <ItemGroup>
-    <Project Include="NCommon\src\NCommon.csproj">
-      <Properties>Configuration=$(Config);TargetFrameworkVersion=$(TargetFrameworkVersion);ToolsVersion=$(TargetFrameworkVersion);OutDir=D:\Temp</Properties>
-    </Project>
-</ItemGroup>
+    <Projects Include ="NCommon/src/NCommon.csproj"/>
+    <Projects Include ="NCommon.ContainerAdapters/NCommon.ContainerAdapter.Autofac/NCommon.ContainerAdapter.Autofac.csproj"/>
+    <Projects Include ="NCommon.ContainerAdapters/NCommon.ContainerAdapter.CastleWindsor/NCommon.ContainerAdapter.CastleWindsor.csproj"/>
+    <Projects Include ="NCommon.ContainerAdapters/NCommon.ContainerAdapter.NInject/NCommon.ContainerAdapter.NInject.csproj"/>
+    <Projects Include ="NCommon.ContainerAdapters/NCommon.ContainerAdapter.StructureMap/NCommon.ContainerAdapter.StructureMap.csproj"/>
+    <Projects Include ="NCommon.ContainerAdapters/NCommon.ContainerAdapter.Unity/NCommon.ContainerAdapter.Unity.csproj"/>
+    <Projects Include ="NCommon.Db4o/src/NCommon.Db4o.csproj"/>
+    <Projects Include ="NCommon.EntityFramework/src/NCommon.EntityFramework.csproj"/>
+    <Projects Include ="NCommon.LinqToSql/src/NCommon.LinqToSql.csproj"/>
+    <Projects Include ="NCommon.Mvc/src/NCommon.Mvc.csproj"/>
+    <Projects Include ="NCommon.NHibernate/src/NCommon.NHibernate.csproj"/>
+    <Projects Include ="NCommon.Testing/NCommon.Testing.csproj"/>
+  </ItemGroup>
+  <ItemGroup Condition="$(IncludeTests) == 'true'">
+    <Projects Include ="NCommon.EntityFramework/tests/NCommon.EntityFramework.Tests/NCommon.EntityFramework.Tests.csproj"/>
+    <Projects Include ="NCommon.EntityFramework/tests/NCommon.EntityFramework.Tests.HRDomain/NCommon.EntityFramework.Tests.HRDomain.csproj"/>
+    <Projects Include ="NCommon.EntityFramework/tests/NCommon.EntityFramework.Tests.OrdersDomain/NCommon.EntityFramework.Tests.OrdersDomain.csproj"/>
+    <Projects Include ="NCommon.EntityFramework/tests/NCommon.EntityFramework4.Tests/NCommon.EntityFramework4.Tests.csproj"/>
+    <Projects Include ="NCommon.LinqToSql/tests/NCommon.LinqToSql.Tests/NCommon.LinqToSql.Tests.csproj"/>
+    <Projects Include ="NCommon.LinqToSql/tests/NCommon.LinqToSql.Tests.HRDomain/NCommon.LinqToSql.Tests.HRDomain.csproj"/>
+    <Projects Include ="NCommon.LinqToSql/tests/NCommon.LinqToSql.Tests.OrdersDomain/NCommon.LinqToSql.Tests.OrdersDomain.csproj"/>
+    <Projects Include ="NCommon.NHibernate/tests/NCommon.NHibernate.Tests/NCommon.NHibernate.Tests.csproj"/>
+    <Projects Include ="NCommon.NHibernate/tests/NCommon.NHibernate.Tests.HRDomain/NCommon.NHibernate.Tests.HRDomain.csproj"/>
+    <Projects Include ="NCommon.NHibernate/tests/NCommon.NHibernate.Tests.OrdersDomain/NCommon.NHibernate.Tests.OrdersDomain.csproj"/>
+    <Projects Include ="NCommon.ContainerAdapters/NCommon.ContainerAdapters.Tests/NCommon.ContainerAdapters.Tests.csproj"/>
+    <Projects Include ="NCommon.Db4o/tests/NCommon.Db4o.Tests.csproj"/>
+    <Projects Include ="NCommon.Mvc/tests/NCommon.Mvc.Tests/NCommon.Mvc.Tests.csproj"/>
+    <Projects Include ="NCommon/tests/NCommon.Tests.csproj"/>
+  </ItemGroup>
   <Target Name="Clean">
-    <MSBuild Projects="$(Project)" Targets="Clean" ContinueOnError="false"/>
+    <MSBuild Projects="@(Projects)" Targets="Clean" ContinueOnError="false"/>
   </Target>
   <Target Name="Build" DependsOnTargets="Clean">
-    <Message Text="Output directory is $(OutputDir)"/>
-    <MSBuild Projects="@(Project)" Targets="Build"/>
+    <MSBuild Projects="@(Projects)" Targets="Rebuild" ContinueOnError="false" Properties="Configuration=$(Config);TargetFrameworkVersion=$(TargetFrameworkVersion);ToolsVersion=$(TargetFrameworkVersion);OutDir=$(OutDir);DefineConstants=$(DefineConstants)"/>
   </Target>
 </Project>

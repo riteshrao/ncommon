@@ -16,3 +16,4 @@ output
 *.docstates
 .idea*
 packages/*
+Sample/*/packages/*

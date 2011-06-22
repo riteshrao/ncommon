@@ -1,5 +1,5 @@
 using Microsoft.Practices.ServiceLocation;
-using NCommon.ContainerAdapter.NInject;
+using NCommon.ContainerAdapter.Ninject;
 using NCommon.Data;
 using NCommon.Data.NHibernate;
 using NHibernate;
@@ -7,7 +7,7 @@ using Ninject;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace NCommon.ContainerAdapters.Tests.NInject
+namespace NCommon.ContainerAdapters.Tests.Ninject
 {
     [TestFixture]
     public class when_configuring_data_using_NHConfiguration
@@ -19,7 +19,7 @@ namespace NCommon.ContainerAdapters.Tests.NInject
         {
             _kernel = new StandardKernel();
             Configure
-                .Using(new NInjectContainerAdapter(_kernel))
+                .Using(new NinjectContainerAdapter(_kernel))
                 .ConfigureData<NHConfiguration>();
             ServiceLocator.SetLocatorProvider(() => MockRepository.GenerateStub<IServiceLocator>());
         }
@@ -55,7 +55,7 @@ namespace NCommon.ContainerAdapters.Tests.NInject
         //{
         //    var kernel = new StandardKernel();
         //    NCommon.Configure
-        //        .Using(new NInjectContainerAdapter(kernel))
+        //        .Using(new NinjectContainerAdapter(kernel))
         //        .ConfigureData<NHConfiguration>();
 
         //    var repo = kernel.Get<IRepository<string>>();

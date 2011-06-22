@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--This file represents the results of running a test suite-->
+<test-results name="D:\Development\Personal\Projects\ncommon\build\Net40\NCommon.Mvc.Tests.dll" total="8" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2011-06-22" time="16:21:31">
+  <environment nunit-version="2.5.10.11092" clr-version="2.0.50727.5444" os-version="Microsoft Windows NT 6.1.7601 Service Pack 1" platform="Win32NT" cwd="D:\Development\Personal\Projects\ncommon" machine-name="APOLLO" user="Ritesh" user-domain="Apollo" />
+  <culture-info current-culture="en-US" current-uiculture="en-US" />
+  <test-suite type="Assembly" name="D:\Development\Personal\Projects\ncommon\build\Net40\NCommon.Mvc.Tests.dll" executed="True" result="Success" success="True" time="0.764" asserts="0">
+    <results>
+      <test-suite type="Namespace" name="NCommon" executed="True" result="Success" success="True" time="0.749" asserts="0">
+        <results>
+          <test-suite type="Namespace" name="Tests" executed="True" result="Success" success="True" time="0.749" asserts="0">
+            <results>
+              <test-suite type="Namespace" name="Data" executed="True" result="Success" success="True" time="0.749" asserts="0">
+                <results>
+                  <test-suite type="TestFixture" name="UnitOfWorkScopeAttributeTests" executed="True" result="Success" success="True" time="0.749" asserts="0">
+                    <results>
+                      <test-case name="NCommon.Tests.Data.UnitOfWorkScopeAttributeTests.OnActionExecuted_commits_transaction_if_filter_scope_is_action" executed="True" result="Success" success="True" time="0.234" asserts="0" />
+                      <test-case name="NCommon.Tests.Data.UnitOfWorkScopeAttributeTests.OnActionExecuted_does_nothing_if_filter_scope_is_result" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                      <test-case name="NCommon.Tests.Data.UnitOfWorkScopeAttributeTests.OnActionExecuted_rollsback_transaction_if_exception_occured" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                      <test-case name="NCommon.Tests.Data.UnitOfWorkScopeAttributeTests.OnActionExecuting_starts_a_new_scope" executed="True" result="Success" success="True" time="0.062" asserts="1" />
+                      <test-case name="NCommon.Tests.Data.UnitOfWorkScopeAttributeTests.OnResultExecuted_comitts_transaction" executed="True" result="Success" success="True" time="0.031" asserts="0" />
+                      <test-case name="NCommon.Tests.Data.UnitOfWorkScopeAttributeTests.OnResultExecuted_does_nothing_if_filter_scope_is_action" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                      <test-case name="NCommon.Tests.Data.UnitOfWorkScopeAttributeTests.OnResultExecuted_rollsback_if_filter_scope_is_result_and_exception_occured" executed="True" result="Success" success="True" time="0.000" asserts="0" />
+                      <test-case name="NCommon.Tests.Data.UnitOfWorkScopeAttributeTests.Start_configures_and_adds_new_scope_to_current_http_context" executed="True" result="Success" success="True" time="0.016" asserts="1" />
+                    </results>
+                  </test-suite>
+                </results>
+              </test-suite>
+            </results>
+          </test-suite>
+        </results>
+      </test-suite>
+    </results>
+  </test-suite>
+</test-results>

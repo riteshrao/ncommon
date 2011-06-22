@@ -1,11 +1,11 @@
 using NCommon.Configuration;
-using NCommon.ContainerAdapter.NInject;
+using NCommon.ContainerAdapter.Ninject;
 using NCommon.Context;
 using NCommon.State;
 using Ninject;
 using NUnit.Framework;
 
-namespace NCommon.ContainerAdapters.Tests.NInject
+namespace NCommon.ContainerAdapters.Tests.Ninject
 {
     [TestFixture]
     public class when_configuring_custom_state
@@ -17,7 +17,7 @@ namespace NCommon.ContainerAdapters.Tests.NInject
         {
             _kernel = new StandardKernel();
             Configure
-                .Using(new NInjectContainerAdapter(_kernel))
+                .Using(new NinjectContainerAdapter(_kernel))
                 .ConfigureState<DefaultStateConfiguration>(config => config
                                                                          .UseCustomApplicationStateOf
                                                                          <FakeApplicationState>()

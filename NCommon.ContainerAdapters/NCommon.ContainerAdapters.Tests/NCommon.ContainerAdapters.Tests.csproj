@@ -116,12 +116,12 @@
     <Compile Include="CastleWindsor\when_configuring_data_using_NHConfiguration.cs" />
     <Compile Include="CastleWindsor\when_configuring_default_state.cs" />
     <Compile Include="Fakes.cs" />
-    <Compile Include="NInject\when_configuring_custom_state.cs" />
-    <Compile Include="NInject\when_configuring_data_using_EFConfiguration.cs" />
-    <Compile Include="NInject\when_configuring_data_using_LinqToSqlConfiguration.cs" />
-    <Compile Include="NInject\when_configuring_data_using_NHConfiguration.cs" />
-    <Compile Include="NInject\when_configuring_default_state.cs" />
-    <Compile Include="NInject\when_registering_generic_types.cs" />
+    <Compile Include="Ninject\when_configuring_custom_state.cs" />
+    <Compile Include="Ninject\when_configuring_data_using_EFConfiguration.cs" />
+    <Compile Include="Ninject\when_configuring_data_using_LinqToSqlConfiguration.cs" />
+    <Compile Include="Ninject\when_configuring_data_using_NHConfiguration.cs" />
+    <Compile Include="Ninject\when_configuring_default_state.cs" />
+    <Compile Include="Ninject\when_registering_generic_types.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StructureMap\when_configuring_custom_state.cs" />
     <Compile Include="StructureMap\when_configuring_data_using_EFConfiguration.cs" />
@@ -162,9 +162,9 @@
       <Project>{27A25205-349C-425E-836F-C1EB160DC2C2}</Project>
       <Name>NCommon.ContainerAdapter.CastleWindsor</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NCommon.ContainerAdapter.NInject\NCommon.ContainerAdapter.NInject.csproj">
+    <ProjectReference Include="..\NCommon.ContainerAdapter.NInject\NCommon.ContainerAdapter.Ninject.csproj">
       <Project>{7D439D38-9B0B-4E6B-A6A4-F37DF7208569}</Project>
-      <Name>NCommon.ContainerAdapter.NInject</Name>
+      <Name>NCommon.ContainerAdapter.Ninject</Name>
     </ProjectReference>
     <ProjectReference Include="..\NCommon.ContainerAdapter.StructureMap\NCommon.ContainerAdapter.StructureMap.csproj">
       <Project>{6C81E97F-D2F6-4306-AC65-5486F6F0E7B6}</Project>

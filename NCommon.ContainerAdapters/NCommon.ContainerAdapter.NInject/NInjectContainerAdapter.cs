@@ -18,22 +18,22 @@ using System;
 using NCommon.Configuration;
 using Ninject;
 
-namespace NCommon.ContainerAdapter.NInject
+namespace NCommon.ContainerAdapter.Ninject
 {
     /// <summary>
     /// <see cref="IContainerAdapter"/> implementation for NInject.
     /// </summary>
-    public class NInjectContainerAdapter : IContainerAdapter
+    public class NinjectContainerAdapter : IContainerAdapter
     {
         readonly IKernel _kernel;
 
         /// <summary>
         /// Default Constructor.
-        /// Creates an instance of <see cref="NInjectContainerAdapter"/> class.
+        /// Creates an instance of <see cref="NinjectContainerAdapter"/> class.
         /// </summary>
-        /// <param name="kernel">The <see cref="IKernel"/> instance used by the NInjectContainerAdapter
+        /// <param name="kernel">The <see cref="IKernel"/> instance used by the NinjectContainerAdapter
         /// to register components.</param>
-        public NInjectContainerAdapter(IKernel kernel)
+        public NinjectContainerAdapter(IKernel kernel)
         {
             _kernel = kernel;
         }

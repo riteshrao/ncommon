@@ -12,8 +12,8 @@
     <AssemblyName>NCommon</AssemblyName>
     <TargetFrameworkVersion Condition="$(TargetFrameworkVersion)==''">v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>ncommon.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\ncommon.snk</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -165,7 +165,10 @@
     <Compile Include="Util\Inflector.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ncommon.snk" />
+    <None Include="..\..\ncommon.snk">
+      <Link>ncommon.snk</Link>
+    </None>
+    <None Include="NCommon.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

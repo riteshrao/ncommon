@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>NCommon.ContainerAdapter.CastleWindsor</id>
+    <version>1.2</version>
+    <authors>Ritesh Rao</authors>
+    <owners>Ritesh Rao</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
+    <projectUrl>https://github.com/riteshrao/ncommon</projectUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>A NCommon container adapter for Castle Windsor</description>
+    <tags>DDD ORM Framework</tags>
+    <dependencies>
+      <dependency id="NCommon" version="1.2"/>
+      <dependency id="Castle.Windsor" version="2.5.2"/>
+    </dependencies>
+  </metadata>
+</package>

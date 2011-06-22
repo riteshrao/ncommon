@@ -36,7 +36,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ContainerAdapters", "Contai
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCommon.ContainerAdapter.CastleWindsor", "NCommon.ContainerAdapters\NCommon.ContainerAdapter.CastleWindsor\NCommon.ContainerAdapter.CastleWindsor.csproj", "{27A25205-349C-425E-836F-C1EB160DC2C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCommon.ContainerAdapter.NInject", "NCommon.ContainerAdapters\NCommon.ContainerAdapter.NInject\NCommon.ContainerAdapter.NInject.csproj", "{7D439D38-9B0B-4E6B-A6A4-F37DF7208569}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCommon.ContainerAdapter.Ninject", "NCommon.ContainerAdapters\NCommon.ContainerAdapter.NInject\NCommon.ContainerAdapter.Ninject.csproj", "{7D439D38-9B0B-4E6B-A6A4-F37DF7208569}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCommon.ContainerAdapter.StructureMap", "NCommon.ContainerAdapters\NCommon.ContainerAdapter.StructureMap\NCommon.ContainerAdapter.StructureMap.csproj", "{6C81E97F-D2F6-4306-AC65-5486F6F0E7B6}"
 EndProject
@@ -73,6 +73,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{0BE80468-0F10-4A54-8174-57D5384A2590}"
 	ProjectSection(SolutionItems) = preProject
 		default.ps1 = default.ps1
+		NCommon.build = NCommon.build
 	EndProjectSection
 EndProject
 Global
