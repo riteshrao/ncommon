@@ -1,15 +1,14 @@
-.title { text-align: center; }
-.content {line-height: 1.6em;}
-ul.toc { 
-	float:right; 
-	background-color:#FFFFEF; 
-	font-size:13px; 
-	line-height: 2em;
-	margin: 0px 0px 1em 1.5em; 
-	list-style-type:none ;
-	border: 1px solid #2B2B2B;
-	padding: 5px;}
-ul.toc .title { font-size: 16px;}
-ul.toc a { color: #000; text-decoration: none; }
-ul.toc a:hover { color: #000; text-decoration: underline; }
-ul.toc a:visited { color: #000; }
+aside#toc
+{
+    float: right;
+    padding-left: 25px;
+    padding-right: 25px;
+    width: 220px;
+    height: auto;
+    background-color: White;
+    font-size: 0.7em;
+    border: black solid 1px;
+}
+
+aside#toc a, aside#toc a:visited { text-decoration: none;color: #262626;}
+aside#toc a:hover { text-decoration: none;color: #096AC9;}
