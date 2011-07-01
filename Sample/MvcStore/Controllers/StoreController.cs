@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using MvcStore.Services;
 using MvcStore.ViewModels;
-using NCommon.Data;
+using NCommon.Mvc;
 using Product = MvcStore.Models.Product;
 
 namespace MvcStore.Controllers
