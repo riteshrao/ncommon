@@ -8,3 +8,5 @@ Building NCommon is done via a [psake] (http://github.com/JamesKovacs/psake) scr
 > Invoke-psake .\default.ps1  
 
 NCommon binaries are built and placed in an **out** directory under the root folder. 
+
+For documentation on NCommon, visit http://riteshrao.github.com/ncommon
