@@ -1,10 +1,112 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>NCommon - Getting started guide</title>
+    <link type="text/css" rel="Stylesheet" href="../css/default.css" />
+    <link type="text/css" rel="Stylesheet" href="../css/docs.css" />
+    <link type="text/css" rel="stylesheet" href="../css/shThemeFadeToGrey.css" />
+    <script src="../scripts/shCore.js" type="text/javascript"></script>
+    <script src="../scripts/shAutoloader.js" type="text/javascript"></script>
 </head>
 <body>
+    <div id="container">
+        <header>
+            <h1>
+                <a href="http://github.com/riteshrao/ncommon">NCommon</a></h1>
+            <div class="description">
+                A light weight framework for building applications in .Net
+            </div>
+        </header>
+        <nav id="main">
+            <ul>
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../getting-started.html">Getting Started</a></li>
+                <li><a href="index.html">Documentation</a></li>
+            </ul>
+        </nav>
+        <h2>NCommon Documentation Table of Contents</h2>
+        <section id="content">
+            <ul id="toc">
+                <li>
+                    <h3><a href="">State storage services</a></h3>
+                    <ul>
+                        <li><a href="">Working with the IState interface</a></li>
+                        <li><a href="">Storing and retrieving local state data</a></li>
+                        <li><a href="">Storing and retrieving session state data</a></li>
+                        <li><a href="">Storing and retrieving application state data</a></li>
+                        <li><a href="">Storing and retrieving cache data</a></li>
+                        <li><a href="">Configuring state services</a></li>
 
+                    </ul>
+                </li>
+                <li>
+                    <h3><a href="">Data storage providers</a></h3>
+                    <ul>
+                        <li><a href="">Configuring NCommon to work with NHibernate</a></li>
+                        <li><a href="">Configuring NCommon to work with Entity Framework</a></li>
+                        <li><a href="">Configuring NCommon to work with Linq To Sql</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <h3><a href="">Unit of Work</a></h3>
+                    <ul>
+                        <li><a href="">Unit of Work basics</a></li>
+                        <li><a href="">Working with multiple unit of works.</a></li>
+                        <li><a href="">Unit of Work internals</a></li>
+                        <li><a href="">Automatically starting a Unit of Work for ASP.Net MVC applications</a></li>
+                        <li><a href="">Unit of Work configuration</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <h3><a href="">Repository</a></h3>
+                    <ul>
+                        <li><a href="">Repository basics</a></li>
+                        <li><a href="">Repository fetching strategies</a></li>
+                        <li><a href="">ORM specific extensions for Repositories</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+    </div>
+    <script type="text/javascript">
+        function path() {
+            var args = arguments,
+            result = [];
+
+            for (var i = 0; i < args.length; i++)
+                result.push(args[i].replace('@', 'scripts/'));
+            return result;
+        };
+
+        SyntaxHighlighter.autoloader.apply(null, path(
+          'applescript            @shBrushAppleScript.js',
+          'actionscript3 as3      @shBrushAS3.js',
+          'bash shell             @shBrushBash.js',
+          'coldfusion cf          @shBrushColdFusion.js',
+          'cpp c                  @shBrushCpp.js',
+          'c# c-sharp csharp      @shBrushCSharp.js',
+          'css                    @shBrushCss.js',
+          'ps                     @shBrushPowerShell.js',
+          'delphi pascal          @shBrushDelphi.js',
+          'diff patch pas         @shBrushDiff.js',
+          'erl erlang             @shBrushErlang.js',
+          'groovy                 @shBrushGroovy.js',
+          'java                   @shBrushJava.js',
+          'jfx javafx             @shBrushJavaFX.js',
+          'js jscript javascript  @shBrushJScript.js',
+          'perl pl                @shBrushPerl.js',
+          'php                    @shBrushPhp.js',
+          'text plain             @shBrushPlain.js',
+          'py python              @shBrushPython.js',
+          'ruby rails ror rb      @shBrushRuby.js',
+          'sass scss              @shBrushSass.js',
+          'scala                  @shBrushScala.js',
+          'sql                    @shBrushSql.js',
+          'vb vbnet               @shBrushVb.js',
+          'xml xhtml xslt html    @shBrushXml.js'
+        ));
+        SyntaxHighlighter.all();
+    </script>
 </body>
 </html>

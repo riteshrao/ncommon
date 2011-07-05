@@ -20,8 +20,10 @@ h3 { font-size: 1.3em; }
 #nuget_packages { font-size: 0.8em;}
 #nuget_packages.package_id { margin-right: 10px;}
 #nuget_packages.package_desc { font-style: italic;}
+ul#toc { list-style-type: none;}
+ul#toc ul { list-style-type: none;}
 .description { font-size: 1.3em; margin-bottom: 30px;font-style: italic;}
-.todo {	font-style: italic; color: #993B25; font-weight: bold; }
+.note {	font-style: italic; color: #993B25; font-weight: bold; }
 .keyword { font-style: italic;font-weight: bold;color:#262616}
 .footer { text-align: center; padding-top: 30px; font-style: italic; }
 .block{	margin: 0px; padding: 0px; border: 1px solid #2B2B2B; background-color: #FFFFEF; }

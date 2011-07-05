@@ -1,11 +1,11 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>NCommon - Getting started guide</title>
     <link type="text/css" rel="Stylesheet" href="css/default.css" />
     <link type="text/css" rel="Stylesheet" href="css/docs.css" />
-    <link type="text/css" rel="stylesheet" href="css/shThemeDefault.css" />
+    <link type="text/css" rel="stylesheet" href="css/shThemeFadeToGrey.css" />
     <script src="scripts/shCore.js" type="text/javascript"></script>
     <script src="scripts/shAutoloader.js" type="text/javascript"></script>
 </head>
@@ -36,10 +36,9 @@
                     <li><a href="#source">Building from source</a></li>
                     <li><a href="#nuget">Referencing NuGet packages</a></li>
                     <li><a href="#configintro">Configuration basics</a></li>
-                    <li><a href="#features">Features overview</a></li>
                 </ol>
             </aside>
-            <h4 id="intro">Introduction</h4>
+            <h3 id="intro">Introduction</h3>
             <p>
                 NCommon is a light weight framework that provides implementations of various concepts
                 and patterns commonly used when building .Net applications and websites. NCommon
@@ -55,18 +54,12 @@
                 and abstracts away any knowledge of the underlying data access infrastructure from
                 your application.
             </p>
-            <h4 id="download">Downloading NCommon</h4>
+            <h3 id="source">Building NCommon from source</h3>
             <p>
-                You can download NCommon in binary form from the releases section of the <a href="#">
-                    main page</a>. Or you can download the binaries directly from the GitHub repository
-                <a href="#">here</a>.
+                Source for NCommon is maintained at <a href="https://github.com/riteshrao/ncommon">GitHub</a>." For downloading and building NCommon
+                from source, see the <a href="index.html#source">Building from source</a> section in the main page.
             </p>
-            <h4 id="source">Building NCommon from source</h4>
-            <p>
-                Source for NCommon is maintained at GitHub here. For downloading and building NCommon
-                from source, see the Building from source section in the main page.
-            </p>
-            <h4 id="addreference">Referencing NCommon</h4>
+            <h3 id="nuget">Referencing NuGet packages</h3>
             <p>
                 NCommon binaries are split into three categories:</p>
             <ul>
@@ -110,8 +103,18 @@
             </ul>
             <p>
                 Reference the appropriate data adapter assembly in your project
-                to allow NCommon to work with your ORM / Data Access framework of choice.
+                to allow NCommon to work with your ORM / Data Access framework of choice. 
             </p>
+            
+            <p>
+                NCommon assemblies are provided as NuGet packages. You can use the NuGet package manager
+                to install the appropriate NuGet packages. Below is an example that installs the required
+                NCommon packages for StructureMap and NHibernate data adapter.
+            </p>
+            <pre class="brush: ps; gutter: false; toolbar: false;">
+                Install-Package -Id NCommon.ContainerAdapter.StructureMap -ProjectName MyProject
+                Install-Package -Id NCommon.NHibernate -ProjectName MyProject
+            </pre>
             <h3 id="configintro">
                 NCommon configuration basics</h3>
             <p>
@@ -123,27 +126,14 @@
                 Below is a sample sample configuration using defaults. The snippet below is using
                 Castle Windsor and NHibernate as it's container and data adapter respectively, but
                 the same can be used for any container adapter and data adapter.
-                <div class="block">
-                    <div style="font-family: monospace; font-size: 10pt; color: black;">
-                        <p style="margin: 0px;">
-                            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; <span style="color: blue;">
-                                var</span> adapter = <span style="color: blue;">new</span> <span style="color: #2b91af;">
-                                    WindsorContainerAdapter</span>(_container);</p>
-                        <p style="margin: 0px;">
-                            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; NCommon.<span style="color: #2b91af;">Configure</span>.Using(adapter)</p>
-                        <p style="margin: 0px;">
-                            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; .ConfigureState&lt;<span
-                                style="color: #2b91af;">DefaultStateConfiguration</span>&gt;()</p>
-                        <p style="margin: 0px;">
-                            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; .ConfigureData&lt;<span
-                                style="color: #2b91af;">NHConfiguration</span>&gt;(config =&gt; config.WithSessionFactory(()
-                            =&gt; _sessionFactory))</p>
-                        <p style="margin: 0px;">
-                            &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; .ConfigureUnitOfWork&lt;<span
-                                style="color: #2b91af;">DefaultUnitOfWorkConfiguration</span>&gt;(config =&gt;
-                            config.AutoCompleteScope());</p>
-                    </div>
-                </div>
+                <pre class="brush: csharp; gutter: false; toolbar: false;">
+                    var adapter = new WindsorContainerAdapter(_container);
+                    NCommon.Configure.Using(adapter)
+                        .ConfigureState&lt;DefaultStateConfiguration&gt;()
+                        .ConfigureData&lt;NHConfiguration&gt;(config =&gt; config.WithSessionFactory(() =&gt; _sessionFactory))
+                        .ConfigureUnitOfWork&lt;DefaultUnitOfWorkConfiguration&gt;(config =&gt; config.AutoCompleteScope());
+
+                </pre>
             </p>
             <p>
                 NCommon provides a single static class <strong>Configure</strong> that provides
@@ -155,20 +145,92 @@
                 Of Work configuration. Each part is configured using a configurator implementation
                 and NCommon provides default configurators but you can create your own.
             </p>
-            <h4>
-                State Configuration</h4>
+            <h4>State Configuration</h4>
             <p>
-                <span class="todo">TODO: Overview of State storage providers and state configuration.</span>
+                NCommon provides a set of helpers that allow storing and retrieving state informaiton in
+                at the Local, Session, Cache or Application level. To register the default state storage  
+                implementations provided by NCommon you can use the DefaultStateConfiguration type, shown below.
             </p>
+            <pre class="brush: csharp; gutter: false; toolbar: false;">
+                    var adapter = new WindsorContainerAdapter(_container);
+                    NCommon.Configure.Using(adapter)
+                        .ConfigureState&lt;DefaultStateConfiguration&gt;();
+                </pre>
+            <p>
+                The DefaultStateConfiguration registers internal implementations of Local, Session, Cache and Application
+                storage. If you would like to use a custom state storage, for example use a MemcacheD cache storage provider,
+                the DefaultStateConfiguration allows overriding individual storage implementations. Below is an example where
+                custom storage providers are used for Local, Session, Cache, and Application storage. 
+            </p>
+            <pre class="brush: csharp; gutter: false; toolbar: false;">
+                var container = new Container();
+                NCommon.Configure.Using(new StructureMapContainerAdapter(container))
+                       .ConfigureState&lt;DefaultStateConfiguration&gt;(config =&gt;
+                                   config.UseCustomCacheOf&lt;MyCustomCache&gt;()
+                                         .UseCustomLocalStateOf&lt;MyLocalState&gt;()
+                                         .UseCustomSessionStateOf&lt;MySessionState&gt;()
+                                         .UseCustomApplicationStateOf&lt;MyAppState&gt;()
+                                );
+            </pre>
             <h4>Data Adapter Configuration</h4>
             <p>
-                <span class="todo">TODO: Overview of Data Adatapters and configuration.</span>
+                NCommon provides implementations of Unit of Work and Repository patterns that work with a large set of ORM
+                providers, such as NHibernate and Entity Framework. To use NCommon's implementations of Unit of Work and 
+                Repositories you nee to configure the appropriate data provider. NCommon providers configurations that work
+                with NHibernate, Entity Framework, Linq To Sql and Db4o. The example below configures NCommon to work with
+                NHibernate. <span class="note">Note: </span> The example assumes that a SessionFactory is configured and created
+                during application initializtion.
             </p>
-            <h4>Unit Of Work Configuration</h4>
+            <pre class="brush: csharp; gutter: false; toolbar: false;">
+                    var adapter = new WindsorContainerAdapter(_container);
+                    NCommon.Configure.Using(adapter)
+                        .ConfigureState&lt;DefaultStateConfiguration&gt;()
+                        .ConfigureData&lt;NHConfiguration&gt;(config =&gt; config.WithSessionFactory(() =&gt; _sessionFactory))
+
+                </pre>
             <p>
-                <span class="todo">TODO: Overview of Unit Of Work configuration.</span>
+                View the documentation section for more information.
             </p>
         </section>
     </div>
+    <script type="text/javascript">
+        function path() {
+            var args = arguments,
+            result = [];
+
+            for (var i = 0; i < args.length; i++)
+                result.push(args[i].replace('@', 'scripts/'));
+            return result;
+        };
+
+        SyntaxHighlighter.autoloader.apply(null, path(
+          'applescript            @shBrushAppleScript.js',
+          'actionscript3 as3      @shBrushAS3.js',
+          'bash shell             @shBrushBash.js',
+          'coldfusion cf          @shBrushColdFusion.js',
+          'cpp c                  @shBrushCpp.js',
+          'c# c-sharp csharp      @shBrushCSharp.js',
+          'css                    @shBrushCss.js',
+          'ps                     @shBrushPowerShell.js',
+          'delphi pascal          @shBrushDelphi.js',
+          'diff patch pas         @shBrushDiff.js',
+          'erl erlang             @shBrushErlang.js',
+          'groovy                 @shBrushGroovy.js',
+          'java                   @shBrushJava.js',
+          'jfx javafx             @shBrushJavaFX.js',
+          'js jscript javascript  @shBrushJScript.js',
+          'perl pl                @shBrushPerl.js',
+          'php                    @shBrushPhp.js',
+          'text plain             @shBrushPlain.js',
+          'py python              @shBrushPython.js',
+          'ruby rails ror rb      @shBrushRuby.js',
+          'sass scss              @shBrushSass.js',
+          'scala                  @shBrushScala.js',
+          'sql                    @shBrushSql.js',
+          'vb vbnet               @shBrushVb.js',
+          'xml xhtml xslt html    @shBrushXml.js'
+        ));
+        SyntaxHighlighter.all();
+    </script>
 </body>
 </html>
