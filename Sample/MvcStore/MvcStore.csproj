@@ -52,6 +52,12 @@
     <Reference Include="FluentNHibernate">
       <HintPath>packages\FluentNHibernate.1.2.0.712\lib\FluentNHibernate.dll</HintPath>
     </Reference>
+    <Reference Include="Glimpse.Core">
+      <HintPath>packages\Glimpse.0.83\lib\net40\Glimpse.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Glimpse.Mvc3">
+      <HintPath>packages\Glimpse.Mvc3.0.83\lib\net40\Glimpse.Mvc3.dll</HintPath>
+    </Reference>
     <Reference Include="Iesi.Collections">
       <HintPath>packages\Iesi.Collections.3.1.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
@@ -136,6 +142,7 @@
     <Compile Include="Models\ShoppingCart.cs" />
     <Compile Include="Models\ShoppingCartItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\IStoreConfigurator.cs" />
     <Compile Include="Services\IStoreInitializer.cs" />
     <Compile Include="ViewModels\CatalogViewModel.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
@@ -148,6 +155,8 @@
     <Content Include="App_Data\store_log.LDF">
       <DependentUpon>store.mdf</DependentUpon>
     </Content>
+    <Content Include="App_Readme\glimpse.mvc3.readme.txt" />
+    <Content Include="App_Readme\glimpse.readme.txt" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\includes.js" />
     <Content Include="Views\Shared\DisplayTemplates\Product.ascx" />

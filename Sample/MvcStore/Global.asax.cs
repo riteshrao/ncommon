@@ -1,5 +1,4 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.Core;
@@ -71,7 +70,7 @@ namespace MvcStore
                         c.LifeStyle.Is(LifestyleType.Transient);
                     })
                 );
-            _serviceLocator = (IServiceLocator) new WindsorServiceLocator(_container);
+            _serviceLocator = new WindsorServiceLocator(_container);
             ServiceLocator.SetLocatorProvider(() => _serviceLocator);
         }
 
