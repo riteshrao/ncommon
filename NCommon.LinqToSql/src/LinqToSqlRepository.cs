@@ -38,7 +38,7 @@ namespace NCommon.Data.LinqToSql
         /// </summary>
         public LinqToSqlRepository()
         {
-            Initialize()
+            Initialize();
         }
         
         /// <summary>
