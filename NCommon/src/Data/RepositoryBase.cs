@@ -170,7 +170,7 @@ namespace NCommon.Data
         /// Implementors should perform context specific actions within this method call and return
         /// the exact same instance.
         /// </remarks>
-        public IQueryable<TEntity> For<TService>()
+        public virtual IQueryable<TEntity> For<TService>()
         {
             var strategy = ServiceLocator
                 .Current
