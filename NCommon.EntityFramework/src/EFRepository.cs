@@ -41,13 +41,22 @@ namespace NCommon.Data.EntityFramework
         /// </summary>
         public EFRepository()
         {
-            if (ServiceLocator.Current == null) 
+           Initialize();
+        }
+        
+        
+        /// <summary>
+        /// Default Init.
+        /// </summary>
+        protected virtual void Initialize()
+        {
+             if (ServiceLocator.Current == null) 
                 return;
 
             var sessions = ServiceLocator.Current.GetAllInstances<IEFSession>();
             if (sessions != null && sessions.Count() > 0)
                 _privateSession = sessions.First();
-        }
+        }        
 
         /// <summary>
         /// Gets the <see cref="ObjectContext"/> to be used by the repository.
