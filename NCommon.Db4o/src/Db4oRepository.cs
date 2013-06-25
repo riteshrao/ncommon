@@ -37,14 +37,22 @@ namespace NCommon.Data.Db4o
         /// </summary>
         public Db4oRepository()
         {
+            Initialize();
+        }
+        
+        /// <summary>
+        /// Default Init.
+        /// </summary>
+        protected virtual void Initialize()
+        {
             if (ServiceLocator.Current != null)
             {
                 var containers = ServiceLocator.Current.GetAllInstances<IObjectContainer>();
                 if (containers != null && containers.Count() > 0)
                     _privateContainer = containers.FirstOrDefault();
             }
-            
-        }
+        
+        }         
 
         /// <summary>
         /// Gets the <see cref="IObjectContainer"/> instance that is used by the repository.
