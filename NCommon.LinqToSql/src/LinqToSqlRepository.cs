@@ -38,12 +38,20 @@ namespace NCommon.Data.LinqToSql
         /// </summary>
         public LinqToSqlRepository()
         {
+            Initialize()
+        }
+        
+        /// <summary>
+        /// Default Init.
+        /// </summary>
+        protected virtual void Initialize()
+        {
             if (ServiceLocator.Current == null)
                 return;
 
             var sessions = ServiceLocator.Current.GetAllInstances<ILinqToSqlSession>();
             if (sessions != null && sessions.Count() > 0)
-                _privateSession = sessions.FirstOrDefault();
+                _privateSession = sessions.FirstOrDefault();        
         }
 
         /// <summary>
