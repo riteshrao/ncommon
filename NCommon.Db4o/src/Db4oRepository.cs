@@ -29,7 +29,7 @@ namespace NCommon.Data.Db4o
     /// </summary>
     public class Db4oRepository<TEntity> : RepositoryBase<TEntity>
     {
-        readonly IObjectContainer _privateContainer;
+        IObjectContainer _privateContainer;
 
         /// <summary>
         /// Default Constructor.
