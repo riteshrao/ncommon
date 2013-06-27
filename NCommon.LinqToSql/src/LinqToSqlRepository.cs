@@ -29,7 +29,7 @@ namespace NCommon.Data.LinqToSql
     /// </summary>
     public class LinqToSqlRepository<TEntity> : RepositoryBase<TEntity> where TEntity : class
     {
-        readonly ILinqToSqlSession _privateSession;
+        ILinqToSqlSession _privateSession;
         readonly DataLoadOptions _loadOptions = new DataLoadOptions();
 
         /// <summary>
