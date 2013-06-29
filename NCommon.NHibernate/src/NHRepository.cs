@@ -33,7 +33,7 @@ namespace NCommon.Data.NHibernate
         //int _batchSize = -1;
         //bool _enableCached;
         //string _cachedQueryName;
-        ISession _privateSession;
+        protected ISession _privateSession;
 
         /// <summary>
         /// Default Constructor.
