@@ -27,7 +27,7 @@ namespace NCommon.Data.Db4o
     /// Inherits from the <see cref="RepositoryBase{TEntity}"/> class to provide an implementation of a
     /// repository that uses Db4o.
     /// </summary>
-    public class Db4oRepository<TEntity> : RepositoryBase<TEntity>
+    public class Db4oRepository<TEntity> : RepositoryBase<TEntity> where TEntity : class
     {
         protected IObjectContainer _privateContainer;
 

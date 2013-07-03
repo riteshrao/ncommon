@@ -27,7 +27,7 @@ namespace NCommon.Data
     /// components should implement.
     /// </summary>
     /// <typeparam name="TEntity">The type of entity that the repository encapsulates.</typeparam>
-    public interface IRepository<TEntity> : IQueryable<TEntity>
+    public interface IRepository<TEntity> : IQueryable<TEntity> where TEntity : class
     {
         /// <summary>
         /// Gets the a <see cref="IUnitOfWork"/> of <typeparamref name="T"/> that

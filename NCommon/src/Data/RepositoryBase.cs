@@ -29,7 +29,7 @@ namespace NCommon.Data
     /// A base class for implementors of <see cref="IRepository{TEntity}"/>.
     ///</summary>
     ///<typeparam name="TEntity"></typeparam>
-    public abstract class RepositoryBase<TEntity> : IRepository<TEntity>
+    public abstract class RepositoryBase<TEntity> : IRepository<TEntity> where TEntity : class
     {
         /// <summary>
         /// Gets the <see cref="IQueryable{TEntity}"/> used by the <see cref="RepositoryBase{TEntity}"/> 
@@ -110,7 +110,7 @@ namespace NCommon.Data
             Guard.Against<InvalidOperationException>(currentScope == null,
                                                      "No compatible UnitOfWork was found. Please start a compatible UnitOfWorkScope before " +
                                                      "using the repository.");
-            
+
             Guard.TypeOf<T>(currentScope,
                                               "The current UnitOfWork instance is not compatible with the repository. " +
                                               "Please start a compatible unit of work before using the repository.");

@@ -12,7 +12,7 @@ namespace NCommon.Data
     /// </summary>
     /// <typeparam name="TRepository">The type of repository to wrap.</typeparam>
     /// <typeparam name="TEntity">The entity type of the repository.</typeparam>
-    public abstract class RepositoryWrapperBase<TRepository, TEntity> : IRepository<TEntity> where TRepository : IRepository<TEntity>
+    public abstract class RepositoryWrapperBase<TRepository, TEntity> : IRepository<TEntity> where TRepository : IRepository<TEntity> where TEntity : class
     {
         readonly TRepository _rootRootRepository;
 

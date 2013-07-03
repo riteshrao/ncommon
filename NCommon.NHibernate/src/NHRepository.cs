@@ -28,7 +28,7 @@ namespace NCommon.Data.NHibernate
     /// Inherits from the <see cref="RepositoryBase{TEntity}"/> class to provide an implementation of a
     /// repository that uses NHibernate.
     /// </summary>
-    public class NHRepository<TEntity> : RepositoryBase<TEntity>
+    public class NHRepository<TEntity> : RepositoryBase<TEntity> where TEntity : class
     {
         //int _batchSize = -1;
         //bool _enableCached;

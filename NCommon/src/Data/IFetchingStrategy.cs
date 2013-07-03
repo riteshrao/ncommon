@@ -21,7 +21,7 @@ namespace NCommon.Data
     ///<summary>
     /// Specifies a fetching strategy for a <see cref="IRepository{TEntity}"/> instance.
     ///</summary>
-    public interface IFetchingStrategy<TEntity, TForService>
+    public interface IFetchingStrategy<TEntity, TForService> where TEntity : class
     {
         ///<summary>
         /// Instructs the instance to define the fetching strategy on the repository instance.
