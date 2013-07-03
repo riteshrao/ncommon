@@ -33,7 +33,7 @@ namespace NCommon.Data.EntityFramework
     /// </summary>
     public class EFRepository<TEntity> : RepositoryBase<TEntity> where TEntity : class
     {
-        readonly IEFSession _privateSession;
+        protected IEFSession _privateSession;
         readonly List<string> _includes = new List<string>();
 
         /// <summary>
