@@ -64,11 +64,13 @@ namespace NCommon.Events
         ///<typeparam name="T">A type implementing <see cref="IDomainEvent"/></typeparam>
         public static void Raise<T>(T @event) where T : IDomainEvent
         {
-            var state = ServiceLocator.Current.GetInstance<IState>();
             var handlers = ServiceLocator.Current.GetAllInstances<Handles<T>>();
             if (handlers != null)
                 handlers.ForEach(x => x.Handle(@event));
 
+            var state = ServiceLocator.Current.GetInstance<IState>();
+            if (state == null)
+                return;
             var callbacks = state.Local.Get<IList<Delegate>>(CallbackListKey);
             if (callbacks != null && callbacks.Count > 0)
                 callbacks.OfType<Action<T>>().ForEach(x => x(@event));
