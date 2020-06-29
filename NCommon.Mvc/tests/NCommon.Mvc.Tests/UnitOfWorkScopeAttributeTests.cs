@@ -9,7 +9,7 @@ using Rhino.Mocks;
 
 namespace NCommon.Tests.Data
 {
-    [TestFixture]
+    /*[TestFixture]
     public class UnitOfWorkScopeAttributeTests
     {
         readonly FakeTransactionManager _transactionManager = new FakeTransactionManager();
@@ -157,5 +157,5 @@ namespace NCommon.Tests.Data
             mockScope.AssertWasCalled(x => x.Commit());
             mockScope.AssertWasCalled(x => x.Dispose());
         }
-    }
+    }*/
 }

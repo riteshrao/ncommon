@@ -5,7 +5,7 @@ using NCommon.DataServices.Transactions;
 
 namespace NCommon.Mvc
 {
-    public class UnitOfWorkAttribute : ActionFilterAttribute
+    /*public class UnitOfWorkAttribute : ActionFilterAttribute
     {
         FilterScope _filterScope = FilterScope.Action;
         TransactionMode _transactionMode = TransactionMode.Default;
@@ -119,5 +119,5 @@ namespace NCommon.Mvc
             /// </summary>
             Result
         }
-    }
+    }*/
 }
