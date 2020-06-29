@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using NCommon.Data.NHibernate.Tests.HRDomain.Domain;
 using NCommon.Data.NHibernate.Tests.OrdersDomain;
+using NCommon.DataServices.Transactions;
 using NUnit.Framework;
 
 namespace NCommon.Data.NHibernate.Tests

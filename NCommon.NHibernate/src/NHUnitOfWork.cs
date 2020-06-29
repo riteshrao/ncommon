@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using NCommon.DataServices.Transactions;
 using NCommon.Extensions;
 using NHibernate;
 

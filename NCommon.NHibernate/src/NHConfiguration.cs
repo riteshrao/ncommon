@@ -16,6 +16,9 @@
 
 using System;
 using NCommon.Configuration;
+using NCommon.DataServices.Transactions;
+using NCommon.DependencyInjection;
+using NCommon.ObjectAccess;
 using NHibernate;
 
 namespace NCommon.Data.NHibernate

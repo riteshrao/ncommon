@@ -1,5 +1,7 @@
 using System.Linq;
 using NCommon.Data.NHibernate.Tests.OrdersDomain;
+using NCommon.DataServices.Transactions;
+using NCommon.ObjectAccess;
 using NHibernate;
 using NHibernate.Linq;
 using NUnit.Framework;

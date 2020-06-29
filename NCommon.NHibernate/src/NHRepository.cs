@@ -16,6 +16,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using NCommon.DependencyInjection;
 using NCommon.Extensions;
 using NCommon.ObjectAccess;
 using NHibernate;
@@ -33,7 +34,7 @@ namespace NCommon.Data.NHibernate
         //int _batchSize = -1;
         //bool _enableCached;
         //string _cachedQueryName;
-        readonly ISession _privateSession;
+         ISession _privateSession;
 
         /// <summary>
         /// Default Constructor.
@@ -49,9 +50,6 @@ namespace NCommon.Data.NHibernate
         /// </summary>
         protected virtual void Initialize()
         {
-            if (ServiceLocatorWorker == null)
-                return;
-
             var sessions = ServiceLocatorWorker.GetAllInstances<ISession>();
             if (sessions != null && sessions.Count() > 0)
                 _privateSession = sessions.FirstOrDefault();
