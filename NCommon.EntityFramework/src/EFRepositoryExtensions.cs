@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using NCommon.Expressions;
+using NCommon.ObjectAccess;
 
 namespace NCommon.Data.EntityFramework
 {

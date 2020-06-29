@@ -14,6 +14,7 @@
 //limitations under the License. 
 #endregion
 
+using NCommon.DataServices.Transactions;
 using System;
 using System.Data.Objects;
 

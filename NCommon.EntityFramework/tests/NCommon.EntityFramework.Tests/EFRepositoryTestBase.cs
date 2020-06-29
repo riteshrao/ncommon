@@ -1,6 +1,6 @@
 using System;
 using System.Data.Objects;
-
+using CommonServiceLocator;
 using NCommon.Data.EntityFramework.Tests.HRDomain;
 using NCommon.Data.EntityFramework.Tests.OrdersDomain;
 using NCommon.StateStorage;

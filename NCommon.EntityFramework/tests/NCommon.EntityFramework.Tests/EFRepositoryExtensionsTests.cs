@@ -1,5 +1,7 @@
 
+using CommonServiceLocator;
 using NCommon.Data.EntityFramework.Tests.OrdersDomain;
+using NCommon.ObjectAccess;
 using NUnit.Framework;
 using Rhino.Mocks;
 

@@ -34,7 +34,7 @@ namespace NCommon.Data.EntityFramework
     /// </summary>
     public class EFRepository<TEntity> : RepositoryBase<TEntity> where TEntity : class
     {
-        readonly IEFSession _privateSession;
+         IEFSession _privateSession;
         readonly List<string> _includes = new List<string>();
 
         /// <summary>
@@ -51,8 +51,6 @@ namespace NCommon.Data.EntityFramework
         /// </summary>
         protected virtual void Initialize()
         {
-             if (ServiceLocatorWorker == null) 
-                return;
 
             var sessions = ServiceLocatorWorker.GetAllInstances<IEFSession>();
             if (sessions != null && sessions.Count() > 0)

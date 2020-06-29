@@ -17,6 +17,9 @@
 using System;
 using System.Data.Objects;
 using NCommon.Configuration;
+using NCommon.DataServices.Transactions;
+using NCommon.DependencyInjection;
+using NCommon.ObjectAccess;
 
 namespace NCommon.Data.EntityFramework
 {
