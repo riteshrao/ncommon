@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using NCommon.Data.LinqToSql.Tests.HRDomain;
-using NCommon.Data.LinqToSql.Tests.OrdersDomain;
+using NCommon.LinqToSql.Tests.HRDomain;
+using NCommon.LinqToSql.Tests.OrdersDomain;
 
-namespace NCommon.Data.LinqToSql.Tests
+namespace NCommon.LinqToSql.Tests
 {
     public class LinqToSqlTestDataActions
     {

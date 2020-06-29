@@ -1,10 +1,10 @@
 using System;
 using System.Configuration;
-using NCommon.Data.LinqToSql.Tests.HRDomain;
-using NCommon.Data.LinqToSql.Tests.OrdersDomain;
+using NCommon.LinqToSql.Tests.HRDomain;
+using NCommon.LinqToSql.Tests.OrdersDomain;
 using NUnit.Framework;
 
-namespace NCommon.Data.LinqToSql.Tests
+namespace NCommon.LinqToSql.Tests
 {
     public class LinqToSqlResolverTests
     {

@@ -5,6 +5,7 @@ using NCommon.DataServices.Transactions;
 using NCommon.Data.EntityFramework;
 using NUnit.Framework;
 using Rhino.Mocks;
+using CommonServiceLocator;
 
 namespace NCommon.ContainerAdapters.Tests.Autofac
 {

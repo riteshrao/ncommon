@@ -3,7 +3,7 @@ using System.Data.Linq;
 using Microsoft.Practices.Unity;
 using NCommon.ContainerAdapter.Unity;
 using NCommon.DataServices.Transactions;
-using NCommon.Data.LinqToSql;
+using NCommon.LinqToSql;
 using NUnit.Framework;
 using Rhino.Mocks;
 

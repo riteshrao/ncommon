@@ -6,6 +6,7 @@ using NCommon.Data.EntityFramework;
 using NUnit.Framework;
 using Rhino.Mocks;
 using StructureMap;
+using CommonServiceLocator;
 
 namespace NCommon.ContainerAdapters.Tests.StructureMap
 {

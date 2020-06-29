@@ -1,10 +1,12 @@
 using System.Linq;
-using NCommon.Data.LinqToSql.Tests.OrdersDomain;
+using NCommon.LinqToSql.Tests.OrdersDomain;
 using NCommon.Extensions;
 using NUnit.Framework;
 using Rhino.Mocks;
+using NCommon.ObjectAccess;
+using NCommon.DataServices.Transactions;
 
-namespace NCommon.Data.LinqToSql.Tests
+namespace NCommon.LinqToSql.Tests
 {
     [TestFixture]
     public class LinqToSqlRepositoryEagerFetchingTests : LinqToSqlRepositoryTestBase

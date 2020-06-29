@@ -1,9 +1,9 @@
 using System.Data.Linq;
 using Castle.Windsor;
-
+using CommonServiceLocator;
 using NCommon.ContainerAdapter.CastleWindsor;
 using NCommon.DataServices.Transactions;
-using NCommon.Data.LinqToSql;
+using NCommon.LinqToSql;
 using NUnit.Framework;
 using Rhino.Mocks;
 

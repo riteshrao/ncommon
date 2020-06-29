@@ -17,7 +17,7 @@
 using System;
 using System.Data.Linq;
 
-namespace NCommon.Data.LinqToSql
+namespace NCommon.LinqToSql
 {
     /// <summary>
     /// Interface implemented by a custom resolver for Entity Framework that resolves <see cref="DataContext"/>

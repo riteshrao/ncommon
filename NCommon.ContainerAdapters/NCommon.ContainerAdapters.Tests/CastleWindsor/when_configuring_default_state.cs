@@ -83,7 +83,7 @@ namespace NCommon.ContainerAdapters.Tests.CastleWindsor
         {
             var state = _container.Resolve<IState>();
             Assert.That(state, Is.Not.Null);
-            Assert.That(state, Is.TypeOf<State.Impl.State>());
+            Assert.That(state, Is.TypeOf<State>());
         }
     }
 }

@@ -1,8 +1,9 @@
+using NCommon.ObjectAccess;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace NCommon.Data.LinqToSql
+namespace NCommon.LinqToSql
 {
     public static class LinqToSqlRepositoryExtensions
     {

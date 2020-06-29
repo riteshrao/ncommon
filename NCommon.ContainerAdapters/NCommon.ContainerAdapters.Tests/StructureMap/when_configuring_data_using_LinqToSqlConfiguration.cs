@@ -1,8 +1,8 @@
 using System.Data.Linq;
-
+using CommonServiceLocator;
 using NCommon.ContainerAdapter.StructureMap;
 using NCommon.DataServices.Transactions;
-using NCommon.Data.LinqToSql;
+using NCommon.LinqToSql;
 using NUnit.Framework;
 using Rhino.Mocks;
 using StructureMap;

@@ -19,7 +19,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.Linq;
 
-namespace NCommon.Data.LinqToSql
+namespace NCommon.LinqToSql
 {
     /// <summary>
     /// Defines an interface that wraps a <see cref="DataContext"/> instance.

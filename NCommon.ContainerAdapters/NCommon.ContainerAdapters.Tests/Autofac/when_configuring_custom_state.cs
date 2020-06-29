@@ -30,7 +30,7 @@ namespace NCommon.ContainerAdapters.Tests.Autofac
         {
             var context = _container.Resolve<IContext>();
             Assert.That(context, Is.Not.Null);
-            Assert.That(context, Is.TypeOf<Context.Impl.Context>());
+            Assert.That(context, Is.TypeOf<Context>());
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace NCommon.ContainerAdapters.Tests.Autofac
         {
             var state = _container.Resolve<IState>();
             Assert.That(state, Is.Not.Null);
-            Assert.That(state, Is.TypeOf<State.Impl.State>());
+            Assert.That(state, Is.TypeOf<State>());
         }
     }
 }

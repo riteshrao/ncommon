@@ -14,10 +14,11 @@
 //limitations under the License. 
 #endregion
 
+using NCommon.DataServices.Transactions;
 using System;
 using System.Data.Linq;
 
-namespace NCommon.Data.LinqToSql
+namespace NCommon.LinqToSql
 {
     /// <summary>
     /// Implements the <see cref="IUnitOfWorkFactory"/> interface to provide an implementation of a factory

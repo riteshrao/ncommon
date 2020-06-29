@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="DevelopmentDB" Class="OrdersDataDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=(local);Initial Catalog=DevelopmentDB;Integrated Security=True" SettingsObjectName="NCommon.Data.LinqToSql.Tests.OrdersDomain.Properties.Settings" SettingsPropertyName="DevelopmentDBConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(local);Initial Catalog=DevelopmentDB;Integrated Security=True" SettingsObjectName="NCommon.LinqToSql.Tests.OrdersDomain.Properties.Settings" SettingsPropertyName="DevelopmentDBConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Customers" Member="Customers">
     <Type Name="Customer">
       <Column Name="CustomerID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" UpdateCheck="Never" />

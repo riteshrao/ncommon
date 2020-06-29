@@ -1,4 +1,6 @@
-namespace NCommon.Data.LinqToSql
+using NCommon.ObjectAccess;
+
+namespace NCommon.LinqToSql
 {
     public class LinqToSqlFetchingRepository<TEntity, TRelated> : RepositoryWrapperBase<LinqToSqlRepository<TEntity>, TEntity>, ILinqToSqlFetchingRepository<TEntity, TRelated> where TEntity : class
     {

@@ -2,7 +2,7 @@ using Autofac;
 
 using NCommon.ContainerAdapter.Autofac;
 using NCommon.DataServices.Transactions;
-using NCommon.Data.LinqToSql;
+using NCommon.LinqToSql;
 using NUnit.Framework;
 using Rhino.Mocks;
 

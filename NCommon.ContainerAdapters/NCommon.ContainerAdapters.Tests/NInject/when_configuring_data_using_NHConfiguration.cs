@@ -6,6 +6,7 @@ using NHibernate;
 using Ninject;
 using NUnit.Framework;
 using Rhino.Mocks;
+using CommonServiceLocator;
 
 namespace NCommon.ContainerAdapters.Tests.Ninject
 {

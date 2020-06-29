@@ -2,7 +2,7 @@ using System.Data.Linq;
 
 using NCommon.ContainerAdapter.Ninject;
 using NCommon.DataServices.Transactions;
-using NCommon.Data.LinqToSql;
+using NCommon.LinqToSql;
 using Ninject;
 using NUnit.Framework;
 using Rhino.Mocks;

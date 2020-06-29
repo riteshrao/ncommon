@@ -18,10 +18,11 @@ using System;
 using System.Data.Linq;
 using System.Linq;
 using System.Linq.Expressions;
+using NCommon.DependencyInjection;
 using NCommon.Extensions;
 using NCommon.ObjectAccess;
 
-namespace NCommon.Data.LinqToSql
+namespace NCommon.LinqToSql
 {
     /// <summary>
     /// Inherits from the <see cref="RepositoryBase{TEntity}"/> class to provide an implementation of a
@@ -29,7 +30,7 @@ namespace NCommon.Data.LinqToSql
     /// </summary>
     public class LinqToSqlRepository<TEntity> : RepositoryBase<TEntity> where TEntity : class
     {
-        readonly ILinqToSqlSession _privateSession;
+         ILinqToSqlSession _privateSession;
         readonly DataLoadOptions _loadOptions = new DataLoadOptions();
 
         /// <summary>
@@ -46,8 +47,6 @@ namespace NCommon.Data.LinqToSql
         /// </summary>
         protected virtual void Initialize()
         {
-            if (ServiceLocatorWorker == null)
-                return;
 
             var sessions = ServiceLocatorWorker.GetAllInstances<ILinqToSqlSession>();
             if (sessions != null && sessions.Count() > 0)

@@ -4,7 +4,7 @@ using System.Data.Linq;
 using System.Transactions;
 using NCommon.Extensions;
 
-namespace NCommon.Data.LinqToSql.Tests
+namespace NCommon.LinqToSql.Tests
 {
     public class LinqToSqlTestData : IDisposable
     {

@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NCommon.Data.LinqToSql.Tests.HRDomain
+namespace NCommon.LinqToSql.Tests.HRDomain
 {
 	using System.Data.Linq;
 	using System.Data.Linq.Mapping;
@@ -42,7 +42,7 @@ namespace NCommon.Data.LinqToSql.Tests.HRDomain
     #endregion
 		
 		public HRDataDataContext() : 
-				base(global::NCommon.Data.LinqToSql.Tests.HRDomain.Properties.Settings.Default.DevelopmentDBConnectionString, mappingSource)
+				base(global::NCommon.LinqToSql.Tests.HRDomain.Properties.Settings.Default.DevelopmentDBConnectionString, mappingSource)
 		{
 			OnCreated();
 		}

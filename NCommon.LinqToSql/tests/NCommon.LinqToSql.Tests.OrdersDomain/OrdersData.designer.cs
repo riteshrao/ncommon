@@ -9,7 +9,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NCommon.Data.LinqToSql.Tests.OrdersDomain
+namespace NCommon.LinqToSql.Tests.OrdersDomain
 {
 	using System.Data.Linq;
 	using System.Data.Linq.Mapping;
@@ -48,7 +48,7 @@ namespace NCommon.Data.LinqToSql.Tests.OrdersDomain
     #endregion
 		
 		public OrdersDataDataContext() : 
-				base(global::NCommon.Data.LinqToSql.Tests.OrdersDomain.Properties.Settings.Default.DevelopmentDBConnectionString, mappingSource)
+				base(global::NCommon.LinqToSql.Tests.OrdersDomain.Properties.Settings.Default.DevelopmentDBConnectionString, mappingSource)
 		{
 			OnCreated();
 		}

@@ -1,11 +1,12 @@
 using System;
 using System.Data.Linq;
 using System.Linq;
-using NCommon.Data.LinqToSql.Tests.HRDomain;
-using NCommon.Data.LinqToSql.Tests.OrdersDomain;
+using NCommon.DataServices.Transactions;
+using NCommon.LinqToSql.Tests.HRDomain;
+using NCommon.LinqToSql.Tests.OrdersDomain;
 using NUnit.Framework;
 
-namespace NCommon.Data.LinqToSql.Tests
+namespace NCommon.LinqToSql.Tests
 {
     [TestFixture]
     public class LinqToSqlRepositoryTransactionTests : LinqToSqlRepositoryTestBase

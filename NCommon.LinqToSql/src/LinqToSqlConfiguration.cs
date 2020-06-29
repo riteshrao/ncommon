@@ -17,8 +17,11 @@
 using System;
 using System.Data.Linq;
 using NCommon.Configuration;
+using NCommon.DataServices.Transactions;
+using NCommon.DependencyInjection;
+using NCommon.ObjectAccess;
 
-namespace NCommon.Data.LinqToSql
+namespace NCommon.LinqToSql
 {
     /// <summary>
     /// Implementatio of <see cref="IDataConfiguration"/> that configured NCommon to use Linq To Sql

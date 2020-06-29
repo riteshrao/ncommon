@@ -19,7 +19,7 @@ using System.Data;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace NCommon.Data.LinqToSql.Tests
+namespace NCommon.LinqToSql.Tests
 {
     /// <summary>
     /// Tests the <see cref="LinqToSqlUnitOfWork"/> class.

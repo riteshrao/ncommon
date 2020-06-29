@@ -6,6 +6,7 @@ using NCommon.Data.NHibernate;
 using NHibernate;
 using NUnit.Framework;
 using Rhino.Mocks;
+using CommonServiceLocator;
 
 namespace NCommon.ContainerAdapters.Tests.Unity
 {

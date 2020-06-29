@@ -70,7 +70,7 @@ namespace NCommon.ContainerAdapters.Tests.StructureMap
         {
             var state = _container.GetInstance<IState>();
             Assert.That(state, Is.Not.Null);
-            Assert.That(state, Is.TypeOf<State.Impl.State>());
+            Assert.That(state, Is.TypeOf<State>());
         }
     }
 }

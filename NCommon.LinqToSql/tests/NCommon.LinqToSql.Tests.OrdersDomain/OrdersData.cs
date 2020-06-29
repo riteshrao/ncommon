@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace NCommon.Data.LinqToSql.Tests.OrdersDomain
+namespace NCommon.LinqToSql.Tests.OrdersDomain
 {
     partial class Order
     {

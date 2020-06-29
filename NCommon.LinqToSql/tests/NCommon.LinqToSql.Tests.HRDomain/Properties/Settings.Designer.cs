@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NCommon.Data.LinqToSql.Tests.HRDomain.Properties {
+namespace NCommon.LinqToSql.Tests.HRDomain.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

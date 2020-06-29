@@ -17,11 +17,11 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Linq;
-using NCommon.Data.LinqToSql.Tests.OrdersDomain;
+using NCommon.LinqToSql.Tests.OrdersDomain;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace NCommon.Data.LinqToSql.Tests
+namespace NCommon.LinqToSql.Tests
 {
     /// <summary>
     /// Tests the <see cref="LinqToSqlUnitOfWorkFactory"/> class.

@@ -2,14 +2,15 @@ using System;
 using System.Configuration;
 using System.Data.Linq;
 using CommonServiceLocator;
-using NCommon.Data.LinqToSql.Tests.HRDomain;
-using NCommon.Data.LinqToSql.Tests.OrdersDomain;
+using NCommon.DataServices.Transactions;
+using NCommon.LinqToSql.Tests.HRDomain;
+using NCommon.LinqToSql.Tests.OrdersDomain;
 using NCommon.StateStorage;
 using NCommon.Testing;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace NCommon.Data.LinqToSql.Tests
+namespace NCommon.LinqToSql.Tests
 {
     public abstract class LinqToSqlRepositoryTestBase
     {

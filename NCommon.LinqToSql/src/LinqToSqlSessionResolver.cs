@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Data.Linq;
 using NCommon.Extensions;
 
-namespace NCommon.Data.LinqToSql
+namespace NCommon.LinqToSql
 {
     public class LinqToSqlSessionResolver : ILinqToSqlSessionResolver
     {

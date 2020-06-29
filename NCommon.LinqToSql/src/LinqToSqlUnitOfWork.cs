@@ -17,9 +17,10 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Linq;
+using NCommon.DataServices.Transactions;
 using NCommon.Extensions;
 
-namespace NCommon.Data.LinqToSql
+namespace NCommon.LinqToSql
 {
     /// <summary>
     /// Implements the <see cref="IUnitOfWork"/> interface to provide an implementation
