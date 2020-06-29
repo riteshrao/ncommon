@@ -1,7 +1,7 @@
 using System;
 using System.Configuration;
 using System.Data.Linq;
-
+using CommonServiceLocator;
 using NCommon.Data.LinqToSql.Tests.HRDomain;
 using NCommon.Data.LinqToSql.Tests.OrdersDomain;
 using NCommon.StateStorage;

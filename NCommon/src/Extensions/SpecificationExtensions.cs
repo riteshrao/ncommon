@@ -2,7 +2,6 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
-using NCommon.Core;
 
 namespace NCommon.Extensions
 {

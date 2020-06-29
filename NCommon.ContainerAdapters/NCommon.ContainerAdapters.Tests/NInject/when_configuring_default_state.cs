@@ -2,7 +2,7 @@ using NCommon.Configuration;
 using NCommon.ContainerAdapter.Ninject;
 using NCommon;
 using NCommon.StateStorage;
-using NCommon.State.Impl;
+using NCommon.StateStorage;
 using Ninject;
 using NUnit.Framework;
 

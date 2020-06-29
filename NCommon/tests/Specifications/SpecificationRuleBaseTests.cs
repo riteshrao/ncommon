@@ -20,7 +20,7 @@ using System;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace NCommon.Rules.Tests
+namespace NCommon.Validation.Tests
 {
     /// <summary>
     /// Tests the <see cref="SpecificationRuleBase{TEntity}"/> base class.

@@ -1,7 +1,7 @@
 using System;
 using System.Threading;
 using System.Web;
-using NCommon.State.Impl;
+using NCommon.StateStorage;
 using NUnit.Framework;
 
 namespace NCommon.Tests.State

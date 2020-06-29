@@ -106,7 +106,7 @@ namespace NCommon.Configuration
             else
                 containerAdapter.RegisterSingleton<IApplicationState, ApplicationState>();
 
-            containerAdapter.Register<IState, State.Impl.State>();
+            containerAdapter.Register<IState, State>();
         }
     }
 }

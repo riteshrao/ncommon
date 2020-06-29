@@ -1,4 +1,4 @@
-using NCommon.State.Impl;
+using NCommon.StateStorage;
 using NUnit.Framework;
 
 namespace NCommon.Tests.State

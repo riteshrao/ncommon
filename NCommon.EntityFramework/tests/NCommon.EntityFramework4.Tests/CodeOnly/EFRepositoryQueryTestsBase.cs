@@ -8,6 +8,7 @@ using NCommon.StateStorage;
 using NCommon.Testing;
 using NUnit.Framework;
 using Rhino.Mocks;
+using CommonServiceLocator;
 
 namespace NCommon.EntityFramework4.Tests.CodeOnly
 {

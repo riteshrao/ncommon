@@ -34,7 +34,7 @@ namespace NCommon.Testing
         public static void Using(IServiceLocator mockLocator)
         {
             mockLocator.Stub(x => x.GetInstance<IState>()).Return(new FakeState());
-            UnitOfWorkManager.SetTransactionManagerProvider(() => MockRepository.GenerateStub<ITransactionManager>());
+            UnitOfWorkManager.SetTransactionManagerProvider(() => MockRepository.GenerateStub<IUnitOfWorkTransactionManager>());
         }
     }
 }

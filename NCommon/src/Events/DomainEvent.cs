@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NCommon.DependencyInjection;
 using NCommon.Extensions;
 using NCommon.StateStorage;
 

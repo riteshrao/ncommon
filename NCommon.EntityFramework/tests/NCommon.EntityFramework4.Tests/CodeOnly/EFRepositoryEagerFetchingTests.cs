@@ -5,6 +5,7 @@ using NCommon.EntityFramework4.Tests.Models;
 using NCommon.Extensions;
 using NUnit.Framework;
 using Rhino.Mocks;
+using NCommon.ObjectAccess;
 
 namespace NCommon.EntityFramework4.Tests.CodeOnly
 {

@@ -44,7 +44,7 @@ namespace NCommon.Configuration
         /// </summary>
         void InitializeDefaults()
         {
-            _containerAdapter.Register<IContext, Context.Impl.Context>();
+            _containerAdapter.Register<IContext, Context>();
         }
 
         /// <summary>

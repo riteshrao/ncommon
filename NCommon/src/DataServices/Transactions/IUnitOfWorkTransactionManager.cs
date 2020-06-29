@@ -21,7 +21,7 @@ namespace NCommon.DataServices.Transactions
     /// <summary>
     /// Implemented by a transaction manager that manages unit of work transactions.
     /// </summary>
-    public interface ITransactionManager : IDisposable
+    public interface IUnitOfWorkTransactionManager : IDisposable
     {
         /// <summary>
         /// Returns the current <see cref="IUnitOfWork"/>.

@@ -5,7 +5,7 @@ using Rhino.Mocks;
 
 namespace NCommon.Tests.Data
 {
-    public class FakeTransactionManager : ITransactionManager
+    public class FakeTransactionManager : IUnitOfWorkTransactionManager
     {
         readonly IDictionary<Guid, int> _comittedScopes = new Dictionary<Guid, int>();
         readonly IDictionary<Guid, int> _rolledbackScopes = new Dictionary<Guid, int>();

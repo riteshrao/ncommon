@@ -3,6 +3,7 @@ using System.Data.Linq;
 using System.Linq;
 using NCommon.Data.LinqToSql.Tests.HRDomain;
 using NCommon.Data.LinqToSql.Tests.OrdersDomain;
+using NCommon.DataServices.Transactions;
 using NCommon.Extensions;
 
 using NUnit.Framework;

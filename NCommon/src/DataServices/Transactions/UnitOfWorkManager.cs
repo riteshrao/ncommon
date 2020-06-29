@@ -22,22 +22,22 @@ using NCommon.StateStorage;
 namespace NCommon.DataServices.Transactions
 {
     ///<summary>
-    /// Gets an instances of <see cref="ITransactionManager"/>.
+    /// Gets an instances of <see cref="IUnitOfWorkTransactionManager"/>.
     ///</summary>
     public static class UnitOfWorkManager
     {
-        static Func<ITransactionManager> _provider;
+        static Func<IUnitOfWorkTransactionManager> _provider;
         static readonly ILog Logger = LogManager.GetLogger(typeof(UnitOfWorkManager));
         private const string LocalTransactionManagerKey = "UnitOfWorkManager.LocalTransactionManager";
-        static readonly Func<ITransactionManager> DefaultTransactionManager = () =>
+        static readonly Func<IUnitOfWorkTransactionManager> DefaultTransactionManager = () =>
         {
             Logger.Debug(x => x("Using default UnitOfWorkManager provider to resolve current transaction manager."));
             var state = ServiceLocatorWorker.GetInstance<IState>();
-            var transactionManager = state.Local.Get<ITransactionManager>(LocalTransactionManagerKey);
+            var transactionManager = state.Local.Get<IUnitOfWorkTransactionManager>(LocalTransactionManagerKey);
             if (transactionManager == null)
             {
                 Logger.Debug(x => x("No valid ITransactionManager found in Local state. Creating a new TransactionManager."));
-                transactionManager = new TransactionManager();
+                transactionManager = new UnitOfWorkTransactionManager();
                 state.Local.Put(LocalTransactionManagerKey, transactionManager);
             }
             return transactionManager;
@@ -53,11 +53,11 @@ namespace NCommon.DataServices.Transactions
         }
 
         ///<summary>
-        /// Sets a <see cref="Func{T}"/> of <see cref="ITransactionManager"/> that the 
-        /// <see cref="UnitOfWorkManager"/> uses to get an instance of <see cref="ITransactionManager"/>
+        /// Sets a <see cref="Func{T}"/> of <see cref="IUnitOfWorkTransactionManager"/> that the 
+        /// <see cref="UnitOfWorkManager"/> uses to get an instance of <see cref="IUnitOfWorkTransactionManager"/>
         ///</summary>
         ///<param name="provider"></param>
-        public static void SetTransactionManagerProvider(Func<ITransactionManager> provider)
+        public static void SetTransactionManagerProvider(Func<IUnitOfWorkTransactionManager> provider)
         {
             if (provider == null)
             {
@@ -72,9 +72,9 @@ namespace NCommon.DataServices.Transactions
         }
 
         /// <summary>
-        /// Gets the current <see cref="ITransactionManager"/>.
+        /// Gets the current <see cref="IUnitOfWorkTransactionManager"/>.
         /// </summary>
-        public static ITransactionManager CurrentTransactionManager
+        public static IUnitOfWorkTransactionManager CurrentTransactionManager
         {
             get
             {

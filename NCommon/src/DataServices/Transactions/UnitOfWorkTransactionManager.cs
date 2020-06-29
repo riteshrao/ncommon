@@ -17,25 +17,26 @@
 using System;
 using System.Collections.Generic;
 using Common.Logging;
+using NCommon.DependencyInjection;
 using NCommon.Extensions;
 
 namespace NCommon.DataServices.Transactions
 {
     /// <summary>
-    /// Default implementation of <see cref="ITransactionManager"/> interface.
+    /// Default implementation of <see cref="IUnitOfWorkTransactionManager"/> interface.
     /// </summary>
-    public class TransactionManager : ITransactionManager, IDisposable
+    public class UnitOfWorkTransactionManager : IUnitOfWorkTransactionManager, IDisposable
     {
         bool _disposed;
         readonly Guid _transactionManagerId = Guid.NewGuid();
-        readonly ILog _logger = LogManager.GetLogger<TransactionManager>();
+        readonly ILog _logger = LogManager.GetLogger<UnitOfWorkTransactionManager>();
         readonly LinkedList<UnitOfWorkTransaction> _transactions = new LinkedList<UnitOfWorkTransaction>();
 
         /// <summary>
         /// Default Constructor.
-        /// Creates a new instance of the <see cref="TransactionManager"/> class.
+        /// Creates a new instance of the <see cref="UnitOfWorkTransactionManager"/> class.
         /// </summary>
-        public TransactionManager()
+        public UnitOfWorkTransactionManager()
         {
             _logger.Debug(x => x("New instance of TransactionManager with Id {0} created.", _transactionManagerId));
         }

@@ -14,6 +14,8 @@
 //limitations under the License. 
 #endregion
 
+using NCommon.DependencyInjection;
+
 namespace NCommon.Configuration
 {
     /// <summary>

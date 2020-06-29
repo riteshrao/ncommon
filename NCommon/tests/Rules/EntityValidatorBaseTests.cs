@@ -20,7 +20,7 @@ using NCommon.Extensions;
 using NUnit.Framework;
 using Rhino.Mocks;
 
-namespace NCommon.Rules.Tests
+namespace NCommon.Validation.Tests
 {
     /// <summary>
     /// Tests the <see cref="EntityValidatorBase{TEntity}"/>

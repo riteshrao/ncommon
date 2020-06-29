@@ -13,7 +13,7 @@ namespace NCommon.Tests.Data
         [Test]
         public void CurrentUnitOfWork_returns_null_with_no_enlisted_scope()
         {
-            using (var txManager = new TransactionManager())
+            using (var txManager = new UnitOfWorkTransactionManager())
             {
                 Assert.That(txManager.CurrentUnitOfWork, Is.Null);    
             }
@@ -22,7 +22,7 @@ namespace NCommon.Tests.Data
         [Test]
         public void CurrentTransaction_returns_null_with_no_enlisted_scope()
         {
-            using (var txManager = new TransactionManager())
+            using (var txManager = new UnitOfWorkTransactionManager())
             {
                 Assert.That(txManager.CurrentTransaction, Is.Null);
             }
@@ -37,7 +37,7 @@ namespace NCommon.Tests.Data
                 .Do((Func<IUnitOfWork>) (() => MockRepository.GenerateStub<IUnitOfWork>()));
             locator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(uowFactory);
             ServiceLocator.SetLocatorProvider(() => locator);
-            using (var txManager = new TransactionManager())
+            using (var txManager = new UnitOfWorkTransactionManager())
             {
                 txManager.EnlistScope(MockRepository.GenerateStub<IUnitOfWorkScope>(), TransactionMode.Default);
                 Assert.That(txManager.CurrentUnitOfWork, Is.Not.Null);
@@ -54,7 +54,7 @@ namespace NCommon.Tests.Data
                 .Do((Func<IUnitOfWork>)(() => MockRepository.GenerateStub<IUnitOfWork>()));
             locator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(uowFactory);
             ServiceLocator.SetLocatorProvider(() => locator);
-            using (var txManager = new TransactionManager())
+            using (var txManager = new UnitOfWorkTransactionManager())
             {
                 txManager.EnlistScope(MockRepository.GenerateStub<IUnitOfWorkScope>(), TransactionMode.Default);
                 var currentUOW = txManager.CurrentUnitOfWork;
@@ -75,7 +75,7 @@ namespace NCommon.Tests.Data
                 .Do((Func<IUnitOfWork>)(() => MockRepository.GenerateStub<IUnitOfWork>()));
             locator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(uowFactory);
             ServiceLocator.SetLocatorProvider(() => locator);
-            using (var txManager = new TransactionManager())
+            using (var txManager = new UnitOfWorkTransactionManager())
             {
                 txManager.EnlistScope(MockRepository.GenerateStub<IUnitOfWorkScope>(), TransactionMode.Default);
                 var currentUOW = txManager.CurrentUnitOfWork;
@@ -96,7 +96,7 @@ namespace NCommon.Tests.Data
                 .Do((Func<IUnitOfWork>) (() => MockRepository.GenerateStub<IUnitOfWork>()));
             locator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(uowFactory);
             ServiceLocator.SetLocatorProvider(() => locator);
-            using (var txManager = new TransactionManager())
+            using (var txManager = new UnitOfWorkTransactionManager())
             {
                 txManager.EnlistScope(MockRepository.GenerateStub<IUnitOfWorkScope>(), TransactionMode.Default);
                 var parentUOW = txManager.CurrentUnitOfWork;
@@ -119,7 +119,7 @@ namespace NCommon.Tests.Data
             locator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(uowFactory);
             ServiceLocator.SetLocatorProvider(() => locator);
 
-            using (var txManager = new TransactionManager())
+            using (var txManager = new UnitOfWorkTransactionManager())
             {
                 var scope = MockRepository.GenerateStub<IUnitOfWorkScope>();
                 txManager.EnlistScope(scope, TransactionMode.Default);
@@ -144,7 +144,7 @@ namespace NCommon.Tests.Data
             locator.Stub(x => x.GetInstance<IUnitOfWorkFactory>()).Return(uowFactory);
             ServiceLocator.SetLocatorProvider(() => locator);
 
-            using (var txManager = new TransactionManager())
+            using (var txManager = new UnitOfWorkTransactionManager())
             {
                 var scope = MockRepository.GenerateStub<IUnitOfWorkScope>();
                 txManager.EnlistScope(scope, TransactionMode.Default);

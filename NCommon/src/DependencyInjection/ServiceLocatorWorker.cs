@@ -28,7 +28,7 @@ namespace NCommon.DependencyInjection
                 {
                     throw new ArgumentNullException(keyName, "keyName cannot be empty or null when attempting to acquire Service from an IOC Container.");
                 }
-                TService serv = GetInstance<TService>(ServiceLocatorWorker, keyName);
+                TService serv = GetInstance<TService>(ServiceLocator.Current, keyName);
                 if (serv != null)
                 {
                     return serv;
@@ -60,7 +60,7 @@ namespace NCommon.DependencyInjection
             try
             {
 
-                TService serv = GetInstance<TService>(ServiceLocatorWorker);
+                TService serv = GetInstance<TService>(ServiceLocator.Current);
                 if (serv != null)
                 {
                     return serv;
@@ -92,7 +92,7 @@ namespace NCommon.DependencyInjection
             try
             {
 
-                var serv = GetInstance(ServiceLocatorWorker, type);
+                var serv = GetInstance(ServiceLocator.Current, type);
 
                 if (serv != null)
                 {
@@ -259,7 +259,7 @@ namespace NCommon.DependencyInjection
             try
             {
 
-                var serv = GetAllInstances<TService>(ServiceLocatorWorker);
+                var serv = GetAllInstances<TService>(ServiceLocator.Current);
                 if (serv != null)
                 {
                     return serv;
@@ -358,7 +358,7 @@ namespace NCommon.DependencyInjection
             try
             {
 
-                var serv = GetAllInstances(ServiceLocatorWorker, type);
+                var serv = GetAllInstances(ServiceLocator.Current, type);
                 if (serv != null)
                 {
                     return serv;
