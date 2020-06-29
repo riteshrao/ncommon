@@ -1,6 +1,8 @@
 using System.Linq;
 using NCommon.Data.EntityFramework.Tests.OrdersDomain;
+using NCommon.DataServices.Transactions;
 using NCommon.Extensions;
+using NCommon.ObjectAccess;
 using NUnit.Framework;
 using Rhino.Mocks;
 
