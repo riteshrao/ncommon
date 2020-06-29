@@ -1,5 +1,5 @@
 using System;
-using NCommon.State;
+using NCommon.StateStorage;
 
 namespace NCommon.ContainerAdapters.Tests
 {

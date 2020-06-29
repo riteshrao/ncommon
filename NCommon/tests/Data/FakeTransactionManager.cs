@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using NCommon.Data;
+using NCommon.DataServices.Transactions;
 using Rhino.Mocks;
 
 namespace NCommon.Tests.Data

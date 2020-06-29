@@ -1,8 +1,8 @@
 using Autofac;
 using NCommon.Configuration;
 using NCommon.ContainerAdapter.Autofac;
-using NCommon.Context;
-using NCommon.State;
+using NCommon;
+using NCommon.StateStorage;
 using NUnit.Framework;
 
 namespace NCommon.ContainerAdapters.Tests.Autofac
@@ -16,7 +16,7 @@ namespace NCommon.ContainerAdapters.Tests.Autofac
         public void FixtureSetup()
         {
             var builder = new ContainerBuilder();
-            NCommon.Configure
+            NCommon.ConfigureNCommon
                 .Using(new AutofacContainerAdapter(builder))
                 .ConfigureState<DefaultStateConfiguration>(config => config.UseCustomApplicationStateOf<FakeApplicationState>()
                                                                          .UseCustomLocalStateOf<FakeLocalState>()

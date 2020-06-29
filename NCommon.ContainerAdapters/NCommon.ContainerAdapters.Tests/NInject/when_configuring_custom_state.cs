@@ -1,7 +1,7 @@
 using NCommon.Configuration;
 using NCommon.ContainerAdapter.Ninject;
-using NCommon.Context;
-using NCommon.State;
+using NCommon;
+using NCommon.StateStorage;
 using Ninject;
 using NUnit.Framework;
 
@@ -16,7 +16,7 @@ namespace NCommon.ContainerAdapters.Tests.Ninject
         public void FixtureSetup()
         {
             _kernel = new StandardKernel();
-            Configure
+            ConfigureNCommon
                 .Using(new NinjectContainerAdapter(_kernel))
                 .ConfigureState<DefaultStateConfiguration>(config => config
                                                                          .UseCustomApplicationStateOf

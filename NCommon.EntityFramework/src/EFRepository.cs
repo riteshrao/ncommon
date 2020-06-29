@@ -21,9 +21,10 @@ using System.Data.Objects.DataClasses;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using Microsoft.Practices.ServiceLocation;
+using NCommon.DependencyInjection;
 using NCommon.Expressions;
 using NCommon.Extensions;
+using NCommon.ObjectAccess;
 
 namespace NCommon.Data.EntityFramework
 {
@@ -50,10 +51,10 @@ namespace NCommon.Data.EntityFramework
         /// </summary>
         protected virtual void Initialize()
         {
-             if (ServiceLocator.Current == null) 
+             if (ServiceLocatorWorker == null) 
                 return;
 
-            var sessions = ServiceLocator.Current.GetAllInstances<IEFSession>();
+            var sessions = ServiceLocatorWorker.GetAllInstances<IEFSession>();
             if (sessions != null && sessions.Count() > 0)
                 _privateSession = sessions.First();
         }        

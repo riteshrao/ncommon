@@ -16,7 +16,7 @@
 
 using System;
 using System.Collections;
-using NCommon.State;
+using NCommon.StateStorage;
 
 namespace NCommon.Testing
 {

@@ -1,8 +1,8 @@
 using System.Data.Objects;
 using Castle.Windsor;
-using Microsoft.Practices.ServiceLocation;
+
 using NCommon.ContainerAdapter.CastleWindsor;
-using NCommon.Data;
+using NCommon.DataServices.Transactions;
 using NCommon.Data.EntityFramework;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -18,7 +18,7 @@ namespace NCommon.ContainerAdapters.Tests.CastleWindsor
         public void FixtureSetup()
         {
             _container = new WindsorContainer();
-            NCommon.Configure
+            NCommon.ConfigureNCommon
                 .Using(new WindsorContainerAdapter(_container))
                 .ConfigureData<EFConfiguration>();
             ServiceLocator.SetLocatorProvider(() => MockRepository.GenerateStub<IServiceLocator>());

@@ -8,15 +8,15 @@
 //------------------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
+using System.Data.EntityClient;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
-using System.Data.EntityClient;
-using System.ComponentModel;
-using System.Xml.Serialization;
+using System.Linq;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 [assembly: EdmSchemaAttribute()]
-
 namespace NCommon.Data.EntityFramework.Tests.HRDomain
 {
     #region Contexts
@@ -79,6 +79,7 @@ namespace NCommon.Data.EntityFramework.Tests.HRDomain
         private ObjectSet<SalesPerson> _SalesPersons;
 
         #endregion
+
         #region AddTo Methods
     
         /// <summary>
@@ -90,11 +91,11 @@ namespace NCommon.Data.EntityFramework.Tests.HRDomain
         }
 
         #endregion
+
     }
-    
 
     #endregion
-    
+
     #region Entities
     
     /// <summary>
@@ -119,6 +120,7 @@ namespace NCommon.Data.EntityFramework.Tests.HRDomain
         }
 
         #endregion
+
         #region Primitive Properties
     
         /// <summary>
@@ -245,9 +247,11 @@ namespace NCommon.Data.EntityFramework.Tests.HRDomain
         partial void OnSalesYTDChanged();
 
         #endregion
+
     
     }
 
     #endregion
+
     
 }

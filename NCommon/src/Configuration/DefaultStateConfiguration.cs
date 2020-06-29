@@ -15,8 +15,8 @@
 #endregion
 
 using System;
-using NCommon.State;
-using NCommon.State.Impl;
+using NCommon.DependencyInjection;
+using NCommon.StateStorage;
 
 namespace NCommon.Configuration
 {

@@ -1,9 +1,8 @@
 using Microsoft.Practices.Unity;
 using NCommon.Configuration;
 using NCommon.ContainerAdapter.Unity;
-using NCommon.Context;
-using NCommon.State;
-using NCommon.State.Impl;
+using NCommon;
+using NCommon.StateStorage;
 using NUnit.Framework;
 
 namespace NCommon.ContainerAdapters.Tests.Unity
@@ -17,7 +16,7 @@ namespace NCommon.ContainerAdapters.Tests.Unity
         public void FixtureSetup()
         {
             _container = new UnityContainer();
-            Configure
+            ConfigureNCommon
                 .Using(new UnityContainerAdapter(_container))
                 .ConfigureState<DefaultStateConfiguration>();
         }

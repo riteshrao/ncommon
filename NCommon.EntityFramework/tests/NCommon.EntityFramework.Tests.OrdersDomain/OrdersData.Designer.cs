@@ -8,12 +8,13 @@
 //------------------------------------------------------------------------------
 
 using System;
+using System.ComponentModel;
+using System.Data.EntityClient;
 using System.Data.Objects;
 using System.Data.Objects.DataClasses;
-using System.Data.EntityClient;
-using System.ComponentModel;
-using System.Xml.Serialization;
+using System.Linq;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 [assembly: EdmSchemaAttribute()]
 #region EDM Relationship Metadata
@@ -150,6 +151,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
         private ObjectSet<Product> _Products;
 
         #endregion
+
         #region AddTo Methods
     
         /// <summary>
@@ -193,11 +195,11 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
         }
 
         #endregion
+
     }
-    
 
     #endregion
-    
+
     #region Entities
     
     /// <summary>
@@ -222,7 +224,8 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
         }
 
         #endregion
-        #region Primitive Properties
+
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -241,7 +244,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
                 {
                     OnCustomerIDChanging(value);
                     ReportPropertyChanging("CustomerID");
-                    _CustomerID = StructuralObject.SetValidValue(value);
+                    _CustomerID = StructuralObject.SetValidValue(value, "CustomerID");
                     ReportPropertyChanged("CustomerID");
                     OnCustomerIDChanged();
                 }
@@ -266,7 +269,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
             {
                 OnStreetAddress1Changing(value);
                 ReportPropertyChanging("StreetAddress1");
-                _StreetAddress1 = StructuralObject.SetValidValue(value, true);
+                _StreetAddress1 = StructuralObject.SetValidValue(value, true, "StreetAddress1");
                 ReportPropertyChanged("StreetAddress1");
                 OnStreetAddress1Changed();
             }
@@ -290,7 +293,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
             {
                 OnStreetAddress2Changing(value);
                 ReportPropertyChanging("StreetAddress2");
-                _StreetAddress2 = StructuralObject.SetValidValue(value, true);
+                _StreetAddress2 = StructuralObject.SetValidValue(value, true, "StreetAddress2");
                 ReportPropertyChanged("StreetAddress2");
                 OnStreetAddress2Changed();
             }
@@ -314,7 +317,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
             {
                 OnCityChanging(value);
                 ReportPropertyChanging("City");
-                _City = StructuralObject.SetValidValue(value, true);
+                _City = StructuralObject.SetValidValue(value, true, "City");
                 ReportPropertyChanged("City");
                 OnCityChanged();
             }
@@ -338,7 +341,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
             {
                 OnStateChanging(value);
                 ReportPropertyChanging("State");
-                _State = StructuralObject.SetValidValue(value, true);
+                _State = StructuralObject.SetValidValue(value, true, "State");
                 ReportPropertyChanged("State");
                 OnStateChanged();
             }
@@ -362,7 +365,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
             {
                 OnZipCodeChanging(value);
                 ReportPropertyChanging("ZipCode");
-                _ZipCode = StructuralObject.SetValidValue(value, true);
+                _ZipCode = StructuralObject.SetValidValue(value, true, "ZipCode");
                 ReportPropertyChanged("ZipCode");
                 OnZipCodeChanged();
             }
@@ -386,7 +389,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
             {
                 OnFirstNameChanging(value);
                 ReportPropertyChanging("FirstName");
-                _FirstName = StructuralObject.SetValidValue(value, true);
+                _FirstName = StructuralObject.SetValidValue(value, true, "FirstName");
                 ReportPropertyChanged("FirstName");
                 OnFirstNameChanged();
             }
@@ -410,7 +413,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
             {
                 OnLastNameChanging(value);
                 ReportPropertyChanging("LastName");
-                _LastName = StructuralObject.SetValidValue(value, true);
+                _LastName = StructuralObject.SetValidValue(value, true, "LastName");
                 ReportPropertyChanged("LastName");
                 OnLastNameChanged();
             }
@@ -420,7 +423,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
         partial void OnLastNameChanged();
 
         #endregion
-    
+
         #region Navigation Properties
     
         /// <summary>
@@ -446,6 +449,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -474,7 +478,8 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
         }
 
         #endregion
-        #region Primitive Properties
+
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -493,7 +498,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
                 {
                     OnYearChanging(value);
                     ReportPropertyChanging("Year");
-                    _Year = StructuralObject.SetValidValue(value);
+                    _Year = StructuralObject.SetValidValue(value, "Year");
                     ReportPropertyChanged("Year");
                     OnYearChanged();
                 }
@@ -520,7 +525,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
                 {
                     OnMonthChanging(value);
                     ReportPropertyChanging("Month");
-                    _Month = StructuralObject.SetValidValue(value);
+                    _Month = StructuralObject.SetValidValue(value, "Month");
                     ReportPropertyChanged("Month");
                     OnMonthChanged();
                 }
@@ -547,7 +552,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
                 {
                     OnSalesPersonIdChanging(value);
                     ReportPropertyChanging("SalesPersonId");
-                    _SalesPersonId = StructuralObject.SetValidValue(value);
+                    _SalesPersonId = StructuralObject.SetValidValue(value, "SalesPersonId");
                     ReportPropertyChanged("SalesPersonId");
                     OnSalesPersonIdChanged();
                 }
@@ -572,7 +577,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
             {
                 OnAmountChanging(value);
                 ReportPropertyChanging("Amount");
-                _Amount = StructuralObject.SetValidValue(value);
+                _Amount = StructuralObject.SetValidValue(value, "Amount");
                 ReportPropertyChanged("Amount");
                 OnAmountChanged();
             }
@@ -596,7 +601,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
             {
                 OnCurrencyChanging(value);
                 ReportPropertyChanging("Currency");
-                _Currency = StructuralObject.SetValidValue(value, true);
+                _Currency = StructuralObject.SetValidValue(value, true, "Currency");
                 ReportPropertyChanged("Currency");
                 OnCurrencyChanged();
             }
@@ -620,7 +625,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
             {
                 OnSalesPersonFirstNameChanging(value);
                 ReportPropertyChanging("SalesPersonFirstName");
-                _SalesPersonFirstName = StructuralObject.SetValidValue(value, true);
+                _SalesPersonFirstName = StructuralObject.SetValidValue(value, true, "SalesPersonFirstName");
                 ReportPropertyChanged("SalesPersonFirstName");
                 OnSalesPersonFirstNameChanged();
             }
@@ -644,7 +649,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
             {
                 OnSalesPersonLastNameChanging(value);
                 ReportPropertyChanging("SalesPersonLastName");
-                _SalesPersonLastName = StructuralObject.SetValidValue(value, true);
+                _SalesPersonLastName = StructuralObject.SetValidValue(value, true, "SalesPersonLastName");
                 ReportPropertyChanged("SalesPersonLastName");
                 OnSalesPersonLastNameChanged();
             }
@@ -654,7 +659,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
         partial void OnSalesPersonLastNameChanged();
 
         #endregion
-    
+
     }
     
     /// <summary>
@@ -679,7 +684,8 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
         }
 
         #endregion
-        #region Primitive Properties
+
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -698,7 +704,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
                 {
                     OnOrderIDChanging(value);
                     ReportPropertyChanging("OrderID");
-                    _OrderID = StructuralObject.SetValidValue(value);
+                    _OrderID = StructuralObject.SetValidValue(value, "OrderID");
                     ReportPropertyChanged("OrderID");
                     OnOrderIDChanged();
                 }
@@ -723,7 +729,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
             {
                 OnOrderDateChanging(value);
                 ReportPropertyChanging("OrderDate");
-                _OrderDate = StructuralObject.SetValidValue(value);
+                _OrderDate = StructuralObject.SetValidValue(value, "OrderDate");
                 ReportPropertyChanged("OrderDate");
                 OnOrderDateChanged();
             }
@@ -747,7 +753,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
             {
                 OnShipDateChanging(value);
                 ReportPropertyChanging("ShipDate");
-                _ShipDate = StructuralObject.SetValidValue(value);
+                _ShipDate = StructuralObject.SetValidValue(value, "ShipDate");
                 ReportPropertyChanged("ShipDate");
                 OnShipDateChanged();
             }
@@ -757,7 +763,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
         partial void OnShipDateChanged();
 
         #endregion
-    
+
         #region Navigation Properties
     
         /// <summary>
@@ -821,6 +827,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -845,7 +852,8 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
         }
 
         #endregion
-        #region Primitive Properties
+
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -864,7 +872,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
                 {
                     OnOrderItemIDChanging(value);
                     ReportPropertyChanging("OrderItemID");
-                    _OrderItemID = StructuralObject.SetValidValue(value);
+                    _OrderItemID = StructuralObject.SetValidValue(value, "OrderItemID");
                     ReportPropertyChanged("OrderItemID");
                     OnOrderItemIDChanged();
                 }
@@ -889,7 +897,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
             {
                 OnPriceChanging(value);
                 ReportPropertyChanging("Price");
-                _Price = StructuralObject.SetValidValue(value);
+                _Price = StructuralObject.SetValidValue(value, "Price");
                 ReportPropertyChanged("Price");
                 OnPriceChanged();
             }
@@ -913,7 +921,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
             {
                 OnQuantityChanging(value);
                 ReportPropertyChanging("Quantity");
-                _Quantity = StructuralObject.SetValidValue(value);
+                _Quantity = StructuralObject.SetValidValue(value, "Quantity");
                 ReportPropertyChanged("Quantity");
                 OnQuantityChanged();
             }
@@ -937,7 +945,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
             {
                 OnStoreChanging(value);
                 ReportPropertyChanging("Store");
-                _Store = StructuralObject.SetValidValue(value, true);
+                _Store = StructuralObject.SetValidValue(value, true, "Store");
                 ReportPropertyChanged("Store");
                 OnStoreChanged();
             }
@@ -947,7 +955,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
         partial void OnStoreChanged();
 
         #endregion
-    
+
         #region Navigation Properties
     
         /// <summary>
@@ -1027,6 +1035,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
         }
 
         #endregion
+
     }
     
     /// <summary>
@@ -1051,7 +1060,8 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
         }
 
         #endregion
-        #region Primitive Properties
+
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1070,7 +1080,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
                 {
                     OnProductIDChanging(value);
                     ReportPropertyChanging("ProductID");
-                    _ProductID = StructuralObject.SetValidValue(value);
+                    _ProductID = StructuralObject.SetValidValue(value, "ProductID");
                     ReportPropertyChanged("ProductID");
                     OnProductIDChanged();
                 }
@@ -1095,7 +1105,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
             {
                 OnNameChanging(value);
                 ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, true);
+                _Name = StructuralObject.SetValidValue(value, true, "Name");
                 ReportPropertyChanged("Name");
                 OnNameChanged();
             }
@@ -1119,7 +1129,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
             {
                 OnDescriptionChanging(value);
                 ReportPropertyChanging("Description");
-                _Description = StructuralObject.SetValidValue(value, true);
+                _Description = StructuralObject.SetValidValue(value, true, "Description");
                 ReportPropertyChanged("Description");
                 OnDescriptionChanged();
             }
@@ -1129,7 +1139,7 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
         partial void OnDescriptionChanged();
 
         #endregion
-    
+
         #region Navigation Properties
     
         /// <summary>
@@ -1155,8 +1165,9 @@ namespace NCommon.Data.EntityFramework.Tests.OrdersDomain
         }
 
         #endregion
+
     }
 
     #endregion
-    
+
 }

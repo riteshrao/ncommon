@@ -1,27 +1,14 @@
-﻿#region license
-//Copyright 2010 Ritesh Rao 
-
-//Licensed under the Apache License, Version 2.0 (the "License"); 
-//you may not use this file except in compliance with the License. 
-//You may obtain a copy of the License at 
-
-//http://www.apache.org/licenses/LICENSE-2.0 
-
-//Unless required by applicable law or agreed to in writing, software 
-//distributed under the License is distributed on an "AS IS" BASIS, 
-//WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
-//See the License for the specific language governing permissions and 
-//limitations under the License. 
-#endregion
-
-using System;
+﻿using System;
+using System.Diagnostics;
+using System.Collections.Generic;
+using NCommon.Extensions;
 
 namespace NCommon
 {
     /// <summary>
     /// Provides utility methods to guard parameter and local variables.
     /// </summary>
-    public static class Guard
+    public class Guard
     {
         /// <summary>
         /// Throws an exception of type <typeparamref name="TException"/> with the specified message
@@ -33,7 +20,7 @@ namespace NCommon
         public static void Against<TException>(bool assertion, string message) where TException : Exception
         {
             if (assertion)
-                throw (TException) Activator.CreateInstance(typeof (TException), message);
+                throw (TException)Activator.CreateInstance(typeof(TException), message);
         }
 
         /// <summary>
@@ -47,7 +34,7 @@ namespace NCommon
         {
             //Execute the lambda and if it evaluates to true then throw the exception.
             if (assertion())
-                throw (TException) Activator.CreateInstance(typeof (TException), message);
+                throw (TException)Activator.CreateInstance(typeof(TException), message);
         }
 
         /// <summary>
@@ -71,7 +58,7 @@ namespace NCommon
         /// <param name="message">string. The exception message to throw.</param>
         public static void InheritsFrom<TBase>(Type type, string message)
         {
-            if (type.BaseType != typeof (TBase))
+            if (type.BaseType != typeof(TBase))
                 throw new InvalidOperationException(message);
         }
 
@@ -96,7 +83,7 @@ namespace NCommon
         /// <param name="message">string. The exception message to throw.</param>
         public static void Implements<TInterface>(Type type, string message)
         {
-            if (!typeof (TInterface).IsAssignableFrom(type))
+            if (!typeof(TInterface).IsAssignableFrom(type))
                 throw new InvalidOperationException(message);
         }
 
@@ -107,7 +94,7 @@ namespace NCommon
         /// <typeparam name="TType">The Type that the <paramref name="instance"/> is expected to be.</typeparam>
         /// <param name="instance">The object instance whose type is checked.</param>
         /// <param name="message">The message of the <see cref="InvalidOperationException"/> exception.</param>
-        public static void TypeOf<TType> (object instance, string message)
+        public static void TypeOf<TType>(object instance, string message)
         {
             if (!(instance is TType))
                 throw new InvalidOperationException(message);
@@ -123,7 +110,243 @@ namespace NCommon
         public static void IsEqual<TException>(object compare, object instance, string message) where TException : Exception
         {
             if (compare != instance)
-                throw (TException) Activator.CreateInstance(typeof (TException), message);
+                throw (TException)Activator.CreateInstance(typeof(TException), message);
+        }
+
+        [DebuggerStepThrough]
+        public static void IsNotEmpty(Guid argument, string argumentName)
+        {
+            IsNotEmpty(argument, argumentName, true);
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsNotEmpty(Guid argument, string argumentName, bool throwException)
+        {
+            if (argument == Guid.Empty)
+            {
+                if (throwException)
+                {
+                    throw new ArgumentException("\"{0}\" cannot be empty guid.".FormatWith(argumentName), argumentName);
+                }
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        [DebuggerStepThrough]
+        public static void IsNotEmpty(string argument, string argumentName)
+        {
+            IsNotEmpty(argument, argumentName, true);
+        }
+
+        [DebuggerStepThrough]
+        public static bool IsNotEmpty(string argument, string argumentName, bool throwException)
+        {
+            if (string.IsNullOrEmpty((argument ?? string.Empty).Trim()))
+            {
+                if (throwException)
+                {
+                    throw new ArgumentException("\"{0}\" cannot be blank.".FormatWith(argumentName), argumentName);
+                }
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        [DebuggerStepThrough]
+        public static void IsNotOutOfLength(string argument, int length, string argumentName)
+        {
+            if (argument.Trim().Length > length)
+            {
+                throw new ArgumentException("\"{0}\" cannot be more than {1} character.".FormatWith(argumentName, length), argumentName);
+            }
+        }
+
+        [DebuggerStepThrough]
+        public static void IsNotNull(object argument, string argumentName)
+        {
+            if (argument == null)
+            {
+                throw new ArgumentNullException(argumentName);
+            }
+        }
+
+        [DebuggerStepThrough]
+        public static void IsNotNegative(int argument, string argumentName)
+        {
+            if (argument < 0)
+            {
+                throw new ArgumentOutOfRangeException(argumentName);
+            }
+        }
+
+        [DebuggerStepThrough]
+        public static void IsNotNegativeOrZero(int argument, string argumentName)
+        {
+            IsNotNegativeOrZero(argument, argumentName, true);
+        }
+
+        public static bool IsNotNegativeOrZero(int argument, string argumentName, bool throwException)
+        {
+            if (argument <= 0)
+            {
+                if (throwException)
+                {
+                    throw new ArgumentOutOfRangeException(argumentName);
+                }
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        [DebuggerStepThrough]
+        public static void IsNotNegative(long argument, string argumentName)
+        {
+            if (argument < 0)
+            {
+                throw new ArgumentOutOfRangeException(argumentName);
+            }
+        }
+
+        [DebuggerStepThrough]
+        public static void IsNotNegativeOrZero(long argument, string argumentName)
+        {
+            if (argument <= 0)
+            {
+                throw new ArgumentOutOfRangeException(argumentName);
+            }
+        }
+
+        [DebuggerStepThrough]
+        public static void IsNotNegative(float argument, string argumentName)
+        {
+            if (argument < 0)
+            {
+                throw new ArgumentOutOfRangeException(argumentName);
+            }
+        }
+
+        [DebuggerStepThrough]
+        public static void IsNotNegativeOrZero(float argument, string argumentName)
+        {
+            if (argument <= 0)
+            {
+                throw new ArgumentOutOfRangeException(argumentName);
+            }
+        }
+
+        [DebuggerStepThrough]
+        public static void IsNotNegative(decimal argument, string argumentName)
+        {
+            if (argument < 0)
+            {
+                throw new ArgumentOutOfRangeException(argumentName);
+            }
+        }
+
+        [DebuggerStepThrough]
+        public static void IsNotNegativeOrZero(decimal argument, string argumentName)
+        {
+            if (argument <= 0)
+            {
+                throw new ArgumentOutOfRangeException(argumentName);
+            }
+        }
+
+        [DebuggerStepThrough]
+        public static void IsNotInvalidDate(DateTime argument, string argumentName)
+        {
+            if (!argument.IsValid())
+            {
+                throw new ArgumentOutOfRangeException(argumentName);
+            }
+        }
+
+        [DebuggerStepThrough]
+        public static void IsNotInPast(DateTime argument, string argumentName)
+        {
+            if (argument < SystemTime.Now())
+            {
+                throw new ArgumentOutOfRangeException(argumentName);
+            }
+        }
+
+        [DebuggerStepThrough]
+        public static void IsNotInFuture(DateTime argument, string argumentName)
+        {
+            if (argument > SystemTime.Now())
+            {
+                throw new ArgumentOutOfRangeException(argumentName);
+            }
+        }
+
+        [DebuggerStepThrough]
+        public static void IsNotNegative(TimeSpan argument, string argumentName)
+        {
+            if (argument < TimeSpan.Zero)
+            {
+                throw new ArgumentOutOfRangeException(argumentName);
+            }
+        }
+
+        [DebuggerStepThrough]
+        public static void IsNotNegativeOrZero(TimeSpan argument, string argumentName)
+        {
+            if (argument <= TimeSpan.Zero)
+            {
+                throw new ArgumentOutOfRangeException(argumentName);
+            }
+        }
+
+        [DebuggerStepThrough]
+        public static void IsNotEmpty<T>(ICollection<T> argument, string argumentName)
+        {
+            IsNotNull(argument, argumentName);
+
+            if (argument.Count == 0)
+            {
+                throw new ArgumentException("Collection cannot be empty.", argumentName);
+            }
+        }
+
+        [DebuggerStepThrough]
+        public static void IsNotOutOfRange(int argument, int min, int max, string argumentName)
+        {
+            if ((argument < min) || (argument > max))
+            {
+                throw new ArgumentOutOfRangeException(argumentName, "{0} must be between \"{1}\"-\"{2}\".".FormatWith(argumentName, min, max));
+            }
+        }
+
+        [DebuggerStepThrough]
+        public static void IsNotInvalidEmail(string argument, string argumentName)
+        {
+            IsNotEmpty(argument, argumentName);
+
+            if (!argument.IsEmail())
+            {
+                throw new ArgumentException("\"{0}\" is not a valid email address.".FormatWith(argumentName), argumentName);
+            }
+        }
+
+        [DebuggerStepThrough]
+        public static void IsNotInvalidWebUrl(string argument, string argumentName)
+        {
+            IsNotEmpty(argument, argumentName);
+
+            if (!argument.IsWebUrl())
+            {
+                throw new ArgumentException("\"{0}\" is not a valid web url.".FormatWith(argumentName), argumentName);
+            }
         }
     }
 }

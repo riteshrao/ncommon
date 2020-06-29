@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
-using NCommon.Data;
+using NCommon.DataServices.Transactions;
 using NCommon.Mvc;
 using NUnit.Framework;
 using Rhino.Mocks;

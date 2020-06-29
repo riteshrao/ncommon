@@ -1,9 +1,9 @@
 using System;
 using System.Configuration;
-using Microsoft.Practices.ServiceLocation;
-using NCommon.Data;
+
+using NCommon.DataServices.Transactions;
 using NCommon.Data.EntityFramework;
-using NCommon.State;
+using NCommon.StateStorage;
 using NCommon.Testing;
 using NUnit.Framework;
 using Rhino.Mocks;

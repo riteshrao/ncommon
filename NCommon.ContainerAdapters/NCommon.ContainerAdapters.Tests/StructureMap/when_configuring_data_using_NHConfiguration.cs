@@ -1,6 +1,6 @@
-using Microsoft.Practices.ServiceLocation;
+
 using NCommon.ContainerAdapter.StructureMap;
-using NCommon.Data;
+using NCommon.DataServices.Transactions;
 using NCommon.Data.NHibernate;
 using NHibernate;
 using NUnit.Framework;
@@ -18,7 +18,7 @@ namespace NCommon.ContainerAdapters.Tests.StructureMap
         public void FixtureSetup()
         {
             _container = new Container();
-            Configure
+            ConfigureNCommon
                 .Using(new StructureMapContainerAdapter(_container))
                 .ConfigureData<NHConfiguration>();
             ServiceLocator.SetLocatorProvider(() => MockRepository.GenerateStub<IServiceLocator>());

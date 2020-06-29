@@ -1,7 +1,7 @@
 using System.Data.Linq;
-using Microsoft.Practices.ServiceLocation;
+
 using NCommon.ContainerAdapter.StructureMap;
-using NCommon.Data;
+using NCommon.DataServices.Transactions;
 using NCommon.Data.LinqToSql;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -18,7 +18,7 @@ namespace NCommon.ContainerAdapters.Tests.StructureMap
         public void FixtureSetup()
         {
             _container = new Container();
-            Configure
+            ConfigureNCommon
                 .Using(new StructureMapContainerAdapter(_container))
                 .ConfigureData<LinqToSqlConfiguration>();
             ServiceLocator.SetLocatorProvider(() => MockRepository.GenerateStub<IServiceLocator>());

@@ -1,7 +1,7 @@
 using System.Data.Linq;
-using Microsoft.Practices.ServiceLocation;
+
 using NCommon.ContainerAdapter.Ninject;
-using NCommon.Data;
+using NCommon.DataServices.Transactions;
 using NCommon.Data.LinqToSql;
 using Ninject;
 using NUnit.Framework;
@@ -18,7 +18,7 @@ namespace NCommon.ContainerAdapters.Tests.Ninject
         public void FixtureSetup()
         {
             _kernel = new StandardKernel();
-            Configure
+            ConfigureNCommon
                 .Using(new NinjectContainerAdapter(_kernel))
                 .ConfigureData<LinqToSqlConfiguration>();
             ServiceLocator.SetLocatorProvider(() => MockRepository.GenerateStub<IServiceLocator>());

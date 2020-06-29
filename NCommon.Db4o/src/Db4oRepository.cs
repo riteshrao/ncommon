@@ -19,7 +19,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using Db4objects.Db4o;
 using Db4objects.Db4o.Linq;
-using Microsoft.Practices.ServiceLocation;
+using NCommon.DependencyInjection;
+using NCommon.ObjectAccess;
 
 namespace NCommon.Data.Db4o
 {
@@ -45,9 +46,9 @@ namespace NCommon.Data.Db4o
         /// </summary>
         protected virtual void Initialize()
         {
-            if (ServiceLocator.Current != null)
+            if (ServiceLocatorWorker != null)
             {
-                var containers = ServiceLocator.Current.GetAllInstances<IObjectContainer>();
+                var containers = ServiceLocatorWorker.GetAllInstances<IObjectContainer>();
                 if (containers != null && containers.Count() > 0)
                     _privateContainer = containers.FirstOrDefault();
             }

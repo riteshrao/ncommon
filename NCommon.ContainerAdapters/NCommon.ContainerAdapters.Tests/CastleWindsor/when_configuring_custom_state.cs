@@ -1,8 +1,8 @@
 using Castle.Windsor;
 using NCommon.Configuration;
 using NCommon.ContainerAdapter.CastleWindsor;
-using NCommon.Context;
-using NCommon.State;
+using NCommon;
+using NCommon.StateStorage;
 using NUnit.Framework;
 
 namespace NCommon.ContainerAdapters.Tests.CastleWindsor
@@ -16,7 +16,7 @@ namespace NCommon.ContainerAdapters.Tests.CastleWindsor
         public void FixtureSetup()
         {
             _container = new WindsorContainer();
-            NCommon.Configure
+            NCommon.ConfigureNCommon
                 .Using(new WindsorContainerAdapter(_container))
                 .ConfigureState<DefaultStateConfiguration>(config => config
                                                                          .UseCustomApplicationStateOf

@@ -1,9 +1,9 @@
 using System;
 using System.Linq;
-using NCommon.Data;
+using NCommon.DataServices.Transactions;
 using NCommon.Data.EntityFramework;
 using NCommon.EntityFramework4.Tests.Models;
-using NCommon.Specifications;
+
 using NUnit.Framework;
 
 namespace NCommon.EntityFramework4.Tests.CodeOnly

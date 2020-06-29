@@ -17,9 +17,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Practices.ServiceLocation;
 using NCommon.Extensions;
-using NCommon.State;
+using NCommon.StateStorage;
 
 namespace NCommon.Events
 {
@@ -38,7 +37,7 @@ namespace NCommon.Events
         ///<typeparam name="T">The domain event that the callback is registered to handle.</typeparam>
         public static void RegisterCallback<T>(Action<T> callback) where T : IDomainEvent
         {
-            var state = ServiceLocator.Current.GetInstance<IState>();
+            var state = ServiceLocatorWorker.GetInstance<IState>();
             var callbacks = state.Local.Get<IList<Delegate>>(CallbackListKey);
             if (callbacks == null)
             {
@@ -53,7 +52,7 @@ namespace NCommon.Events
         ///</summary>
         public static void ClearCallbacks()
         {
-            var state = ServiceLocator.Current.GetInstance<IState>();
+            var state = ServiceLocatorWorker.GetInstance<IState>();
             state.Application.Remove<IList<Delegate>>(CallbackListKey);
         }
 
@@ -64,8 +63,8 @@ namespace NCommon.Events
         ///<typeparam name="T">A type implementing <see cref="IDomainEvent"/></typeparam>
         public static void Raise<T>(T @event) where T : IDomainEvent
         {
-            var state = ServiceLocator.Current.GetInstance<IState>();
-            var handlers = ServiceLocator.Current.GetAllInstances<Handles<T>>();
+            var state = ServiceLocatorWorker.GetInstance<IState>();
+            var handlers = ServiceLocatorWorker.GetAllInstances<Handles<T>>();
             if (handlers != null)
                 handlers.ForEach(x => x.Handle(@event));
 

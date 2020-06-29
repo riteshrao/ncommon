@@ -14,10 +14,11 @@
 //limitations under the License. 
 #endregion
 
-using NCommon.Data;
-using NCommon.State;
+using CommonServiceLocator;
+using NCommon.DataServices.Transactions;
+using NCommon.StateStorage;
 using Rhino.Mocks;
-using Microsoft.Practices.ServiceLocation;
+
 
 namespace NCommon.Testing
 {

@@ -1,4 +1,4 @@
-using Microsoft.Practices.ServiceLocation;
+
 using NCommon.Data.EntityFramework.Tests.OrdersDomain;
 using NUnit.Framework;
 using Rhino.Mocks;

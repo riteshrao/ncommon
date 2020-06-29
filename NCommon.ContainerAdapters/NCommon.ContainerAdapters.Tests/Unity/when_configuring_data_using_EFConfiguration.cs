@@ -1,8 +1,8 @@
 using System.Data.Objects;
-using Microsoft.Practices.ServiceLocation;
+
 using Microsoft.Practices.Unity;
 using NCommon.ContainerAdapter.Unity;
-using NCommon.Data;
+using NCommon.DataServices.Transactions;
 using NCommon.Data.EntityFramework;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -18,7 +18,7 @@ namespace NCommon.ContainerAdapters.Tests.Unity
         public void FixtureSetup()
         {
             _container = new UnityContainer();
-            Configure
+            ConfigureNCommon
                 .Using(new UnityContainerAdapter(_container))
                 .ConfigureData<EFConfiguration>();
             ServiceLocator.SetLocatorProvider(() => MockRepository.GenerateStub<IServiceLocator>());

@@ -1,6 +1,6 @@
 using System;
-using NCommon.Data;
-using NCommon.Data.Impl;
+using NCommon.DataServices.Transactions;
+using NCommon.DataServices.Transactions;
 using NUnit.Framework;
 
 namespace NCommon.Tests.Data

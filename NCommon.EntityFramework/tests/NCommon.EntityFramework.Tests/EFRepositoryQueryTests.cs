@@ -3,7 +3,7 @@ using System.Data.Objects;
 using System.Linq;
 using NCommon.Data.EntityFramework.Tests.HRDomain;
 using NCommon.Data.EntityFramework.Tests.OrdersDomain;
-using NCommon.Specifications;
+
 using NUnit.Framework;
 
 namespace NCommon.Data.EntityFramework.Tests

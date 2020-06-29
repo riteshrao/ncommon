@@ -1,12 +1,14 @@
 using System;
 using System.IO;
 using System.Linq;
+using CommonServiceLocator;
 using Db4objects.Db4o;
-using Microsoft.Practices.ServiceLocation;
+
 using NCommon.Data.Db4o.Tests.Domain;
+using NCommon.DataServices.Transactions;
 using NCommon.Extensions;
-using NCommon.Specifications;
-using NCommon.State;
+
+using NCommon.StateStorage;
 using NCommon.Testing;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -43,7 +45,7 @@ namespace NCommon.Data.Db4o.Tests
         [SetUp]
         public void SetUp()
         {
-            ServiceLocator.Current.Stub(x => x.GetInstance<IState>()).Return(new FakeState());
+            ServiceLocatorWorker.Stub(x => x.GetInstance<IState>()).Return(new FakeState());
         }
 
         [Test]

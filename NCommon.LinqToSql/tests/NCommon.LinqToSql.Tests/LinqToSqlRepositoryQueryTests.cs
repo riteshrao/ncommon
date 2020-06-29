@@ -4,7 +4,7 @@ using System.Linq;
 using NCommon.Data.LinqToSql.Tests.HRDomain;
 using NCommon.Data.LinqToSql.Tests.OrdersDomain;
 using NCommon.Extensions;
-using NCommon.Specifications;
+
 using NUnit.Framework;
 using Rhino.Mocks;
 

@@ -16,8 +16,8 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Practices.ServiceLocation;
 using NCommon.Extensions;
+using NCommon.ObjectAccess;
 using NHibernate;
 using NHibernate.Linq;
 using NHibernate.Transform;
@@ -49,10 +49,10 @@ namespace NCommon.Data.NHibernate
         /// </summary>
         protected virtual void Initialize()
         {
-            if (ServiceLocator.Current == null)
+            if (ServiceLocatorWorker == null)
                 return;
 
-            var sessions = ServiceLocator.Current.GetAllInstances<ISession>();
+            var sessions = ServiceLocatorWorker.GetAllInstances<ISession>();
             if (sessions != null && sessions.Count() > 0)
                 _privateSession = sessions.FirstOrDefault();
         }         

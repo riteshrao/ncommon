@@ -2,16 +2,17 @@ using System;
 using System.Transactions;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
-using Microsoft.Practices.ServiceLocation;
-using NCommon.Data.Impl;
+
+using NCommon.DataServices.Transactions;
 using NCommon.Data.NHibernate.Tests.HRDomain.Domain;
 using NCommon.Data.NHibernate.Tests.OrdersDomain;
-using NCommon.State;
+using NCommon.StateStorage;
 using NCommon.Testing;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
 using NUnit.Framework;
 using Rhino.Mocks;
+using CommonServiceLocator;
 
 namespace NCommon.Data.NHibernate.Tests
 {

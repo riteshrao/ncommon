@@ -14,7 +14,7 @@
 //limitations under the License. 
 #endregion
 
-using NCommon.Specifications;
+
 using NUnit.Framework;
 using Rhino.Mocks;
 

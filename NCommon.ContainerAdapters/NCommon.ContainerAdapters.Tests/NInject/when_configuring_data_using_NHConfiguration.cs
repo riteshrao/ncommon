@@ -1,6 +1,6 @@
-using Microsoft.Practices.ServiceLocation;
+
 using NCommon.ContainerAdapter.Ninject;
-using NCommon.Data;
+using NCommon.DataServices.Transactions;
 using NCommon.Data.NHibernate;
 using NHibernate;
 using Ninject;
@@ -18,7 +18,7 @@ namespace NCommon.ContainerAdapters.Tests.Ninject
         public void FixtureSetup()
         {
             _kernel = new StandardKernel();
-            Configure
+            ConfigureNCommon
                 .Using(new NinjectContainerAdapter(_kernel))
                 .ConfigureData<NHConfiguration>();
             ServiceLocator.SetLocatorProvider(() => MockRepository.GenerateStub<IServiceLocator>());

@@ -1,7 +1,7 @@
 using System;
 using System.Web.Mvc;
 using Common.Logging;
-using NCommon.Data;
+using NCommon.DataServices.Transactions;
 
 namespace NCommon.Mvc
 {

@@ -15,7 +15,7 @@
 #endregion
 
 using System;
-using NCommon.Specifications;
+
 
 namespace NCommon.Rules
 {

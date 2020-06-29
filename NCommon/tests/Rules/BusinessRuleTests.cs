@@ -15,7 +15,7 @@
 #endregion
 
 using System;
-using NCommon.Specifications;
+
 using NUnit.Framework;
 using Rhino.Mocks;
 

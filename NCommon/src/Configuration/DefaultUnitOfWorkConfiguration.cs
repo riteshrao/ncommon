@@ -15,9 +15,8 @@
 #endregion
 
 using System.Transactions;
-using NCommon.Data;
-using NCommon.Data.Impl;
-using TransactionManager = NCommon.Data.Impl.TransactionManager;
+using NCommon.DataServices.Transactions;
+using NCommon.DependencyInjection;
 
 namespace NCommon.Configuration
 {

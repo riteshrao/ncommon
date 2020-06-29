@@ -1,7 +1,7 @@
 using System;
-using Microsoft.Practices.ServiceLocation;
-using NCommon.Data;
-using NCommon.Data.Impl;
+
+using NCommon.DataServices.Transactions;
+
 using NUnit.Framework;
 using Rhino.Mocks;
 

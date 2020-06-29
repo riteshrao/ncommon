@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using NCommon.Data;
+using NCommon.DataServices.Transactions;
 using NUnit.Framework;
 
 namespace NCommon.Tests.Data

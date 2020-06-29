@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NCommon.Data.NHibernate.Tests.HRDomain.Domain;
 using NCommon.Data.NHibernate.Tests.OrdersDomain;
-using NCommon.Specifications;
+
 using NHibernate;
 using NUnit.Framework;
 using Order = NCommon.Data.NHibernate.Tests.OrdersDomain.Order;

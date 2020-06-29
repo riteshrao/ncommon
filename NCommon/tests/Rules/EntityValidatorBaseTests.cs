@@ -16,7 +16,7 @@
 
 using System.Linq;
 using NCommon.Extensions;
-using NCommon.Specifications;
+
 using NUnit.Framework;
 using Rhino.Mocks;
 

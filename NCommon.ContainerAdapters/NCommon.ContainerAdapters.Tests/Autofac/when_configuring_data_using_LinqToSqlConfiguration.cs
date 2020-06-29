@@ -1,7 +1,7 @@
 using Autofac;
-using Microsoft.Practices.ServiceLocation;
+
 using NCommon.ContainerAdapter.Autofac;
-using NCommon.Data;
+using NCommon.DataServices.Transactions;
 using NCommon.Data.LinqToSql;
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -17,7 +17,7 @@ namespace NCommon.ContainerAdapters.Tests.Autofac
         public void FixtureSetup()
         {
             var builder = new ContainerBuilder();
-            NCommon.Configure
+            NCommon.ConfigureNCommon
                 .Using(new AutofacContainerAdapter(builder))
                 .ConfigureData<LinqToSqlConfiguration>();
             ServiceLocator.SetLocatorProvider(() => MockRepository.GenerateStub<IServiceLocator>());

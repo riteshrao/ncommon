@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using System.ServiceModel;
 using System.Web;
-using NCommon.Context;
-using NCommon.State.Impl;
+using NCommon;
 using NUnit.Framework;
 using Rhino.Mocks;
 

@@ -1,13 +1,13 @@
 using System;
 using System.Configuration;
 using System.Linq;
-using Microsoft.Practices.ServiceLocation;
-using NCommon.Data;
+
+using NCommon.DataServices.Transactions;
 using NCommon.Data.EntityFramework;
 using NCommon.EntityFramework4.Tests.Models;
 using NCommon.Extensions;
-using NCommon.Specifications;
-using NCommon.State;
+
+using NCommon.StateStorage;
 using NCommon.Testing;
 using NUnit.Framework;
 using Rhino.Mocks;

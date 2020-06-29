@@ -1,8 +1,8 @@
 using System.ServiceModel;
 using System.Threading;
 using System.Web;
-using NCommon.Context;
-using NCommon.State.Impl;
+using NCommon;
+using NCommon.StateStorage;
 using NUnit.Framework;
 using Rhino.Mocks;
 

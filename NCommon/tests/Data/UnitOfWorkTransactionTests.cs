@@ -1,7 +1,7 @@
 using System;
 using System.Transactions;
-using NCommon.Data;
-using NCommon.Data.Impl;
+using NCommon.DataServices.Transactions;
+using NCommon.DataServices.Transactions;
 using NUnit.Framework;
 using Rhino.Mocks;
 

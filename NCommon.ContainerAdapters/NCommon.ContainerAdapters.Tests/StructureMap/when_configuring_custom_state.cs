@@ -1,6 +1,6 @@
 using NCommon.Configuration;
 using NCommon.ContainerAdapter.StructureMap;
-using NCommon.State;
+using NCommon.StateStorage;
 using NUnit.Framework;
 using StructureMap;
 
@@ -15,7 +15,7 @@ namespace NCommon.ContainerAdapters.Tests.StructureMap
         public void FixtureSetup()
         {
             _container = new Container();
-            Configure
+            ConfigureNCommon
                 .Using(new StructureMapContainerAdapter(_container))
                 .ConfigureState<DefaultStateConfiguration>(config => config
                                                                          .UseCustomApplicationStateOf

@@ -1,7 +1,7 @@
 using System.ServiceModel.Activation;
 using System.ServiceModel.Description;
 using System.Web;
-using NCommon.Context;
+using NCommon;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -13,7 +13,7 @@ namespace NCommon.Tests.Context
         [Test]
         public void IsWebApplication_returns_false_when_HttpContext_is_null()
         {
-            var context = MockRepository.GenerateStub<NCommon.Context.Impl.Context>();
+            var context = MockRepository.GenerateStub<NCommonl.Context>();
             context.Stub(x => x.HttpContext).Return(null);
             Assert.That(context.IsWebApplication, Is.False);
         }
@@ -21,7 +21,7 @@ namespace NCommon.Tests.Context
         [Test]
         public void IsWebApplication_returns_true_when_HttpContext_is_not_null()
         {
-            var context = MockRepository.GenerateStub<NCommon.Context.Impl.Context>();
+            var context = MockRepository.GenerateStub<NCommonl.Context>();
             context.Stub(x => x.HttpContext).Return(MockRepository.GenerateStub<HttpContextBase>());
             Assert.That(context.IsWebApplication, Is.True);
         }
@@ -29,7 +29,7 @@ namespace NCommon.Tests.Context
         [Test]
         public void IsWcfApplication_returns_false_when_OperationContext_is_null()
         {
-            var context = MockRepository.GenerateStub<NCommon.Context.Impl.Context>();
+            var context = MockRepository.GenerateStub<NCommonl.Context>();
             context.Stub(x => x.OperationContext).Return(null);
             Assert.That(context.IsWcfApplication, Is.False);
         }
@@ -37,7 +37,7 @@ namespace NCommon.Tests.Context
         [Test]
         public void IsWcfApplication_returns_true_when_OperationContext_is_not_null()
         {
-            var context = MockRepository.GenerateStub<NCommon.Context.Impl.Context>();
+            var context = MockRepository.GenerateStub<NCommonl.Context>();
             context.Stub(x => x.OperationContext).Return(MockRepository.GenerateStub<IOperationContext>());
             Assert.That(context.IsWcfApplication, Is.True);
         }
@@ -45,7 +45,7 @@ namespace NCommon.Tests.Context
         [Test]
         public void IsAspNetCompatEnabled_returns_false_when_application_is_not_a_WCF_app()
         {
-            var context = MockRepository.GenerateStub<NCommon.Context.Impl.Context>();
+            var context = MockRepository.GenerateStub<NCommonl.Context>();
             context.Stub(x => x.OperationContext).Return(null);
             Assert.That(context.IsAspNetCompatEnabled, Is.False);
         }
@@ -53,7 +53,7 @@ namespace NCommon.Tests.Context
         [Test]
         public void IsAsMetCompatEnabled_returns_false_when_no_wcf_service_does_not_specify_aspnet_compat()
         {
-            var context = MockRepository.GenerateStub<NCommon.Context.Impl.Context>();
+            var context = MockRepository.GenerateStub<NCommonl.Context>();
             context.Stub(x => x.OperationContext).Return(MockRepository.GenerateStub<IOperationContext>());
             context.OperationContext.Stub(x => x.Host).Return(MockRepository.GenerateStub<IServiceHost>());
             context.OperationContext.Host.Stub(x => x.Description).Return(new ServiceDescription());
@@ -69,7 +69,7 @@ namespace NCommon.Tests.Context
                 RequirementsMode = AspNetCompatibilityRequirementsMode.NotAllowed
             });
 
-            var context = MockRepository.GenerateStub<NCommon.Context.Impl.Context>();
+            var context = MockRepository.GenerateStub<NCommonl.Context>();
             context.Stub(x => x.OperationContext).Return(MockRepository.GenerateStub<IOperationContext>());
             context.OperationContext.Stub(x => x.Host).Return(MockRepository.GenerateStub<IServiceHost>());
             context.OperationContext.Host.Stub(x => x.Description).Return(serviceDescription);
@@ -85,7 +85,7 @@ namespace NCommon.Tests.Context
                 RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed
             });
 
-            var context = MockRepository.GenerateStub<NCommon.Context.Impl.Context>();
+            var context = MockRepository.GenerateStub<NCommonl.Context>();
             context.Stub(x => x.HttpContext).Return(null);
             context.Stub(x => x.OperationContext).Return(MockRepository.GenerateStub<IOperationContext>());
             context.OperationContext.Stub(x => x.Host).Return(MockRepository.GenerateStub<IServiceHost>());
@@ -102,7 +102,7 @@ namespace NCommon.Tests.Context
                 RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed
             });
 
-            var context = MockRepository.GenerateStub<NCommon.Context.Impl.Context>();
+            var context = MockRepository.GenerateStub<NCommonl.Context>();
             context.Stub(x => x.HttpContext).Return(MockRepository.GenerateStub<HttpContextBase>());
             context.Stub(x => x.OperationContext).Return(MockRepository.GenerateStub<IOperationContext>());
             context.OperationContext.Stub(x => x.Host).Return(MockRepository.GenerateStub<IServiceHost>());
@@ -119,7 +119,7 @@ namespace NCommon.Tests.Context
                 RequirementsMode = AspNetCompatibilityRequirementsMode.Required
             });
 
-            var context = MockRepository.GenerateStub<NCommon.Context.Impl.Context>();
+            var context = MockRepository.GenerateStub<NCommonl.Context>();
             context.Stub(x => x.HttpContext).Return(null);
             context.Stub(x => x.OperationContext).Return(MockRepository.GenerateStub<IOperationContext>());
             context.OperationContext.Stub(x => x.Host).Return(MockRepository.GenerateStub<IServiceHost>());
@@ -136,7 +136,7 @@ namespace NCommon.Tests.Context
                 RequirementsMode = AspNetCompatibilityRequirementsMode.Required
             });
 
-            var context = MockRepository.GenerateStub<NCommon.Context.Impl.Context>();
+            var context = MockRepository.GenerateStub<NCommonl.Context>();
             context.Stub(x => x.HttpContext).Return(MockRepository.GenerateStub<HttpContextBase>());
             context.Stub(x => x.OperationContext).Return(MockRepository.GenerateStub<IOperationContext>());
             context.OperationContext.Stub(x => x.Host).Return(MockRepository.GenerateStub<IServiceHost>());
