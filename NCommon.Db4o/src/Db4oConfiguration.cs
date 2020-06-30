@@ -17,6 +17,9 @@
 using System;
 using Db4objects.Db4o;
 using NCommon.Configuration;
+using NCommon.DataServices.Transactions;
+using NCommon.DependencyInjection;
+using NCommon.ObjectAccess;
 
 namespace NCommon.Data.Db4o
 {

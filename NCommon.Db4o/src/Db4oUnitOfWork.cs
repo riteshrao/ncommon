@@ -16,6 +16,7 @@
 
 using System;
 using Db4objects.Db4o;
+using NCommon.DataServices.Transactions;
 
 namespace NCommon.Data.Db4o
 {

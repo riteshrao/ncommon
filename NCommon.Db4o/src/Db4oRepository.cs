@@ -30,7 +30,7 @@ namespace NCommon.Data.Db4o
     /// </summary>
     public class Db4oRepository<TEntity> : RepositoryBase<TEntity>
     {
-        readonly IObjectContainer _privateContainer;
+         IObjectContainer _privateContainer;
 
         /// <summary>
         /// Default Constructor.
@@ -46,13 +46,10 @@ namespace NCommon.Data.Db4o
         /// </summary>
         protected virtual void Initialize()
         {
-            if (ServiceLocatorWorker != null)
-            {
-                var containers = ServiceLocatorWorker.GetAllInstances<IObjectContainer>();
-                if (containers != null && containers.Count() > 0)
-                    _privateContainer = containers.FirstOrDefault();
-            }
-        
+            var containers = ServiceLocatorWorker.GetAllInstances<IObjectContainer>();
+            if (containers != null && containers.Count() > 0)
+                _privateContainer = containers.FirstOrDefault();
+
         }         
 
         /// <summary>

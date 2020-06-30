@@ -45,7 +45,7 @@ namespace NCommon.Data.Db4o.Tests
         [SetUp]
         public void SetUp()
         {
-            ServiceLocatorWorker.Stub(x => x.GetInstance<IState>()).Return(new FakeState());
+            ServiceLocator.Current.Stub(x => x.GetInstance<IState>()).Return(new FakeState());
         }
 
         [Test]
