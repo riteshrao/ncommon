@@ -36,6 +36,7 @@ namespace NCommon.ContainerAdapter.Ninject
         /// to register components.</param>
         public NinjectContainerAdapter(IKernel kernel)
         {
+            
             _kernel = kernel;
         }
 

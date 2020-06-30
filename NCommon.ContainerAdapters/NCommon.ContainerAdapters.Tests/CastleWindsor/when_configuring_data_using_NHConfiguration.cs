@@ -5,6 +5,8 @@ using NCommon.DataServices.Transactions;
 using NCommon.Data.NHibernate;
 using NUnit.Framework;
 using Rhino.Mocks;
+using CommonServiceLocator;
+using NCommon.ObjectAccess;
 
 namespace NCommon.ContainerAdapters.Tests.CastleWindsor
 {

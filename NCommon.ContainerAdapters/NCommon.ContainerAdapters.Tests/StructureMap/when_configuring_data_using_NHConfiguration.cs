@@ -6,6 +6,8 @@ using NHibernate;
 using NUnit.Framework;
 using Rhino.Mocks;
 using StructureMap;
+using CommonServiceLocator;
+using NCommon.ObjectAccess;
 
 namespace NCommon.ContainerAdapters.Tests.StructureMap
 {

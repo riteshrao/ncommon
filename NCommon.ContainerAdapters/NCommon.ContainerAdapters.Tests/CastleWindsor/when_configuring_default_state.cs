@@ -3,7 +3,6 @@ using NCommon.Configuration;
 using NCommon.ContainerAdapter.CastleWindsor;
 using NCommon;
 using NCommon.StateStorage;
-using NCommon.StateStorage;
 using NUnit.Framework;
 
 namespace NCommon.ContainerAdapters.Tests.CastleWindsor

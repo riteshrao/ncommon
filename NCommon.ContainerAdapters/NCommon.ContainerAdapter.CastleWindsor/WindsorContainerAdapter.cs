@@ -16,6 +16,8 @@
 
 using System;
 using Castle.Core;
+using Castle.MicroKernel.Registration;
+using Castle.Windsor;
 using NCommon.Configuration;
 using NCommon.DependencyInjection;
 

@@ -15,9 +15,10 @@
 #endregion
 
 using System;
-using Microsoft.Practices.Unity;
 using NCommon.Configuration;
 using NCommon.DependencyInjection;
+using Unity;
+using Unity.Lifetime;
 
 namespace NCommon.ContainerAdapter.Unity
 {
