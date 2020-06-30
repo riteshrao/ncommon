@@ -1,8 +1,9 @@
 using System.Data.Linq;
-
+using CommonServiceLocator;
 using NCommon.ContainerAdapter.Ninject;
 using NCommon.DataServices.Transactions;
 using NCommon.LinqToSql;
+using NCommon.ObjectAccess;
 using Ninject;
 using NUnit.Framework;
 using Rhino.Mocks;

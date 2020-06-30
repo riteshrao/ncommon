@@ -1,5 +1,5 @@
 using System;
-
+using CommonServiceLocator;
 using NCommon.DataServices.Transactions;
 
 using NUnit.Framework;

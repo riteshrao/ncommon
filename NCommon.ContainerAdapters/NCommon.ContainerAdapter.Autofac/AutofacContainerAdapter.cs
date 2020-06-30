@@ -1,6 +1,7 @@
 using System;
 using Autofac;
 using NCommon.Configuration;
+using NCommon.DependencyInjection;
 
 namespace NCommon.ContainerAdapter.Autofac
 {

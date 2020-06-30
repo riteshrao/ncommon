@@ -7,6 +7,7 @@ using Ninject;
 using NUnit.Framework;
 using Rhino.Mocks;
 using CommonServiceLocator;
+using NCommon.ObjectAccess;
 
 namespace NCommon.ContainerAdapters.Tests.Ninject
 {

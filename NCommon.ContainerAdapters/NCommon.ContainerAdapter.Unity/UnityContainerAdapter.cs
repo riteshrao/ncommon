@@ -17,6 +17,7 @@
 using System;
 using Microsoft.Practices.Unity;
 using NCommon.Configuration;
+using NCommon.DependencyInjection;
 
 namespace NCommon.ContainerAdapter.Unity
 {

@@ -1,11 +1,12 @@
 using System.Data.Linq;
-
-using Microsoft.Practices.Unity;
+using CommonServiceLocator;
 using NCommon.ContainerAdapter.Unity;
 using NCommon.DataServices.Transactions;
 using NCommon.LinqToSql;
+using NCommon.ObjectAccess;
 using NUnit.Framework;
 using Rhino.Mocks;
+using Unity;
 
 namespace NCommon.ContainerAdapters.Tests.Unity
 {

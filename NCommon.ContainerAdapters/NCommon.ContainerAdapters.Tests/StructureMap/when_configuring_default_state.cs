@@ -23,9 +23,9 @@ namespace NCommon.ContainerAdapters.Tests.StructureMap
         [Test]
         public void verify_can_get_instance_of_IContext()
         {
-            var context = _container.GetInstance<Context.IContext>();
+            var context = _container.GetInstance<IContext>();
             Assert.That(context, Is.Not.Null);
-            Assert.That(context, Is.TypeOf<Context.Impl.Context>());
+            Assert.That(context, Is.TypeOf<Context>());
         }
 
         [Test]

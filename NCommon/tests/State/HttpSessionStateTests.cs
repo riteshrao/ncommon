@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Web;
 using NCommon;
+using NCommon.StateStorage;
 using NUnit.Framework;
 using Rhino.Mocks;
 

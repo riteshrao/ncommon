@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-
+using CommonServiceLocator;
 using NCommon.Events;
 using NCommon.StateStorage;
 using NCommon.Testing;

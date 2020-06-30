@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NCommon.DataServices.Transactions;
+using NCommon.ObjectAccess;
 using NUnit.Framework;
 
 namespace NCommon.Tests.Data

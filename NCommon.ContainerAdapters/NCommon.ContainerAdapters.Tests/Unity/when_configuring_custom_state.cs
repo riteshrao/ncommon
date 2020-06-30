@@ -1,9 +1,10 @@
-using Microsoft.Practices.Unity;
+
 using NCommon.Configuration;
 using NCommon.ContainerAdapter.Unity;
 using NCommon;
 using NCommon.StateStorage;
 using NUnit.Framework;
+using Unity;
 
 namespace NCommon.ContainerAdapters.Tests.Unity
 {
@@ -31,7 +32,7 @@ namespace NCommon.ContainerAdapters.Tests.Unity
         {
             var context = _container.Resolve<IContext>();
             Assert.That(context, Is.Not.Null);
-            Assert.That(context, Is.TypeOf<Context.Impl.Context>());
+            Assert.That(context, Is.TypeOf<Context>());
         }
 
         [Test]

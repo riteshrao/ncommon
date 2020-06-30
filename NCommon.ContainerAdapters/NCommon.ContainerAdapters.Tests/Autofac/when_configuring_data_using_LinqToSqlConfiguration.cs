@@ -1,8 +1,9 @@
 using Autofac;
-
+using CommonServiceLocator;
 using NCommon.ContainerAdapter.Autofac;
 using NCommon.DataServices.Transactions;
 using NCommon.LinqToSql;
+using NCommon.ObjectAccess;
 using NUnit.Framework;
 using Rhino.Mocks;
 

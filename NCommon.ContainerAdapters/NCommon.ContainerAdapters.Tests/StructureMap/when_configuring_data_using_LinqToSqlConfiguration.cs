@@ -3,6 +3,7 @@ using CommonServiceLocator;
 using NCommon.ContainerAdapter.StructureMap;
 using NCommon.DataServices.Transactions;
 using NCommon.LinqToSql;
+using NCommon.ObjectAccess;
 using NUnit.Framework;
 using Rhino.Mocks;
 using StructureMap;

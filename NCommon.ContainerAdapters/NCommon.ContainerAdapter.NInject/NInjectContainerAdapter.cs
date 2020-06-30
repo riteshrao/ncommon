@@ -16,6 +16,7 @@
 
 using System;
 using NCommon.Configuration;
+using NCommon.DependencyInjection;
 using Ninject;
 
 namespace NCommon.ContainerAdapter.Ninject

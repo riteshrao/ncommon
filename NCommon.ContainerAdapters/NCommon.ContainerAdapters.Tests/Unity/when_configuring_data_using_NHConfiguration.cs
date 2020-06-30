@@ -1,5 +1,4 @@
 
-using Microsoft.Practices.Unity;
 using NCommon.ContainerAdapter.Unity;
 using NCommon.DataServices.Transactions;
 using NCommon.Data.NHibernate;
@@ -7,6 +6,8 @@ using NHibernate;
 using NUnit.Framework;
 using Rhino.Mocks;
 using CommonServiceLocator;
+using Unity;
+using NCommon.ObjectAccess;
 
 namespace NCommon.ContainerAdapters.Tests.Unity
 {

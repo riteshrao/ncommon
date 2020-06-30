@@ -4,6 +4,7 @@ using CommonServiceLocator;
 using NCommon.ContainerAdapter.CastleWindsor;
 using NCommon.DataServices.Transactions;
 using NCommon.LinqToSql;
+using NCommon.ObjectAccess;
 using NUnit.Framework;
 using Rhino.Mocks;
 

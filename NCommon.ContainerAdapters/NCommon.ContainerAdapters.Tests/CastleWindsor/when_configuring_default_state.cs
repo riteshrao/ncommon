@@ -27,7 +27,7 @@ namespace NCommon.ContainerAdapters.Tests.CastleWindsor
         {
             var context = _container.Resolve<IContext>();
             Assert.That(context, Is.Not.Null);
-            Assert.That(context, Is.TypeOf<Context.Impl.Context>());
+            Assert.That(context, Is.TypeOf<Context>());
         }
 
         [Test]

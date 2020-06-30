@@ -1,4 +1,5 @@
 
+using CommonServiceLocator;
 using NCommon.DataServices.Transactions;
 using NCommon.StateStorage;
 using NUnit.Framework;

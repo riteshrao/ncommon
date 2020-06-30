@@ -31,7 +31,7 @@ namespace NCommon.ContainerAdapters.Tests.Ninject
         {
             var context = _kernel.Get<IContext>();
             Assert.That(context, Is.Not.Null);
-            Assert.That(context, Is.TypeOf<Context.Impl.Context>());
+            Assert.That(context, Is.TypeOf<Context>());
         }
 
         [Test]
